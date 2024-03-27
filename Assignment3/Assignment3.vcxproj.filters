@@ -18,6 +18,9 @@
     <ClCompile Include="MyForm1.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="constants.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyForm1.h">
