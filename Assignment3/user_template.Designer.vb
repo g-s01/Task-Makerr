@@ -23,6 +23,7 @@ Partial Class user_template
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         SplitContainer1 = New SplitContainer()
+        Button5 = New Button()
         Label2 = New Label()
         Label1 = New Label()
         Button8 = New Button()
@@ -34,7 +35,6 @@ Partial Class user_template
         Button1 = New Button()
         PictureBox2 = New PictureBox()
         PictureBox1 = New PictureBox()
-        Button5 = New Button()
         CType(SplitContainer1, ComponentModel.ISupportInitialize).BeginInit()
         SplitContainer1.Panel1.SuspendLayout()
         SplitContainer1.SuspendLayout()
@@ -71,6 +71,24 @@ Partial Class user_template
         SplitContainer1.SplitterWidth = 1
         SplitContainer1.TabIndex = 0
         ' 
+        ' Button5
+        ' 
+        Button5.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        Button5.BackColor = SystemColors.Control
+        Button5.FlatAppearance.BorderSize = 0
+        Button5.FlatStyle = FlatStyle.Flat
+        Button5.Font = New Font("Microsoft YaHei", 10.2F)
+        Button5.Image = My.Resources.Resources.chats
+        Button5.ImageAlign = ContentAlignment.MiddleLeft
+        Button5.Location = New Point(3, 307)
+        Button5.Name = "Button5"
+        Button5.Padding = New Padding(15, 0, 0, 0)
+        Button5.Size = New Size(282, 36)
+        Button5.TabIndex = 11
+        Button5.Text = "     Chats"
+        Button5.TextImageRelation = TextImageRelation.ImageBeforeText
+        Button5.UseVisualStyleBackColor = False
+        ' 
         ' Label2
         ' 
         Label2.AutoSize = True
@@ -95,6 +113,7 @@ Partial Class user_template
         ' 
         ' Button8
         ' 
+        Button8.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         Button8.BackColor = SystemColors.Control
         Button8.FlatAppearance.BorderSize = 0
         Button8.FlatStyle = FlatStyle.Flat
@@ -113,6 +132,7 @@ Partial Class user_template
         ' 
         ' Button6
         ' 
+        Button6.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         Button6.BackColor = SystemColors.Control
         Button6.FlatAppearance.BorderSize = 0
         Button6.FlatStyle = FlatStyle.Flat
@@ -129,6 +149,7 @@ Partial Class user_template
         ' 
         ' Button7
         ' 
+        Button7.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         Button7.BackColor = SystemColors.Control
         Button7.FlatAppearance.BorderSize = 0
         Button7.FlatStyle = FlatStyle.Flat
@@ -233,28 +254,9 @@ Partial Class user_template
         PictureBox1.TabIndex = 0
         PictureBox1.TabStop = False
         ' 
-        ' Button5
-        ' 
-        Button5.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button5.BackColor = SystemColors.Control
-        Button5.FlatAppearance.BorderSize = 0
-        Button5.FlatStyle = FlatStyle.Flat
-        Button5.Font = New Font("Microsoft YaHei", 10.2F)
-        Button5.Image = My.Resources.Resources.chats
-        Button5.ImageAlign = ContentAlignment.MiddleLeft
-        Button5.Location = New Point(3, 307)
-        Button5.Name = "Button5"
-        Button5.Padding = New Padding(15, 0, 0, 0)
-        Button5.Size = New Size(282, 36)
-        Button5.TabIndex = 11
-        Button5.Text = "     Chats"
-        Button5.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button5.UseVisualStyleBackColor = False
-        ' 
         ' user_template
         ' 
-        AutoScaleDimensions = New SizeF(9F, 20F)
-        AutoScaleMode = AutoScaleMode.Font
+        AutoScaleMode = AutoScaleMode.None
         ClientSize = New Size(1132, 666)
         Controls.Add(SplitContainer1)
         Font = New Font("Microsoft YaHei", 9F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))

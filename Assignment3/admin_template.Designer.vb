@@ -74,6 +74,7 @@ Partial Class admin_template
         ' 
         ' Button7
         ' 
+        Button7.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         Button7.BackColor = SystemColors.Control
         Button7.FlatAppearance.BorderSize = 0
         Button7.FlatStyle = FlatStyle.Flat
@@ -164,8 +165,7 @@ Partial Class admin_template
         ' 
         ' admin_template
         ' 
-        AutoScaleDimensions = New SizeF(8F, 20F)
-        AutoScaleMode = AutoScaleMode.Font
+        AutoScaleMode = AutoScaleMode.None
         ClientSize = New Size(1132, 666)
         Controls.Add(SplitContainer1)
         Name = "admin_template"

@@ -113,6 +113,7 @@ Partial Class provider_template
         ' 
         ' Button8
         ' 
+        Button8.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         Button8.BackColor = SystemColors.Control
         Button8.FlatAppearance.BorderSize = 0
         Button8.FlatStyle = FlatStyle.Flat
@@ -131,6 +132,7 @@ Partial Class provider_template
         ' 
         ' Button6
         ' 
+        Button6.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         Button6.BackColor = SystemColors.Control
         Button6.FlatAppearance.BorderSize = 0
         Button6.FlatStyle = FlatStyle.Flat
@@ -147,6 +149,7 @@ Partial Class provider_template
         ' 
         ' Button7
         ' 
+        Button7.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         Button7.BackColor = SystemColors.Control
         Button7.FlatAppearance.BorderSize = 0
         Button7.FlatStyle = FlatStyle.Flat
@@ -211,7 +214,7 @@ Partial Class provider_template
         Button2.Padding = New Padding(15, 0, 0, 0)
         Button2.Size = New Size(282, 36)
         Button2.TabIndex = 3
-        Button2.Text = "     Appointments"
+        Button2.Text = "      Appointments"
         Button2.TextImageRelation = TextImageRelation.ImageBeforeText
         Button2.UseVisualStyleBackColor = False
         ' 
@@ -238,7 +241,7 @@ Partial Class provider_template
         PictureBox2.Image = My.Resources.Resources.Task_Makerr
         PictureBox2.Location = New Point(88, 26)
         PictureBox2.Name = "PictureBox2"
-        PictureBox2.Size = New Size(178, 28)
+        PictureBox2.Size = New Size(175, 24)
         PictureBox2.TabIndex = 1
         PictureBox2.TabStop = False
         ' 
@@ -247,14 +250,13 @@ Partial Class provider_template
         PictureBox1.Image = My.Resources.Resources.TM_Logo_1
         PictureBox1.Location = New Point(25, 10)
         PictureBox1.Name = "PictureBox1"
-        PictureBox1.Size = New Size(57, 57)
+        PictureBox1.Size = New Size(56, 56)
         PictureBox1.TabIndex = 0
         PictureBox1.TabStop = False
         ' 
         ' provider_template
         ' 
-        AutoScaleDimensions = New SizeF(8F, 20F)
-        AutoScaleMode = AutoScaleMode.Font
+        AutoScaleMode = AutoScaleMode.None
         ClientSize = New Size(1132, 666)
         Controls.Add(SplitContainer1)
         Name = "provider_template"
