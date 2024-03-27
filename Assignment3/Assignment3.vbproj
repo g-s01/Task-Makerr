@@ -2,16 +2,25 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <StartupObject>Sub Main</StartupObject>
     <UseWindowsForms>true</UseWindowsForms>
     <MyType>WindowsForms</MyType>
+    <ImportedNamespaces>System.Data=False,System.Data.Common=False,System.Data.Odbc=False,System.Data.OleDb=False,System.Data.SqlClient=False,System.Drawing=False,System.Windows.Forms=False,Microsoft.VisualBasic=True,System=True,System.Collections=True,System.Collections.Generic=True,System.Diagnostics=True,System.Linq=True,System.Xml.Linq=True,System.Threading.Tasks=True,Assignment3=True</ImportedNamespaces>
   </PropertyGroup>
 
   <ItemGroup>
     <Import Include="System.Data" />
+    <Import Include="System.Data.Common" />
+    <Import Include="System.Data.Odbc" />
+    <Import Include="System.Data.OleDb" />
+    <Import Include="System.Data.SqlClient" />
     <Import Include="System.Drawing" />
     <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
   </ItemGroup>
 
   <ItemGroup>
