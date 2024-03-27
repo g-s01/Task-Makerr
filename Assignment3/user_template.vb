@@ -13,7 +13,7 @@ Public Class user_template
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
         Using connection As New SqlConnection(connectionString)
             Try
-                connection.Open()s
+                connection.Open()
                 MessageBox.Show("Connection successful!")
 
             Catch ex As Exception
