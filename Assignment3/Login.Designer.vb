@@ -41,7 +41,7 @@ Partial Class Login
         ' 
         ' Panel1
         ' 
-        Panel1.BackgroundImage = My.Resources.Resources.Landing_Logo
+        Panel1.BackgroundImage = My.Resources.Resources.Landing_Logo1
         Panel1.BackgroundImageLayout = ImageLayout.Stretch
         Panel1.Controls.Add(designlabel1)
         Panel1.Controls.Add(taskmakerrbtn)

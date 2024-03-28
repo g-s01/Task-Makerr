@@ -101,11 +101,11 @@ Partial Class User_Signup
         ' 
         ' otp_tb
         ' 
-        otp_tb.Font = New Font("Segoe UI", 10.0F)
+        otp_tb.Font = New Font("Segoe UI", 10F)
         otp_tb.ForeColor = Color.Gray
         otp_tb.Location = New Point(60, 458)
         otp_tb.Name = "otp_tb"
-        otp_tb.Size = New Size(418, 25)
+        otp_tb.Size = New Size(418, 34)
         otp_tb.TabIndex = 9
         otp_tb.Text = "OTP"
         ' 
@@ -140,51 +140,51 @@ Partial Class User_Signup
         ' error_label
         ' 
         error_label.AutoSize = True
-        error_label.Font = New Font("Segoe UI", 8.0F)
+        error_label.Font = New Font("Segoe UI", 8F)
         error_label.ForeColor = Color.Red
         error_label.Location = New Point(60, 377)
         error_label.Name = "error_label"
-        error_label.Size = New Size(32, 13)
+        error_label.Size = New Size(45, 21)
         error_label.TabIndex = 8
         error_label.Text = "error"
         ' 
         ' email_tb
         ' 
-        email_tb.Font = New Font("Segoe UI", 10.0F)
+        email_tb.Font = New Font("Segoe UI", 10F)
         email_tb.ForeColor = Color.Gray
         email_tb.Location = New Point(60, 254)
         email_tb.Name = "email_tb"
-        email_tb.Size = New Size(418, 25)
+        email_tb.Size = New Size(418, 34)
         email_tb.TabIndex = 5
         email_tb.Text = "Email"
         ' 
         ' cnfpassword_tb
         ' 
-        cnfpassword_tb.Font = New Font("Segoe UI", 10.0F)
+        cnfpassword_tb.Font = New Font("Segoe UI", 10F)
         cnfpassword_tb.ForeColor = Color.Gray
         cnfpassword_tb.Location = New Point(60, 349)
         cnfpassword_tb.Name = "cnfpassword_tb"
-        cnfpassword_tb.Size = New Size(418, 25)
+        cnfpassword_tb.Size = New Size(418, 34)
         cnfpassword_tb.TabIndex = 7
         cnfpassword_tb.Text = "Confirm Password"
         ' 
         ' password_tb
         ' 
-        password_tb.Font = New Font("Segoe UI", 10.0F)
+        password_tb.Font = New Font("Segoe UI", 10F)
         password_tb.ForeColor = Color.Gray
         password_tb.Location = New Point(60, 301)
         password_tb.Name = "password_tb"
-        password_tb.Size = New Size(418, 25)
+        password_tb.Size = New Size(418, 34)
         password_tb.TabIndex = 6
         password_tb.Text = "Password"
         ' 
         ' name_tb
         ' 
-        name_tb.Font = New Font("Segoe UI", 10.0F)
+        name_tb.Font = New Font("Segoe UI", 10F)
         name_tb.ForeColor = Color.Gray
         name_tb.Location = New Point(60, 209)
         name_tb.Name = "name_tb"
-        name_tb.Size = New Size(418, 25)
+        name_tb.Size = New Size(418, 34)
         name_tb.TabIndex = 4
         name_tb.Text = "Name"
         ' 
@@ -199,7 +199,7 @@ Partial Class User_Signup
         ' 
         ' Label1
         ' 
-        Label1.Font = New Font("Segoe UI", 15.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label1.Font = New Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label1.Location = New Point(55, 128)
         Label1.Name = "Label1"
         Label1.Size = New Size(258, 34)
