@@ -123,6 +123,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property iconamoon_delivery_free_duotone() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("iconamoon_delivery-free-duotone", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property Landing_Logo() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Landing_Logo", resourceCulture)
@@ -146,6 +156,16 @@ Namespace My.Resources
         Friend ReadOnly Property male() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("male", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property more_horiz() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("more_horiz", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -206,6 +226,16 @@ Namespace My.Resources
         Friend ReadOnly Property TM_Logo_1() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("TM Logo 1", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Total_customer() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Total_customer", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
