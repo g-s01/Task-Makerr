@@ -23,6 +23,10 @@ Public Class user_template
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        MessageBox.Show("Hello World!")
+    End Sub
+
+    Private Sub SplitContainer1_Panel2_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel2.Paint
 
     End Sub
 End Class
