@@ -59,6 +59,7 @@ Partial Class provider_dashboard
         Label4 = New Label()
         Label3 = New Label()
         PictureBox1 = New PictureBox()
+        PictureBox3 = New PictureBox()
         Panel1.SuspendLayout()
         slot_matrix_tablelayout.SuspendLayout()
         Panel2.SuspendLayout()
@@ -68,6 +69,7 @@ Partial Class provider_dashboard
         CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
         Panel5.SuspendLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
+        CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' Panel1
@@ -217,7 +219,7 @@ Partial Class provider_dashboard
         ' 
         slot_matrix_tablelayout.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         slot_matrix_tablelayout.ColumnCount = 13
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 57.0F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 57F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
@@ -324,7 +326,7 @@ Partial Class provider_dashboard
         ' Label1
         ' 
         Label1.AutoSize = True
-        Label1.Font = New Font("Segoe UI", 13.0F, FontStyle.Bold)
+        Label1.Font = New Font("Segoe UI", 13F, FontStyle.Bold)
         Label1.Location = New Point(41, 19)
         Label1.Name = "Label1"
         Label1.Size = New Size(134, 30)
@@ -335,6 +337,7 @@ Partial Class provider_dashboard
         ' 
         Panel2.BackColor = SystemColors.ButtonHighlight
         Panel2.BorderStyle = BorderStyle.Fixed3D
+        Panel2.Controls.Add(PictureBox3)
         Panel2.Controls.Add(Chart1)
         Panel2.Controls.Add(Label2)
         Panel2.Location = New Point(0, 338)
@@ -353,7 +356,7 @@ Partial Class provider_dashboard
         ' Label2
         ' 
         Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 13.0F, FontStyle.Bold)
+        Label2.Font = New Font("Segoe UI", 13F, FontStyle.Bold)
         Label2.Location = New Point(31, 11)
         Label2.Name = "Label2"
         Label2.Size = New Size(154, 30)
@@ -386,7 +389,7 @@ Partial Class provider_dashboard
         ' 
         ' Label25
         ' 
-        Label25.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold)
+        Label25.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
         Label25.Location = New Point(8, 73)
         Label25.Name = "Label25"
         Label25.Size = New Size(132, 25)
@@ -429,7 +432,7 @@ Partial Class provider_dashboard
         ' 
         ' Label4
         ' 
-        Label4.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold)
+        Label4.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
         Label4.Location = New Point(8, 73)
         Label4.Name = "Label4"
         Label4.Size = New Size(132, 25)
@@ -457,9 +460,19 @@ Partial Class provider_dashboard
         PictureBox1.TabIndex = 0
         PictureBox1.TabStop = False
         ' 
+        ' PictureBox3
+        ' 
+        PictureBox3.BackgroundImage = My.Resources.Resources.more_horiz
+        PictureBox3.BackgroundImageLayout = ImageLayout.Stretch
+        PictureBox3.Location = New Point(624, 15)
+        PictureBox3.Name = "PictureBox3"
+        PictureBox3.Size = New Size(28, 26)
+        PictureBox3.TabIndex = 3
+        PictureBox3.TabStop = False
+        ' 
         ' provider_dashboard
         ' 
-        AutoScaleDimensions = New SizeF(8.0F, 20.0F)
+        AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(842, 666)
         Controls.Add(Panel3)
@@ -478,6 +491,7 @@ Partial Class provider_dashboard
         CType(PictureBox2, ComponentModel.ISupportInitialize).EndInit()
         Panel5.ResumeLayout(False)
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
+        CType(PictureBox3, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
 
@@ -516,6 +530,7 @@ Partial Class provider_dashboard
     Friend WithEvents Label4 As Label
     Friend WithEvents Label3 As Label
     Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents PictureBox3 As PictureBox
 End Class
 
 
