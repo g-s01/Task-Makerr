@@ -46,9 +46,6 @@ Partial Class pending_payment
         SplitContainer1.Panel1.Controls.Add(rtb1)
         SplitContainer1.Panel1.Controls.Add(rtb2)
         SplitContainer1.Panel1.Controls.Add(btn_pay)
-        ' 
-        ' SplitContainer1.Panel2
-        ' 
         SplitContainer1.Size = New Size(844, 666)
         SplitContainer1.SplitterDistance = 422
         SplitContainer1.SplitterWidth = 1
@@ -92,9 +89,7 @@ Partial Class pending_payment
         rtb1.Name = "rtb1"
         rtb1.Size = New Size(392, 176)
         rtb1.TabIndex = 9
-        rtb1.Text = vbLf & "    Details of the Booked Slots" & vbLf & vbLf & vbLf &
-            "    Appointment Location: abcd" & vbLf & vbLf &
-            "    Appointment Date: 1/23/2024             Timing: 1:30pm"
+        rtb1.Text = vbLf & "    Details of the Booked Slots" & vbLf & vbLf & vbLf & "    Appointment Location: abcd" & vbLf & vbLf & "    Appointment Date: 1/23/2024             Timing: 1:30pm"
         ' 
         ' rtb2
         ' 
@@ -106,9 +101,7 @@ Partial Class pending_payment
         rtb2.Name = "rtb2"
         rtb2.Size = New Size(392, 176)
         rtb2.TabIndex = 9
-        rtb2.Text = vbLf & "    Charges for the Appointment" & vbLf & vbLf & vbLf &
-            "    Charges per Slot: Rs100" & vbLf & vbLf &
-            "    Overall Service Cost: Rs500"
+        rtb2.Text = vbLf & "    Charges for the Appointment" & vbLf & vbLf & vbLf & "    Charges per Slot: Rs100" & vbLf & vbLf & "    Overall Service Cost: Rs500"
         ' 
         ' btn_pay
         ' 
@@ -124,16 +117,15 @@ Partial Class pending_payment
         btn_pay.Text = "Pay Remaining Amount"
         btn_pay.UseVisualStyleBackColor = False
         ' 
-
-        ' 
-        ' user_appointment_details
+        ' pending_payment
         ' 
         AutoScaleMode = AutoScaleMode.None
         BackColor = Color.White
         ClientSize = New Size(844, 666)
         Controls.Add(SplitContainer1)
-        Font = New Font("Microsoft YaHei", 9.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Name = "user_appointment_details"
+        Font = New Font("Microsoft YaHei", 9F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        FormBorderStyle = FormBorderStyle.None
+        Name = "pending_payment"
         Text = "Form1"
         SplitContainer1.Panel1.ResumeLayout(False)
         CType(SplitContainer1, ComponentModel.ISupportInitialize).EndInit()
