@@ -48,9 +48,6 @@ Partial Class user_appointment_details
         SplitContainer1.Panel1.Controls.Add(rtb2)
         SplitContainer1.Panel1.Controls.Add(btn_reschedule)
         SplitContainer1.Panel1.Controls.Add(btn_cancel)
-        ' 
-        ' SplitContainer1.Panel2
-        ' 
         SplitContainer1.Size = New Size(844, 666)
         SplitContainer1.SplitterDistance = 422
         SplitContainer1.SplitterWidth = 1
@@ -142,7 +139,8 @@ Partial Class user_appointment_details
         BackColor = Color.White
         ClientSize = New Size(844, 666)
         Controls.Add(SplitContainer1)
-        Font = New Font("Microsoft YaHei", 9.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Font = New Font("Microsoft YaHei", 9F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        FormBorderStyle = FormBorderStyle.None
         Name = "user_appointment_details"
         Text = "Form1"
         SplitContainer1.Panel1.ResumeLayout(False)

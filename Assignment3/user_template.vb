@@ -20,13 +20,19 @@ Public Class user_template
                 MessageBox.Show("Error connecting to database: " & ex.Message)
             End Try
         End Using
+        With user_appointment_details
+            .TopLevel = False
+            SplitContainer1.Panel2.Controls.Add(user_appointment_details)
+            .BringToFront()
+            .Show()
+
+
+
+        End With
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
         MessageBox.Show("Hello World!")
     End Sub
 
-    Private Sub SplitContainer1_Panel2_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel2.Paint
-
-    End Sub
 End Class

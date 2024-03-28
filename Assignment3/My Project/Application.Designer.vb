@@ -34,7 +34,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.Assignment3.provider_dashboard
+            Me.MainForm = Global.Assignment3.user_template
         End Sub
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
