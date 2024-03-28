@@ -10,6 +10,7 @@ Public Class user_template
         'For that you need to add nuget.org as source in Tools->NuGet...
         'Ask GPT for details.
         'As it stands, the System.Data.SqlClient does not work on .NET 5+ or .NET core (I assume default installed will be 8.0)
+
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
         Using connection As New SqlConnection(connectionString)
             Try
