@@ -27,11 +27,11 @@ Partial Class Admin_Login
         designlabel1 = New Label()
         taskmakerrbtn = New Button()
         Panel2 = New Panel()
+        error_label = New Label()
         back_btn = New Button()
         login_btn = New Button()
         password_tb = New TextBox()
         headlabel = New Label()
-        register_btn = New Button()
         Panel1.SuspendLayout()
         Panel2.SuspendLayout()
         SuspendLayout()
@@ -88,16 +88,27 @@ Partial Class Admin_Login
         ' 
         ' Panel2
         ' 
+        Panel2.Controls.Add(error_label)
         Panel2.Controls.Add(back_btn)
         Panel2.Controls.Add(login_btn)
         Panel2.Controls.Add(password_tb)
         Panel2.Controls.Add(headlabel)
-        Panel2.Controls.Add(register_btn)
         Panel2.Dock = DockStyle.Fill
         Panel2.Location = New Point(425, 0)
         Panel2.Name = "Panel2"
         Panel2.Size = New Size(709, 673)
         Panel2.TabIndex = 4
+        ' 
+        ' error_label
+        ' 
+        error_label.AutoSize = True
+        error_label.Font = New Font("Segoe UI", 8.0F)
+        error_label.ForeColor = Color.Red
+        error_label.Location = New Point(55, 285)
+        error_label.Name = "error_label"
+        error_label.Size = New Size(45, 21)
+        error_label.TabIndex = 27
+        error_label.Text = "error"
         ' 
         ' back_btn
         ' 
@@ -128,7 +139,7 @@ Partial Class Admin_Login
         ' 
         ' password_tb
         ' 
-        password_tb.Font = New Font("Segoe UI", 10F)
+        password_tb.Font = New Font("Segoe UI", 10.0F)
         password_tb.ForeColor = Color.Gray
         password_tb.Location = New Point(55, 257)
         password_tb.Name = "password_tb"
@@ -138,27 +149,12 @@ Partial Class Admin_Login
         ' 
         ' headlabel
         ' 
-        headlabel.Font = New Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        headlabel.Font = New Font("Segoe UI", 15.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         headlabel.Location = New Point(55, 128)
         headlabel.Name = "headlabel"
         headlabel.Size = New Size(258, 85)
         headlabel.TabIndex = 14
         headlabel.Text = "Log in with" & vbCrLf & "Admin password"
-        ' 
-        ' register_btn
-        ' 
-        register_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        register_btn.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
-        register_btn.FlatAppearance.BorderSize = 0
-        register_btn.FlatStyle = FlatStyle.Flat
-        register_btn.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        register_btn.ForeColor = Color.White
-        register_btn.Location = New Point(1058, 23)
-        register_btn.Name = "register_btn"
-        register_btn.Size = New Size(135, 35)
-        register_btn.TabIndex = 13
-        register_btn.Text = "Register"
-        register_btn.UseVisualStyleBackColor = False
         ' 
         ' Admin_Login
         ' 
@@ -167,6 +163,7 @@ Partial Class Admin_Login
         Controls.Add(Panel2)
         Controls.Add(Panel1)
         Name = "Admin_Login"
+        StartPosition = FormStartPosition.CenterScreen
         Text = "Admin_Login"
         Panel1.ResumeLayout(False)
         Panel2.ResumeLayout(False)
@@ -179,11 +176,10 @@ Partial Class Admin_Login
     Friend WithEvents taskmakerrbtn As Button
     Friend WithEvents Label1 As Label
     Friend WithEvents Panel2 As Panel
-    Friend WithEvents error_label As Label
     Friend WithEvents password_tb As TextBox
     Friend WithEvents user_btn As Button
     Friend WithEvents headlabel As Label
-    Friend WithEvents register_btn As Button
     Friend WithEvents login_btn As Button
     Friend WithEvents back_btn As Button
+    Friend WithEvents error_label As Label
 End Class
