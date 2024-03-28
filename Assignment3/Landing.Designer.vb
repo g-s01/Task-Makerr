@@ -94,7 +94,7 @@ Partial Class Landing
         admin_ll.LinkColor = Color.DimGray
         admin_ll.Location = New Point(58, 370)
         admin_ll.Name = "admin_ll"
-        admin_ll.Size = New Size(102, 19)
+        admin_ll.Size = New Size(144, 28)
         admin_ll.TabIndex = 12
         admin_ll.TabStop = True
         admin_ll.Text = "Login as admin"

@@ -235,8 +235,7 @@ Partial Class User_Signup
         ' 
         ' User_Signup
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
-        AutoScaleMode = AutoScaleMode.Font
+        AutoScaleMode = AutoScaleMode.None
         ClientSize = New Size(1134, 673)
         Controls.Add(Panel2)
         Controls.Add(Panel1)
