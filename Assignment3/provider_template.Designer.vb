@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class user_template
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class provider_template
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()>
+    <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class user_template
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()>
+    <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         SplitContainer1 = New SplitContainer()
         Button5 = New Button()
@@ -69,7 +69,7 @@ Partial Class user_template
         SplitContainer1.Size = New Size(1132, 666)
         SplitContainer1.SplitterDistance = 288
         SplitContainer1.SplitterWidth = 1
-        SplitContainer1.TabIndex = 0
+        SplitContainer1.TabIndex = 1
         ' 
         ' Button5
         ' 
@@ -189,14 +189,14 @@ Partial Class user_template
         Button3.FlatAppearance.BorderSize = 0
         Button3.FlatStyle = FlatStyle.Flat
         Button3.Font = New Font("Microsoft YaHei", 10.2F)
-        Button3.Image = My.Resources.Resources.appointments
+        Button3.Image = My.Resources.Resources.notifications
         Button3.ImageAlign = ContentAlignment.MiddleLeft
         Button3.Location = New Point(3, 223)
         Button3.Name = "Button3"
         Button3.Padding = New Padding(15, 0, 0, 0)
         Button3.Size = New Size(282, 36)
         Button3.TabIndex = 4
-        Button3.Text = "     My Appointments"
+        Button3.Text = "     Notifications"
         Button3.TextImageRelation = TextImageRelation.ImageBeforeText
         Button3.UseVisualStyleBackColor = False
         ' 
@@ -207,14 +207,14 @@ Partial Class user_template
         Button2.FlatAppearance.BorderSize = 0
         Button2.FlatStyle = FlatStyle.Flat
         Button2.Font = New Font("Microsoft YaHei", 10.2F)
-        Button2.Image = My.Resources.Resources.search
+        Button2.Image = My.Resources.Resources.appointments
         Button2.ImageAlign = ContentAlignment.MiddleLeft
         Button2.Location = New Point(3, 181)
         Button2.Name = "Button2"
         Button2.Padding = New Padding(15, 0, 0, 0)
         Button2.Size = New Size(282, 36)
         Button2.TabIndex = 3
-        Button2.Text = "     Search"
+        Button2.Text = "      Appointments"
         Button2.TextImageRelation = TextImageRelation.ImageBeforeText
         Button2.UseVisualStyleBackColor = False
         ' 
@@ -232,7 +232,7 @@ Partial Class user_template
         Button1.Padding = New Padding(15, 0, 0, 0)
         Button1.Size = New Size(282, 36)
         Button1.TabIndex = 2
-        Button1.Text = "     Home"
+        Button1.Text = "     Dashboard"
         Button1.TextImageRelation = TextImageRelation.ImageBeforeText
         Button1.UseVisualStyleBackColor = False
         ' 
@@ -241,7 +241,7 @@ Partial Class user_template
         PictureBox2.Image = My.Resources.Resources.Task_Makerr
         PictureBox2.Location = New Point(88, 26)
         PictureBox2.Name = "PictureBox2"
-        PictureBox2.Size = New Size(178, 28)
+        PictureBox2.Size = New Size(175, 24)
         PictureBox2.TabIndex = 1
         PictureBox2.TabStop = False
         ' 
@@ -250,18 +250,17 @@ Partial Class user_template
         PictureBox1.Image = My.Resources.Resources.TM_Logo_1
         PictureBox1.Location = New Point(25, 10)
         PictureBox1.Name = "PictureBox1"
-        PictureBox1.Size = New Size(57, 57)
+        PictureBox1.Size = New Size(56, 56)
         PictureBox1.TabIndex = 0
         PictureBox1.TabStop = False
         ' 
-        ' user_template
+        ' provider_template
         ' 
         AutoScaleMode = AutoScaleMode.None
         ClientSize = New Size(1132, 666)
         Controls.Add(SplitContainer1)
-        Font = New Font("Microsoft YaHei", 9F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Name = "user_template"
-        Text = "Form1"
+        Name = "provider_template"
+        Text = "provider_template"
         SplitContainer1.Panel1.ResumeLayout(False)
         SplitContainer1.Panel1.PerformLayout()
         CType(SplitContainer1, ComponentModel.ISupportInitialize).EndInit()
@@ -272,17 +271,16 @@ Partial Class user_template
     End Sub
 
     Friend WithEvents SplitContainer1 As SplitContainer
-    Friend WithEvents PictureBox1 As PictureBox
-    Friend WithEvents PictureBox2 As PictureBox
-    Friend WithEvents Button1 As Button
-    Friend WithEvents Button4 As Button
-    Friend WithEvents Button3 As Button
-    Friend WithEvents Button2 As Button
+    Friend WithEvents Button5 As Button
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Label1 As Label
     Friend WithEvents Button8 As Button
     Friend WithEvents Button6 As Button
     Friend WithEvents Button7 As Button
-    Friend WithEvents Label1 As Label
-    Friend WithEvents Label2 As Label
-    Friend WithEvents Button5 As Button
-
+    Friend WithEvents Button4 As Button
+    Friend WithEvents Button3 As Button
+    Friend WithEvents Button2 As Button
+    Friend WithEvents Button1 As Button
+    Friend WithEvents PictureBox2 As PictureBox
+    Friend WithEvents PictureBox1 As PictureBox
 End Class
