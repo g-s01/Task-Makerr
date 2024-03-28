@@ -13,4 +13,9 @@
         Me.Hide()
         Login.Show()
     End Sub
+
+    Private Sub admin_ll_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles admin_ll.LinkClicked
+        Me.Hide()
+        Admin_Login.Show()
+    End Sub
 End Class
