@@ -44,19 +44,17 @@ Partial Class Landing
         Panel1.Controls.Add(taskmakerrbtn)
         Panel1.Dock = DockStyle.Left
         Panel1.Location = New Point(0, 0)
-        Panel1.Margin = New Padding(4, 5, 4, 5)
         Panel1.Name = "Panel1"
-        Panel1.Size = New Size(607, 1018)
+        Panel1.Size = New Size(425, 673)
         Panel1.TabIndex = 1
         ' 
         ' designlabel1
         ' 
         designlabel1.BackColor = Color.Transparent
         designlabel1.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        designlabel1.Location = New Point(64, 763)
-        designlabel1.Margin = New Padding(4, 0, 4, 0)
+        designlabel1.Location = New Point(45, 458)
         designlabel1.Name = "designlabel1"
-        designlabel1.Size = New Size(481, 60)
+        designlabel1.Size = New Size(337, 36)
         designlabel1.TabIndex = 1
         designlabel1.Text = "Get thousands of services at one click"
         designlabel1.TextAlign = ContentAlignment.MiddleCenter
@@ -68,10 +66,9 @@ Partial Class Landing
         taskmakerrbtn.BackgroundImageLayout = ImageLayout.Stretch
         taskmakerrbtn.FlatAppearance.BorderSize = 0
         taskmakerrbtn.FlatStyle = FlatStyle.Flat
-        taskmakerrbtn.Location = New Point(36, 42)
-        taskmakerrbtn.Margin = New Padding(4, 5, 4, 5)
+        taskmakerrbtn.Location = New Point(25, 25)
         taskmakerrbtn.Name = "taskmakerrbtn"
-        taskmakerrbtn.Size = New Size(80, 93)
+        taskmakerrbtn.Size = New Size(56, 56)
         taskmakerrbtn.TabIndex = 0
         taskmakerrbtn.UseVisualStyleBackColor = False
         ' 
@@ -84,22 +81,20 @@ Partial Class Landing
         Panel2.Controls.Add(headlabel)
         Panel2.Controls.Add(login_btn)
         Panel2.Dock = DockStyle.Fill
-        Panel2.Location = New Point(607, 0)
-        Panel2.Margin = New Padding(4, 5, 4, 5)
+        Panel2.Location = New Point(425, 0)
         Panel2.Name = "Panel2"
-        Panel2.Size = New Size(970, 1018)
+        Panel2.Size = New Size(709, 673)
         Panel2.TabIndex = 2
         ' 
         ' admin_ll
         ' 
         admin_ll.ActiveLinkColor = Color.FromArgb(CByte(255), CByte(128), CByte(255))
         admin_ll.AutoSize = True
-        admin_ll.Font = New Font("Segoe UI", 10F)
+        admin_ll.Font = New Font("Segoe UI", 10.0F)
         admin_ll.LinkColor = Color.DimGray
-        admin_ll.Location = New Point(83, 527)
-        admin_ll.Margin = New Padding(4, 0, 4, 0)
+        admin_ll.Location = New Point(58, 370)
         admin_ll.Name = "admin_ll"
-        admin_ll.Size = New Size(144, 28)
+        admin_ll.Size = New Size(102, 19)
         admin_ll.TabIndex = 12
         admin_ll.TabStop = True
         admin_ll.Text = "Login as admin"
@@ -110,13 +105,12 @@ Partial Class Landing
         provider_btn.BackColor = Color.White
         provider_btn.FlatAppearance.BorderSize = 0
         provider_btn.FlatStyle = FlatStyle.Flat
-        provider_btn.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        provider_btn.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         provider_btn.ForeColor = Color.Gray
-        provider_btn.Location = New Point(83, 428)
-        provider_btn.Margin = New Padding(4, 5, 4, 5)
+        provider_btn.Location = New Point(58, 311)
         provider_btn.Name = "provider_btn"
-        provider_btn.Padding = New Padding(17, 0, 0, 0)
-        provider_btn.Size = New Size(334, 67)
+        provider_btn.Padding = New Padding(12, 0, 0, 0)
+        provider_btn.Size = New Size(234, 40)
         provider_btn.TabIndex = 11
         provider_btn.Text = "Business Account"
         provider_btn.TextAlign = ContentAlignment.MiddleLeft
@@ -127,13 +121,12 @@ Partial Class Landing
         user_btn.BackColor = Color.White
         user_btn.FlatAppearance.BorderSize = 0
         user_btn.FlatStyle = FlatStyle.Flat
-        user_btn.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        user_btn.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         user_btn.ForeColor = Color.Gray
-        user_btn.Location = New Point(83, 352)
-        user_btn.Margin = New Padding(4, 5, 4, 5)
+        user_btn.Location = New Point(58, 265)
         user_btn.Name = "user_btn"
-        user_btn.Padding = New Padding(17, 0, 0, 0)
-        user_btn.Size = New Size(334, 67)
+        user_btn.Padding = New Padding(12, 0, 0, 0)
+        user_btn.Size = New Size(234, 40)
         user_btn.TabIndex = 10
         user_btn.Text = "User Account"
         user_btn.TextAlign = ContentAlignment.MiddleLeft
@@ -142,20 +135,18 @@ Partial Class Landing
         ' subheadlabel
         ' 
         subheadlabel.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        subheadlabel.Location = New Point(81, 307)
-        subheadlabel.Margin = New Padding(4, 0, 4, 0)
+        subheadlabel.Location = New Point(57, 238)
         subheadlabel.Name = "subheadlabel"
-        subheadlabel.Size = New Size(310, 37)
+        subheadlabel.Size = New Size(217, 22)
         subheadlabel.TabIndex = 5
         subheadlabel.Text = "Register as"
         ' 
         ' headlabel
         ' 
-        headlabel.Font = New Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        headlabel.Location = New Point(79, 213)
-        headlabel.Margin = New Padding(4, 0, 4, 0)
+        headlabel.Font = New Font("Segoe UI", 15.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        headlabel.Location = New Point(55, 182)
         headlabel.Name = "headlabel"
-        headlabel.Size = New Size(369, 57)
+        headlabel.Size = New Size(258, 34)
         headlabel.TabIndex = 4
         headlabel.Text = "Create an account"
         ' 
@@ -167,10 +158,9 @@ Partial Class Landing
         login_btn.FlatStyle = FlatStyle.Flat
         login_btn.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         login_btn.ForeColor = Color.White
-        login_btn.Location = New Point(741, 38)
-        login_btn.Margin = New Padding(4, 5, 4, 5)
+        login_btn.Location = New Point(549, 23)
         login_btn.Name = "login_btn"
-        login_btn.Size = New Size(193, 58)
+        login_btn.Size = New Size(135, 35)
         login_btn.TabIndex = 3
         login_btn.Text = "Log In"
         login_btn.UseVisualStyleBackColor = False
@@ -178,12 +168,13 @@ Partial Class Landing
         ' Landing
         ' 
         AutoScaleMode = AutoScaleMode.None
-        ClientSize = New Size(1577, 1018)
+        ClientSize = New Size(1134, 673)
         Controls.Add(Panel2)
         Controls.Add(Panel1)
+        Margin = New Padding(2)
         Name = "Landing"
         StartPosition = FormStartPosition.CenterScreen
-        Text = "User_Signup"
+        Text = "Form1"
         Panel1.ResumeLayout(False)
         Panel2.ResumeLayout(False)
         Panel2.PerformLayout()

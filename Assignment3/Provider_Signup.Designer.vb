@@ -160,7 +160,7 @@ Partial Class Provider_Signup
         Panel1.Dock = DockStyle.Left
         Panel1.Location = New Point(0, 0)
         Panel1.Name = "Panel1"
-        Panel1.Size = New Size(425, 611)
+        Panel1.Size = New Size(425, 673)
         Panel1.TabIndex = 0
         ' 
         ' designlabel1
@@ -223,7 +223,7 @@ Partial Class Provider_Signup
         Panel2.Dock = DockStyle.Fill
         Panel2.Location = New Point(425, 0)
         Panel2.Name = "Panel2"
-        Panel2.Size = New Size(679, 611)
+        Panel2.Size = New Size(709, 673)
         Panel2.TabIndex = 1
         ' 
         ' Label21
@@ -1600,7 +1600,7 @@ Partial Class Provider_Signup
         login_btn.FlatStyle = FlatStyle.Flat
         login_btn.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         login_btn.ForeColor = Color.White
-        login_btn.Location = New Point(502, 23)
+        login_btn.Location = New Point(515, 23)
         login_btn.Name = "login_btn"
         login_btn.Size = New Size(135, 35)
         login_btn.TabIndex = 13
@@ -1621,9 +1621,8 @@ Partial Class Provider_Signup
         ' 
         ' Provider_Signup
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
-        AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1104, 611)
+        AutoScaleMode = AutoScaleMode.None
+        ClientSize = New Size(1134, 673)
         Controls.Add(Panel2)
         Controls.Add(Panel1)
         Name = "Provider_Signup"
