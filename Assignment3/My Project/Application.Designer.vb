@@ -12,7 +12,6 @@ Option Strict On
 Option Explicit On
 
 
-
 Namespace My
     
     'NOTE: This file is auto-generated; do not modify it directly.  To make changes,
@@ -34,7 +33,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.Assignment3.user_template
+            Me.MainForm = Global.Assignment3.payments
         End Sub
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
