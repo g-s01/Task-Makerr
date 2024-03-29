@@ -38,6 +38,8 @@ Partial Class User_Signup
         Label1 = New Label()
         login_btn = New Button()
         back_btn = New Button()
+        showcnfpassword_cb = New CheckBox()
+        showpassword_cb = New CheckBox()
         Panel1.SuspendLayout()
         Panel2.SuspendLayout()
         SuspendLayout()
@@ -81,6 +83,8 @@ Partial Class User_Signup
         ' 
         ' Panel2
         ' 
+        Panel2.Controls.Add(showcnfpassword_cb)
+        Panel2.Controls.Add(showpassword_cb)
         Panel2.Controls.Add(otp_tb)
         Panel2.Controls.Add(register_btn)
         Panel2.Controls.Add(sendOTP_btn)
@@ -233,6 +237,28 @@ Partial Class User_Signup
         back_btn.TabIndex = 0
         back_btn.UseVisualStyleBackColor = True
         ' 
+        ' showcnfpassword_cb
+        ' 
+        showcnfpassword_cb.AutoSize = True
+        showcnfpassword_cb.Font = New Font("Segoe UI", 8F)
+        showcnfpassword_cb.Location = New Point(484, 357)
+        showcnfpassword_cb.Name = "showcnfpassword_cb"
+        showcnfpassword_cb.Size = New Size(75, 25)
+        showcnfpassword_cb.TabIndex = 45
+        showcnfpassword_cb.Text = "Show"
+        showcnfpassword_cb.UseVisualStyleBackColor = True
+        ' 
+        ' showpassword_cb
+        ' 
+        showpassword_cb.AutoSize = True
+        showpassword_cb.Font = New Font("Segoe UI", 8F)
+        showpassword_cb.Location = New Point(484, 309)
+        showpassword_cb.Name = "showpassword_cb"
+        showpassword_cb.Size = New Size(75, 25)
+        showpassword_cb.TabIndex = 44
+        showpassword_cb.Text = "Show"
+        showpassword_cb.UseVisualStyleBackColor = True
+        ' 
         ' User_Signup
         ' 
         AutoScaleMode = AutoScaleMode.None
@@ -265,4 +291,6 @@ Partial Class User_Signup
     Friend WithEvents otp_tb As TextBox
     Friend WithEvents register_btn As Button
     Friend WithEvents sendOTP_btn As Button
+    Friend WithEvents showcnfpassword_cb As CheckBox
+    Friend WithEvents showpassword_cb As CheckBox
 End Class

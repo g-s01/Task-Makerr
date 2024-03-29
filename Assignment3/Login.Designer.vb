@@ -35,6 +35,7 @@ Partial Class Login
         subheadlabel = New Label()
         headlabel = New Label()
         register_btn = New Button()
+        showpassword_cb = New CheckBox()
         Panel1.SuspendLayout()
         Panel2.SuspendLayout()
         SuspendLayout()
@@ -78,6 +79,7 @@ Partial Class Login
         ' 
         ' Panel2
         ' 
+        Panel2.Controls.Add(showpassword_cb)
         Panel2.Controls.Add(error_label)
         Panel2.Controls.Add(email_tb)
         Panel2.Controls.Add(password_tb)
@@ -199,6 +201,17 @@ Partial Class Login
         register_btn.Text = "Register"
         register_btn.UseVisualStyleBackColor = False
         ' 
+        ' showpassword_cb
+        ' 
+        showpassword_cb.AutoSize = True
+        showpassword_cb.Font = New Font("Segoe UI", 8F)
+        showpassword_cb.Location = New Point(481, 315)
+        showpassword_cb.Name = "showpassword_cb"
+        showpassword_cb.Size = New Size(75, 25)
+        showpassword_cb.TabIndex = 45
+        showpassword_cb.Text = "Show"
+        showpassword_cb.UseVisualStyleBackColor = True
+        ' 
         ' Login
         ' 
         AutoScaleMode = AutoScaleMode.None
@@ -227,4 +240,5 @@ Partial Class Login
     Friend WithEvents email_tb As TextBox
     Friend WithEvents password_tb As TextBox
     Friend WithEvents error_label As Label
+    Friend WithEvents showpassword_cb As CheckBox
 End Class

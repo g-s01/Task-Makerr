@@ -52,7 +52,7 @@ Partial Class Landing
         ' 
         designlabel1.BackColor = Color.Transparent
         designlabel1.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        designlabel1.Location = New Point(45, 458)
+        designlabel1.Location = New Point(41, 508)
         designlabel1.Name = "designlabel1"
         designlabel1.Size = New Size(337, 36)
         designlabel1.TabIndex = 1

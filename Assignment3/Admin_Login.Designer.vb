@@ -32,6 +32,7 @@ Partial Class Admin_Login
         login_btn = New Button()
         password_tb = New TextBox()
         headlabel = New Label()
+        showpassword_cb = New CheckBox()
         Panel1.SuspendLayout()
         Panel2.SuspendLayout()
         SuspendLayout()
@@ -88,6 +89,7 @@ Partial Class Admin_Login
         ' 
         ' Panel2
         ' 
+        Panel2.Controls.Add(showpassword_cb)
         Panel2.Controls.Add(error_label)
         Panel2.Controls.Add(back_btn)
         Panel2.Controls.Add(login_btn)
@@ -102,7 +104,7 @@ Partial Class Admin_Login
         ' error_label
         ' 
         error_label.AutoSize = True
-        error_label.Font = New Font("Segoe UI", 8.0F)
+        error_label.Font = New Font("Segoe UI", 8F)
         error_label.ForeColor = Color.Red
         error_label.Location = New Point(55, 285)
         error_label.Name = "error_label"
@@ -139,7 +141,7 @@ Partial Class Admin_Login
         ' 
         ' password_tb
         ' 
-        password_tb.Font = New Font("Segoe UI", 10.0F)
+        password_tb.Font = New Font("Segoe UI", 10F)
         password_tb.ForeColor = Color.Gray
         password_tb.Location = New Point(55, 257)
         password_tb.Name = "password_tb"
@@ -149,12 +151,23 @@ Partial Class Admin_Login
         ' 
         ' headlabel
         ' 
-        headlabel.Font = New Font("Segoe UI", 15.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        headlabel.Font = New Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         headlabel.Location = New Point(55, 128)
         headlabel.Name = "headlabel"
         headlabel.Size = New Size(258, 85)
         headlabel.TabIndex = 14
         headlabel.Text = "Log in with" & vbCrLf & "Admin password"
+        ' 
+        ' showpassword_cb
+        ' 
+        showpassword_cb.AutoSize = True
+        showpassword_cb.Font = New Font("Segoe UI", 8F)
+        showpassword_cb.Location = New Point(479, 265)
+        showpassword_cb.Name = "showpassword_cb"
+        showpassword_cb.Size = New Size(75, 25)
+        showpassword_cb.TabIndex = 46
+        showpassword_cb.Text = "Show"
+        showpassword_cb.UseVisualStyleBackColor = True
         ' 
         ' Admin_Login
         ' 
@@ -182,4 +195,5 @@ Partial Class Admin_Login
     Friend WithEvents login_btn As Button
     Friend WithEvents back_btn As Button
     Friend WithEvents error_label As Label
+    Friend WithEvents showpassword_cb As CheckBox
 End Class

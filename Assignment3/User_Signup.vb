@@ -11,6 +11,8 @@ Public Class User_Signup
 
     Private Sub User_Signup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         error_label.Text = ""
+        showpassword_cb.Visible = False
+        showcnfpassword_cb.Visible = False
     End Sub
 
     Private Sub Name_tb_Enter(sender As Object, e As EventArgs) Handles name_tb.Enter
@@ -46,11 +48,15 @@ Public Class User_Signup
 
     Private Sub Password_tb_Enter(sender As Object, e As EventArgs) Handles password_tb.Enter
         If password_tb.Text = "Password" And Not password_fill Then
+            showpassword_cb.Visible = True
             password_tb.Text = ""
             password_fill = True
-            password_tb.ForeColor = Color.Black ' Change text color to default
-            ' Optionally, you can set the PasswordChar property to hide the password characters
-            password_tb.PasswordChar = "*"
+            password_tb.ForeColor = Color.Black
+            If showpassword_cb.Checked Then
+                password_tb.PasswordChar = ""
+            Else
+                password_tb.PasswordChar = "*"
+            End If
         End If
     End Sub
 
@@ -58,19 +64,24 @@ Public Class User_Signup
         If password_tb.Text = "" Then
             password_tb.Text = "Password"
             password_fill = False
-            password_tb.ForeColor = Color.Gray ' Change text color to placeholder color
-            ' Optionally, reset the PasswordChar property to make the placeholder text visible
+            password_tb.ForeColor = Color.Gray
+            showpassword_cb.Checked = False
             password_tb.PasswordChar = ""
+            showpassword_cb.Visible = False
         End If
     End Sub
 
     Private Sub Cnfpassword_tb_Enter(sender As Object, e As EventArgs) Handles cnfpassword_tb.Enter
         If cnfpassword_tb.Text = "Confirm Password" And Not cnfpassword_fill Then
+            showcnfpassword_cb.Visible = True
             cnfpassword_tb.Text = ""
             cnfpassword_fill = True
-            cnfpassword_tb.ForeColor = Color.Black ' Change text color to default
-            ' Optionally, you can set the PasswordChar property to hide the password characters
-            cnfpassword_tb.PasswordChar = "*"
+            cnfpassword_tb.ForeColor = Color.Black
+            If showcnfpassword_cb.Checked Then
+                cnfpassword_tb.PasswordChar = ""
+            Else
+                cnfpassword_tb.PasswordChar = "*"
+            End If
         End If
     End Sub
 
@@ -78,9 +89,26 @@ Public Class User_Signup
         If cnfpassword_tb.Text = "" Then
             cnfpassword_tb.Text = "Confirm Password"
             cnfpassword_fill = False
-            cnfpassword_tb.ForeColor = Color.Gray ' Change text color to placeholder color
-            ' Optionally, reset the PasswordChar property to make the placeholder text visible
+            cnfpassword_tb.ForeColor = Color.Gray
+            showcnfpassword_cb.Checked = False
             cnfpassword_tb.PasswordChar = ""
+            showcnfpassword_cb.Visible = False
+        End If
+    End Sub
+
+    Private Sub Showpassword_cb_CheckedChanged(sender As Object, e As EventArgs) Handles showpassword_cb.CheckedChanged
+        If showpassword_cb.Checked Then
+            password_tb.PasswordChar = ""
+        Else
+            password_tb.PasswordChar = "*"
+        End If
+    End Sub
+
+    Private Sub Showcnfpassword_cb_CheckedChanged(sender As Object, e As EventArgs) Handles showcnfpassword_cb.CheckedChanged
+        If showcnfpassword_cb.Checked Then
+            cnfpassword_tb.PasswordChar = ""
+        Else
+            cnfpassword_tb.PasswordChar = "*"
         End If
     End Sub
 
@@ -109,6 +137,7 @@ Public Class User_Signup
 
         Try
             smtpClient.Send(message)
+            MessageBox.Show("OTP sent successfully to your email.")
         Catch ex As SmtpException
             ' Handle specific SMTP exceptions
             MessageBox.Show("SMTP error: " & ex.Message)

@@ -5,6 +5,7 @@
 
     Private Sub Login_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         error_label.Text = ""
+        showpassword_cb.Visible = False
     End Sub
 
     Private Sub Email_tb_Enter(sender As Object, e As EventArgs) Handles email_tb.Enter
@@ -25,11 +26,15 @@
 
     Private Sub Password_tb_Enter(sender As Object, e As EventArgs) Handles password_tb.Enter
         If password_tb.Text = "Password" And Not password_fill Then
+            showpassword_cb.Visible = True
             password_tb.Text = ""
             password_fill = True
-            password_tb.ForeColor = Color.Black ' Change text color to default
-            ' Optionally, you can set the PasswordChar property to hide the password characters
-            password_tb.PasswordChar = "*"
+            password_tb.ForeColor = Color.Black
+            If showpassword_cb.Checked Then
+                password_tb.PasswordChar = ""
+            Else
+                password_tb.PasswordChar = "*"
+            End If
         End If
     End Sub
 
@@ -37,9 +42,18 @@
         If password_tb.Text = "" Then
             password_tb.Text = "Password"
             password_fill = False
-            password_tb.ForeColor = Color.Gray ' Change text color to placeholder color
-            ' Optionally, reset the PasswordChar property to make the placeholder text visible
+            password_tb.ForeColor = Color.Gray
+            showpassword_cb.Checked = False
             password_tb.PasswordChar = ""
+            showpassword_cb.Visible = False
+        End If
+    End Sub
+
+    Private Sub Showpassword_cb_CheckedChanged(sender As Object, e As EventArgs) Handles showpassword_cb.CheckedChanged
+        If showpassword_cb.Checked Then
+            password_tb.PasswordChar = ""
+        Else
+            password_tb.PasswordChar = "*"
         End If
     End Sub
 
