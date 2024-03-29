@@ -210,21 +210,21 @@ Namespace My.Resources
             End Get
         End Property
 
-        Friend ReadOnly Property search() As System.Drawing.Bitmap
+        Friend ReadOnly Property Star() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Star", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
 
-        Friend ReadOnly Property search() As System.Drawing.Bitmap
+        Friend ReadOnly Property Ellipse_6() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Ellipse 6", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
 
-        Friend ReadOnly Property search() As System.Drawing.Bitmap
+        Friend ReadOnly Property prov() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("prov", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
