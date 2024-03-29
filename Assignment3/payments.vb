@@ -8,19 +8,28 @@ Public Class payments
     Dim connection As New SqlConnection(connectionString)
     ' Define a global identifiers of the user
     Dim ID As String = "gautam.sharma@iitg.ac.in"
-    ' this is a function to 
+    ' this is a function to pay money to the provider
+    ' author: g-s01
     Private Sub payButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles payButton.Click
         Dim random As New Random()
         Dim randomNumber As Integer = random.Next(100000, 999999)
-        Dim subject As String = "Test mail"
-        Dim body As String = "This is a test mail"
+        Dim subject As String = "Payment to " + TextBox1.Text
+        Dim body As String = "You are going to pay " + TextBox1.Text + "an amount of " + TextBox2.Text
         sendEmail(randomNumber, subject, body)
+        Dim code As Integer
+        If otp_auth.ShowDialog = DialogResult.OK Then
+            If Integer.TryParse(otp_auth.InputValue, code) Then
+                If code = randomNumber Then
+                    MessageBox.Show("OTP Matches")
+                End If
+            End If
+        End If
     End Sub
     ' function to send email from admin
     ' parameter 1: randomNumber -> OTP
     ' parameter 2: subject -> subject of the mail
     ' parameter 3: body -> body of the mail
-
+    ' author: g-s01
     Private Sub sendEmail(randomNumber As Integer, subject As String, body As String)
         Dim smtpServer As String = "smtp-mail.outlook.com"
         Dim port As Integer = 587

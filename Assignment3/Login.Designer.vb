@@ -113,7 +113,7 @@ Partial Class Login
         error_label.ForeColor = Color.Red
         error_label.Location = New Point(57, 335)
         error_label.Name = "error_label"
-        error_label.Size = New Size(45, 21)
+        error_label.Size = New Size(32, 13)
         error_label.TabIndex = 24
         error_label.Text = "error"
         ' 
@@ -146,7 +146,7 @@ Partial Class Login
         admin_ll.LinkColor = Color.DimGray
         admin_ll.Location = New Point(211, 418)
         admin_ll.Name = "admin_ll"
-        admin_ll.Size = New Size(144, 28)
+        admin_ll.Size = New Size(102, 19)
         admin_ll.TabIndex = 23
         admin_ll.TabStop = True
         admin_ll.Text = "Login as admin"
@@ -187,7 +187,7 @@ Partial Class Login
         subheadlabel.Name = "subheadlabel"
         subheadlabel.Size = New Size(217, 22)
         subheadlabel.TabIndex = 15
-        subheadlabel.Text = "Register as"
+        subheadlabel.Text = "Login as"
         ' 
         ' headlabel
         ' 
