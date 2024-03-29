@@ -136,6 +136,9 @@
   <data name="star-empty" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\star-empty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+	<data name="Total_customer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\Total_customer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
   <data name="backbtn" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\backbtn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -148,7 +151,13 @@
   <data name="iconamoon_delivery-free-duotone" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\iconamoon_delivery-free-duotone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="User_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="chats" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\chats.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+	<data name="Landing_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\Landing_Logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	  <data name="User_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\User_Logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Landing_Logo1" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -196,6 +205,15 @@
   <data name="download" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\download.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+	<data name="male" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\male.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+    <data name="more_horiz" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\more_horiz.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+<data name="backbtn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\backbtn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    </data>
   <data name="star_empty2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\star_empty2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
