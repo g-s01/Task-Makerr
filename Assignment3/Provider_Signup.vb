@@ -39,14 +39,16 @@ Public Class Provider_Signup
         Dim smtpServer As String = "smtp-mail.outlook.com"
         Dim port As Integer = 587
 
-        Dim message As New MailMessage("task-makerr-cs346@outlook.com", email_tb.Text)
-        message.Subject = "Registration confirmation"
-        message.Body = "Welcome to the Taskmakerr! Your OTP is " + randomNumber.ToString
+        Dim message As New MailMessage("task-makerr-cs346@outlook.com", email_tb.Text) With {
+            .Subject = "Registration confirmation",
+            .Body = "Welcome to the Taskmakerr! Your OTP is " + randomNumber.ToString
+        }
 
-        Dim smtpClient As New SmtpClient(smtpServer)
-        smtpClient.Port = port
-        smtpClient.Credentials = New System.Net.NetworkCredential("task-makerr-cs346@outlook.com", "hC-aw6:wqmfpMs4")
-        smtpClient.EnableSsl = True
+        Dim smtpClient As New SmtpClient(smtpServer) With {
+            .Port = port,
+            .Credentials = New System.Net.NetworkCredential("task-makerr-cs346@outlook.com", "hC-aw6:wqmfpMs4"),
+            .EnableSsl = True
+        }
 
         Try
             smtpClient.Send(message)

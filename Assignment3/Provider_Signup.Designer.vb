@@ -27,7 +27,7 @@ Partial Class Provider_Signup
         taskmakerrbtn = New Button()
         Panel2 = New Panel()
         login_btn = New Button()
-        save_tb = New Button()
+        save_btn = New Button()
         profileheading_label = New Label()
         cos_tb = New TextBox()
         cps_label = New Label()
@@ -200,7 +200,7 @@ Partial Class Provider_Signup
         Panel2.AutoScroll = True
         Panel2.AutoScrollMinSize = New Size(0, 1550)
         Panel2.Controls.Add(login_btn)
-        Panel2.Controls.Add(save_tb)
+        Panel2.Controls.Add(save_btn)
         Panel2.Controls.Add(profileheading_label)
         Panel2.Controls.Add(cos_tb)
         Panel2.Controls.Add(cps_label)
@@ -244,6 +244,7 @@ Partial Class Provider_Signup
         ' 
         ' login_btn
         ' 
+        login_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         login_btn.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
         login_btn.FlatAppearance.BorderSize = 0
         login_btn.FlatStyle = FlatStyle.Flat
@@ -256,19 +257,19 @@ Partial Class Provider_Signup
         login_btn.Text = "Log In"
         login_btn.UseVisualStyleBackColor = False
         ' 
-        ' save_tb
+        ' save_btn
         ' 
-        save_tb.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
-        save_tb.FlatAppearance.BorderSize = 0
-        save_tb.FlatStyle = FlatStyle.Flat
-        save_tb.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        save_tb.ForeColor = Color.White
-        save_tb.Location = New Point(533, 1445)
-        save_tb.Name = "save_tb"
-        save_tb.Size = New Size(135, 35)
-        save_tb.TabIndex = 65
-        save_tb.Text = "Save"
-        save_tb.UseVisualStyleBackColor = False
+        save_btn.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
+        save_btn.FlatAppearance.BorderSize = 0
+        save_btn.FlatStyle = FlatStyle.Flat
+        save_btn.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        save_btn.ForeColor = Color.White
+        save_btn.Location = New Point(533, 1445)
+        save_btn.Name = "save_tb"
+        save_btn.Size = New Size(135, 35)
+        save_btn.TabIndex = 65
+        save_btn.Text = "Save"
+        save_btn.UseVisualStyleBackColor = False
         ' 
         ' profileheading_label
         ' 
@@ -1864,6 +1865,6 @@ Partial Class Provider_Signup
     Friend WithEvents slot_label As Label
     Friend WithEvents location_checklistbox As CheckedListBox
     Friend WithEvents location_label As Label
-    Friend WithEvents save_tb As Button
+    Friend WithEvents save_btn As Button
     Friend WithEvents login_btn As Button
 End Class
