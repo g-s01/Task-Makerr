@@ -121,21 +121,20 @@
   <data name="Task Makerr" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Task Makerr.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="more_horiz" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\more_horiz.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Total_customer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Total_customer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Provider_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Provider_Logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="notifications" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\notifications.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="appointments" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\appointments.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-
-  <data name="home" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\home.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="search" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\search.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="star-empty" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\star-empty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 	<data name="Total_customer" type="System.Resources.ResXFileRef, System.Windows.Forms">
 		<value>..\Resources\Total_customer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -148,16 +147,6 @@
   </data>
   <data name="back" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\back_img.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="notifications" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\notifications.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-
-  <data name="TM Logo 1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TM Logo 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="chats" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\chats.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="iconamoon_delivery-free-duotone" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\iconamoon_delivery-free-duotone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -174,20 +163,38 @@
   <data name="Landing_Logo1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Landing_Logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="star_half_filled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\star_half_filled.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="default" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Landing_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Landing_Logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="male" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\male.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="search" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\search.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="star_empty1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\star_empty1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_filled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\star_filled.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="notifications" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\notifications.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Vector" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Vector.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="star_empty" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\star_empty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\settings.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="search" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\search.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="home" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\home.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -206,5 +213,8 @@
 	</data>
 <data name="backbtn" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\backbtn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    </data>
+  <data name="star_empty2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\star_empty2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
