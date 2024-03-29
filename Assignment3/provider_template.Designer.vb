@@ -96,7 +96,7 @@ Partial Class provider_template
         Label2.ForeColor = Color.DimGray
         Label2.Location = New Point(22, 470)
         Label2.Name = "Label2"
-        Label2.Size = New Size(75, 23)
+        Label2.Size = New Size(92, 28)
         Label2.TabIndex = 10
         Label2.Text = "Support"
         ' 
@@ -107,7 +107,7 @@ Partial Class provider_template
         Label1.ForeColor = Color.DimGray
         Label1.Location = New Point(22, 100)
         Label1.Name = "Label1"
-        Label1.Size = New Size(57, 23)
+        Label1.Size = New Size(71, 28)
         Label1.TabIndex = 9
         Label1.Text = "Menu"
         ' 
@@ -260,6 +260,7 @@ Partial Class provider_template
         ClientSize = New Size(1132, 666)
         Controls.Add(SplitContainer1)
         Name = "provider_template"
+        StartPosition = FormStartPosition.CenterScreen
         Text = "provider_template"
         SplitContainer1.Panel1.ResumeLayout(False)
         SplitContainer1.Panel1.PerformLayout()
