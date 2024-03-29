@@ -11,6 +11,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Prov_tile.Designer.vb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Prov_tile.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Ellipse 6.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Import Include="System.Data" />
     <Import Include="System.Data.Common" />
     <Import Include="System.Data.Odbc" />
@@ -22,7 +34,14 @@
 
   <ItemGroup>
     <PackageReference Include="FastReport.DataVisualization" Version="2024.1.10" />
+    <PackageReference Include="itext" Version="8.0.3" />
+    <PackageReference Include="itext7" Version="8.0.3" />
+    <PackageReference Include="itext7.bouncy-castle-fips-adapter" Version="8.0.3" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Ellipse 6.png" />
   </ItemGroup>
 
   <ItemGroup>

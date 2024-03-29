@@ -1,4 +1,4 @@
-﻿Public Class Prov_tile
+Public Class Prov_tile
     Inherits UserControl
 
     ' Properties for item data
