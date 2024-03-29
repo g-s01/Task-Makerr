@@ -96,31 +96,31 @@ Partial Class Login
         ' error_label
         ' 
         error_label.AutoSize = True
-        error_label.Font = New Font("Segoe UI", 8.0F)
+        error_label.Font = New Font("Segoe UI", 8F)
         error_label.ForeColor = Color.Red
         error_label.Location = New Point(57, 335)
         error_label.Name = "error_label"
-        error_label.Size = New Size(45, 21)
+        error_label.Size = New Size(32, 13)
         error_label.TabIndex = 24
         error_label.Text = "error"
         ' 
         ' email_tb
         ' 
-        email_tb.Font = New Font("Segoe UI", 10.0F)
+        email_tb.Font = New Font("Segoe UI", 10F)
         email_tb.ForeColor = Color.Gray
         email_tb.Location = New Point(57, 260)
         email_tb.Name = "email_tb"
-        email_tb.Size = New Size(418, 34)
+        email_tb.Size = New Size(418, 25)
         email_tb.TabIndex = 19
         email_tb.Text = "Email"
         ' 
         ' password_tb
         ' 
-        password_tb.Font = New Font("Segoe UI", 10.0F)
+        password_tb.Font = New Font("Segoe UI", 10F)
         password_tb.ForeColor = Color.Gray
         password_tb.Location = New Point(57, 307)
         password_tb.Name = "password_tb"
-        password_tb.Size = New Size(418, 34)
+        password_tb.Size = New Size(418, 25)
         password_tb.TabIndex = 20
         password_tb.Text = "Password"
         ' 
@@ -128,11 +128,11 @@ Partial Class Login
         ' 
         admin_ll.ActiveLinkColor = Color.FromArgb(CByte(255), CByte(128), CByte(255))
         admin_ll.AutoSize = True
-        admin_ll.Font = New Font("Segoe UI", 10.0F)
+        admin_ll.Font = New Font("Segoe UI", 10F)
         admin_ll.LinkColor = Color.DimGray
         admin_ll.Location = New Point(211, 418)
         admin_ll.Name = "admin_ll"
-        admin_ll.Size = New Size(144, 28)
+        admin_ll.Size = New Size(102, 19)
         admin_ll.TabIndex = 23
         admin_ll.TabStop = True
         admin_ll.Text = "Login as admin"
@@ -143,7 +143,7 @@ Partial Class Login
         provider_btn.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
         provider_btn.FlatAppearance.BorderSize = 0
         provider_btn.FlatStyle = FlatStyle.Flat
-        provider_btn.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        provider_btn.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         provider_btn.ForeColor = Color.White
         provider_btn.Location = New Point(115, 370)
         provider_btn.Name = "provider_btn"
@@ -157,7 +157,7 @@ Partial Class Login
         user_btn.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
         user_btn.FlatAppearance.BorderSize = 0
         user_btn.FlatStyle = FlatStyle.Flat
-        user_btn.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        user_btn.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         user_btn.ForeColor = Color.White
         user_btn.Location = New Point(275, 370)
         user_btn.Name = "user_btn"
@@ -173,11 +173,11 @@ Partial Class Login
         subheadlabel.Name = "subheadlabel"
         subheadlabel.Size = New Size(217, 22)
         subheadlabel.TabIndex = 15
-        subheadlabel.Text = "Register as"
+        subheadlabel.Text = "Login as"
         ' 
         ' headlabel
         ' 
-        headlabel.Font = New Font("Segoe UI", 15.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        headlabel.Font = New Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         headlabel.Location = New Point(55, 179)
         headlabel.Name = "headlabel"
         headlabel.Size = New Size(258, 34)

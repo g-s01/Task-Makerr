@@ -52,6 +52,7 @@
             password_tb.Focus()
         Else
             error_label.Text = ""
+            Email = email_tb.Text()
             ' check from database
             Provider_ID = "12345"
             Me.Hide()
@@ -68,6 +69,7 @@
             password_tb.Focus()
         Else
             error_label.Text = ""
+            Email = email_tb.Text()
             ' check from database
             User_ID = "12340"
             Me.Hide()
