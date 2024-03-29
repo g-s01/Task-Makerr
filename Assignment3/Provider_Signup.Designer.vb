@@ -1599,12 +1599,12 @@ Partial Class Provider_Signup
         ' otp_tb
         ' 
         otp_tb.Font = New Font("Segoe UI", 10.0F)
-        otp_tb.ForeColor = SystemColors.GrayText
+        otp_tb.ForeColor = SystemColors.WindowText
         otp_tb.Location = New Point(55, 461)
         otp_tb.Name = "otp_tb"
+        otp_tb.PlaceholderText = "OTP"
         otp_tb.Size = New Size(418, 34)
         otp_tb.TabIndex = 22
-        otp_tb.Text = "OTP"
         ' 
         ' register_btn
         ' 
@@ -1648,42 +1648,44 @@ Partial Class Provider_Signup
         ' email_tb
         ' 
         email_tb.Font = New Font("Segoe UI", 10.0F)
-        email_tb.ForeColor = SystemColors.GrayText
+        email_tb.ForeColor = SystemColors.WindowText
         email_tb.Location = New Point(55, 254)
         email_tb.Name = "email_tb"
+        email_tb.PlaceholderText = "Email"
         email_tb.Size = New Size(418, 34)
         email_tb.TabIndex = 17
-        email_tb.Text = "Email"
         ' 
         ' cnfpassword_tb
         ' 
         cnfpassword_tb.Font = New Font("Segoe UI", 10.0F)
-        cnfpassword_tb.ForeColor = SystemColors.GrayText
+        cnfpassword_tb.ForeColor = SystemColors.WindowText
         cnfpassword_tb.Location = New Point(55, 352)
         cnfpassword_tb.Name = "cnfpassword_tb"
+        cnfpassword_tb.PasswordChar = "*"c
+        cnfpassword_tb.PlaceholderText = "Confirm Password"
         cnfpassword_tb.Size = New Size(418, 34)
         cnfpassword_tb.TabIndex = 19
-        cnfpassword_tb.Text = "Confirm Password"
         ' 
         ' password_tb
         ' 
         password_tb.Font = New Font("Segoe UI", 10.0F)
-        password_tb.ForeColor = SystemColors.GrayText
+        password_tb.ForeColor = SystemColors.WindowText
         password_tb.Location = New Point(55, 304)
         password_tb.Name = "password_tb"
+        password_tb.PasswordChar = "*"c
+        password_tb.PlaceholderText = "Password"
         password_tb.Size = New Size(418, 34)
         password_tb.TabIndex = 18
-        password_tb.Text = "Password"
         ' 
         ' name_tb
         ' 
         name_tb.Font = New Font("Segoe UI", 10.0F)
-        name_tb.ForeColor = SystemColors.GrayText
+        name_tb.ForeColor = SystemColors.WindowText
         name_tb.Location = New Point(55, 209)
         name_tb.Name = "name_tb"
+        name_tb.PlaceholderText = "Name"
         name_tb.Size = New Size(418, 34)
         name_tb.TabIndex = 16
-        name_tb.Text = "Name"
         ' 
         ' subheadlabel
         ' 

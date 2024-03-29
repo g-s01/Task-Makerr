@@ -26,6 +26,8 @@ Partial Class User_Signup
         designlabel1 = New Label()
         taskmakerrbtn = New Button()
         Panel2 = New Panel()
+        showcnfpassword_cb = New CheckBox()
+        showpassword_cb = New CheckBox()
         otp_tb = New TextBox()
         register_btn = New Button()
         sendOTP_btn = New Button()
@@ -38,8 +40,6 @@ Partial Class User_Signup
         Label1 = New Label()
         login_btn = New Button()
         back_btn = New Button()
-        showcnfpassword_cb = New CheckBox()
-        showpassword_cb = New CheckBox()
         Panel1.SuspendLayout()
         Panel2.SuspendLayout()
         SuspendLayout()
@@ -103,15 +103,37 @@ Partial Class User_Signup
         Panel2.Size = New Size(709, 673)
         Panel2.TabIndex = 1
         ' 
+        ' showcnfpassword_cb
+        ' 
+        showcnfpassword_cb.AutoSize = True
+        showcnfpassword_cb.Font = New Font("Segoe UI", 8.0F)
+        showcnfpassword_cb.Location = New Point(484, 357)
+        showcnfpassword_cb.Name = "showcnfpassword_cb"
+        showcnfpassword_cb.Size = New Size(75, 25)
+        showcnfpassword_cb.TabIndex = 45
+        showcnfpassword_cb.Text = "Show"
+        showcnfpassword_cb.UseVisualStyleBackColor = True
+        ' 
+        ' showpassword_cb
+        ' 
+        showpassword_cb.AutoSize = True
+        showpassword_cb.Font = New Font("Segoe UI", 8.0F)
+        showpassword_cb.Location = New Point(484, 309)
+        showpassword_cb.Name = "showpassword_cb"
+        showpassword_cb.Size = New Size(75, 25)
+        showpassword_cb.TabIndex = 44
+        showpassword_cb.Text = "Show"
+        showpassword_cb.UseVisualStyleBackColor = True
+        ' 
         ' otp_tb
         ' 
-        otp_tb.Font = New Font("Segoe UI", 10F)
-        otp_tb.ForeColor = Color.Gray
+        otp_tb.Font = New Font("Segoe UI", 10.0F)
+        otp_tb.ForeColor = SystemColors.WindowText
         otp_tb.Location = New Point(60, 458)
         otp_tb.Name = "otp_tb"
+        otp_tb.PlaceholderText = "OTP"
         otp_tb.Size = New Size(418, 34)
         otp_tb.TabIndex = 9
-        otp_tb.Text = "OTP"
         ' 
         ' register_btn
         ' 
@@ -144,7 +166,7 @@ Partial Class User_Signup
         ' error_label
         ' 
         error_label.AutoSize = True
-        error_label.Font = New Font("Segoe UI", 8F)
+        error_label.Font = New Font("Segoe UI", 8.0F)
         error_label.ForeColor = Color.Red
         error_label.Location = New Point(60, 377)
         error_label.Name = "error_label"
@@ -154,43 +176,45 @@ Partial Class User_Signup
         ' 
         ' email_tb
         ' 
-        email_tb.Font = New Font("Segoe UI", 10F)
-        email_tb.ForeColor = Color.Gray
+        email_tb.Font = New Font("Segoe UI", 10.0F)
+        email_tb.ForeColor = SystemColors.WindowText
         email_tb.Location = New Point(60, 254)
         email_tb.Name = "email_tb"
+        email_tb.PlaceholderText = "Email"
         email_tb.Size = New Size(418, 34)
         email_tb.TabIndex = 5
-        email_tb.Text = "Email"
         ' 
         ' cnfpassword_tb
         ' 
-        cnfpassword_tb.Font = New Font("Segoe UI", 10F)
-        cnfpassword_tb.ForeColor = Color.Gray
+        cnfpassword_tb.Font = New Font("Segoe UI", 10.0F)
+        cnfpassword_tb.ForeColor = SystemColors.WindowText
         cnfpassword_tb.Location = New Point(60, 349)
         cnfpassword_tb.Name = "cnfpassword_tb"
+        cnfpassword_tb.PasswordChar = "*"c
+        cnfpassword_tb.PlaceholderText = "Confirm Password"
         cnfpassword_tb.Size = New Size(418, 34)
         cnfpassword_tb.TabIndex = 7
-        cnfpassword_tb.Text = "Confirm Password"
         ' 
         ' password_tb
         ' 
-        password_tb.Font = New Font("Segoe UI", 10F)
-        password_tb.ForeColor = Color.Gray
+        password_tb.Font = New Font("Segoe UI", 10.0F)
+        password_tb.ForeColor = SystemColors.WindowText
         password_tb.Location = New Point(60, 301)
         password_tb.Name = "password_tb"
+        password_tb.PasswordChar = "*"c
+        password_tb.PlaceholderText = "Password"
         password_tb.Size = New Size(418, 34)
         password_tb.TabIndex = 6
-        password_tb.Text = "Password"
         ' 
         ' name_tb
         ' 
-        name_tb.Font = New Font("Segoe UI", 10F)
-        name_tb.ForeColor = Color.Gray
+        name_tb.Font = New Font("Segoe UI", 10.0F)
+        name_tb.ForeColor = SystemColors.WindowText
         name_tb.Location = New Point(60, 209)
         name_tb.Name = "name_tb"
+        name_tb.PlaceholderText = "Name"
         name_tb.Size = New Size(418, 34)
         name_tb.TabIndex = 4
-        name_tb.Text = "Name"
         ' 
         ' subheadlabel
         ' 
@@ -203,7 +227,7 @@ Partial Class User_Signup
         ' 
         ' Label1
         ' 
-        Label1.Font = New Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label1.Font = New Font("Segoe UI", 15.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label1.Location = New Point(55, 128)
         Label1.Name = "Label1"
         Label1.Size = New Size(258, 34)
@@ -236,28 +260,6 @@ Partial Class User_Signup
         back_btn.Size = New Size(84, 35)
         back_btn.TabIndex = 0
         back_btn.UseVisualStyleBackColor = True
-        ' 
-        ' showcnfpassword_cb
-        ' 
-        showcnfpassword_cb.AutoSize = True
-        showcnfpassword_cb.Font = New Font("Segoe UI", 8F)
-        showcnfpassword_cb.Location = New Point(484, 357)
-        showcnfpassword_cb.Name = "showcnfpassword_cb"
-        showcnfpassword_cb.Size = New Size(75, 25)
-        showcnfpassword_cb.TabIndex = 45
-        showcnfpassword_cb.Text = "Show"
-        showcnfpassword_cb.UseVisualStyleBackColor = True
-        ' 
-        ' showpassword_cb
-        ' 
-        showpassword_cb.AutoSize = True
-        showpassword_cb.Font = New Font("Segoe UI", 8F)
-        showpassword_cb.Location = New Point(484, 309)
-        showpassword_cb.Name = "showpassword_cb"
-        showpassword_cb.Size = New Size(75, 25)
-        showpassword_cb.TabIndex = 44
-        showpassword_cb.Text = "Show"
-        showpassword_cb.UseVisualStyleBackColor = True
         ' 
         ' User_Signup
         ' 

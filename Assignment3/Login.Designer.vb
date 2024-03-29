@@ -26,6 +26,7 @@ Partial Class Login
         designlabel1 = New Label()
         taskmakerrbtn = New Button()
         Panel2 = New Panel()
+        showpassword_cb = New CheckBox()
         error_label = New Label()
         email_tb = New TextBox()
         password_tb = New TextBox()
@@ -35,7 +36,6 @@ Partial Class Login
         subheadlabel = New Label()
         headlabel = New Label()
         register_btn = New Button()
-        showpassword_cb = New CheckBox()
         Panel1.SuspendLayout()
         Panel2.SuspendLayout()
         SuspendLayout()
@@ -95,6 +95,17 @@ Partial Class Login
         Panel2.Size = New Size(709, 673)
         Panel2.TabIndex = 3
         ' 
+        ' showpassword_cb
+        ' 
+        showpassword_cb.AutoSize = True
+        showpassword_cb.Font = New Font("Segoe UI", 8F)
+        showpassword_cb.Location = New Point(481, 315)
+        showpassword_cb.Name = "showpassword_cb"
+        showpassword_cb.Size = New Size(75, 25)
+        showpassword_cb.TabIndex = 45
+        showpassword_cb.Text = "Show"
+        showpassword_cb.UseVisualStyleBackColor = True
+        ' 
         ' error_label
         ' 
         error_label.AutoSize = True
@@ -109,22 +120,23 @@ Partial Class Login
         ' email_tb
         ' 
         email_tb.Font = New Font("Segoe UI", 10F)
-        email_tb.ForeColor = Color.Gray
+        email_tb.ForeColor = SystemColors.WindowText
         email_tb.Location = New Point(57, 260)
         email_tb.Name = "email_tb"
+        email_tb.PlaceholderText = "Email"
         email_tb.Size = New Size(418, 34)
         email_tb.TabIndex = 19
-        email_tb.Text = "Email"
         ' 
         ' password_tb
         ' 
         password_tb.Font = New Font("Segoe UI", 10F)
-        password_tb.ForeColor = Color.Gray
+        password_tb.ForeColor = SystemColors.WindowText
         password_tb.Location = New Point(57, 307)
         password_tb.Name = "password_tb"
+        password_tb.PasswordChar = "*"c
+        password_tb.PlaceholderText = "Password"
         password_tb.Size = New Size(418, 34)
         password_tb.TabIndex = 20
-        password_tb.Text = "Password"
         ' 
         ' admin_ll
         ' 
@@ -200,17 +212,6 @@ Partial Class Login
         register_btn.TabIndex = 13
         register_btn.Text = "Register"
         register_btn.UseVisualStyleBackColor = False
-        ' 
-        ' showpassword_cb
-        ' 
-        showpassword_cb.AutoSize = True
-        showpassword_cb.Font = New Font("Segoe UI", 8F)
-        showpassword_cb.Location = New Point(481, 315)
-        showpassword_cb.Name = "showpassword_cb"
-        showpassword_cb.Size = New Size(75, 25)
-        showpassword_cb.TabIndex = 45
-        showpassword_cb.Text = "Show"
-        showpassword_cb.UseVisualStyleBackColor = True
         ' 
         ' Login
         ' 

@@ -27,12 +27,12 @@ Partial Class Admin_Login
         designlabel1 = New Label()
         taskmakerrbtn = New Button()
         Panel2 = New Panel()
+        showpassword_cb = New CheckBox()
         error_label = New Label()
         back_btn = New Button()
         login_btn = New Button()
         password_tb = New TextBox()
         headlabel = New Label()
-        showpassword_cb = New CheckBox()
         Panel1.SuspendLayout()
         Panel2.SuspendLayout()
         SuspendLayout()
@@ -101,6 +101,17 @@ Partial Class Admin_Login
         Panel2.Size = New Size(709, 673)
         Panel2.TabIndex = 4
         ' 
+        ' showpassword_cb
+        ' 
+        showpassword_cb.AutoSize = True
+        showpassword_cb.Font = New Font("Segoe UI", 8F)
+        showpassword_cb.Location = New Point(479, 265)
+        showpassword_cb.Name = "showpassword_cb"
+        showpassword_cb.Size = New Size(75, 25)
+        showpassword_cb.TabIndex = 46
+        showpassword_cb.Text = "Show"
+        showpassword_cb.UseVisualStyleBackColor = True
+        ' 
         ' error_label
         ' 
         error_label.AutoSize = True
@@ -142,12 +153,13 @@ Partial Class Admin_Login
         ' password_tb
         ' 
         password_tb.Font = New Font("Segoe UI", 10F)
-        password_tb.ForeColor = Color.Gray
+        password_tb.ForeColor = SystemColors.WindowText
         password_tb.Location = New Point(55, 257)
         password_tb.Name = "password_tb"
+        password_tb.PasswordChar = "*"c
+        password_tb.PlaceholderText = "Password"
         password_tb.Size = New Size(418, 34)
         password_tb.TabIndex = 20
-        password_tb.Text = "Password"
         ' 
         ' headlabel
         ' 
@@ -157,17 +169,6 @@ Partial Class Admin_Login
         headlabel.Size = New Size(258, 85)
         headlabel.TabIndex = 14
         headlabel.Text = "Log in with" & vbCrLf & "Admin password"
-        ' 
-        ' showpassword_cb
-        ' 
-        showpassword_cb.AutoSize = True
-        showpassword_cb.Font = New Font("Segoe UI", 8F)
-        showpassword_cb.Location = New Point(479, 265)
-        showpassword_cb.Name = "showpassword_cb"
-        showpassword_cb.Size = New Size(75, 25)
-        showpassword_cb.TabIndex = 46
-        showpassword_cb.Text = "Show"
-        showpassword_cb.UseVisualStyleBackColor = True
         ' 
         ' Admin_Login
         ' 

@@ -1,99 +1,12 @@
 ﻿Imports System.Net.Mail
+Imports Microsoft.IdentityModel.Tokens
 
 Public Class Provider_Signup
 
-    Dim name_fill As Boolean = False
-    Dim email_fill As Boolean = False
-    Dim password_fill As Boolean = False
-    Dim cnfpassword_fill As Boolean = False
-    Dim otp_fill As Boolean = False
     Dim code As Integer
 
     Private Sub Provider_Signup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         error_label.Text = ""
-        showpassword_cb.Visible = False
-        showcnfpassword_cb.Visible = False
-    End Sub
-
-    Private Sub Name_tb_Enter(sender As Object, e As EventArgs) Handles name_tb.Enter
-        If name_tb.Text = "Name" And Not name_fill Then
-            name_tb.Text = ""
-            name_fill = True
-            name_tb.ForeColor = Color.Black ' Change text color to default
-        End If
-    End Sub
-
-    Private Sub Name_tb_Leave(sender As Object, e As EventArgs) Handles name_tb.Leave
-        If name_tb.Text = "" Then
-            name_tb.Text = "Name"
-            name_fill = False
-            name_tb.ForeColor = Color.Gray ' Change text color to placeholder color
-        End If
-    End Sub
-    Private Sub Email_tb_Enter(sender As Object, e As EventArgs) Handles email_tb.Enter
-        If email_tb.Text = "Email" And Not email_fill Then
-            email_tb.Text = ""
-            email_fill = True
-            email_tb.ForeColor = Color.Black ' Change text color to default
-        End If
-    End Sub
-
-    Private Sub Email_tb_Leave(sender As Object, e As EventArgs) Handles email_tb.Leave
-        If email_tb.Text = "" Then
-            email_tb.Text = "Email"
-            email_fill = False
-            email_tb.ForeColor = Color.Gray ' Change text color to placeholder color
-        End If
-    End Sub
-
-    Private Sub Password_tb_Enter(sender As Object, e As EventArgs) Handles password_tb.Enter
-        If password_tb.Text = "Password" And Not password_fill Then
-            showpassword_cb.Visible = True
-            password_tb.Text = ""
-            password_fill = True
-            password_tb.ForeColor = Color.Black
-            If showpassword_cb.Checked Then
-                password_tb.PasswordChar = ""
-            Else
-                password_tb.PasswordChar = "*"
-            End If
-        End If
-    End Sub
-
-    Private Sub Password_tb_Leave(sender As Object, e As EventArgs) Handles password_tb.Leave
-        If password_tb.Text = "" Then
-            password_tb.Text = "Password"
-            password_fill = False
-            password_tb.ForeColor = Color.Gray
-            showpassword_cb.Checked = False
-            password_tb.PasswordChar = ""
-            showpassword_cb.Visible = False
-        End If
-    End Sub
-
-    Private Sub Cnfpassword_tb_Enter(sender As Object, e As EventArgs) Handles cnfpassword_tb.Enter
-        If cnfpassword_tb.Text = "Confirm Password" And Not cnfpassword_fill Then
-            showcnfpassword_cb.Visible = True
-            cnfpassword_tb.Text = ""
-            cnfpassword_fill = True
-            cnfpassword_tb.ForeColor = Color.Black
-            If showcnfpassword_cb.Checked Then
-                cnfpassword_tb.PasswordChar = ""
-            Else
-                cnfpassword_tb.PasswordChar = "*"
-            End If
-        End If
-    End Sub
-
-    Private Sub Cnfpassword_tb_Leave(sender As Object, e As EventArgs) Handles cnfpassword_tb.Leave
-        If cnfpassword_tb.Text = "" Then
-            cnfpassword_tb.Text = "Confirm Password"
-            cnfpassword_fill = False
-            cnfpassword_tb.ForeColor = Color.Gray
-            showcnfpassword_cb.Checked = False
-            cnfpassword_tb.PasswordChar = ""
-            showcnfpassword_cb.Visible = False
-        End If
     End Sub
 
     Private Sub Showpassword_cb_CheckedChanged(sender As Object, e As EventArgs) Handles showpassword_cb.CheckedChanged
@@ -148,16 +61,16 @@ Public Class Provider_Signup
     End Sub
 
     Private Sub SendOTP_btn_Click(sender As Object, e As EventArgs) Handles sendOTP_btn.Click
-        If Not name_fill Then
+        If name_tb.Text.IsNullOrEmpty Then
             error_label.Text = "* name is required"
             name_tb.Focus()
-        ElseIf Not email_fill Then
+        ElseIf email_tb.Text.IsNullOrEmpty Then
             error_label.Text = "* email is required"
             email_tb.Focus()
-        ElseIf Not password_fill Then
+        ElseIf password_tb.Text.IsNullOrEmpty Then
             error_label.Text = "* password is required"
             password_tb.Focus()
-        ElseIf Not cnfpassword_fill Then
+        ElseIf cnfpassword_tb.Text.IsNullOrEmpty Then
             error_label.Text = "* confirm your password"
             cnfpassword_tb.Focus()
         ElseIf Not password_tb.Text = cnfpassword_tb.Text Then
