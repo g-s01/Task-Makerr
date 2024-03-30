@@ -26,6 +26,13 @@ Partial Class Provider_Signup
         designlabel1 = New Label()
         taskmakerrbtn = New Button()
         Panel2 = New Panel()
+        login_btn = New Button()
+        save_btn = New Button()
+        profileheading_label = New Label()
+        cos_tb = New TextBox()
+        cps_label = New Label()
+        type_label = New Label()
+        servicetype_combox = New ComboBox()
         Label21 = New Label()
         Label15 = New Label()
         Label16 = New Label()
@@ -134,6 +141,8 @@ Partial Class Provider_Signup
         slot_label = New Label()
         location_checklistbox = New CheckedListBox()
         location_label = New Label()
+        showcnfpassword_cb = New CheckBox()
+        showpassword_cb = New CheckBox()
         otp_tb = New TextBox()
         register_btn = New Button()
         sendOTP_btn = New Button()
@@ -144,7 +153,6 @@ Partial Class Provider_Signup
         name_tb = New TextBox()
         subheadlabel = New Label()
         Label1 = New Label()
-        login_btn = New Button()
         back_btn = New Button()
         Panel1.SuspendLayout()
         Panel2.SuspendLayout()
@@ -167,7 +175,7 @@ Partial Class Provider_Signup
         ' 
         designlabel1.BackColor = Color.Transparent
         designlabel1.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        designlabel1.Location = New Point(45, 458)
+        designlabel1.Location = New Point(41, 508)
         designlabel1.Name = "designlabel1"
         designlabel1.Size = New Size(337, 36)
         designlabel1.TabIndex = 3
@@ -190,7 +198,14 @@ Partial Class Provider_Signup
         ' Panel2
         ' 
         Panel2.AutoScroll = True
-        Panel2.AutoScrollMinSize = New Size(0, 1200)
+        Panel2.AutoScrollMinSize = New Size(0, 1550)
+        Panel2.Controls.Add(login_btn)
+        Panel2.Controls.Add(save_btn)
+        Panel2.Controls.Add(profileheading_label)
+        Panel2.Controls.Add(cos_tb)
+        Panel2.Controls.Add(cps_label)
+        Panel2.Controls.Add(type_label)
+        Panel2.Controls.Add(servicetype_combox)
         Panel2.Controls.Add(Label21)
         Panel2.Controls.Add(Label15)
         Panel2.Controls.Add(Label16)
@@ -208,6 +223,8 @@ Partial Class Provider_Signup
         Panel2.Controls.Add(slot_label)
         Panel2.Controls.Add(location_checklistbox)
         Panel2.Controls.Add(location_label)
+        Panel2.Controls.Add(showcnfpassword_cb)
+        Panel2.Controls.Add(showpassword_cb)
         Panel2.Controls.Add(otp_tb)
         Panel2.Controls.Add(register_btn)
         Panel2.Controls.Add(sendOTP_btn)
@@ -218,7 +235,6 @@ Partial Class Provider_Signup
         Panel2.Controls.Add(name_tb)
         Panel2.Controls.Add(subheadlabel)
         Panel2.Controls.Add(Label1)
-        Panel2.Controls.Add(login_btn)
         Panel2.Controls.Add(back_btn)
         Panel2.Dock = DockStyle.Fill
         Panel2.Location = New Point(425, 0)
@@ -226,128 +242,202 @@ Partial Class Provider_Signup
         Panel2.Size = New Size(709, 673)
         Panel2.TabIndex = 1
         ' 
+        ' login_btn
+        ' 
+        login_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        login_btn.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
+        login_btn.FlatAppearance.BorderSize = 0
+        login_btn.FlatStyle = FlatStyle.Flat
+        login_btn.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        login_btn.ForeColor = Color.White
+        login_btn.Location = New Point(529, 23)
+        login_btn.Name = "login_btn"
+        login_btn.Size = New Size(135, 35)
+        login_btn.TabIndex = 1
+        login_btn.Text = "Log In"
+        login_btn.UseVisualStyleBackColor = False
+        ' 
+        ' save_btn
+        ' 
+        save_btn.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
+        save_btn.FlatAppearance.BorderSize = 0
+        save_btn.FlatStyle = FlatStyle.Flat
+        save_btn.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        save_btn.ForeColor = Color.White
+        save_btn.Location = New Point(533, 1445)
+        save_btn.Name = "save_tb"
+        save_btn.Size = New Size(135, 35)
+        save_btn.TabIndex = 65
+        save_btn.Text = "Save"
+        save_btn.UseVisualStyleBackColor = False
+        ' 
+        ' profileheading_label
+        ' 
+        profileheading_label.Font = New Font("Segoe UI", 15.0F)
+        profileheading_label.Location = New Point(55, 633)
+        profileheading_label.Name = "profileheading_label"
+        profileheading_label.Size = New Size(301, 66)
+        profileheading_label.TabIndex = 64
+        profileheading_label.Text = "Profile Information"
+        ' 
+        ' cos_tb
+        ' 
+        cos_tb.Font = New Font("Segoe UI", 10.0F)
+        cos_tb.ForeColor = SystemColors.WindowText
+        cos_tb.Location = New Point(59, 1036)
+        cos_tb.Name = "cos_tb"
+        cos_tb.Size = New Size(297, 34)
+        cos_tb.TabIndex = 63
+        ' 
+        ' cps_label
+        ' 
+        cps_label.Font = New Font("Segoe UI", 10.0F)
+        cps_label.Location = New Point(59, 1011)
+        cps_label.Name = "cps_label"
+        cps_label.Size = New Size(167, 22)
+        cps_label.TabIndex = 62
+        cps_label.Text = "Cost Per Slots :"
+        ' 
+        ' type_label
+        ' 
+        type_label.Font = New Font("Segoe UI", 10.0F)
+        type_label.Location = New Point(59, 708)
+        type_label.Name = "type_label"
+        type_label.Size = New Size(167, 22)
+        type_label.TabIndex = 61
+        type_label.Text = "Select Service Type :"
+        ' 
+        ' servicetype_combox
+        ' 
+        servicetype_combox.FormattingEnabled = True
+        servicetype_combox.Items.AddRange(New Object() {"Painter", "Designer", "Kuchh", "Kuchh", "Kuchh"})
+        servicetype_combox.Location = New Point(59, 733)
+        servicetype_combox.Name = "servicetype_combox"
+        servicetype_combox.Size = New Size(297, 33)
+        servicetype_combox.TabIndex = 60
+        ' 
         ' Label21
         ' 
         Label21.AutoSize = True
-        Label21.Location = New Point(597, 578)
+        Label21.Location = New Point(601, 1127)
         Label21.Name = "Label21"
-        Label21.Size = New Size(39, 20)
-        Label21.TabIndex = 40
+        Label21.Size = New Size(49, 25)
+        Label21.TabIndex = 59
         Label21.Text = "9pm"
         ' 
         ' Label15
         ' 
         Label15.AutoSize = True
-        Label15.Location = New Point(429, 578)
+        Label15.Location = New Point(433, 1127)
         Label15.Name = "Label15"
-        Label15.Size = New Size(39, 20)
-        Label15.TabIndex = 39
+        Label15.Size = New Size(49, 25)
+        Label15.TabIndex = 58
         Label15.Text = "5pm"
         ' 
         ' Label16
         ' 
         Label16.AutoSize = True
-        Label16.Location = New Point(471, 578)
+        Label16.Location = New Point(475, 1127)
         Label16.Name = "Label16"
-        Label16.Size = New Size(39, 20)
-        Label16.TabIndex = 38
+        Label16.Size = New Size(49, 25)
+        Label16.TabIndex = 57
         Label16.Text = "6pm"
         ' 
         ' Label17
         ' 
         Label17.AutoSize = True
-        Label17.Location = New Point(513, 578)
+        Label17.Location = New Point(517, 1127)
         Label17.Name = "Label17"
-        Label17.Size = New Size(39, 20)
-        Label17.TabIndex = 37
+        Label17.Size = New Size(49, 25)
+        Label17.TabIndex = 56
         Label17.Text = "7pm"
         ' 
         ' Label18
         ' 
         Label18.AutoSize = True
-        Label18.Location = New Point(555, 578)
+        Label18.Location = New Point(559, 1127)
         Label18.Name = "Label18"
-        Label18.Size = New Size(39, 20)
-        Label18.TabIndex = 36
+        Label18.Size = New Size(49, 25)
+        Label18.TabIndex = 55
         Label18.Text = "8pm"
         ' 
         ' Label19
         ' 
         Label19.AutoSize = True
-        Label19.Location = New Point(387, 578)
+        Label19.Location = New Point(391, 1127)
         Label19.Name = "Label19"
-        Label19.Size = New Size(39, 20)
-        Label19.TabIndex = 35
+        Label19.Size = New Size(49, 25)
+        Label19.TabIndex = 54
         Label19.Text = "4pm"
         ' 
         ' Label20
         ' 
         Label20.AutoSize = True
-        Label20.Location = New Point(345, 578)
+        Label20.Location = New Point(349, 1127)
         Label20.Name = "Label20"
-        Label20.Size = New Size(39, 20)
-        Label20.TabIndex = 34
+        Label20.Size = New Size(49, 25)
+        Label20.TabIndex = 53
         Label20.Text = "3pm"
         ' 
         ' Label14
         ' 
         Label14.AutoSize = True
-        Label14.Location = New Point(174, 578)
+        Label14.Location = New Point(178, 1127)
         Label14.Name = "Label14"
-        Label14.Size = New Size(46, 20)
-        Label14.TabIndex = 33
+        Label14.Size = New Size(57, 25)
+        Label14.TabIndex = 52
         Label14.Text = "11am"
         ' 
         ' Label13
         ' 
         Label13.AutoSize = True
-        Label13.Location = New Point(217, 578)
+        Label13.Location = New Point(221, 1127)
         Label13.Name = "Label13"
-        Label13.Size = New Size(47, 20)
-        Label13.TabIndex = 32
+        Label13.Size = New Size(59, 25)
+        Label13.TabIndex = 51
         Label13.Text = "12pm"
         ' 
         ' Label12
         ' 
         Label12.AutoSize = True
-        Label12.Location = New Point(261, 578)
+        Label12.Location = New Point(265, 1127)
         Label12.Name = "Label12"
-        Label12.Size = New Size(39, 20)
-        Label12.TabIndex = 31
+        Label12.Size = New Size(49, 25)
+        Label12.TabIndex = 50
         Label12.Text = "1pm"
         ' 
         ' Label11
         ' 
         Label11.AutoSize = True
-        Label11.Location = New Point(303, 578)
+        Label11.Location = New Point(307, 1127)
         Label11.Name = "Label11"
-        Label11.Size = New Size(39, 20)
-        Label11.TabIndex = 30
+        Label11.Size = New Size(49, 25)
+        Label11.TabIndex = 49
         Label11.Text = "2pm"
         ' 
         ' Label10
         ' 
         Label10.AutoSize = True
-        Label10.Location = New Point(132, 578)
+        Label10.Location = New Point(136, 1127)
         Label10.Name = "Label10"
-        Label10.Size = New Size(46, 20)
-        Label10.TabIndex = 29
+        Label10.Size = New Size(57, 25)
+        Label10.TabIndex = 48
         Label10.Text = "10am"
         ' 
         ' Label9
         ' 
         Label9.AutoSize = True
-        Label9.Location = New Point(93, 578)
+        Label9.Location = New Point(97, 1127)
         Label9.Name = "Label9"
-        Label9.Size = New Size(38, 20)
-        Label9.TabIndex = 28
+        Label9.Size = New Size(47, 25)
+        Label9.TabIndex = 47
         Label9.Text = "9am"
         ' 
         ' slot_matrix_tablelayout
         ' 
         slot_matrix_tablelayout.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         slot_matrix_tablelayout.ColumnCount = 13
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 50F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 50.0F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
@@ -451,7 +541,7 @@ Partial Class Provider_Signup
         slot_matrix_tablelayout.Controls.Add(Label3, 0, 1)
         slot_matrix_tablelayout.Controls.Add(Label2, 0, 0)
         slot_matrix_tablelayout.Controls.Add(CheckBox1, 1, 0)
-        slot_matrix_tablelayout.Location = New Point(55, 596)
+        slot_matrix_tablelayout.Location = New Point(59, 1145)
         slot_matrix_tablelayout.Name = "slot_matrix_tablelayout"
         slot_matrix_tablelayout.RowCount = 7
         slot_matrix_tablelayout.RowStyles.Add(New RowStyle(SizeType.Percent, 14.2857141F))
@@ -462,7 +552,7 @@ Partial Class Provider_Signup
         slot_matrix_tablelayout.RowStyles.Add(New RowStyle(SizeType.Percent, 14.2857141F))
         slot_matrix_tablelayout.RowStyles.Add(New RowStyle(SizeType.Percent, 14.2857141F))
         slot_matrix_tablelayout.Size = New Size(558, 259)
-        slot_matrix_tablelayout.TabIndex = 27
+        slot_matrix_tablelayout.TabIndex = 46
         ' 
         ' CheckBox84
         ' 
@@ -1460,40 +1550,62 @@ Partial Class Provider_Signup
         ' 
         ' slot_label
         ' 
-        slot_label.Font = New Font("Segoe UI", 10F)
-        slot_label.Location = New Point(55, 532)
+        slot_label.Font = New Font("Segoe UI", 10.0F)
+        slot_label.Location = New Point(59, 1081)
         slot_label.Name = "slot_label"
         slot_label.Size = New Size(167, 22)
-        slot_label.TabIndex = 26
+        slot_label.TabIndex = 45
         slot_label.Text = "Select Slot Timings :"
         ' 
         ' location_checklistbox
         ' 
         location_checklistbox.FormattingEnabled = True
         location_checklistbox.Items.AddRange(New Object() {"Guwahati", "Tezpur", "Jorhat", "Changsari", "Sualkuchi", "Palasbari", "Maliata", "Panbazar", "Panikhaiti", "Amsing", "Jorabat", "Lalmati", "Kahikuchi"})
-        location_checklistbox.Location = New Point(55, 324)
+        location_checklistbox.Location = New Point(59, 803)
         location_checklistbox.Name = "location_checklistbox"
-        location_checklistbox.Size = New Size(297, 158)
-        location_checklistbox.TabIndex = 25
+        location_checklistbox.Size = New Size(297, 172)
+        location_checklistbox.TabIndex = 44
         ' 
         ' location_label
         ' 
-        location_label.Font = New Font("Segoe UI", 10F)
-        location_label.Location = New Point(55, 299)
+        location_label.Font = New Font("Segoe UI", 10.0F)
+        location_label.Location = New Point(59, 778)
         location_label.Name = "location_label"
         location_label.Size = New Size(167, 22)
-        location_label.TabIndex = 24
+        location_label.TabIndex = 43
         location_label.Text = "Select Service Locations :"
+        ' 
+        ' showcnfpassword_cb
+        ' 
+        showcnfpassword_cb.AutoSize = True
+        showcnfpassword_cb.Font = New Font("Segoe UI", 8.0F)
+        showcnfpassword_cb.Location = New Point(479, 357)
+        showcnfpassword_cb.Name = "showcnfpassword_cb"
+        showcnfpassword_cb.Size = New Size(75, 25)
+        showcnfpassword_cb.TabIndex = 42
+        showcnfpassword_cb.Text = "Show"
+        showcnfpassword_cb.UseVisualStyleBackColor = True
+        ' 
+        ' showpassword_cb
+        ' 
+        showpassword_cb.AutoSize = True
+        showpassword_cb.Font = New Font("Segoe UI", 8.0F)
+        showpassword_cb.Location = New Point(479, 309)
+        showpassword_cb.Name = "showpassword_cb"
+        showpassword_cb.Size = New Size(75, 25)
+        showpassword_cb.TabIndex = 41
+        showpassword_cb.Text = "Show"
+        showpassword_cb.UseVisualStyleBackColor = True
         ' 
         ' otp_tb
         ' 
-        otp_tb.Font = New Font("Segoe UI", 10F)
-        otp_tb.ForeColor = SystemColors.GrayText
-        otp_tb.Location = New Point(55, 1039)
+        otp_tb.Font = New Font("Segoe UI", 10.0F)
+        otp_tb.ForeColor = SystemColors.WindowText
+        otp_tb.Location = New Point(55, 461)
         otp_tb.Name = "otp_tb"
-        otp_tb.Size = New Size(418, 30)
+        otp_tb.PlaceholderText = "OTP"
+        otp_tb.Size = New Size(418, 34)
         otp_tb.TabIndex = 22
-        otp_tb.Text = "OTP"
         ' 
         ' register_btn
         ' 
@@ -1502,7 +1614,7 @@ Partial Class Provider_Signup
         register_btn.FlatStyle = FlatStyle.Flat
         register_btn.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         register_btn.ForeColor = Color.White
-        register_btn.Location = New Point(205, 1083)
+        register_btn.Location = New Point(205, 505)
         register_btn.Name = "register_btn"
         register_btn.Size = New Size(135, 35)
         register_btn.TabIndex = 23
@@ -1516,7 +1628,7 @@ Partial Class Provider_Signup
         sendOTP_btn.FlatStyle = FlatStyle.Flat
         sendOTP_btn.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         sendOTP_btn.ForeColor = Color.White
-        sendOTP_btn.Location = New Point(205, 983)
+        sendOTP_btn.Location = New Point(205, 405)
         sendOTP_btn.Name = "sendOTP_btn"
         sendOTP_btn.Size = New Size(135, 35)
         sendOTP_btn.TabIndex = 21
@@ -1526,9 +1638,9 @@ Partial Class Provider_Signup
         ' error_label
         ' 
         error_label.AutoSize = True
-        error_label.Font = New Font("Segoe UI", 8F)
+        error_label.Font = New Font("Segoe UI", 8.0F)
         error_label.ForeColor = Color.Red
-        error_label.Location = New Point(55, 958)
+        error_label.Location = New Point(55, 380)
         error_label.Name = "error_label"
         error_label.Size = New Size(39, 19)
         error_label.TabIndex = 20
@@ -1536,43 +1648,45 @@ Partial Class Provider_Signup
         ' 
         ' email_tb
         ' 
-        email_tb.Font = New Font("Segoe UI", 10F)
-        email_tb.ForeColor = SystemColors.GrayText
+        email_tb.Font = New Font("Segoe UI", 10.0F)
+        email_tb.ForeColor = SystemColors.WindowText
         email_tb.Location = New Point(55, 254)
         email_tb.Name = "email_tb"
-        email_tb.Size = New Size(418, 30)
+        email_tb.PlaceholderText = "Email"
+        email_tb.Size = New Size(418, 34)
         email_tb.TabIndex = 17
-        email_tb.Text = "Email"
         ' 
         ' cnfpassword_tb
         ' 
-        cnfpassword_tb.Font = New Font("Segoe UI", 10F)
-        cnfpassword_tb.ForeColor = SystemColors.GrayText
-        cnfpassword_tb.Location = New Point(55, 930)
+        cnfpassword_tb.Font = New Font("Segoe UI", 10.0F)
+        cnfpassword_tb.ForeColor = SystemColors.WindowText
+        cnfpassword_tb.Location = New Point(55, 352)
         cnfpassword_tb.Name = "cnfpassword_tb"
-        cnfpassword_tb.Size = New Size(418, 30)
+        cnfpassword_tb.PasswordChar = "*"c
+        cnfpassword_tb.PlaceholderText = "Confirm Password"
+        cnfpassword_tb.Size = New Size(418, 34)
         cnfpassword_tb.TabIndex = 19
-        cnfpassword_tb.Text = "Confirm Password"
         ' 
         ' password_tb
         ' 
-        password_tb.Font = New Font("Segoe UI", 10F)
-        password_tb.ForeColor = SystemColors.GrayText
-        password_tb.Location = New Point(55, 882)
+        password_tb.Font = New Font("Segoe UI", 10.0F)
+        password_tb.ForeColor = SystemColors.WindowText
+        password_tb.Location = New Point(55, 304)
         password_tb.Name = "password_tb"
-        password_tb.Size = New Size(418, 30)
+        password_tb.PasswordChar = "*"c
+        password_tb.PlaceholderText = "Password"
+        password_tb.Size = New Size(418, 34)
         password_tb.TabIndex = 18
-        password_tb.Text = "Password"
         ' 
         ' name_tb
         ' 
-        name_tb.Font = New Font("Segoe UI", 10F)
-        name_tb.ForeColor = SystemColors.GrayText
+        name_tb.Font = New Font("Segoe UI", 10.0F)
+        name_tb.ForeColor = SystemColors.WindowText
         name_tb.Location = New Point(55, 209)
         name_tb.Name = "name_tb"
-        name_tb.Size = New Size(418, 30)
+        name_tb.PlaceholderText = "Name"
+        name_tb.Size = New Size(418, 34)
         name_tb.TabIndex = 16
-        name_tb.Text = "Name"
         ' 
         ' subheadlabel
         ' 
@@ -1585,27 +1699,12 @@ Partial Class Provider_Signup
         ' 
         ' Label1
         ' 
-        Label1.Font = New Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label1.Font = New Font("Segoe UI", 15.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label1.Location = New Point(52, 128)
         Label1.Name = "Label1"
         Label1.Size = New Size(258, 34)
         Label1.TabIndex = 14
         Label1.Text = "Create an account"
-        ' 
-        ' login_btn
-        ' 
-        login_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        login_btn.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
-        login_btn.FlatAppearance.BorderSize = 0
-        login_btn.FlatStyle = FlatStyle.Flat
-        login_btn.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        login_btn.ForeColor = Color.White
-        login_btn.Location = New Point(468, 23)
-        login_btn.Name = "login_btn"
-        login_btn.Size = New Size(135, 35)
-        login_btn.TabIndex = 13
-        login_btn.Text = "Log In"
-        login_btn.UseVisualStyleBackColor = False
         ' 
         ' back_btn
         ' 
@@ -1650,19 +1749,28 @@ Partial Class Provider_Signup
     Friend WithEvents name_tb As TextBox
     Friend WithEvents subheadlabel As Label
     Friend WithEvents Label1 As Label
-    Friend WithEvents login_btn As Button
     Friend WithEvents back_btn As Button
-    Friend WithEvents location_checklistbox As CheckedListBox
-    Friend WithEvents location_label As Label
+    Friend WithEvents showcnfpassword_cb As CheckBox
+    Friend WithEvents showpassword_cb As CheckBox
+    Friend WithEvents profileheading_label As Label
+    Friend WithEvents cos_tb As TextBox
+    Friend WithEvents cps_label As Label
+    Friend WithEvents type_label As Label
+    Friend WithEvents servicetype_combox As ComboBox
+    Friend WithEvents Label21 As Label
+    Friend WithEvents Label15 As Label
+    Friend WithEvents Label16 As Label
+    Friend WithEvents Label17 As Label
+    Friend WithEvents Label18 As Label
+    Friend WithEvents Label19 As Label
+    Friend WithEvents Label20 As Label
+    Friend WithEvents Label14 As Label
+    Friend WithEvents Label13 As Label
+    Friend WithEvents Label12 As Label
+    Friend WithEvents Label11 As Label
+    Friend WithEvents Label10 As Label
+    Friend WithEvents Label9 As Label
     Friend WithEvents slot_matrix_tablelayout As TableLayoutPanel
-    Friend WithEvents slot_label As Label
-    Friend WithEvents Label2 As Label
-    Friend WithEvents Label8 As Label
-    Friend WithEvents Label7 As Label
-    Friend WithEvents Label6 As Label
-    Friend WithEvents Label5 As Label
-    Friend WithEvents Label4 As Label
-    Friend WithEvents Label3 As Label
     Friend WithEvents CheckBox84 As CheckBox
     Friend WithEvents CheckBox83 As CheckBox
     Friend WithEvents CheckBox82 As CheckBox
@@ -1746,18 +1854,17 @@ Partial Class Provider_Signup
     Friend WithEvents CheckBox4 As CheckBox
     Friend WithEvents CheckBox3 As CheckBox
     Friend WithEvents CheckBox2 As CheckBox
+    Friend WithEvents Label8 As Label
+    Friend WithEvents Label7 As Label
+    Friend WithEvents Label6 As Label
+    Friend WithEvents Label5 As Label
+    Friend WithEvents Label4 As Label
+    Friend WithEvents Label3 As Label
+    Friend WithEvents Label2 As Label
     Friend WithEvents CheckBox1 As CheckBox
-    Friend WithEvents Label14 As Label
-    Friend WithEvents Label13 As Label
-    Friend WithEvents Label12 As Label
-    Friend WithEvents Label11 As Label
-    Friend WithEvents Label10 As Label
-    Friend WithEvents Label9 As Label
-    Friend WithEvents Label21 As Label
-    Friend WithEvents Label15 As Label
-    Friend WithEvents Label16 As Label
-    Friend WithEvents Label17 As Label
-    Friend WithEvents Label18 As Label
-    Friend WithEvents Label19 As Label
-    Friend WithEvents Label20 As Label
+    Friend WithEvents slot_label As Label
+    Friend WithEvents location_checklistbox As CheckedListBox
+    Friend WithEvents location_label As Label
+    Friend WithEvents save_btn As Button
+    Friend WithEvents login_btn As Button
 End Class
