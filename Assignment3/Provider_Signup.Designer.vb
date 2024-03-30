@@ -1642,7 +1642,7 @@ Partial Class Provider_Signup
         error_label.ForeColor = Color.Red
         error_label.Location = New Point(55, 380)
         error_label.Name = "error_label"
-        error_label.Size = New Size(45, 21)
+        error_label.Size = New Size(39, 19)
         error_label.TabIndex = 20
         error_label.Text = "error"
         ' 

@@ -1,5 +1,11 @@
 ﻿Imports System.Net.Mail
+Imports System.Security.Cryptography.X509Certificates
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel
+Imports Microsoft.Data.SqlClient
+Imports System.Configuration
+Imports System.IO
+Imports System.Drawing
+
 
 Public Class User_Signup
     Dim code As Integer
@@ -101,4 +107,6 @@ Public Class User_Signup
 
         End If
     End Sub
+
+
 End Class

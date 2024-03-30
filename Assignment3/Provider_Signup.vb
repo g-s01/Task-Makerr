@@ -1,11 +1,19 @@
 ﻿Imports System.Net.Mail
-
+Imports System.Configuration
+Imports Microsoft.Data.SqlClient
+Imports System.IO
+Imports System.Drawing
 Public Class Provider_Signup
 
     Dim code As Integer
+    Dim location_array(13) As Boolean
+    Dim locations() As String = {"Guwahati", "Tezpur", "Jorhat", "Changsari", "Sualkuchi", "Palasbari", "Maliata", "Panbazar", "Panikhati", "Amsing", "Jorabat", "Lalmati", "Kahikuchi"}
 
     Private Sub Provider_Signup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         error_label.Text = ""
+        For i As Integer = 0 To 12
+            location_array(i) = False
+        Next
     End Sub
 
     Private Sub Showpassword_cb_CheckedChanged(sender As Object, e As EventArgs) Handles showpassword_cb.CheckedChanged
