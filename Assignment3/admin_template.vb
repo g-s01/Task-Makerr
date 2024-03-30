@@ -16,10 +16,6 @@
         ' Add the form to Panel2
         SplitContainer1.Panel2.Controls.Add(chatForm)
 
-        ' Set padding around the form
-        Dim padding As Integer = 5
-        chatForm.Location = New Point(padding, padding)
-        chatForm.ClientSize = New Size(SplitContainer1.Panel2.ClientSize.Width - 2 * padding, SplitContainer1.Panel2.ClientSize.Height - 2 * padding)
 
         ' Set the form's Dock property to fill Panel2
         chatForm.Dock = DockStyle.Fill

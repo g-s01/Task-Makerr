@@ -43,7 +43,7 @@ Partial Class Chat
         ' Label1
         ' 
         Label1.AutoSize = True
-        Label1.Font = New Font("Segoe UI", 18.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label1.Font = New Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label1.ForeColor = Color.FromArgb(CByte(0), CByte(0), CByte(192))
         Label1.Location = New Point(432, 22)
         Label1.Name = "Label1"
@@ -56,9 +56,9 @@ Partial Class Chat
         Panel2.AutoScroll = True
         Panel2.BackColor = Color.FloralWhite
         Panel2.BorderStyle = BorderStyle.FixedSingle
-        Panel2.Location = New Point(0, 85)
+        Panel2.Location = New Point(0, 90)
         Panel2.Name = "Panel2"
-        Panel2.Size = New Size(960, 855)
+        Panel2.Size = New Size(960, 851)
         Panel2.TabIndex = 1
         ' 
         ' TextBox1
@@ -76,7 +76,7 @@ Partial Class Chat
         Button1.BackColor = Color.Turquoise
         Button1.Cursor = Cursors.Hand
         Button1.FlatStyle = FlatStyle.Popup
-        Button1.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Button1.Font = New Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Button1.ForeColor = Color.Black
         Button1.Location = New Point(844, 942)
         Button1.Name = "Button1"
@@ -87,7 +87,7 @@ Partial Class Chat
         ' 
         ' Chat
         ' 
-        AutoScaleDimensions = New SizeF(10.0F, 25.0F)
+        AutoScaleDimensions = New SizeF(10F, 25F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(961, 1019)
         Controls.Add(TextBox1)

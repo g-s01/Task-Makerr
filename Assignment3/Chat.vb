@@ -27,9 +27,9 @@ Public Class Chat
         Panel2.Controls.Clear()
 
         ' Display each message in the message list
-        Dim yOffset As Integer = 5
-        Dim gap As Integer = 5 ' Gap between labels
-        Dim pad As Integer = 10
+        Dim yOffset As Integer = 10
+        Dim gap As Integer = 10 ' Gap between labels
+        Dim pad As Integer = 25
         Dim panelWidth As Integer = Panel2.Width
 
         For Each msg In messageList
@@ -43,6 +43,8 @@ Public Class Chat
             label.Left = panelWidth - label.PreferredWidth - pad
             label.Top = yOffset ' Set the vertical position
 
+
+
             ' Manually calculate the height of the label based on the text and the maximum width
             Dim textSize = TextRenderer.MeasureText(label.Text, label.Font, label.MaximumSize, TextFormatFlags.WordBreak)
             label.Height = textSize.Height
@@ -51,7 +53,10 @@ Public Class Chat
 
             ' Increment the vertical position for the next message with gap
             yOffset += label.Height + gap
+
         Next
+
+
 
         ' Ensure the panel scrolls to the bottom to show the latest message
         Panel2.AutoScrollPosition = New Point(0, Panel2.AutoScrollPosition.Y + yOffset)
