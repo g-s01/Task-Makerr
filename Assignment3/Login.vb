@@ -112,6 +112,7 @@ Public Class Login
                         user_template.Show()
                     Else
                         error_label.Text = "Invalid email or password. No such account"
+                        password_tb.Text = ""
                     End If
                 End Using
             End Using
