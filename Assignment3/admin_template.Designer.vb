@@ -24,7 +24,7 @@ Partial Class admin_template
     Private Sub InitializeComponent()
         SplitContainer1 = New SplitContainer()
         Label1 = New Label()
-        Button7 = New Button()
+        logout_btn = New Button()
         Button3 = New Button()
         Button2 = New Button()
         Button1 = New Button()
@@ -46,7 +46,7 @@ Partial Class admin_template
         ' SplitContainer1.Panel1
         ' 
         SplitContainer1.Panel1.Controls.Add(Label1)
-        SplitContainer1.Panel1.Controls.Add(Button7)
+        SplitContainer1.Panel1.Controls.Add(logout_btn)
         SplitContainer1.Panel1.Controls.Add(Button3)
         SplitContainer1.Panel1.Controls.Add(Button2)
         SplitContainer1.Panel1.Controls.Add(Button1)
@@ -68,28 +68,28 @@ Partial Class admin_template
         Label1.ForeColor = Color.DimGray
         Label1.Location = New Point(22, 100)
         Label1.Name = "Label1"
-        Label1.Size = New Size(57, 23)
+        Label1.Size = New Size(71, 28)
         Label1.TabIndex = 9
         Label1.Text = "Menu"
         ' 
-        ' Button7
+        ' logout_btn
         ' 
-        Button7.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button7.BackColor = SystemColors.Control
-        Button7.FlatAppearance.BorderSize = 0
-        Button7.FlatStyle = FlatStyle.Flat
-        Button7.Font = New Font("Microsoft YaHei", 10.2F)
-        Button7.ForeColor = Color.Red
-        Button7.Image = My.Resources.Resources.Vector
-        Button7.ImageAlign = ContentAlignment.MiddleLeft
-        Button7.Location = New Point(3, 619)
-        Button7.Name = "Button7"
-        Button7.Padding = New Padding(15, 0, 0, 0)
-        Button7.Size = New Size(282, 36)
-        Button7.TabIndex = 8
-        Button7.Text = "     Logout"
-        Button7.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button7.UseVisualStyleBackColor = False
+        logout_btn.Anchor = AnchorStyles.Left Or AnchorStyles.Right
+        logout_btn.BackColor = SystemColors.Control
+        logout_btn.FlatAppearance.BorderSize = 0
+        logout_btn.FlatStyle = FlatStyle.Flat
+        logout_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        logout_btn.ForeColor = Color.Red
+        logout_btn.Image = My.Resources.Resources.Vector
+        logout_btn.ImageAlign = ContentAlignment.MiddleLeft
+        logout_btn.Location = New Point(3, 619)
+        logout_btn.Name = "logout_btn"
+        logout_btn.Padding = New Padding(15, 0, 0, 0)
+        logout_btn.Size = New Size(282, 36)
+        logout_btn.TabIndex = 8
+        logout_btn.Text = "     Logout"
+        logout_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        logout_btn.UseVisualStyleBackColor = False
         ' 
         ' Button3
         ' 
@@ -169,6 +169,7 @@ Partial Class admin_template
         ClientSize = New Size(1132, 666)
         Controls.Add(SplitContainer1)
         Name = "admin_template"
+        StartPosition = FormStartPosition.CenterScreen
         Text = "admin_template"
         SplitContainer1.Panel1.ResumeLayout(False)
         SplitContainer1.Panel1.PerformLayout()
@@ -181,7 +182,7 @@ Partial Class admin_template
 
     Friend WithEvents SplitContainer1 As SplitContainer
     Friend WithEvents Label1 As Label
-    Friend WithEvents Button7 As Button
+    Friend WithEvents logout_btn As Button
     Friend WithEvents Button3 As Button
     Friend WithEvents Button2 As Button
     Friend WithEvents Button1 As Button
