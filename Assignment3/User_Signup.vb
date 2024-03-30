@@ -1,5 +1,11 @@
 ﻿Imports System.Net.Mail
+Imports System.Security.Cryptography.X509Certificates
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel
+Imports Microsoft.Data.SqlClient
+Imports System.Configuration
+Imports System.IO
+Imports System.Drawing
+
 
 Public Class User_Signup
     Dim name_fill As Boolean = False
@@ -165,8 +171,44 @@ Public Class User_Signup
     End Sub
 
     Private Sub Register_btn_Click(sender As Object, e As EventArgs) Handles register_btn.Click
-        If Not code.ToString = otp_tb.ToString Then
+        If Not code.ToString = otp_tb.Text Then
             MessageBox.Show("Wrong OTP: Please enter correct otp!")
+        Else
+            'Dim db As New Database
+            Dim profileImageFilePath As String = "D:\Downloads\gauss.png"
+            Dim profileImageBytes As Byte() = File.ReadAllBytes(profileImageFilePath)
+            Dim insertQuery As String = "INSERT INTO customer (username, phone_number, email, password, balance, public_key, private_key,profile_image) VALUES (@Username, @PhoneNumber, @Email, @Password, @Balance, @PublicKey, @PrivateKey,@profileImageBytes)"
+            Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+            Using connection As New SqlConnection(connectionString)
+                ' Create SqlCommand
+                Using command As New SqlCommand(insertQuery, connection)
+                    ' Add parameters
+                    command.Parameters.AddWithValue("@Username", name_tb.Text)
+                    command.Parameters.AddWithValue("@PhoneNumber", "7907147636")
+                    command.Parameters.AddWithValue("@Email", email_tb.Text)
+                    command.Parameters.AddWithValue("@Password", password_tb.Text)
+                    command.Parameters.AddWithValue("@Balance", 1000)
+                    command.Parameters.AddWithValue("@PublicKey", 79)
+                    command.Parameters.AddWithValue("@PrivateKey", 101)
+                    command.Parameters.AddWithValue("@profileImageBytes", profileImageBytes)
+                    ' Open connection
+                    connection.Open()
+
+                    ' Execute command
+                    Dim rowsAffected As Integer = command.ExecuteNonQuery()
+
+                    ' Check if insertion was successful
+                    If rowsAffected > 0 Then
+                        MessageBox.Show("Data inserted successfully.")
+                    Else
+                        MessageBox.Show("Failed to insert data.")
+                    End If
+                End Using
+            End Using
+
+
         End If
     End Sub
+
+
 End Class

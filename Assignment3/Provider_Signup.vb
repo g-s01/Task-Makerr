@@ -1,5 +1,8 @@
 ﻿Imports System.Net.Mail
-
+Imports System.Configuration
+Imports Microsoft.Data.SqlClient
+Imports System.IO
+Imports System.Drawing
 Public Class Provider_Signup
 
     Dim name_fill As Boolean = False
@@ -8,9 +11,14 @@ Public Class Provider_Signup
     Dim cnfpassword_fill As Boolean = False
     Dim otp_fill As Boolean = False
     Dim code As Integer
+    Dim location_array(13) As Boolean
+    Dim locations() As String = {"Guwahati", "Tezpur", "Jorhat", "Changsari", "Sualkuchi", "Palasbari", "Maliata", "Panbazar", "Panikhati", "Amsing", "Jorabat", "Lalmati", "Kahikuchi"}
 
     Private Sub Provider_Signup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         error_label.Text = ""
+        For i As Integer = 0 To 12
+            location_array(i) = False
+        Next
     End Sub
 
     Private Sub Name_tb_Enter(sender As Object, e As EventArgs) Handles name_tb.Enter
@@ -150,8 +158,52 @@ Public Class Provider_Signup
     End Sub
 
     Private Sub Register_btn_Click(sender As Object, e As EventArgs) Handles register_btn.Click
-        If Not code.ToString = otp_tb.ToString Then
+        If Not code.ToString = otp_tb.Text Then
             MessageBox.Show("Wrong OTP: Please enter correct otp!")
+        Else
+            Dim profileImageFilePath As String = "D:\Downloads\gauss.png"
+            Dim profileImageBytes As Byte() = File.ReadAllBytes(profileImageFilePath)
+            Dim insertQuery As String = "INSERT INTO provider (providername, phone_number, email, password, balance, public_key, private_key,profile_image) VALUES (@Username, @PhoneNumber, @Email, @Password, @Balance, @PublicKey, @PrivateKey,@profileImageBytes)"
+            Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+            Using connection As New SqlConnection(connectionString)
+                ' Create SqlCommand
+                Using command As New SqlCommand(insertQuery, connection)
+                    ' Add parameters
+                    command.Parameters.AddWithValue("@Username", name_tb.Text)
+                    command.Parameters.AddWithValue("@PhoneNumber", "7907147636")
+                    command.Parameters.AddWithValue("@Email", email_tb.Text)
+                    command.Parameters.AddWithValue("@Password", password_tb.Text)
+                    command.Parameters.AddWithValue("@Balance", 1000)
+                    command.Parameters.AddWithValue("@PublicKey", 79)
+                    command.Parameters.AddWithValue("@PrivateKey", 101)
+                    command.Parameters.AddWithValue("@profileImageBytes", profileImageBytes)
+                    ' Open connection
+                    connection.Open()
+
+                    ' Execute command
+                    Dim rowsAffected As Integer = command.ExecuteNonQuery()
+
+                    ' Check if insertion was successful
+                    If rowsAffected > 0 Then
+                        MessageBox.Show("Data inserted successfully.")
+                    Else
+                        MessageBox.Show("Failed to insert data.")
+                    End If
+                End Using
+            End Using
+
         End If
+
+    End Sub
+
+    Private Sub location_checklistbox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles location_checklistbox.SelectedIndexChanged
+        For i As Integer = 0 To location_checklistbox.Items.Count - 1
+            ' Check if the item at index i is checked
+            If location_checklistbox.GetItemChecked(i) Then
+                location_array(i) = True
+            Else
+                location_array(i) = False
+            End If
+        Next
     End Sub
 End Class
