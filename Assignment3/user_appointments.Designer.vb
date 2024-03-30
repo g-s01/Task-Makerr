@@ -65,6 +65,7 @@ Partial Class user_appointments
         Panel1.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         Panel1.AutoScroll = True
         Panel1.BackColor = SystemColors.Control
+        Panel1.CausesValidation = False
         Panel1.Location = New Point(3, 61)
         Panel1.Margin = New Padding(3, 2, 3, 2)
         Panel1.Name = "Panel1"
