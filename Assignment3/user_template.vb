@@ -20,9 +20,9 @@ Public Class user_template
                 MessageBox.Show("Error connecting to database: " & ex.Message)
             End Try
         End Using
-        With user_appointment_details
+        With user_appointments
             .TopLevel = False
-            SplitContainer1.Panel2.Controls.Add(user_appointment_details)
+            SplitContainer1.Panel2.Controls.Add(user_appointments)
             .BringToFront()
             .Show()
 

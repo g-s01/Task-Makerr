@@ -40,14 +40,14 @@
         Dim num_appointments As Integer = 10
         ReDim panelArray(num_appointments - 1)
 
-        Dim x As Integer = 10
+        Dim x As Integer = 20
         Dim y As Integer = 50
         Dim spacing As Integer = 100
         Panel1.Controls.Clear()
         For i As Integer = 0 To num_appointments - 1
             panelArray(i) = New System.Windows.Forms.Panel()
             panelArray(i).Location = New System.Drawing.Point(x, y)
-            panelArray(i).Size = New System.Drawing.Size(700, 70)
+            panelArray(i).Size = New System.Drawing.Size(750, 70)
             panelArray(i).BackColor = System.Drawing.Color.FromArgb(CByte(240), CByte(218), CByte(248))
             panelArray(i).AutoSize = True
 
@@ -55,28 +55,28 @@
 
             Dim name As New Label()
             name.AutoSize = True
-            name.Location = New System.Drawing.Point(15, 10)
+            name.Location = New System.Drawing.Point(25, 10)
             name.Name = "name"
             name.Text = "Username"
             panelArray(i).Controls.Add(name)
 
             Dim place As New Label()
             place.AutoSize = True
-            place.Location = New System.Drawing.Point(15, 40)
+            place.Location = New System.Drawing.Point(25, 40)
             place.Name = "place"
             place.Text = "Location"
             panelArray(i).Controls.Add(place)
 
             Dim cost As New Label()
             cost.AutoSize = True
-            cost.Location = New System.Drawing.Point(630, 10)
+            cost.Location = New System.Drawing.Point(640, 10)
             cost.Name = "cost"
             cost.Text = "Cost"
             panelArray(i).Controls.Add(cost)
 
             Dim timings As New Label()
             timings.AutoSize = True
-            timings.Location = New System.Drawing.Point(535, 40)
+            timings.Location = New System.Drawing.Point(545, 40)
             timings.Name = "timings"
             timings.Text = "Appointment schedule"
             panelArray(i).Controls.Add(timings)
@@ -89,14 +89,14 @@
     Private Function completed()
         Dim num_appointments As Integer = 10
         Dim splitContainerArray(num_appointments - 1) As SplitContainer
-        Dim x As Integer = 10
+        Dim x As Integer = 20
         Dim y As Integer = 50
         Dim spacing As Integer = 130
         Panel1.Controls.Clear()
         For i As Integer = 0 To num_appointments - 1
             splitContainerArray(i) = New SplitContainer()
             splitContainerArray(i).Location = New System.Drawing.Point(x, y)
-            splitContainerArray(i).Size = New System.Drawing.Size(700, 120)
+            splitContainerArray(i).Size = New System.Drawing.Size(750, 120)
             splitContainerArray(i).Orientation = Orientation.Horizontal
             splitContainerArray(i).SplitterDistance = 70
             splitContainerArray(i).Panel1.BackColor = System.Drawing.Color.FromArgb(CByte(240), CByte(218), CByte(248))
@@ -105,28 +105,28 @@
 
             Dim name As New Label()
             name.AutoSize = True
-            name.Location = New System.Drawing.Point(15, 10)
+            name.Location = New System.Drawing.Point(25, 10)
             name.Name = "name"
             name.Text = "Username"
             splitContainerArray(i).Panel1.Controls.Add(name)
 
             Dim place As New Label()
             place.AutoSize = True
-            place.Location = New System.Drawing.Point(15, 40)
+            place.Location = New System.Drawing.Point(25, 40)
             place.Name = "place"
             place.Text = "Location"
             splitContainerArray(i).Panel1.Controls.Add(place)
 
             Dim cost As New Label()
             cost.AutoSize = True
-            cost.Location = New System.Drawing.Point(630, 10)
+            cost.Location = New System.Drawing.Point(640, 10)
             cost.Name = "cost"
             cost.Text = "Cost"
             splitContainerArray(i).Panel1.Controls.Add(cost)
 
             Dim timings As New Label()
             timings.AutoSize = True
-            timings.Location = New System.Drawing.Point(535, 40)
+            timings.Location = New System.Drawing.Point(545, 40)
             timings.Name = "timings"
             timings.Text = "Appointment schedule"
             splitContainerArray(i).Panel1.Controls.Add(timings)
@@ -134,7 +134,7 @@
             Dim button As New Button()
             button.Text = "  Proceed to Pay   "
             button.AutoSize = True
-            button.Location = New System.Drawing.Point(570, 0)
+            button.Location = New System.Drawing.Point(580, 0)
             button.FlatAppearance.BorderSize = 0
             button.FlatStyle = FlatStyle.Flat
             button.Font = New Font("Microsoft YaHei", 10.2F)

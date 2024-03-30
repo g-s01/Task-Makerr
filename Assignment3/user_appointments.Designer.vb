@@ -69,7 +69,7 @@ Partial Class user_appointments
         Panel1.Location = New Point(3, 61)
         Panel1.Margin = New Padding(3, 2, 3, 2)
         Panel1.Name = "Panel1"
-        Panel1.Size = New Size(717, 403)
+        Panel1.Size = New Size(845, 589)
         Panel1.TabIndex = 2
         ' 
         ' user_appointments
@@ -77,7 +77,7 @@ Partial Class user_appointments
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
-        ClientSize = New Size(722, 464)
+        ClientSize = New Size(850, 650)
         Controls.Add(Panel1)
         Controls.Add(Button2)
         Controls.Add(Button1)
