@@ -3,55 +3,23 @@ Imports Microsoft.VisualBasic.ApplicationServices
 
 Public Class Login
 
-    Private email_fill As Boolean = False
-    Private password_fill As Boolean = False
-
     Private Sub Login_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         error_label.Text = ""
     End Sub
 
-    Private Sub Email_tb_Enter(sender As Object, e As EventArgs) Handles email_tb.Enter
-        If email_tb.Text = "Email" And Not email_fill Then
-            email_tb.Text = ""
-            email_fill = True
-            email_tb.ForeColor = Color.Black ' Change text color to default
-        End If
-    End Sub
-
-    Private Sub Email_tb_Leave(sender As Object, e As EventArgs) Handles email_tb.Leave
-        If email_tb.Text = "" Then
-            email_tb.Text = "Email"
-            email_fill = False
-            email_tb.ForeColor = Color.Gray ' Change text color to placeholder color
-        End If
-    End Sub
-
-    Private Sub Password_tb_Enter(sender As Object, e As EventArgs) Handles password_tb.Enter
-        If password_tb.Text = "Password" And Not password_fill Then
-            password_tb.Text = ""
-            password_fill = True
-            password_tb.ForeColor = Color.Black ' Change text color to default
-            ' Optionally, you can set the PasswordChar property to hide the password characters
+    Private Sub Showpassword_cb_CheckedChanged(sender As Object, e As EventArgs) Handles showpassword_cb.CheckedChanged
+        If showpassword_cb.Checked Then
+            password_tb.PasswordChar = ""
+        Else
             password_tb.PasswordChar = "*"
         End If
     End Sub
 
-    Private Sub Password_tb_Leave(sender As Object, e As EventArgs) Handles password_tb.Leave
-        If password_tb.Text = "" Then
-            password_tb.Text = "Password"
-            password_fill = False
-            password_tb.ForeColor = Color.Gray ' Change text color to placeholder color
-            ' Optionally, reset the PasswordChar property to make the placeholder text visible
-            password_tb.PasswordChar = ""
-        End If
-    End Sub
-
-    'Upon clicking provider button
     Private Sub Provider_btn_Click(sender As Object, e As EventArgs) Handles provider_btn.Click
-        If Not email_fill Then
+        If String.IsNullOrWhiteSpace(email_tb.Text) Then
             error_label.Text = "* email is required"
             email_tb.Focus()
-        ElseIf Not password_fill Then
+        ElseIf String.IsNullOrWhiteSpace(password_tb.Text) Then
             error_label.Text = "* password is required"
             password_tb.Focus()
         Else
@@ -79,16 +47,20 @@ Public Class Login
                     End If
                 End Using
             End Using
+            ' check from database
+            User_ID = "12340"
+            Me.Hide()
+            provider_template.Show()
         End If
     End Sub
 
 
     'Upon clicking user button
     Private Sub User_btn_Click(sender As Object, e As EventArgs) Handles user_btn.Click
-        If Not email_fill Then
+        If String.IsNullOrWhiteSpace(email_tb.Text) Then
             error_label.Text = "* email is required"
             email_tb.Focus()
-        ElseIf Not password_fill Then
+        ElseIf String.IsNullOrWhiteSpace(password_tb.Text) Then
             error_label.Text = "* password is required"
             password_tb.Focus()
         Else
@@ -126,6 +98,7 @@ Public Class Login
     End Sub
 
     Private Sub Admin_ll_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles admin_ll.LinkClicked
-
+        Me.Hide()
+        Admin_Login.Show()
     End Sub
 End Class
