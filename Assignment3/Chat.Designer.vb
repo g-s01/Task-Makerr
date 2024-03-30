@@ -32,7 +32,7 @@ Partial Class Chat
         ' 
         ' Panel1
         ' 
-        Panel1.BackColor = Color.FromArgb(CByte(0), CByte(192), CByte(0))
+        Panel1.BackColor = Color.LightCoral
         Panel1.BorderStyle = BorderStyle.FixedSingle
         Panel1.Controls.Add(Label1)
         Panel1.Location = New Point(0, -1)
@@ -43,8 +43,9 @@ Partial Class Chat
         ' Label1
         ' 
         Label1.AutoSize = True
-        Label1.Font = New Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        Label1.ForeColor = Color.FromArgb(CByte(0), CByte(0), CByte(192))
+        Label1.BackColor = Color.LightCoral
+        Label1.Font = New Font("Segoe UI", 18.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label1.ForeColor = Color.Black
         Label1.Location = New Point(432, 22)
         Label1.Name = "Label1"
         Label1.Size = New Size(113, 48)
