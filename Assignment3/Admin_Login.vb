@@ -1,4 +1,5 @@
-﻿Imports Microsoft.IdentityModel.Tokens
+﻿Imports Microsoft.Data.SqlClient
+Imports Microsoft.IdentityModel.Tokens
 
 Public Class Admin_Login
 
@@ -25,6 +26,20 @@ Public Class Admin_Login
             password_tb.Focus()
         Else
             error_label.Text = ""
+
+            Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+            Dim sqlConnection As New SqlConnection(connectionString)
+
+            Try
+                sqlConnection.Open()
+                MessageBox.Show("Connection successful!")
+            Catch ex As Exception
+                MessageBox.Show("Error connecting to database: " & ex.Message)
+            Finally
+                If sqlConnection.State = ConnectionState.Open Then
+                    sqlConnection.Close()
+                End If
+            End Try
         End If
     End Sub
 End Class

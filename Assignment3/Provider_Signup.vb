@@ -94,7 +94,7 @@ Public Class Provider_Signup
     End Sub
 
     Private Sub Register_btn_Click(sender As Object, e As EventArgs) Handles register_btn.Click
-        If Not code.ToString = otp_tb.ToString Then
+        If Not code.ToString = otp_tb.Text.ToString Then
             MessageBox.Show("Wrong OTP: Please enter correct otp!")
         End If
     End Sub
