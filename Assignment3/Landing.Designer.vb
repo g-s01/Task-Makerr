@@ -90,11 +90,11 @@ Partial Class Landing
         ' 
         admin_ll.ActiveLinkColor = Color.FromArgb(CByte(255), CByte(128), CByte(255))
         admin_ll.AutoSize = True
-        admin_ll.Font = New Font("Segoe UI", 10.0F)
+        admin_ll.Font = New Font("Segoe UI", 10F)
         admin_ll.LinkColor = Color.DimGray
         admin_ll.Location = New Point(58, 370)
         admin_ll.Name = "admin_ll"
-        admin_ll.Size = New Size(144, 28)
+        admin_ll.Size = New Size(102, 19)
         admin_ll.TabIndex = 12
         admin_ll.TabStop = True
         admin_ll.Text = "Login as admin"
@@ -105,7 +105,7 @@ Partial Class Landing
         provider_btn.BackColor = Color.White
         provider_btn.FlatAppearance.BorderSize = 0
         provider_btn.FlatStyle = FlatStyle.Flat
-        provider_btn.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        provider_btn.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         provider_btn.ForeColor = Color.Gray
         provider_btn.Location = New Point(58, 311)
         provider_btn.Name = "provider_btn"
@@ -121,7 +121,7 @@ Partial Class Landing
         user_btn.BackColor = Color.White
         user_btn.FlatAppearance.BorderSize = 0
         user_btn.FlatStyle = FlatStyle.Flat
-        user_btn.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        user_btn.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         user_btn.ForeColor = Color.Gray
         user_btn.Location = New Point(58, 265)
         user_btn.Name = "user_btn"
@@ -143,7 +143,7 @@ Partial Class Landing
         ' 
         ' headlabel
         ' 
-        headlabel.Font = New Font("Segoe UI", 15.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        headlabel.Font = New Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         headlabel.Location = New Point(55, 182)
         headlabel.Name = "headlabel"
         headlabel.Size = New Size(258, 34)

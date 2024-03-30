@@ -29,6 +29,9 @@ Partial Class payments
         Label1 = New Label()
         Label2 = New Label()
         GroupBox1 = New GroupBox()
+        WebView21 = New Microsoft.Web.WebView2.WinForms.WebView2()
+        TextBox2 = New TextBox()
+        Label4 = New Label()
         verifyButton = New Button()
         TextBox1 = New TextBox()
         Label3 = New Label()
@@ -37,6 +40,7 @@ Partial Class payments
         CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox1.SuspendLayout()
+        CType(WebView21, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' PictureBox1
@@ -90,6 +94,9 @@ Partial Class payments
         ' GroupBox1
         ' 
         GroupBox1.BackColor = Color.FromArgb(CByte(255), CByte(192), CByte(255))
+        GroupBox1.Controls.Add(WebView21)
+        GroupBox1.Controls.Add(TextBox2)
+        GroupBox1.Controls.Add(Label4)
         GroupBox1.Controls.Add(verifyButton)
         GroupBox1.Controls.Add(TextBox1)
         GroupBox1.Controls.Add(Label3)
@@ -98,6 +105,34 @@ Partial Class payments
         GroupBox1.Size = New Size(1038, 387)
         GroupBox1.TabIndex = 5
         GroupBox1.TabStop = False
+        ' 
+        ' WebView21
+        ' 
+        WebView21.CreationProperties = Nothing
+        WebView21.DefaultBackgroundColor = Color.White
+        WebView21.Location = New Point(288, 221)
+        WebView21.Name = "WebView21"
+        WebView21.Size = New Size(75, 23)
+        WebView21.TabIndex = 5
+        WebView21.ZoomFactor = 1R
+        ' 
+        ' TextBox2
+        ' 
+        TextBox2.Font = New Font("Microsoft YaHei", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        TextBox2.Location = New Point(68, 320)
+        TextBox2.Name = "TextBox2"
+        TextBox2.Size = New Size(149, 29)
+        TextBox2.TabIndex = 4
+        ' 
+        ' Label4
+        ' 
+        Label4.AutoSize = True
+        Label4.Font = New Font("Microsoft YaHei", 15.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label4.Location = New Point(57, 280)
+        Label4.Name = "Label4"
+        Label4.Size = New Size(100, 28)
+        Label4.TabIndex = 3
+        Label4.Text = "Amount"
         ' 
         ' verifyButton
         ' 
@@ -134,7 +169,7 @@ Partial Class payments
         payButton.BackColor = Color.Purple
         payButton.Font = New Font("Microsoft YaHei", 15.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         payButton.ForeColor = SystemColors.ButtonHighlight
-        payButton.Location = New Point(969, 567)
+        payButton.Location = New Point(969, 621)
         payButton.Name = "payButton"
         payButton.Size = New Size(92, 40)
         payButton.TabIndex = 6
@@ -161,6 +196,7 @@ Partial Class payments
         CType(PictureBox3, ComponentModel.ISupportInitialize).EndInit()
         GroupBox1.ResumeLayout(False)
         GroupBox1.PerformLayout()
+        CType(WebView21, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -175,4 +211,7 @@ Partial Class payments
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Label3 As Label
     Friend WithEvents payButton As Button
+    Friend WithEvents Label4 As Label
+    Friend WithEvents TextBox2 As TextBox
+    Friend WithEvents WebView21 As Microsoft.Web.WebView2.WinForms.WebView2
 End Class
