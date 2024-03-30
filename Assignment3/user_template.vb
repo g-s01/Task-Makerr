@@ -10,24 +10,21 @@ Public Class user_template
         'For that you need to add nuget.org as source in Tools->NuGet...
         'Ask GPT for details.
         'As it stands, the System.Data.SqlClient does not work on .NET 5+ or .NET core (I assume default installed will be 8.0)
-        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-        Using connection As New SqlConnection(connectionString)
-            Try
-                connection.Open()
-                MessageBox.Show("Connection successful!")
+        'Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+        'Using connection As New SqlConnection(connectionString)
+        '    Try
+        '        connection.Open()
+        '        MessageBox.Show("Connection successful!")
 
-            Catch ex As Exception
-                MessageBox.Show("Error connecting to database: " & ex.Message)
-            End Try
-        End Using
-        With user_appointment_details
+        '    Catch ex As Exception
+        '        MessageBox.Show("Error connecting to database: " & ex.Message)
+        '    End Try
+        'End Using
+        With user_appointments
             .TopLevel = False
-            SplitContainer1.Panel2.Controls.Add(user_appointment_details)
+            SplitContainer1.Panel2.Controls.Add(user_appointments)
             .BringToFront()
             .Show()
-
-
-
         End With
     End Sub
 
