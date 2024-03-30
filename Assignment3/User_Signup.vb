@@ -1,6 +1,5 @@
 ﻿Imports System.Net.Mail
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel
-Imports Microsoft.IdentityModel.Tokens
 
 Public Class User_Signup
     Dim code As Integer
@@ -63,16 +62,16 @@ Public Class User_Signup
     End Sub
 
     Private Sub SendOTP_btn_Click(sender As Object, e As EventArgs) Handles sendOTP_btn.Click
-        If name_tb.Text.IsNullOrEmpty Then
+        If String.IsNullOrWhiteSpace(name_tb.Text) Then
             error_label.Text = "* name is required"
             name_tb.Focus()
-        ElseIf email_tb.Text.IsNullOrEmpty Then
+        ElseIf String.IsNullOrWhiteSpace(email_tb.Text) Then
             error_label.Text = "* email is required"
             email_tb.Focus()
-        ElseIf password_tb.Text.IsNullOrEmpty Then
+        ElseIf String.IsNullOrWhiteSpace(password_tb.Text) Then
             error_label.Text = "* password is required"
             password_tb.Focus()
-        ElseIf password_tb.Text.IsNullOrEmpty Then
+        ElseIf String.IsNullOrWhiteSpace(cnfpassword_tb.Text) Then
             error_label.Text = "* confirm your password"
             cnfpassword_tb.Focus()
         ElseIf Not password_tb.Text = cnfpassword_tb.Text Then
@@ -94,10 +93,12 @@ Public Class User_Signup
     End Sub
 
     Private Sub Register_btn_Click(sender As Object, e As EventArgs) Handles register_btn.Click
-        If otp_tb.Text.IsNullOrEmpty Then
+        If String.IsNullOrWhiteSpace(otp_tb.Text) Then
             otp_tb.Focus()
         ElseIf Not code.ToString = otp_tb.Text.ToString Then
             MessageBox.Show("Wrong OTP: Please enter correct otp!")
+        Else
+
         End If
     End Sub
 End Class

@@ -1,6 +1,4 @@
-﻿Imports Microsoft.IdentityModel.Tokens
-
-Public Class Login
+﻿Public Class Login
 
     Private Sub Login_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         error_label.Text = ""
@@ -15,10 +13,10 @@ Public Class Login
     End Sub
 
     Private Sub Provider_btn_Click(sender As Object, e As EventArgs) Handles provider_btn.Click
-        If email_tb.Text.IsNullOrEmpty Then
+        If String.IsNullOrWhiteSpace(email_tb.Text) Then
             error_label.Text = "* email is required"
             email_tb.Focus()
-        ElseIf password_tb.Text.IsNullOrEmpty Then
+        ElseIf String.IsNullOrWhiteSpace(password_tb.Text) Then
             error_label.Text = "* password is required"
             password_tb.Focus()
         Else
@@ -32,10 +30,10 @@ Public Class Login
     End Sub
 
     Private Sub User_btn_Click(sender As Object, e As EventArgs) Handles user_btn.Click
-        If email_tb.Text.IsNullOrEmpty Then
+        If String.IsNullOrWhiteSpace(email_tb.Text) Then
             error_label.Text = "* email is required"
             email_tb.Focus()
-        ElseIf password_tb.Text.IsNullOrEmpty Then
+        ElseIf String.IsNullOrWhiteSpace(password_tb.Text) Then
             error_label.Text = "* password is required"
             password_tb.Focus()
         Else

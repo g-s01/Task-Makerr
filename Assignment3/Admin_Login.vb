@@ -1,5 +1,4 @@
 ﻿Imports Microsoft.Data.SqlClient
-Imports Microsoft.IdentityModel.Tokens
 
 Public Class Admin_Login
 
@@ -21,7 +20,7 @@ Public Class Admin_Login
     End Sub
 
     Private Sub Login_btn_Click(sender As Object, e As EventArgs) Handles login_btn.Click
-        If password_tb.Text.IsNullOrEmpty Then
+        If String.IsNullOrWhiteSpace(password_tb.Text) Then
             error_label.Text = "* enter password"
             password_tb.Focus()
         Else
@@ -40,6 +39,8 @@ Public Class Admin_Login
                     sqlConnection.Close()
                 End If
             End Try
+
+
         End If
     End Sub
 End Class
