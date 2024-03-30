@@ -231,7 +231,7 @@ Partial Class Provider_Signup
         Label21.AutoSize = True
         Label21.Location = New Point(597, 578)
         Label21.Name = "Label21"
-        Label21.Size = New Size(49, 25)
+        Label21.Size = New Size(39, 20)
         Label21.TabIndex = 40
         Label21.Text = "9pm"
         ' 
@@ -240,7 +240,7 @@ Partial Class Provider_Signup
         Label15.AutoSize = True
         Label15.Location = New Point(429, 578)
         Label15.Name = "Label15"
-        Label15.Size = New Size(49, 25)
+        Label15.Size = New Size(39, 20)
         Label15.TabIndex = 39
         Label15.Text = "5pm"
         ' 
@@ -249,7 +249,7 @@ Partial Class Provider_Signup
         Label16.AutoSize = True
         Label16.Location = New Point(471, 578)
         Label16.Name = "Label16"
-        Label16.Size = New Size(49, 25)
+        Label16.Size = New Size(39, 20)
         Label16.TabIndex = 38
         Label16.Text = "6pm"
         ' 
@@ -258,7 +258,7 @@ Partial Class Provider_Signup
         Label17.AutoSize = True
         Label17.Location = New Point(513, 578)
         Label17.Name = "Label17"
-        Label17.Size = New Size(49, 25)
+        Label17.Size = New Size(39, 20)
         Label17.TabIndex = 37
         Label17.Text = "7pm"
         ' 
@@ -267,7 +267,7 @@ Partial Class Provider_Signup
         Label18.AutoSize = True
         Label18.Location = New Point(555, 578)
         Label18.Name = "Label18"
-        Label18.Size = New Size(49, 25)
+        Label18.Size = New Size(39, 20)
         Label18.TabIndex = 36
         Label18.Text = "8pm"
         ' 
@@ -276,7 +276,7 @@ Partial Class Provider_Signup
         Label19.AutoSize = True
         Label19.Location = New Point(387, 578)
         Label19.Name = "Label19"
-        Label19.Size = New Size(49, 25)
+        Label19.Size = New Size(39, 20)
         Label19.TabIndex = 35
         Label19.Text = "4pm"
         ' 
@@ -285,7 +285,7 @@ Partial Class Provider_Signup
         Label20.AutoSize = True
         Label20.Location = New Point(345, 578)
         Label20.Name = "Label20"
-        Label20.Size = New Size(49, 25)
+        Label20.Size = New Size(39, 20)
         Label20.TabIndex = 34
         Label20.Text = "3pm"
         ' 
@@ -294,7 +294,7 @@ Partial Class Provider_Signup
         Label14.AutoSize = True
         Label14.Location = New Point(174, 578)
         Label14.Name = "Label14"
-        Label14.Size = New Size(57, 25)
+        Label14.Size = New Size(46, 20)
         Label14.TabIndex = 33
         Label14.Text = "11am"
         ' 
@@ -303,7 +303,7 @@ Partial Class Provider_Signup
         Label13.AutoSize = True
         Label13.Location = New Point(217, 578)
         Label13.Name = "Label13"
-        Label13.Size = New Size(59, 25)
+        Label13.Size = New Size(47, 20)
         Label13.TabIndex = 32
         Label13.Text = "12pm"
         ' 
@@ -312,7 +312,7 @@ Partial Class Provider_Signup
         Label12.AutoSize = True
         Label12.Location = New Point(261, 578)
         Label12.Name = "Label12"
-        Label12.Size = New Size(49, 25)
+        Label12.Size = New Size(39, 20)
         Label12.TabIndex = 31
         Label12.Text = "1pm"
         ' 
@@ -321,7 +321,7 @@ Partial Class Provider_Signup
         Label11.AutoSize = True
         Label11.Location = New Point(303, 578)
         Label11.Name = "Label11"
-        Label11.Size = New Size(49, 25)
+        Label11.Size = New Size(39, 20)
         Label11.TabIndex = 30
         Label11.Text = "2pm"
         ' 
@@ -330,7 +330,7 @@ Partial Class Provider_Signup
         Label10.AutoSize = True
         Label10.Location = New Point(132, 578)
         Label10.Name = "Label10"
-        Label10.Size = New Size(57, 25)
+        Label10.Size = New Size(46, 20)
         Label10.TabIndex = 29
         Label10.Text = "10am"
         ' 
@@ -339,7 +339,7 @@ Partial Class Provider_Signup
         Label9.AutoSize = True
         Label9.Location = New Point(93, 578)
         Label9.Name = "Label9"
-        Label9.Size = New Size(47, 25)
+        Label9.Size = New Size(38, 20)
         Label9.TabIndex = 28
         Label9.Text = "9am"
         ' 
@@ -347,7 +347,7 @@ Partial Class Provider_Signup
         ' 
         slot_matrix_tablelayout.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         slot_matrix_tablelayout.ColumnCount = 13
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 50.0F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 50F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
@@ -1460,7 +1460,7 @@ Partial Class Provider_Signup
         ' 
         ' slot_label
         ' 
-        slot_label.Font = New Font("Segoe UI", 10.0F)
+        slot_label.Font = New Font("Segoe UI", 10F)
         slot_label.Location = New Point(55, 532)
         slot_label.Name = "slot_label"
         slot_label.Size = New Size(167, 22)
@@ -1473,12 +1473,12 @@ Partial Class Provider_Signup
         location_checklistbox.Items.AddRange(New Object() {"Guwahati", "Tezpur", "Jorhat", "Changsari", "Sualkuchi", "Palasbari", "Maliata", "Panbazar", "Panikhaiti", "Amsing", "Jorabat", "Lalmati", "Kahikuchi"})
         location_checklistbox.Location = New Point(55, 324)
         location_checklistbox.Name = "location_checklistbox"
-        location_checklistbox.Size = New Size(297, 172)
+        location_checklistbox.Size = New Size(297, 158)
         location_checklistbox.TabIndex = 25
         ' 
         ' location_label
         ' 
-        location_label.Font = New Font("Segoe UI", 10.0F)
+        location_label.Font = New Font("Segoe UI", 10F)
         location_label.Location = New Point(55, 299)
         location_label.Name = "location_label"
         location_label.Size = New Size(167, 22)
@@ -1487,11 +1487,11 @@ Partial Class Provider_Signup
         ' 
         ' otp_tb
         ' 
-        otp_tb.Font = New Font("Segoe UI", 10.0F)
+        otp_tb.Font = New Font("Segoe UI", 10F)
         otp_tb.ForeColor = SystemColors.GrayText
         otp_tb.Location = New Point(55, 1039)
         otp_tb.Name = "otp_tb"
-        otp_tb.Size = New Size(418, 34)
+        otp_tb.Size = New Size(418, 30)
         otp_tb.TabIndex = 22
         otp_tb.Text = "OTP"
         ' 
@@ -1526,51 +1526,51 @@ Partial Class Provider_Signup
         ' error_label
         ' 
         error_label.AutoSize = True
-        error_label.Font = New Font("Segoe UI", 8.0F)
+        error_label.Font = New Font("Segoe UI", 8F)
         error_label.ForeColor = Color.Red
         error_label.Location = New Point(55, 958)
         error_label.Name = "error_label"
-        error_label.Size = New Size(45, 21)
+        error_label.Size = New Size(39, 19)
         error_label.TabIndex = 20
         error_label.Text = "error"
         ' 
         ' email_tb
         ' 
-        email_tb.Font = New Font("Segoe UI", 10.0F)
+        email_tb.Font = New Font("Segoe UI", 10F)
         email_tb.ForeColor = SystemColors.GrayText
         email_tb.Location = New Point(55, 254)
         email_tb.Name = "email_tb"
-        email_tb.Size = New Size(418, 34)
+        email_tb.Size = New Size(418, 30)
         email_tb.TabIndex = 17
         email_tb.Text = "Email"
         ' 
         ' cnfpassword_tb
         ' 
-        cnfpassword_tb.Font = New Font("Segoe UI", 10.0F)
+        cnfpassword_tb.Font = New Font("Segoe UI", 10F)
         cnfpassword_tb.ForeColor = SystemColors.GrayText
         cnfpassword_tb.Location = New Point(55, 930)
         cnfpassword_tb.Name = "cnfpassword_tb"
-        cnfpassword_tb.Size = New Size(418, 34)
+        cnfpassword_tb.Size = New Size(418, 30)
         cnfpassword_tb.TabIndex = 19
         cnfpassword_tb.Text = "Confirm Password"
         ' 
         ' password_tb
         ' 
-        password_tb.Font = New Font("Segoe UI", 10.0F)
+        password_tb.Font = New Font("Segoe UI", 10F)
         password_tb.ForeColor = SystemColors.GrayText
         password_tb.Location = New Point(55, 882)
         password_tb.Name = "password_tb"
-        password_tb.Size = New Size(418, 34)
+        password_tb.Size = New Size(418, 30)
         password_tb.TabIndex = 18
         password_tb.Text = "Password"
         ' 
         ' name_tb
         ' 
-        name_tb.Font = New Font("Segoe UI", 10.0F)
+        name_tb.Font = New Font("Segoe UI", 10F)
         name_tb.ForeColor = SystemColors.GrayText
         name_tb.Location = New Point(55, 209)
         name_tb.Name = "name_tb"
-        name_tb.Size = New Size(418, 34)
+        name_tb.Size = New Size(418, 30)
         name_tb.TabIndex = 16
         name_tb.Text = "Name"
         ' 
@@ -1585,7 +1585,7 @@ Partial Class Provider_Signup
         ' 
         ' Label1
         ' 
-        Label1.Font = New Font("Segoe UI", 15.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label1.Font = New Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label1.Location = New Point(52, 128)
         Label1.Name = "Label1"
         Label1.Size = New Size(258, 34)
@@ -1600,7 +1600,7 @@ Partial Class Provider_Signup
         login_btn.FlatStyle = FlatStyle.Flat
         login_btn.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         login_btn.ForeColor = Color.White
-        login_btn.Location = New Point(489, 23)
+        login_btn.Location = New Point(468, 23)
         login_btn.Name = "login_btn"
         login_btn.Size = New Size(135, 35)
         login_btn.TabIndex = 13
