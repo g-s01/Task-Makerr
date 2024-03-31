@@ -31,12 +31,12 @@ Public Class User_Signup
     End Sub
 
     Private Sub Login_btn_Click(sender As Object, e As EventArgs) Handles login_btn.Click
-        Me.Hide()
+        Me.Close()
         Login.Show()
     End Sub
 
     Private Sub Back_btn_Click(sender As Object, e As EventArgs) Handles back_btn.Click
-        Me.Hide()
+        Me.Close()
         Landing.Show()
     End Sub
 
@@ -68,6 +68,14 @@ Public Class User_Signup
     End Sub
 
     Private Sub SendOTP_btn_Click(sender As Object, e As EventArgs) Handles sendOTP_btn.Click
+        ' authenticate through otp
+        Dim random As New Random()
+        Dim randomNumber As Integer = random.Next(100000, 999999)
+        code = randomNumber
+        SendEmail(randomNumber)
+    End Sub
+
+    Private Sub Register_btn_Click(sender As Object, e As EventArgs) Handles register_btn.Click
         If String.IsNullOrWhiteSpace(name_tb.Text) Then
             error_label.Text = "* name is required"
             name_tb.Focus()
@@ -84,27 +92,42 @@ Public Class User_Signup
             error_label.Text = "* password doesn't match"
         Else
             error_label.Text = ""
-            ' authenticate through otp
-            Dim random As New Random()
-            Dim randomNumber As Integer = random.Next(100000, 999999)
-            code = randomNumber
-            SendEmail(randomNumber)
 
-            ' name_tb.Enabled = False
-            ' email_tb.Enabled = False
-            ' password_tb.Enabled = False
-            ' cnfpassword_tb.Enabled = False
+            If String.IsNullOrWhiteSpace(otp_tb.Text) Then
+                otp_tb.Focus()
+            ElseIf Not code.ToString = otp_tb.Text.ToString Then
+                MessageBox.Show("Wrong OTP: Please enter correct otp!")
+            Else
+                Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+                Dim query As String = "SELECT COUNT(*) FROM customer WHERE email = @Email"
+                Dim insertQuery As String = "INSERT INTO customer (username, email, password) VALUES (@Username, @Email, @Password)"
 
-        End If
-    End Sub
+                Using sqlConnection As New SqlConnection(connectionString)
+                    sqlConnection.Open()
 
-    Private Sub Register_btn_Click(sender As Object, e As EventArgs) Handles register_btn.Click
-        If String.IsNullOrWhiteSpace(otp_tb.Text) Then
-            otp_tb.Focus()
-        ElseIf Not code.ToString = otp_tb.Text.ToString Then
-            MessageBox.Show("Wrong OTP: Please enter correct otp!")
-        Else
+                    ' Check if the email already exists in the database
+                    Using sqlCommand As New SqlCommand(query, sqlConnection)
+                        sqlCommand.Parameters.AddWithValue("@Email", email_tb.Text)
+                        Dim count As Integer = Convert.ToInt32(sqlCommand.ExecuteScalar())
+                        If count > 0 Then
+                            ' If email already exists, display an error message and exit
+                            error_label.Text = "Email already registered!"
+                            Return
+                        End If
+                    End Using
 
+                    ' If email doesn't exist, proceed with inserting into the database
+                    Using sqlCommand As New SqlCommand(insertQuery, sqlConnection)
+                        sqlCommand.Parameters.AddWithValue("@Username", name_tb.Text)
+                        sqlCommand.Parameters.AddWithValue("@Email", email_tb.Text)
+                        sqlCommand.Parameters.AddWithValue("@Password", password_tb.Text)
+                        sqlCommand.ExecuteNonQuery()
+                    End Using
+                    Me.Close()
+                    Login.Show()
+                End Using
+
+            End If
         End If
     End Sub
 
