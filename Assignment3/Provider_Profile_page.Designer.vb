@@ -30,7 +30,7 @@ Partial Class Provider_Profile_page
         PictureBox3 = New PictureBox()
         PictureBox2 = New PictureBox()
         Panel2 = New Panel()
-        Button1 = New Button()
+        Edit_profile_btn = New Button()
         rate_label = New Label()
         location_label = New Label()
         email_label = New Label()
@@ -123,7 +123,7 @@ Partial Class Provider_Profile_page
         ' Panel2
         ' 
         Panel2.BorderStyle = BorderStyle.FixedSingle
-        Panel2.Controls.Add(Button1)
+        Panel2.Controls.Add(Edit_profile_btn)
         Panel2.Controls.Add(rate_label)
         Panel2.Controls.Add(location_label)
         Panel2.Controls.Add(email_label)
@@ -134,19 +134,19 @@ Partial Class Provider_Profile_page
         Panel2.Size = New Size(411, 265)
         Panel2.TabIndex = 2
         ' 
-        ' Button1
+        ' Edit_profile_btn
         ' 
-        Button1.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
-        Button1.BackgroundImageLayout = ImageLayout.Stretch
-        Button1.FlatStyle = FlatStyle.Flat
-        Button1.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Button1.ForeColor = Color.White
-        Button1.Location = New Point(39, 207)
-        Button1.Name = "Button1"
-        Button1.Size = New Size(114, 36)
-        Button1.TabIndex = 5
-        Button1.Text = "Edit Button"
-        Button1.UseVisualStyleBackColor = False
+        Edit_profile_btn.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
+        Edit_profile_btn.BackgroundImageLayout = ImageLayout.Stretch
+        Edit_profile_btn.FlatStyle = FlatStyle.Flat
+        Edit_profile_btn.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Edit_profile_btn.ForeColor = Color.White
+        Edit_profile_btn.Location = New Point(39, 207)
+        Edit_profile_btn.Name = "Edit_profile_btn"
+        Edit_profile_btn.Size = New Size(114, 36)
+        Edit_profile_btn.TabIndex = 5
+        Edit_profile_btn.Text = "Edit Button"
+        Edit_profile_btn.UseVisualStyleBackColor = False
         ' 
         ' rate_label
         ' 
@@ -264,4 +264,5 @@ Partial Class Provider_Profile_page
     Friend WithEvents Panel3 As Panel
     Friend WithEvents Label1 As Label
     Friend WithEvents changepic_pb As PictureBox
+    Friend WithEvents Edit_profile_btn As Button
 End Class

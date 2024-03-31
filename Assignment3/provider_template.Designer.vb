@@ -29,7 +29,7 @@ Partial Class provider_template
         Button8 = New Button()
         Button6 = New Button()
         Button7 = New Button()
-        Button4 = New Button()
+        Profile_Navi_btn = New Button()
         Button3 = New Button()
         Button2 = New Button()
         Button1 = New Button()
@@ -56,7 +56,7 @@ Partial Class provider_template
         SplitContainer1.Panel1.Controls.Add(Button8)
         SplitContainer1.Panel1.Controls.Add(Button6)
         SplitContainer1.Panel1.Controls.Add(Button7)
-        SplitContainer1.Panel1.Controls.Add(Button4)
+        SplitContainer1.Panel1.Controls.Add(Profile_Navi_btn)
         SplitContainer1.Panel1.Controls.Add(Button3)
         SplitContainer1.Panel1.Controls.Add(Button2)
         SplitContainer1.Panel1.Controls.Add(Button1)
@@ -96,7 +96,7 @@ Partial Class provider_template
         Label2.ForeColor = Color.DimGray
         Label2.Location = New Point(22, 470)
         Label2.Name = "Label2"
-        Label2.Size = New Size(85, 25)
+        Label2.Size = New Size(75, 23)
         Label2.TabIndex = 10
         Label2.Text = "Support"
         ' 
@@ -107,7 +107,7 @@ Partial Class provider_template
         Label1.ForeColor = Color.DimGray
         Label1.Location = New Point(22, 100)
         Label1.Name = "Label1"
-        Label1.Size = New Size(66, 25)
+        Label1.Size = New Size(57, 23)
         Label1.TabIndex = 9
         Label1.Text = "Menu"
         ' 
@@ -164,23 +164,23 @@ Partial Class provider_template
         Button7.TextAlign = ContentAlignment.MiddleLeft
         Button7.UseVisualStyleBackColor = False
         ' 
-        ' Button4
+        ' Profile_Navi_btn
         ' 
-        Button4.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button4.BackColor = SystemColors.Control
-        Button4.FlatAppearance.BorderSize = 0
-        Button4.FlatStyle = FlatStyle.Flat
-        Button4.Font = New Font("Microsoft YaHei", 10.2F)
-        Button4.Image = My.Resources.Resources.settings
-        Button4.ImageAlign = ContentAlignment.MiddleLeft
-        Button4.Location = New Point(3, 265)
-        Button4.Name = "Button4"
-        Button4.Padding = New Padding(15, 0, 0, 0)
-        Button4.Size = New Size(282, 36)
-        Button4.TabIndex = 5
-        Button4.Text = "     Profile"
-        Button4.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button4.UseVisualStyleBackColor = False
+        Profile_Navi_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        Profile_Navi_btn.BackColor = SystemColors.Control
+        Profile_Navi_btn.FlatAppearance.BorderSize = 0
+        Profile_Navi_btn.FlatStyle = FlatStyle.Flat
+        Profile_Navi_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        Profile_Navi_btn.Image = My.Resources.Resources.settings
+        Profile_Navi_btn.ImageAlign = ContentAlignment.MiddleLeft
+        Profile_Navi_btn.Location = New Point(3, 265)
+        Profile_Navi_btn.Name = "Profile_Navi_btn"
+        Profile_Navi_btn.Padding = New Padding(15, 0, 0, 0)
+        Profile_Navi_btn.Size = New Size(282, 36)
+        Profile_Navi_btn.TabIndex = 5
+        Profile_Navi_btn.Text = "     Profile"
+        Profile_Navi_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        Profile_Navi_btn.UseVisualStyleBackColor = False
         ' 
         ' Button3
         ' 
@@ -278,7 +278,7 @@ Partial Class provider_template
     Friend WithEvents Button8 As Button
     Friend WithEvents Button6 As Button
     Friend WithEvents Button7 As Button
-    Friend WithEvents Button4 As Button
+    Friend WithEvents Profile_Navi_btn As Button
     Friend WithEvents Button3 As Button
     Friend WithEvents Button2 As Button
     Friend WithEvents Button1 As Button
