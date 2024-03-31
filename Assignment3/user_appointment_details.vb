@@ -1,17 +1,12 @@
 ﻿Imports System.Configuration
 Imports Microsoft.Data.SqlClient
 Public Class user_appointment_details
+    Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
     Private Sub user_appointment_details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-        Using connection As New SqlConnection(connectionString)
-            Try
-                connection.Open()
-                MessageBox.Show("Connection successful!")
 
-            Catch ex As Exception
-                MessageBox.Show("Error connecting to database: " & ex.Message)
-            End Try
-        End Using
     End Sub
 
+    Private Sub btn_reschedule_Click(sender As Object, e As EventArgs) Handles btn_reschedule.Click
+        ''Calcullate the 
+    End Sub
 End Class
