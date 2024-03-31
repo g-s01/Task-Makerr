@@ -39,7 +39,7 @@ Public Class Login
                     If result IsNot Nothing AndAlso Not DBNull.Value.Equals(result) Then
                         Provider_ID = Convert.ToInt32(result)
                         MessageBox.Show("Provider ID: " & Provider_ID.ToString(), "Provider ID Found", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        Me.Hide()
+                        Me.Close()
                         provider_template.Show()
                     Else
                         error_label.Text = "Invalid email or password. No such account"
@@ -76,7 +76,7 @@ Public Class Login
                     If result IsNot Nothing AndAlso Not DBNull.Value.Equals(result) Then
                         User_ID = Convert.ToInt32(result)
                         MessageBox.Show("User ID: " & User_ID.ToString(), "User ID Found", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        Me.Hide()
+                        Me.Close()
                         user_template.Show()
                     Else
                         error_label.Text = "Invalid email or password. No such account"
@@ -89,12 +89,12 @@ Public Class Login
 
 
     Private Sub Register_btn_Click(sender As Object, e As EventArgs) Handles register_btn.Click
-        Me.Hide()
+        Me.Close()
         Landing.Show()
     End Sub
 
     Private Sub Admin_ll_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles admin_ll.LinkClicked
-        Me.Hide()
+        Me.Close()
         Admin_Login.Show()
     End Sub
 End Class
