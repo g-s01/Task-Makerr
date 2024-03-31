@@ -1,11 +1,12 @@
 ﻿Imports System.Configuration
 Imports Microsoft.Data.SqlClient
-Public Class user_appointment_details
+
+Public Class provider_appointment_details
     Public dealID As Integer = Module_global.Appointment_Det_DealId
     Public startTime As TimeSpan
     Public firstDate As DateTime
     Public bookDate As DateTime
-    Private Sub user_appointmnet_details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub provider_appointment_details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
 
         Dim query As String = "SELECT * FROM deals WHERE deal_id = @DealID"
@@ -155,7 +156,7 @@ Public Class user_appointment_details
 
     End Sub
 
-    Private Sub SplitContainer1_Panel1_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel1.Paint
+    Private Sub SplitContainer1_Panel2_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel2.Paint
 
     End Sub
 End Class
