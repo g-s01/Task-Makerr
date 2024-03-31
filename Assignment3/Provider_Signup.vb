@@ -96,7 +96,7 @@ Public Class Provider_Signup
             Else
                 Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
                 Dim query As String = "SELECT COUNT(*) FROM provider WHERE email = @Email"
-                Dim insertQuery As String = "INSERT INTO provider (username, email, password) VALUES (@Username, @Email, @Password)"
+                Dim insertQuery As String = "INSERT INTO provider (providername, email, password) VALUES (@Providername, @Email, @Password)"
 
                 Using sqlConnection As New SqlConnection(connectionString)
                     sqlConnection.Open()
@@ -114,7 +114,7 @@ Public Class Provider_Signup
 
                     ' If email doesn't exist, proceed with inserting into the database
                     Using sqlCommand As New SqlCommand(insertQuery, sqlConnection)
-                        sqlCommand.Parameters.AddWithValue("@Username", name_tb.Text)
+                        sqlCommand.Parameters.AddWithValue("@Providername", name_tb.Text)
                         sqlCommand.Parameters.AddWithValue("@Email", email_tb.Text)
                         sqlCommand.Parameters.AddWithValue("@Password", password_tb.Text)
                         sqlCommand.ExecuteNonQuery()
