@@ -4,8 +4,17 @@ Imports Microsoft.Data.SqlClient
 
 Public Class pending_payment
 
-    Public dealID As Integer = 1
-    Private Sub pending_payment_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Public dealID As Integer = Module_global.Appointment_Det_DealId
+
+    Protected Overrides Sub OnVisibleChanged(e As EventArgs)
+        MyBase.OnVisibleChanged(e)
+        If Me.Visible Then
+            ReloadData()
+        End If
+    End Sub
+    Private Sub ReloadData()
+
+        dealID = Module_global.Appointment_Det_DealId
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
 
 
@@ -33,7 +42,7 @@ Public Class pending_payment
                             provider = reader.GetInt32(reader.GetOrdinal("provider_id"))
                             time = reader.GetString(reader.GetOrdinal("time"))
                             dates = reader.GetDateTime(reader.GetOrdinal("dates"))
-                            'Dim location As String = reader.GetString(reader.GetOrdinal("location"))
+                            Dim location As String = reader.GetString(reader.GetOrdinal("location"))
                             ' Access other columns in a similar manner
                             ' Do something with the retrieved data
 
@@ -55,7 +64,7 @@ Public Class pending_payment
 
                             Dim times As String = dates.Date.AddDays(dayIndex).Add(startTime).ToString("hh:mm tt")
 
-                            rtb1.Text = vbLf & "   Details of the Booked Slots" & vbLf & vbLf & vbLf & "   Location: " & vbLf & vbLf & "   Date: " & firstDate.ToString("MMM dd yyyy") & "                            Timing: " & times
+                            rtb1.Text = vbLf & "   Details of the Booked Slots" & vbLf & vbLf & vbLf & "   Location: " & location & vbLf & vbLf & "   Date: " & firstDate.ToString("MMM dd yyyy") & "                            Timing: " & times
 
 
 
@@ -90,7 +99,7 @@ Public Class pending_payment
                     Dim costPerHour As Decimal = Convert.ToDecimal(command.ExecuteScalar())
 
                     ' Do something with the retrieved cost per hour
-                    rtb2.Text = vbLf & "   Charges for the Appointment" & vbLf & vbLf & vbLf & "   Charges per Slot: Rs" & costPerHour & vbLf & vbLf & "   Overall Service Cost: Rs" & slots * costPerHour
+                    rtb2.Text = vbLf & "   Charges for the Appointment" & vbLf & vbLf & vbLf & "   Charges per Slot: Rs " & costPerHour & vbLf & vbLf & "   Overall Service Cost: Rs " & slots * costPerHour
 
 
                 Catch ex As Exception
@@ -113,4 +122,14 @@ Public Class pending_payment
     Private Sub btn_pay_Click(sender As Object, e As EventArgs) Handles btn_pay.Click
 
     End Sub
+    Private Sub btn_upcoming_Click(sender As Object, e As EventArgs) Handles btn_upcoming.Click
+        Me.Hide()
+        user_appointments.Show()
+    End Sub
+
+    Private Sub btn_completed_Click(sender As Object, e As EventArgs) Handles btn_completed.Click
+        Me.Hide()
+        user_appointments.Show()
+    End Sub
+
 End Class

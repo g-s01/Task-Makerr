@@ -11,4 +11,9 @@
             .Show()
         End With
     End Sub
+
+    Private Sub Logout_btn_Click(sender As Object, e As EventArgs) Handles logout_btn.Click
+        Me.Close()
+        Login.Show()
+    End Sub
 End Class

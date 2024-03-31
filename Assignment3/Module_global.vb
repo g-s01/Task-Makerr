@@ -5,5 +5,6 @@
     Public Email As String = ""
     Public user_appo_det_dealID_upcoming As Integer = 1
     Public user_appo_det_dealID_completed As Integer = 1
-    Public DealID_Reschedule = 2
+    Public DealID_Reschedule = 1
+    Public Appointment_Det_DealId As Integer = 1
 End Module

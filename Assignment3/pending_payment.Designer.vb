@@ -89,6 +89,7 @@ Partial Class pending_payment
         rtb1.Name = "rtb1"
         rtb1.Size = New Size(392, 176)
         rtb1.TabIndex = 9
+        rtb1.Text = ""
         ' 
         ' rtb2
         ' 
@@ -100,6 +101,7 @@ Partial Class pending_payment
         rtb2.Name = "rtb2"
         rtb2.Size = New Size(392, 176)
         rtb2.TabIndex = 9
+        rtb2.Text = ""
         ' 
         ' btn_pay
         ' 
