@@ -77,6 +77,7 @@ Partial Class admin_dashboard
         ' 
         ' Chart1
         ' 
+        Chart1.Anchor = AnchorStyles.None
         Chart1.Location = New Point(2, 275)
         Chart1.Name = "Chart1"
         Chart1.Size = New Size(431, 333)
@@ -85,6 +86,7 @@ Partial Class admin_dashboard
         ' 
         ' Chart2
         ' 
+        Chart2.Anchor = AnchorStyles.None
         Chart2.Location = New Point(451, 0)
         Chart2.Name = "Chart2"
         Chart2.Size = New Size(368, 227)
@@ -95,7 +97,7 @@ Partial Class admin_dashboard
         ' 
         Label1.AutoSize = True
         Label1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Label1.Font = New Font("Segoe UI", 14.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label1.Font = New Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label1.ImageAlign = ContentAlignment.MiddleLeft
         Label1.Location = New Point(12, 86)
         Label1.Name = "Label1"
@@ -107,7 +109,7 @@ Partial Class admin_dashboard
         ' Label2
         ' 
         Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label2.Font = New Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label2.ForeColor = SystemColors.ControlDarkDark
         Label2.ImageAlign = ContentAlignment.MiddleLeft
         Label2.Location = New Point(12, 115)
@@ -120,7 +122,7 @@ Partial Class admin_dashboard
         ' 
         Label3.AutoSize = True
         Label3.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Label3.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label3.Font = New Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label3.ForeColor = Color.Green
         Label3.Location = New Point(12, 165)
         Label3.Name = "Label3"
@@ -130,6 +132,7 @@ Partial Class admin_dashboard
         ' 
         ' Panel1
         ' 
+        Panel1.Anchor = AnchorStyles.None
         Panel1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         Panel1.Controls.Add(PictureBox1)
         Panel1.Controls.Add(Label3)
@@ -151,6 +154,7 @@ Partial Class admin_dashboard
         ' 
         ' Panel3
         ' 
+        Panel3.Anchor = AnchorStyles.None
         Panel3.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         Panel3.Controls.Add(Label10)
         Panel3.Controls.Add(PictureBox3)
@@ -166,7 +170,7 @@ Partial Class admin_dashboard
         ' 
         Label10.AutoSize = True
         Label10.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Label10.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label10.Font = New Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label10.ForeColor = Color.LightSeaGreen
         Label10.Location = New Point(12, 180)
         Label10.Name = "Label10"
@@ -187,7 +191,7 @@ Partial Class admin_dashboard
         ' 
         Label7.AutoSize = True
         Label7.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Label7.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label7.Font = New Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label7.ForeColor = Color.LightSeaGreen
         Label7.Location = New Point(12, 165)
         Label7.Name = "Label7"
@@ -199,7 +203,7 @@ Partial Class admin_dashboard
         ' 
         Label8.AutoSize = True
         Label8.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Label8.Font = New Font("Segoe UI", 14.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label8.Font = New Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label8.ImageAlign = ContentAlignment.MiddleLeft
         Label8.Location = New Point(12, 86)
         Label8.Name = "Label8"
@@ -211,7 +215,7 @@ Partial Class admin_dashboard
         ' Label9
         ' 
         Label9.AutoSize = True
-        Label9.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label9.Font = New Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label9.ForeColor = SystemColors.ControlDarkDark
         Label9.ImageAlign = ContentAlignment.MiddleLeft
         Label9.Location = New Point(12, 115)
@@ -222,6 +226,7 @@ Partial Class admin_dashboard
         ' 
         ' Panel4
         ' 
+        Panel4.Anchor = AnchorStyles.None
         Panel4.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         Panel4.Controls.Add(PictureBox4)
         Panel4.Controls.Add(Label12)
@@ -244,7 +249,7 @@ Partial Class admin_dashboard
         ' 
         Label12.AutoSize = True
         Label12.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Label12.Font = New Font("Segoe UI", 14.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label12.Font = New Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label12.ImageAlign = ContentAlignment.MiddleLeft
         Label12.Location = New Point(12, 86)
         Label12.Name = "Label12"
@@ -256,7 +261,7 @@ Partial Class admin_dashboard
         ' Label13
         ' 
         Label13.AutoSize = True
-        Label13.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label13.Font = New Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label13.ForeColor = SystemColors.ControlDarkDark
         Label13.ImageAlign = ContentAlignment.MiddleLeft
         Label13.Location = New Point(12, 115)
@@ -267,6 +272,7 @@ Partial Class admin_dashboard
         ' 
         ' Panel5
         ' 
+        Panel5.Anchor = AnchorStyles.None
         Panel5.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         Panel5.Controls.Add(PictureBox5)
         Panel5.Controls.Add(Label15)
@@ -289,7 +295,7 @@ Partial Class admin_dashboard
         ' 
         Label15.AutoSize = True
         Label15.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Label15.Font = New Font("Segoe UI", 14.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label15.Font = New Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label15.ImageAlign = ContentAlignment.MiddleLeft
         Label15.Location = New Point(12, 86)
         Label15.Name = "Label15"
@@ -301,7 +307,7 @@ Partial Class admin_dashboard
         ' Label16
         ' 
         Label16.AutoSize = True
-        Label16.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label16.Font = New Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label16.ForeColor = SystemColors.ControlDarkDark
         Label16.ImageAlign = ContentAlignment.MiddleLeft
         Label16.Location = New Point(12, 115)
@@ -312,9 +318,10 @@ Partial Class admin_dashboard
         ' 
         ' Label11
         ' 
+        Label11.Anchor = AnchorStyles.None
         Label11.AutoSize = True
         Label11.BackColor = SystemColors.Control
-        Label11.Font = New Font("Segoe UI Semibold", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label11.Font = New Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label11.ImageAlign = ContentAlignment.MiddleLeft
         Label11.Location = New Point(535, 231)
         Label11.Name = "Label11"
@@ -325,9 +332,10 @@ Partial Class admin_dashboard
         ' 
         ' Label14
         ' 
+        Label14.Anchor = AnchorStyles.None
         Label14.AutoSize = True
         Label14.BackColor = SystemColors.Control
-        Label14.Font = New Font("Segoe UI Semibold", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label14.Font = New Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label14.ImageAlign = ContentAlignment.MiddleLeft
         Label14.Location = New Point(85, 247)
         Label14.Name = "Label14"
@@ -346,6 +354,7 @@ Partial Class admin_dashboard
         ' 
         ' Panel6
         ' 
+        Panel6.Anchor = AnchorStyles.None
         Panel6.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         Panel6.Controls.Add(Label28)
         Panel6.Controls.Add(Label27)
@@ -436,7 +445,7 @@ Partial Class admin_dashboard
         ' 
         Label20.AutoSize = True
         Label20.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Label20.Font = New Font("Segoe UI Semibold", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label20.Font = New Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label20.ImageAlign = ContentAlignment.MiddleLeft
         Label20.Location = New Point(243, 7)
         Label20.Name = "Label20"
@@ -449,7 +458,7 @@ Partial Class admin_dashboard
         ' 
         Label19.AutoSize = True
         Label19.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Label19.Font = New Font("Segoe UI Semibold", 14.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label19.Font = New Font("Segoe UI Semibold", 14F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label19.ImageAlign = ContentAlignment.MiddleLeft
         Label19.Location = New Point(10, 7)
         Label19.Name = "Label19"
@@ -462,7 +471,7 @@ Partial Class admin_dashboard
         ' 
         Label18.AutoSize = True
         Label18.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Label18.Font = New Font("Segoe UI Semibold", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label18.Font = New Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label18.ImageAlign = ContentAlignment.MiddleLeft
         Label18.Location = New Point(11, 77)
         Label18.Name = "Label18"
@@ -482,7 +491,7 @@ Partial Class admin_dashboard
         ' 
         Label17.AutoSize = True
         Label17.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Label17.Font = New Font("Segoe UI Semibold", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label17.Font = New Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label17.ImageAlign = ContentAlignment.MiddleLeft
         Label17.Location = New Point(11, 48)
         Label17.Name = "Label17"
