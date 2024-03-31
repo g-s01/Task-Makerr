@@ -26,7 +26,7 @@ Partial Class provider_template
         Button5 = New Button()
         Label2 = New Label()
         Label1 = New Label()
-        Button8 = New Button()
+        logout_btn = New Button()
         Button6 = New Button()
         Button7 = New Button()
         Button4 = New Button()
@@ -53,7 +53,7 @@ Partial Class provider_template
         SplitContainer1.Panel1.Controls.Add(Button5)
         SplitContainer1.Panel1.Controls.Add(Label2)
         SplitContainer1.Panel1.Controls.Add(Label1)
-        SplitContainer1.Panel1.Controls.Add(Button8)
+        SplitContainer1.Panel1.Controls.Add(logout_btn)
         SplitContainer1.Panel1.Controls.Add(Button6)
         SplitContainer1.Panel1.Controls.Add(Button7)
         SplitContainer1.Panel1.Controls.Add(Button4)
@@ -96,7 +96,7 @@ Partial Class provider_template
         Label2.ForeColor = Color.DimGray
         Label2.Location = New Point(22, 470)
         Label2.Name = "Label2"
-        Label2.Size = New Size(85, 25)
+        Label2.Size = New Size(92, 28)
         Label2.TabIndex = 10
         Label2.Text = "Support"
         ' 
@@ -107,28 +107,28 @@ Partial Class provider_template
         Label1.ForeColor = Color.DimGray
         Label1.Location = New Point(22, 100)
         Label1.Name = "Label1"
-        Label1.Size = New Size(66, 25)
+        Label1.Size = New Size(71, 28)
         Label1.TabIndex = 9
         Label1.Text = "Menu"
         ' 
-        ' Button8
+        ' logout_btn
         ' 
-        Button8.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button8.BackColor = SystemColors.Control
-        Button8.FlatAppearance.BorderSize = 0
-        Button8.FlatStyle = FlatStyle.Flat
-        Button8.Font = New Font("Microsoft YaHei", 10.2F)
-        Button8.ForeColor = Color.Red
-        Button8.Image = My.Resources.Resources.Vector
-        Button8.ImageAlign = ContentAlignment.MiddleLeft
-        Button8.Location = New Point(3, 619)
-        Button8.Name = "Button8"
-        Button8.Padding = New Padding(15, 0, 0, 0)
-        Button8.Size = New Size(282, 36)
-        Button8.TabIndex = 8
-        Button8.Text = "     Logout"
-        Button8.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button8.UseVisualStyleBackColor = False
+        logout_btn.Anchor = AnchorStyles.Left Or AnchorStyles.Right
+        logout_btn.BackColor = SystemColors.Control
+        logout_btn.FlatAppearance.BorderSize = 0
+        logout_btn.FlatStyle = FlatStyle.Flat
+        logout_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        logout_btn.ForeColor = Color.Red
+        logout_btn.Image = My.Resources.Resources.Vector
+        logout_btn.ImageAlign = ContentAlignment.MiddleLeft
+        logout_btn.Location = New Point(3, 619)
+        logout_btn.Name = "logout_btn"
+        logout_btn.Padding = New Padding(15, 0, 0, 0)
+        logout_btn.Size = New Size(282, 36)
+        logout_btn.TabIndex = 8
+        logout_btn.Text = "     Logout"
+        logout_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        logout_btn.UseVisualStyleBackColor = False
         ' 
         ' Button6
         ' 
@@ -275,7 +275,7 @@ Partial Class provider_template
     Friend WithEvents Button5 As Button
     Friend WithEvents Label2 As Label
     Friend WithEvents Label1 As Label
-    Friend WithEvents Button8 As Button
+    Friend WithEvents logout_btn As Button
     Friend WithEvents Button6 As Button
     Friend WithEvents Button7 As Button
     Friend WithEvents Button4 As Button
