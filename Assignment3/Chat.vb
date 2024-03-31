@@ -63,17 +63,19 @@ Public Class Chat
             rtb.SelectedText = DateTime.Now.ToString("hh:mm")
             rtb.SelectionAlignment = HorizontalAlignment.Right
 
-            rtb.Left = pad 
-            rtb.Top = yOffset
-
-
-
-            rtb.Width = panelWidth - 2 * pad
-
-            Panel2.Controls.Add(rtb)
             Dim textSize = TextRenderer.MeasureText(rtb.Text, rtb.Font, New Size(panelWidth - 3 * pad, 0), TextFormatFlags.WordBreak)
+
+            If (msg.Sender_type = "user") Then
+                rtb.Left = panelWidth - textSize.Width - pad
+            Else
+                rtb.Left = pad
+
+            End If
+
+            rtb.Top = yOffset
             rtb.Width = textSize.Width  ' Set the width to the measured width of the text
             rtb.Height = textSize.Height
+            Panel2.Controls.Add(rtb)
             ' Increment the vertical position for the next message with gap
             yOffset += rtb.Height + gap
         Next
