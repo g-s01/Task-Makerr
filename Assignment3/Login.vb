@@ -47,10 +47,6 @@ Public Class Login
                     End If
                 End Using
             End Using
-            ' check from database
-            User_ID = "12340"
-            Me.Close()
-            provider_template.Show()
         End If
     End Sub
 
