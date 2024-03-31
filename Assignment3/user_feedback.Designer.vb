@@ -44,7 +44,7 @@ Partial Class user_feedback
         ' Label1
         ' 
         Label1.Font = New Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label1.Location = New Point(255, 91)
+        Label1.Location = New Point(205, 61)
         Label1.Name = "Label1"
         Label1.Size = New Size(431, 53)
         Label1.TabIndex = 5
@@ -54,7 +54,7 @@ Partial Class user_feedback
         ' Label2
         ' 
         Label2.Font = New Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label2.Location = New Point(321, 156)
+        Label2.Location = New Point(271, 126)
         Label2.Name = "Label2"
         Label2.Size = New Size(283, 32)
         Label2.TabIndex = 6
@@ -67,7 +67,7 @@ Partial Class user_feedback
         PictureBox1.BackgroundImageLayout = ImageLayout.Center
         PictureBox1.ErrorImage = My.Resources.Resources.grey_star
         PictureBox1.InitialImage = My.Resources.Resources.grey_star
-        PictureBox1.Location = New Point(304, 214)
+        PictureBox1.Location = New Point(254, 184)
         PictureBox1.Name = "PictureBox1"
         PictureBox1.Size = New Size(38, 45)
         PictureBox1.TabIndex = 7
@@ -77,7 +77,7 @@ Partial Class user_feedback
         ' 
         PictureBox2.BackgroundImage = My.Resources.Resources.grey_star
         PictureBox2.BackgroundImageLayout = ImageLayout.Center
-        PictureBox2.Location = New Point(369, 214)
+        PictureBox2.Location = New Point(319, 184)
         PictureBox2.Name = "PictureBox2"
         PictureBox2.Size = New Size(40, 45)
         PictureBox2.TabIndex = 8
@@ -87,7 +87,7 @@ Partial Class user_feedback
         ' 
         PictureBox3.BackgroundImage = My.Resources.Resources.grey_star
         PictureBox3.BackgroundImageLayout = ImageLayout.Center
-        PictureBox3.Location = New Point(431, 214)
+        PictureBox3.Location = New Point(381, 184)
         PictureBox3.Name = "PictureBox3"
         PictureBox3.Size = New Size(41, 45)
         PictureBox3.TabIndex = 9
@@ -97,7 +97,7 @@ Partial Class user_feedback
         ' 
         PictureBox4.BackgroundImage = My.Resources.Resources.grey_star
         PictureBox4.BackgroundImageLayout = ImageLayout.Center
-        PictureBox4.Location = New Point(496, 214)
+        PictureBox4.Location = New Point(446, 184)
         PictureBox4.Name = "PictureBox4"
         PictureBox4.Size = New Size(43, 45)
         PictureBox4.TabIndex = 10
@@ -107,7 +107,7 @@ Partial Class user_feedback
         ' 
         PictureBox5.BackgroundImage = My.Resources.Resources.grey_star
         PictureBox5.BackgroundImageLayout = ImageLayout.Center
-        PictureBox5.Location = New Point(561, 214)
+        PictureBox5.Location = New Point(511, 184)
         PictureBox5.Name = "PictureBox5"
         PictureBox5.Size = New Size(43, 45)
         PictureBox5.TabIndex = 11
@@ -115,7 +115,8 @@ Partial Class user_feedback
         ' 
         ' txtFeedback
         ' 
-        txtFeedback.Location = New Point(162, 310)
+        txtFeedback.Font = New Font("Microsoft YaHei", 10.2F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        txtFeedback.Location = New Point(112, 280)
         txtFeedback.Multiline = True
         txtFeedback.Name = "txtFeedback"
         txtFeedback.Size = New Size(614, 271)
@@ -125,10 +126,10 @@ Partial Class user_feedback
         ' Label3
         ' 
         Label3.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
-        Label3.Font = New Font("Segoe UI", 22.2F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label3.Location = New Point(390, 609)
+        Label3.Font = New Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label3.Location = New Point(340, 579)
         Label3.Name = "Label3"
-        Label3.Size = New Size(169, 54)
+        Label3.Size = New Size(149, 48)
         Label3.TabIndex = 13
         Label3.Text = "Send"
         Label3.TextAlign = ContentAlignment.MiddleCenter
@@ -137,7 +138,7 @@ Partial Class user_feedback
         ' 
         PictureBox6.BackgroundImage = My.Resources.Resources.Ellipse_6
         PictureBox6.BackgroundImageLayout = ImageLayout.Center
-        PictureBox6.Location = New Point(803, 30)
+        PictureBox6.Location = New Point(737, 30)
         PictureBox6.Name = "PictureBox6"
         PictureBox6.Size = New Size(68, 67)
         PictureBox6.TabIndex = 14
@@ -146,7 +147,7 @@ Partial Class user_feedback
         ' Label4
         ' 
         Label4.Font = New Font("Segoe UI Semibold", 7.8F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        Label4.Location = New Point(803, 100)
+        Label4.Location = New Point(737, 100)
         Label4.Name = "Label4"
         Label4.Size = New Size(75, 25)
         Label4.TabIndex = 15
@@ -157,7 +158,7 @@ Partial Class user_feedback
         ' 
         AutoScaleDimensions = New SizeF(7F, 17F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(954, 832)
+        ClientSize = New Size(844, 666)
         Controls.Add(Label4)
         Controls.Add(PictureBox6)
         Controls.Add(Label3)
