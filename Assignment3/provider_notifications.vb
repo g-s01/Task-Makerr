@@ -4,7 +4,8 @@ Imports Microsoft.Data.SqlClient
 Public Class provider_notifications
 
     'Dim providerId As Integer=Module_global.Provider_ID
-    Dim providerId As Integer = 3
+    Dim providerId As Integer = Module_global.Provider_ID
+
     Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
     Private Sub provider_notifications_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'new chats loading
