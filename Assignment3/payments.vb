@@ -152,7 +152,7 @@ Public Class payments
 
             MessageBox.Show("Cashback of $" & cashbackAmount.ToString("0.00") & " applied successfully!", "Cashback Applied", MessageBoxButtons.OK, MessageBoxIcon.Information)
         Else
-            MessageBox.Show("Uhoh! No cashback awarded this time.", "Cashback", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("Uhoh!No cashback awarded this time.", "Cashback", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
     End Sub
 
