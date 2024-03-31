@@ -22,7 +22,7 @@ Partial Class Provider_Profile_page
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        PictureBox1 = New PictureBox()
+        profilepic_pb = New PictureBox()
         Panel1 = New Panel()
         PictureBox6 = New PictureBox()
         PictureBox5 = New PictureBox()
@@ -38,8 +38,8 @@ Partial Class Provider_Profile_page
         Name_label = New Label()
         Panel3 = New Panel()
         Label1 = New Label()
-        PictureBox7 = New PictureBox()
-        CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
+        changepic_pb = New PictureBox()
+        CType(profilepic_pb, ComponentModel.ISupportInitialize).BeginInit()
         Panel1.SuspendLayout()
         CType(PictureBox6, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox5, ComponentModel.ISupportInitialize).BeginInit()
@@ -47,19 +47,19 @@ Partial Class Provider_Profile_page
         CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
         Panel2.SuspendLayout()
-        CType(PictureBox7, ComponentModel.ISupportInitialize).BeginInit()
+        CType(changepic_pb, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
-        ' PictureBox1
+        ' profilepic_pb
         ' 
-        PictureBox1.BackgroundImage = My.Resources.Resources._default
-        PictureBox1.BackgroundImageLayout = ImageLayout.Stretch
-        PictureBox1.Location = New Point(59, 29)
-        PictureBox1.Name = "PictureBox1"
-        PictureBox1.Size = New Size(198, 197)
-        PictureBox1.SizeMode = PictureBoxSizeMode.StretchImage
-        PictureBox1.TabIndex = 0
-        PictureBox1.TabStop = False
+        profilepic_pb.BackgroundImage = My.Resources.Resources._default
+        profilepic_pb.BackgroundImageLayout = ImageLayout.Stretch
+        profilepic_pb.Location = New Point(59, 29)
+        profilepic_pb.Name = "profilepic_pb"
+        profilepic_pb.Size = New Size(198, 197)
+        profilepic_pb.SizeMode = PictureBoxSizeMode.StretchImage
+        profilepic_pb.TabIndex = 0
+        profilepic_pb.TabStop = False
         ' 
         ' Panel1
         ' 
@@ -212,30 +212,30 @@ Partial Class Provider_Profile_page
         Label1.Text = "Past Appointments"
         Label1.TextAlign = ContentAlignment.MiddleCenter
         ' 
-        ' PictureBox7
+        ' changepic_pb
         ' 
-        PictureBox7.BackgroundImage = My.Resources.Resources.more_horiz
-        PictureBox7.BackgroundImageLayout = ImageLayout.Stretch
-        PictureBox7.Location = New Point(224, 33)
-        PictureBox7.Name = "PictureBox7"
-        PictureBox7.Size = New Size(30, 30)
-        PictureBox7.TabIndex = 5
-        PictureBox7.TabStop = False
+        changepic_pb.BackgroundImage = My.Resources.Resources.more_horiz
+        changepic_pb.BackgroundImageLayout = ImageLayout.Stretch
+        changepic_pb.Location = New Point(224, 33)
+        changepic_pb.Name = "changepic_pb"
+        changepic_pb.Size = New Size(30, 30)
+        changepic_pb.TabIndex = 5
+        changepic_pb.TabStop = False
         ' 
         ' Provider_Profile_page
         ' 
         AutoScaleMode = AutoScaleMode.None
         BackColor = Color.White
         ClientSize = New Size(825, 619)
-        Controls.Add(PictureBox7)
+        Controls.Add(changepic_pb)
         Controls.Add(Label1)
         Controls.Add(Panel3)
         Controls.Add(Panel2)
         Controls.Add(Panel1)
-        Controls.Add(PictureBox1)
+        Controls.Add(profilepic_pb)
         Name = "Provider_Profile_page"
         Text = "Provider_Profile_page"
-        CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
+        CType(profilepic_pb, ComponentModel.ISupportInitialize).EndInit()
         Panel1.ResumeLayout(False)
         CType(PictureBox6, ComponentModel.ISupportInitialize).EndInit()
         CType(PictureBox5, ComponentModel.ISupportInitialize).EndInit()
@@ -243,11 +243,11 @@ Partial Class Provider_Profile_page
         CType(PictureBox3, ComponentModel.ISupportInitialize).EndInit()
         CType(PictureBox2, ComponentModel.ISupportInitialize).EndInit()
         Panel2.ResumeLayout(False)
-        CType(PictureBox7, ComponentModel.ISupportInitialize).EndInit()
+        CType(changepic_pb, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
 
-    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents profilepic_pb As PictureBox
     Friend WithEvents Panel1 As Panel
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents PictureBox5 As PictureBox
@@ -263,5 +263,5 @@ Partial Class Provider_Profile_page
     Friend WithEvents Button1 As Button
     Friend WithEvents Panel3 As Panel
     Friend WithEvents Label1 As Label
-    Friend WithEvents PictureBox7 As PictureBox
+    Friend WithEvents changepic_pb As PictureBox
 End Class

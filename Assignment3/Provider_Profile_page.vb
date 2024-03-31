@@ -100,13 +100,13 @@ Public Class Provider_Profile_page
         End Select
     End Sub
 
-    Private Sub PictureBox7_Click(sender As Object, e As EventArgs) Handles PictureBox7.Click
+    Private Sub Changepic_pb_Click(sender As Object, e As EventArgs) Handles changepic_pb.Click
         Dim openFileDialog As New OpenFileDialog()
         openFileDialog.Filter = "Image Files (*.jpg; *.jpeg; *.png; *.gif)|*.jpg; *.jpeg; *.png; *.gif"
 
         If openFileDialog.ShowDialog() = DialogResult.OK Then
             ' Set the selected image to the PictureBox
-            PictureBox1.Image = Image.FromFile(openFileDialog.FileName)
+            profilepic_pb.Image = Image.FromFile(openFileDialog.FileName)
         End If
     End Sub
 
