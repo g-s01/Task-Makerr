@@ -4,7 +4,7 @@ Imports Microsoft.Data.SqlClient
 
 Public Class pending_payment
 
-    Public dealID As Integer = Module_global.Appointment_Det_DealId
+    Public dealID As Integer = 1
     Private Sub pending_payment_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
 

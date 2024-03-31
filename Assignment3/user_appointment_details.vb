@@ -1,7 +1,7 @@
 ﻿Imports System.Configuration
 Imports Microsoft.Data.SqlClient
 Public Class user_appointment_details
-    Public dealID As Integer = Module_global.Appointment_Det_DealId
+    Public dealID As Integer = 1
     Public startTime As TimeSpan
     Public firstDate As DateTime
     Public bookDate As DateTime
