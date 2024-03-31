@@ -34,7 +34,7 @@ Public Class Admin_Login
                 Using sqlCommand As New SqlCommand(query, sqlConnection)
                     Dim pass As Object = sqlCommand.ExecuteScalar()
                     If pass = password_tb.Text Then
-                        Me.Hide()
+                        Me.Close()
                         admin_template.Show()
                     Else
                         error_label.Text = "Invalid password!!"
