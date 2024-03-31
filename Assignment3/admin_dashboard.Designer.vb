@@ -78,7 +78,7 @@ Partial Class admin_dashboard
         ' Chart1
         ' 
         Chart1.Anchor = AnchorStyles.None
-        Chart1.Location = New Point(2, 275)
+        Chart1.Location = New Point(3, 275)
         Chart1.Name = "Chart1"
         Chart1.Size = New Size(431, 333)
         Chart1.TabIndex = 0
@@ -87,7 +87,7 @@ Partial Class admin_dashboard
         ' Chart2
         ' 
         Chart2.Anchor = AnchorStyles.None
-        Chart2.Location = New Point(451, 0)
+        Chart2.Location = New Point(452, 0)
         Chart2.Name = "Chart2"
         Chart2.Size = New Size(368, 227)
         Chart2.TabIndex = 1
@@ -138,7 +138,7 @@ Partial Class admin_dashboard
         Panel1.Controls.Add(Label3)
         Panel1.Controls.Add(Label1)
         Panel1.Controls.Add(Label2)
-        Panel1.Location = New Point(30, 22)
+        Panel1.Location = New Point(31, 22)
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(176, 205)
         Panel1.TabIndex = 5
@@ -161,7 +161,7 @@ Partial Class admin_dashboard
         Panel3.Controls.Add(Label7)
         Panel3.Controls.Add(Label8)
         Panel3.Controls.Add(Label9)
-        Panel3.Location = New Point(243, 22)
+        Panel3.Location = New Point(244, 22)
         Panel3.Name = "Panel3"
         Panel3.Size = New Size(176, 205)
         Panel3.TabIndex = 6
@@ -231,7 +231,7 @@ Partial Class admin_dashboard
         Panel4.Controls.Add(PictureBox4)
         Panel4.Controls.Add(Label12)
         Panel4.Controls.Add(Label13)
-        Panel4.Location = New Point(446, 275)
+        Panel4.Location = New Point(447, 275)
         Panel4.Name = "Panel4"
         Panel4.Size = New Size(176, 169)
         Panel4.TabIndex = 6
@@ -277,7 +277,7 @@ Partial Class admin_dashboard
         Panel5.Controls.Add(PictureBox5)
         Panel5.Controls.Add(Label15)
         Panel5.Controls.Add(Label16)
-        Panel5.Location = New Point(633, 275)
+        Panel5.Location = New Point(634, 275)
         Panel5.Name = "Panel5"
         Panel5.Size = New Size(176, 169)
         Panel5.TabIndex = 6
@@ -323,7 +323,7 @@ Partial Class admin_dashboard
         Label11.BackColor = SystemColors.Control
         Label11.Font = New Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label11.ImageAlign = ContentAlignment.MiddleLeft
-        Label11.Location = New Point(535, 231)
+        Label11.Location = New Point(536, 231)
         Label11.Name = "Label11"
         Label11.Size = New Size(285, 32)
         Label11.TabIndex = 5
@@ -337,7 +337,7 @@ Partial Class admin_dashboard
         Label14.BackColor = SystemColors.Control
         Label14.Font = New Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label14.ImageAlign = ContentAlignment.MiddleLeft
-        Label14.Location = New Point(85, 247)
+        Label14.Location = New Point(86, 247)
         Label14.Name = "Label14"
         Label14.Size = New Size(337, 32)
         Label14.TabIndex = 7
@@ -371,7 +371,7 @@ Partial Class admin_dashboard
         Panel6.Controls.Add(ProgressBar2)
         Panel6.Controls.Add(Label17)
         Panel6.Controls.Add(ProgressBar1)
-        Panel6.Location = New Point(446, 473)
+        Panel6.Location = New Point(447, 473)
         Panel6.Name = "Panel6"
         Panel6.Size = New Size(363, 114)
         Panel6.TabIndex = 7
@@ -503,7 +503,7 @@ Partial Class admin_dashboard
         ' admin_dashboard
         ' 
         AutoScaleMode = AutoScaleMode.None
-        ClientSize = New Size(821, 610)
+        ClientSize = New Size(822, 610)
         Controls.Add(Panel6)
         Controls.Add(Label14)
         Controls.Add(Label11)
