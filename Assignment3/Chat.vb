@@ -31,58 +31,65 @@ Public Class Chat
         Dim gap As Integer = 10 ' Gap between messages
         Dim pad As Integer = 10
         Dim panelWidth As Integer = Panel2.Width
+        Dim isSender As Boolean = False ' Flag to indicate if the message is sent by the user
 
         For Each msg In messageList
-            Dim rtb As New RichTextBox()
-            rtb.AutoSize = True
-            rtb.WordWrap = True
-            rtb.ScrollBars = RichTextBoxScrollBars.None
-            rtb.BackColor = Color.DarkGray
+            isSender = (msg.Sender_type = "Bhogi")
 
-            rtb.Padding = New Padding(10)
-            rtb.ReadOnly = True
-            rtb.BorderStyle = BorderStyle.None
+            Dim label As New Label()
+            label.AutoSize = True
+            label.Text = msg.Message_content
+            label.BackColor = Color.LightGray
+            label.Padding = New Padding(5, 5, 5, 5) ' Set padding to 5 on the left and right, 0 on the top and bottom
+            label.MaximumSize = New Size(panelWidth - pad * 3, 0) ' Limit width to panel width with some padding
+            label.AutoEllipsis = False ' Allow the label to display all text
+            label.Left = If(isSender, panelWidth - label.PreferredWidth - pad - 25, pad)
+            If label.Text = "" Then
+                label.Text = "."
+            End If
 
-            ' Add message content with different styles for username, message, and time
-            rtb.SelectionStart = rtb.TextLength
-            rtb.SelectionLength = 0
-            rtb.SelectionColor = Color.Blue
-            rtb.SelectionFont = New Font(rtb.Font.FontFamily, 9, FontStyle.Bold)
-            rtb.SelectedText = msg.Sender_type & Environment.NewLine
+            Dim label1 As New Label()
+            Dim label2 As New Label()
+            label1.AutoSize = True
+            label2.AutoSize = True
+            label2.Margin = New Padding(0)
+            label1.BackColor = Color.Transparent
+            label2.BackColor = Color.Transparent
+            label1.Padding = New Padding(0, 0, 0, 0)
+            label2.Padding = New Padding(0, 0, 0, 0)
+            label.ForeColor = Color.Black
+            label2.ForeColor = Color.Brown
 
-            rtb.SelectionStart = rtb.TextLength
-            rtb.SelectionLength = 0
-            rtb.SelectionColor = Color.SeaShell
-            rtb.SelectionFont = New Font(rtb.Font.FontFamily, 9, FontStyle.Bold)
-            rtb.SelectedText = msg.Message_content & Environment.NewLine
+            label1.Left = If(isSender, Math.Min(label.Left + label.PreferredWidth - 35, label.Right - 100), pad)
 
-            rtb.SelectionStart = rtb.TextLength
-            rtb.SelectionLength = 0
-            rtb.SelectionColor = Color.DimGray
-            rtb.SelectionFont = New Font(rtb.Font.FontFamily, 7, FontStyle.Bold)
-            rtb.SelectedText = DateTime.Now.ToString("hh:mm")
-            rtb.SelectionAlignment = HorizontalAlignment.Right
+            label1.AutoEllipsis = False ' Allow the label to display all text
+            label2.AutoEllipsis = False ' Allow the label to display all text
+            label1.Text = msg.Sender_type
+            label2.Text = DateTime.Now.ToString("hh:mm")
+            label1.Top = yOffset
+            label2.Font = New Font(label.Font.FontFamily, 7, FontStyle.Italic)
+            label1.Font = New Font(label.Font.FontFamily, 7, FontStyle.Bold)
+            label.Top = yOffset + label1.Height - 10 ' Set the vertical position
+            Dim textSize = TextRenderer.MeasureText(label.Text, label.Font, label.MaximumSize, TextFormatFlags.WordBreak)
+            label.Height = textSize.Height
 
-            rtb.Left = pad 
-            rtb.Top = yOffset
+            label2.Left = If(isSender, label.Left + label.PreferredWidth - 35 + label.Width - 88, textSize.Width - 5)
+            label2.Top = yOffset + label.Height + label1.Height + 8 - 10
+            If isSender Then
+                label1.ForeColor = Color.Blue ' Change font color to blue for messages sent by "Bhogi"
+            Else
+                label1.ForeColor = Color.Green ' Change font color to black for other messages
+            End If
 
+            ' Manually calculate the height of the label based on the text and the maximum width
 
+            Panel2.Controls.Add(label1)
+            Panel2.Controls.Add(label)
+            Panel2.Controls.Add(label2)
 
-            rtb.Width = panelWidth - 2 * pad
-
-            Panel2.Controls.Add(rtb)
-            Dim textSize = TextRenderer.MeasureText(rtb.Text, rtb.Font, New Size(panelWidth - 3 * pad, 0), TextFormatFlags.WordBreak)
-            rtb.Width = textSize.Width  ' Set the width to the measured width of the text
-            rtb.Height = textSize.Height
             ' Increment the vertical position for the next message with gap
-            yOffset += rtb.Height + gap
+            yOffset += label.Height + gap + label2.Height + label1.Height + 10
         Next
-
-
-
-
-
-
 
 
         ' Ensure the panel scrolls to the bottom to show the latest message
@@ -90,10 +97,6 @@ Public Class Chat
     End Sub
 
 
-
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
-
-    End Sub
 End Class
 
 
