@@ -73,6 +73,7 @@ Public Class Chat
             Dim textSize = TextRenderer.MeasureText(label.Text, label.Font, label.MaximumSize, TextFormatFlags.WordBreak)
             label.Height = textSize.Height
 
+<<<<<<< HEAD
             label2.Left = If(isSender, label.Left + label.PreferredWidth - 35 + label.Width - 88, textSize.Width - 5)
             label2.Top = yOffset + label.Height + label1.Height + 8 - 10
             If isSender Then
@@ -87,6 +88,21 @@ Public Class Chat
             Panel2.Controls.Add(label)
             Panel2.Controls.Add(label2)
 
+=======
+            Dim textSize = TextRenderer.MeasureText(rtb.Text, rtb.Font, New Size(panelWidth - 3 * pad, 0), TextFormatFlags.WordBreak)
+
+            If (msg.Sender_type = "user") Then
+                rtb.Left = panelWidth - textSize.Width - pad
+            Else
+                rtb.Left = pad
+
+            End If
+
+            rtb.Top = yOffset
+            rtb.Width = textSize.Width  ' Set the width to the measured width of the text
+            rtb.Height = textSize.Height
+            Panel2.Controls.Add(rtb)
+>>>>>>> 6ab68c5fa401b3f75c43e3668c23502fd47e34fc
             ' Increment the vertical position for the next message with gap
             yOffset += label.Height + gap + label2.Height + label1.Height + 10
         Next
