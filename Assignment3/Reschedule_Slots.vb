@@ -33,7 +33,7 @@ Public Class Reschedule_Slots
                     ' Retrieve the provider name from the reader
                     ProviderName = reader.GetString(0)
                     Avaiability_String = reader.GetString(1)
-                    MessageBox.Show(Avaiability_String)
+                    ' MessageBox.Show(Avaiability_String)
                     ' Do something with the retrieved values, such as displaying them in a MessageBox
                 End While
 
@@ -70,7 +70,6 @@ Public Class Reschedule_Slots
     End Sub
 
     Private Sub Make_Schedule_Table()
-        MessageBox.Show("-2")
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
         Dim currentDayOfWeek As DayOfWeek = DateTime.Today.DayOfWeek
 
@@ -85,7 +84,7 @@ Public Class Reschedule_Slots
 
         ' Set the time to 12:00 AM
         Dim startDate As DateTime = New DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 0, 0, 0)
-        MessageBox.Show("-1.5")
+
         For i As Integer = 0 To 7
             Dim nextDate As DateTime = startDate.AddDays(i).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
             Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
@@ -138,8 +137,7 @@ Public Class Reschedule_Slots
 
                                     availability(dayIndex, slot) = 3
                                     PreviouslyBookedList.Add({dayIndex, slot})
-                                    MessageBox.Show(dayIndex)
-                                    MessageBox.Show(slot)
+
                                 End If
                             Next
                             ' Process the data as needed
@@ -152,20 +150,20 @@ Public Class Reschedule_Slots
             End Using
 
             ' Execute the DELETE query to delete the deal
-            Using deleteCommand As New SqlCommand(deleteQuery, connection)
-                ' Add parameters to the DELETE command
-                deleteCommand.Parameters.AddWithValue("@deal_id", Module_global.DealID_Reschedule)
+            ' Using deleteCommand As New SqlCommand(deleteQuery, connection)
+            ' Add parameters to the DELETE command
+            'deleteCommand.Parameters.AddWithValue("@deal_id", Module_global.DealID_Reschedule)
 
-                ' Execute the DELETE command
-                Dim rowsAffected As Integer = deleteCommand.ExecuteNonQuery()
+            ' Execute the DELETE command
+            'Dim rowsAffected As Integer = deleteCommand.ExecuteNonQuery()
 
-                ' Check if any rows were deleted
-                If rowsAffected > 0 Then
-                    MessageBox.Show("Deleted Successfully!")
-                Else
-                    MessageBox.Show("Error!")
-                End If
-            End Using
+            ' Check if any rows were deleted
+            'If rowsAffected > 0 Then
+            'MessageBox.Show("Deleted Successfully!")
+            'Else
+            'MessageBox.Show("Error!")
+            'End If
+            'End Using
 
 
 
@@ -182,11 +180,10 @@ Public Class Reschedule_Slots
                 Dim nextDate As DateTime = DateTime.Today.Date.AddDays(pair(0)).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
                 Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
                 deleteCommand.Parameters.AddWithValue("@time", formattedDate)
-                MessageBox.Show(formattedDate)
                 deleteCommand.Parameters.AddWithValue("@slots", pair(1))
                 Dim rowsAffected As Integer = deleteCommand.ExecuteNonQuery()
                 If rowsAffected > 0 Then
-                    MessageBox.Show("Deleted Successfully!")
+                    Console.WriteLine("Deleted")
                 Else
                     MessageBox.Show("Error!")
                 End If
@@ -310,6 +307,9 @@ Public Class Reschedule_Slots
                 AddHandler btn.Click, AddressOf TimeSlot_Click
             Next
         Next
+        For Each pair In PreviouslyBookedList
+            BookedList.Add(pair)
+        Next
     End Sub
 
     Private Sub TimeSlot_Click(sender As Object, e As EventArgs)
@@ -319,7 +319,7 @@ Public Class Reschedule_Slots
         Dim dayIndex As Integer = cellPosition.Row - 1
         Dim hourIndex As Integer = cellPosition.Column - 1
 
-        If availability(dayIndex, hourIndex) Then
+        If availability(dayIndex, hourIndex) = 1 Or availability(dayIndex, hourIndex) = 3 Then
             'MessageBox.Show("Hi")
             Dim targetPair As Integer() = {dayIndex, hourIndex}
 
@@ -349,7 +349,9 @@ Public Class Reschedule_Slots
                 MessageBox.Show("Slot removed")
                 btn.BackColor = Color.LightGreen
             End If
+
         Else
+
             ' Schedule unavailable
             MessageBox.Show($"This time slot is already booked for {DateTime.Today.AddDays(dayIndex).ToString("ddd, dd MMM")} at {(hourIndex + 9).ToString("00")}:00.")
 
@@ -413,6 +415,8 @@ Public Class Reschedule_Slots
             Else
                 MessageBox.Show("Please select some slots to book!")
             End If
+            ' Update deals table
+            ' Calculate Reschedule cost and display to the user
 
         End Using
     End Sub
