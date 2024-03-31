@@ -85,11 +85,10 @@ Partial Class pending_payment
         rtb1.BorderStyle = BorderStyle.None
         rtb1.Font = New Font("Microsoft YaHei", 10.2F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         rtb1.ForeColor = Color.Black
-        rtb1.Location = New Point(15, 120)
+        rtb1.Location = New Point(16, 120)
         rtb1.Name = "rtb1"
         rtb1.Size = New Size(392, 176)
         rtb1.TabIndex = 9
-        rtb1.Text = vbLf & "    Details of the Booked Slots" & vbLf & vbLf & vbLf & "    Appointment Location: abcd" & vbLf & vbLf & "    Appointment Date: 1/23/2024             Timing: 1:30pm"
         ' 
         ' rtb2
         ' 
@@ -101,7 +100,6 @@ Partial Class pending_payment
         rtb2.Name = "rtb2"
         rtb2.Size = New Size(392, 176)
         rtb2.TabIndex = 9
-        rtb2.Text = vbLf & "    Charges for the Appointment" & vbLf & vbLf & vbLf & "    Charges per Slot: Rs100" & vbLf & vbLf & "    Overall Service Cost: Rs500"
         ' 
         ' btn_pay
         ' 

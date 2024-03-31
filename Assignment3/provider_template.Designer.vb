@@ -96,7 +96,7 @@ Partial Class provider_template
         Label2.ForeColor = Color.DimGray
         Label2.Location = New Point(22, 470)
         Label2.Name = "Label2"
-        Label2.Size = New Size(92, 28)
+        Label2.Size = New Size(85, 25)
         Label2.TabIndex = 10
         Label2.Text = "Support"
         ' 
@@ -107,7 +107,7 @@ Partial Class provider_template
         Label1.ForeColor = Color.DimGray
         Label1.Location = New Point(22, 100)
         Label1.Name = "Label1"
-        Label1.Size = New Size(71, 28)
+        Label1.Size = New Size(66, 25)
         Label1.TabIndex = 9
         Label1.Text = "Menu"
         ' 

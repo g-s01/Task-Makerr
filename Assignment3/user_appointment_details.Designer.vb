@@ -91,7 +91,7 @@ Partial Class user_appointment_details
         rtb1.Name = "rtb1"
         rtb1.Size = New Size(392, 176)
         rtb1.TabIndex = 9
-        rtb1.Text = vbLf & "    Details of the Booked Slots" & vbLf & vbLf & vbLf & "    Appointment Location: abcd" & vbLf & vbLf & "    Appointment Date: 1/23/2024             Timing: 1:30pm"
+        rtb1.Text = ""
         ' 
         ' rtb2
         ' 
@@ -103,7 +103,7 @@ Partial Class user_appointment_details
         rtb2.Name = "rtb2"
         rtb2.Size = New Size(392, 176)
         rtb2.TabIndex = 9
-        rtb2.Text = vbLf & "    Charges for the Appointment" & vbLf & vbLf & vbLf & "    Charges per Slot: Rs100" & vbLf & vbLf & "    Overall Service Cost: Rs500"
+        rtb2.Text = ""
         ' 
         ' btn_reschedule
         ' 
