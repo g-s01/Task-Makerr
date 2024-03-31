@@ -26,6 +26,18 @@ Public Class user_template
             .BringToFront()
             .Show()
         End With
+
+        With user_appointment_details
+            .TopLevel = False
+            SplitContainer1.Panel2.Controls.Add(user_appointment_details)
+            .BringToFront()
+        End With
+
+        With pending_payment
+            .TopLevel = False
+            SplitContainer1.Panel2.Controls.Add(pending_payment)
+            .BringToFront()
+        End With
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click

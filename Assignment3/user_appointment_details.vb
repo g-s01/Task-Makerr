@@ -5,7 +5,16 @@ Public Class user_appointment_details
     Public startTime As TimeSpan
     Public firstDate As DateTime
     Public bookDate As DateTime
-    Private Sub user_appointmnet_details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    Protected Overrides Sub OnVisibleChanged(e As EventArgs)
+        MyBase.OnVisibleChanged(e)
+        If Me.Visible Then
+            ReloadData()
+        End If
+    End Sub
+    Private Sub ReloadData()
+
+        dealID = Module_global.Appointment_Det_DealId
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
 
         Dim query As String = "SELECT * FROM deals WHERE deal_id = @DealID"
@@ -32,7 +41,7 @@ Public Class user_appointment_details
                             provider = reader.GetInt32(reader.GetOrdinal("provider_id"))
                             time = reader.GetString(reader.GetOrdinal("time"))
                             bookDate = reader.GetDateTime(reader.GetOrdinal("dates"))
-                            'Dim location As String = reader.GetString(reader.GetOrdinal("location"))
+                            Dim location As String = reader.GetString(reader.GetOrdinal("location"))
                             ' Access other columns in a similar manner
                             ' Do something with the retrieved data
 
@@ -54,7 +63,7 @@ Public Class user_appointment_details
 
                             Dim times As String = bookDate.Date.AddDays(dayIndex).Add(startTime).ToString("hh:mm tt")
 
-                            rtb1.Text = vbLf & "   Details of the Booked Slots" & vbLf & vbLf & vbLf & "   Location: " & vbLf & vbLf & "   Date: " & firstDate.ToString("MMM dd yyyy") & "                            Timing: " & times
+                            rtb1.Text = vbLf & "   Details of the Booked Slots" & vbLf & vbLf & vbLf & "   Location: " & location & vbLf & vbLf & "   Date: " & firstDate.ToString("MMM dd yyyy") & "                            Timing: " & times
 
 
 
@@ -89,7 +98,7 @@ Public Class user_appointment_details
                     Dim costPerHour As Decimal = Convert.ToDecimal(command.ExecuteScalar())
 
                     ' Do something with the retrieved cost per hour
-                    rtb2.Text = vbLf & "   Charges for the Appointment" & vbLf & vbLf & vbLf & "   Charges per Slot: Rs" & costPerHour & vbLf & vbLf & "   Overall Service Cost: Rs" & slots * costPerHour
+                    rtb2.Text = vbLf & "   Charges for the Appointment" & vbLf & vbLf & vbLf & "   Charges per Slot: Rs " & costPerHour & vbLf & vbLf & "   Overall Service Cost: Rs " & slots * costPerHour
 
 
                 Catch ex As Exception
@@ -150,4 +159,15 @@ Public Class user_appointment_details
         End If
 
     End Sub
+
+    Private Sub btn_upcoming_Click(sender As Object, e As EventArgs) Handles btn_upcoming.Click
+        Me.Hide()
+        user_appointments.Show()
+    End Sub
+
+    Private Sub btn_completed_Click(sender As Object, e As EventArgs) Handles btn_completed.Click
+        Me.Hide()
+        user_appointments.Show()
+    End Sub
+
 End Class
