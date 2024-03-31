@@ -135,9 +135,6 @@ Public Class payments
         Dim CashbackPercentage As Decimal = random.NextDouble() * 0.05D
         Dim randomNumber As Integer = random.Next(2)
 
-        ' Define the probability of getting cashback (50% chance in this case)
-        Dim cashbackProbability As Double = 0.5
-
         If randomNumber = 1 Then
             ' Check if the randomly generated number falls within the cashback probability
             Dim cashbackAmount As Decimal = paymentAmount * CashbackPercentage
