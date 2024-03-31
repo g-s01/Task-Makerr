@@ -8,6 +8,7 @@ Imports iText.Layout.Element
 Imports iText.Kernel.Font
 Imports iText.Layout.Properties
 Imports iText.IO.Font.Constants
+Imports Microsoft.Identity.Client.NativeInterop
 
 Public Class payments
     ' to connect with the database
@@ -92,6 +93,11 @@ Public Class payments
                 MessageBox.Show("The OTP is a 6 digit number, please adhere to the convention.")
             End If
         End If
+        Dim paymentAmount As Decimal
+        If Decimal.TryParse(TextBox2.Text, paymentAmount) Then
+            ' Apply cashback
+            ApplyCashback(ID, paymentAmount)
+        End If
     End Sub
     ' function to send email from admin
     ' parameter 1: randomNumber -> OTP
@@ -121,4 +127,37 @@ Public Class payments
             MessageBox.Show("Error sending email: " & ex.Message)
         End Try
     End Sub
+    ' Function to update user balance with cashback
+    ' author: nikhitha
+    Sub ApplyCashback(email As String, paymentAmount As Decimal)
+        ' Generate a random number between 0 and 1
+        Dim random As New Random()
+        Dim CashbackPercentage As Decimal = random.NextDouble() * 0.05D
+        Dim randomNumber As Integer = random.Next(2)
+
+        ' Define the probability of getting cashback (50% chance in this case)
+        Dim cashbackProbability As Double = 0.5
+
+        If randomNumber = 1 Then
+            ' Check if the randomly generated number falls within the cashback probability
+            Dim cashbackAmount As Decimal = paymentAmount * CashbackPercentage
+            Dim sqlQuery As String = "UPDATE customer SET balance = balance + @CashbackAmount WHERE email = @Email;"
+
+            Using connection As New SqlConnection(connectionString)
+                Using command As New SqlCommand(sqlQuery, connection)
+                    command.Parameters.AddWithValue("@CashbackAmount", cashbackAmount)
+                    command.Parameters.AddWithValue("@Email", email)
+
+                    connection.Open()
+                    command.ExecuteNonQuery()
+                End Using
+            End Using
+
+            MessageBox.Show("Cashback of $" & cashbackAmount.ToString("0.00") & " applied successfully!", "Cashback Applied", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Else
+            MessageBox.Show("Uhoh! No cashback awarded this time.", "Cashback", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End If
+    End Sub
+
+
 End Class
