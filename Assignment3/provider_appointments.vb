@@ -30,6 +30,24 @@ Public Class provider_appointments
         'relatedForm.Show()
     End Sub
 
+    Private Sub Button_ClickCompleted(sender As Object, e As EventArgs)
+        Dim ButtonClicked As Button = DirectCast(sender, Button)
+        Dim dealId As Integer = Integer.Parse(ButtonClicked.Name)
+        Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+        Dim query As String = "Update deals Set status=2 where deal_id=@DealId"
+        Using sqlConnection As New SqlConnection(connectionString)
+            sqlConnection.Open()
+            Using sqlCommand As New SqlCommand(query, sqlConnection)
+                sqlCommand.Parameters.AddWithValue("@DealId", dealId)
+                Dim result As Object = sqlCommand.ExecuteNonQuery()
+            End Using
+        End Using
+        MessageBox.Show("Service Completed")
+        upcoming()
+        ' Show related form for button click
+        'Dim relatedForm As New RelatedForm2() ' Replace RelatedForm2 with the actual name of your related form class
+        'relatedForm.Show()
+    End Sub
     Private Sub Button_Click(sender As Object, e As EventArgs)
         MessageBox.Show("Button Clicked in Lower Panel")
 
@@ -190,6 +208,7 @@ Public Class provider_appointments
         splitContainerArray(i).Panel1.Controls.Add(timings)
 
         Dim button_com As New Button()
+        button_com.Name = DealId.ToString()
         button_com.Text = " Completed "
         button_com.AutoSize = True
         button_com.Location = New System.Drawing.Point(480, 0)
@@ -198,7 +217,7 @@ Public Class provider_appointments
         button_com.Font = New Font("Microsoft YaHei", 10.2F)
         button_com.BackColor = System.Drawing.Color.FromArgb(CByte(245), CByte(140), CByte(215))
 
-        AddHandler button_com.Click, AddressOf Button_Click
+        AddHandler button_com.Click, AddressOf Button_ClickCompleted
 
         splitContainerArray(i).Panel2.Controls.Add(button_com)
 
