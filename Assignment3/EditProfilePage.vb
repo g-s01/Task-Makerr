@@ -1,524 +1,263 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class Provider_Profile_page
-    Inherits System.Windows.Forms.Form
+Imports Microsoft.Data.SqlClient
+Imports System.Configuration
+Imports System.IO
+Imports System.Text
 
-    'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        Try
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
-            End If
-        Finally
-            MyBase.Dispose(disposing)
-        End Try
+Public Class EditProfilePage
+
+    Dim code As Integer
+    Dim location_array(13) As Boolean
+    Dim locations() As String = {"Guwahati", "Tezpur", "Delhi", "Amritsar", "Banglore"}
+
+    Private Sub Provider_Signup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+        Dim query As String = "SELECT * FROM provider WHERE provider_id = @ProviderID" ' Assuming provider_id is the primary key column in the provider table
+
+        ' Set default values for location_array
+        For i As Integer = 0 To 12
+            location_array(i) = False
+        Next
+
+        ' Populate location_checklistbox
+        For Each location As String In locations
+            location_checklistbox.Items.Add(location)
+        Next
+
+        ' Add checkboxes to the table
+        For row As Integer = 0 To 6
+            For col As Integer = 1 To 12
+                Dim checkBox As New CheckBox()
+                checkBox.Name = "cb_" & row.ToString() & "_" & col.ToString()
+                checkBox.Dock = DockStyle.Fill
+                checkBox.Padding = New Padding(10, 0, 0, 0)
+                slot_matrix_tablelayout.Controls.Add(checkBox, col, row)
+            Next
+        Next
+
+        ' Fetch provider data from the database
+        Using sqlConnection As New SqlConnection(connectionString)
+            sqlConnection.Open()
+
+            ' Create and execute the SQL command to fetch provider information
+            Using sqlCommand As New SqlCommand(query, sqlConnection)
+                sqlCommand.Parameters.AddWithValue("@ProviderID", 3) ' You need to replace providerID with the actual provider ID of the current user
+                Dim reader As SqlDataReader = sqlCommand.ExecuteReader()
+
+                ' Check if any rows were returned
+                If reader.Read() Then
+                    ' Populate UI controls with fetched data
+                    name_label.Text = reader("providername").ToString()
+                    email_label.Text = reader("email").ToString()
+                    contactnumber_tb.Text = reader("phone_number").ToString()
+                    cos_tb.Text = reader("cost_per_hour").ToString()
+
+                    ' Load profile image if available
+                    If Not reader.IsDBNull(reader.GetOrdinal("profile_image")) Then
+                        Dim profileImageBytes As Byte() = DirectCast(reader("profile_image"), Byte())
+                        Using ms As New MemoryStream(profileImageBytes)
+                            profilepic_pb.Image = Image.FromStream(ms)
+                        End Using
+                    End If
+
+                    ' Populate service ComboBox and check if the category is already present
+                    Dim category As String = reader("service").ToString()
+                    If Not servicetype_combox.Items.Contains(category) Then
+                        servicetype_combox.Items.Add(category)
+                    End If
+                    servicetype_combox.SelectedItem = category
+
+                    ' Populate other fields
+                    cos_tb.Text = reader("cost_per_hour").ToString()
+
+                    ' Fetch the working_hour binary string from the reader
+                    Dim workingHour As String = reader("working_hour").ToString()
+
+                    ' Close the initial reader before opening a new one
+                    reader.Close()
+
+                    ' Fetch locations associated with the provider from the location table
+                    Dim locationQuery As String = "SELECT location FROM location WHERE provider_id = @ProviderID"
+                    Using locationCommand As New SqlCommand(locationQuery, sqlConnection)
+                        locationCommand.Parameters.AddWithValue("@ProviderID", 3)
+                        Dim locationReader As SqlDataReader = locationCommand.ExecuteReader()
+
+                        ' Mark the locations as checked in the checklistbox
+                        While locationReader.Read()
+                            Dim locationName As String = locationReader("location").ToString()
+                            Dim index As Integer = location_checklistbox.FindString(locationName)
+                            If index <> -1 Then
+                                location_checklistbox.SetItemChecked(index, True)
+                            End If
+                        End While
+
+
+                        locationReader.Close()
+                    End Using
+
+                    ' Mark the checkboxes in the slot_matrix_tablelayout based on the working_hour bits
+                    Dim bitIndex As Integer = 0
+                    For row As Integer = 0 To 6
+                        For col As Integer = 1 To 12
+                            ' Convert the binary string to an integer to check the bit at the current index
+                            Dim bit As Integer = Integer.Parse(workingHour.Substring(bitIndex, 1))
+                            ' Get the checkbox at the current position
+                            Dim checkBox As CheckBox = CType(slot_matrix_tablelayout.GetControlFromPosition(col, row), CheckBox)
+                            ' Check the checkbox if the bit is 1
+                            checkBox.Checked = (bit = 1)
+                            ' Move to the next bit
+                            bitIndex += 1
+                        Next
+                    Next
+
+                End If
+
+                reader.Close()
+            End Using
+        End Using
+
+
     End Sub
 
-    'Required by the Windows Form Designer
-    Private components As System.ComponentModel.IContainer
 
-    'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
-    'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
-    Private Sub InitializeComponent()
-        profilepic_pb = New PictureBox()
-        Panel1 = New Panel()
-        PictureBox6 = New PictureBox()
-        PictureBox5 = New PictureBox()
-        PictureBox4 = New PictureBox()
-        PictureBox3 = New PictureBox()
-        PictureBox2 = New PictureBox()
-        rate_label = New Label()
-        location_label = New Label()
-        email_label = New Label()
-        Service_label = New Label()
-        Name_label = New Label()
-        Button1 = New Button()
-        Label21 = New Label()
-        Label15 = New Label()
-        Label16 = New Label()
-        Label17 = New Label()
-        Label18 = New Label()
-        Label19 = New Label()
-        Label20 = New Label()
-        Label14 = New Label()
-        Label13 = New Label()
-        Label12 = New Label()
-        Label11 = New Label()
-        Label10 = New Label()
-        Label9 = New Label()
-        slot_matrix_tablelayout = New TableLayoutPanel()
-        Label8 = New Label()
-        Label7 = New Label()
-        Label6 = New Label()
-        Label5 = New Label()
-        Label4 = New Label()
-        Label3 = New Label()
-        Label2 = New Label()
-        slot_label = New Label()
-        contact_label = New Label()
-        CType(profilepic_pb, ComponentModel.ISupportInitialize).BeginInit()
-        Panel1.SuspendLayout()
-        CType(PictureBox6, ComponentModel.ISupportInitialize).BeginInit()
-        CType(PictureBox5, ComponentModel.ISupportInitialize).BeginInit()
-        CType(PictureBox4, ComponentModel.ISupportInitialize).BeginInit()
-        CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
-        CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
-        slot_matrix_tablelayout.SuspendLayout()
-        SuspendLayout()
-        ' 
-        ' profilepic_pb
-        ' 
-        profilepic_pb.BackgroundImage = My.Resources.Resources.serviceproviderdefault
-        profilepic_pb.BackgroundImageLayout = ImageLayout.Stretch
-        profilepic_pb.Dock = DockStyle.Top
-        profilepic_pb.Location = New Point(0, 0)
-        profilepic_pb.Name = "profilepic_pb"
-        profilepic_pb.Size = New Size(796, 245)
-        profilepic_pb.SizeMode = PictureBoxSizeMode.StretchImage
-        profilepic_pb.TabIndex = 0
-        profilepic_pb.TabStop = False
-        ' 
-        ' Panel1
-        ' 
-        Panel1.Controls.Add(PictureBox6)
-        Panel1.Controls.Add(PictureBox5)
-        Panel1.Controls.Add(PictureBox4)
-        Panel1.Controls.Add(PictureBox3)
-        Panel1.Controls.Add(PictureBox2)
-        Panel1.Location = New Point(33, 251)
-        Panel1.Name = "Panel1"
-        Panel1.Size = New Size(236, 43)
-        Panel1.TabIndex = 1
-        ' 
-        ' PictureBox6
-        ' 
-        PictureBox6.Location = New Point(193, 0)
-        PictureBox6.Name = "PictureBox6"
-        PictureBox6.Size = New Size(43, 43)
-        PictureBox6.SizeMode = PictureBoxSizeMode.StretchImage
-        PictureBox6.TabIndex = 6
-        PictureBox6.TabStop = False
-        ' 
-        ' PictureBox5
-        ' 
-        PictureBox5.Location = New Point(146, 0)
-        PictureBox5.Name = "PictureBox5"
-        PictureBox5.Size = New Size(43, 43)
-        PictureBox5.SizeMode = PictureBoxSizeMode.StretchImage
-        PictureBox5.TabIndex = 5
-        PictureBox5.TabStop = False
-        ' 
-        ' PictureBox4
-        ' 
-        PictureBox4.Location = New Point(97, 0)
-        PictureBox4.Name = "PictureBox4"
-        PictureBox4.Size = New Size(43, 43)
-        PictureBox4.SizeMode = PictureBoxSizeMode.StretchImage
-        PictureBox4.TabIndex = 4
-        PictureBox4.TabStop = False
-        ' 
-        ' PictureBox3
-        ' 
-        PictureBox3.BackgroundImageLayout = ImageLayout.Stretch
-        PictureBox3.Location = New Point(48, 0)
-        PictureBox3.Name = "PictureBox3"
-        PictureBox3.Size = New Size(43, 43)
-        PictureBox3.SizeMode = PictureBoxSizeMode.StretchImage
-        PictureBox3.TabIndex = 3
-        PictureBox3.TabStop = False
-        ' 
-        ' PictureBox2
-        ' 
-        PictureBox2.BackgroundImageLayout = ImageLayout.Stretch
-        PictureBox2.Location = New Point(0, 0)
-        PictureBox2.Name = "PictureBox2"
-        PictureBox2.Size = New Size(43, 43)
-        PictureBox2.SizeMode = PictureBoxSizeMode.StretchImage
-        PictureBox2.TabIndex = 2
-        PictureBox2.TabStop = False
-        ' 
-        ' rate_label
-        ' 
-        rate_label.Font = New Font("Segoe UI", 11F)
-        rate_label.Location = New Point(33, 474)
-        rate_label.Name = "rate_label"
-        rate_label.Size = New Size(394, 34)
-        rate_label.TabIndex = 4
-        rate_label.Text = "20L/hour"
-        ' 
-        ' location_label
-        ' 
-        location_label.Font = New Font("Segoe UI", 11F)
-        location_label.Location = New Point(33, 440)
-        location_label.Name = "location_label"
-        location_label.Size = New Size(391, 34)
-        location_label.TabIndex = 3
-        location_label.Text = "guwahati, delhi"
-        ' 
-        ' email_label
-        ' 
-        email_label.Font = New Font("Segoe UI", 11F)
-        email_label.Location = New Point(33, 343)
-        email_label.Name = "email_label"
-        email_label.Size = New Size(391, 34)
-        email_label.TabIndex = 2
-        email_label.Text = "Pratham@gmail.com"
-        ' 
-        ' Service_label
-        ' 
-        Service_label.Font = New Font("Segoe UI", 11F)
-        Service_label.Location = New Point(33, 406)
-        Service_label.Name = "Service_label"
-        Service_label.Size = New Size(427, 34)
-        Service_label.TabIndex = 1
-        Service_label.Text = "Decorator"
-        ' 
-        ' Name_label
-        ' 
-        Name_label.Font = New Font("Segoe UI", 13F, FontStyle.Bold)
-        Name_label.Location = New Point(33, 309)
-        Name_label.Name = "Name_label"
-        Name_label.Size = New Size(427, 34)
-        Name_label.TabIndex = 0
-        Name_label.Text = "Pratham Goyal"
-        ' 
-        ' Button1
-        ' 
-        Button1.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
-        Button1.BackgroundImageLayout = ImageLayout.Stretch
-        Button1.FlatStyle = FlatStyle.Flat
-        Button1.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Button1.ForeColor = Color.White
-        Button1.Location = New Point(661, 258)
-        Button1.Name = "Button1"
-        Button1.Size = New Size(114, 36)
-        Button1.TabIndex = 5
-        Button1.Text = "Edit Button"
-        Button1.UseVisualStyleBackColor = False
-        ' 
-        ' Label21
-        ' 
-        Label21.AutoSize = True
-        Label21.Location = New Point(602, 628)
-        Label21.Name = "Label21"
-        Label21.Size = New Size(49, 25)
-        Label21.TabIndex = 105
-        Label21.Text = "9pm"
-        ' 
-        ' Label15
-        ' 
-        Label15.AutoSize = True
-        Label15.Location = New Point(434, 628)
-        Label15.Name = "Label15"
-        Label15.Size = New Size(49, 25)
-        Label15.TabIndex = 104
-        Label15.Text = "5pm"
-        ' 
-        ' Label16
-        ' 
-        Label16.AutoSize = True
-        Label16.Location = New Point(476, 628)
-        Label16.Name = "Label16"
-        Label16.Size = New Size(49, 25)
-        Label16.TabIndex = 103
-        Label16.Text = "6pm"
-        ' 
-        ' Label17
-        ' 
-        Label17.AutoSize = True
-        Label17.Location = New Point(518, 628)
-        Label17.Name = "Label17"
-        Label17.Size = New Size(49, 25)
-        Label17.TabIndex = 102
-        Label17.Text = "7pm"
-        ' 
-        ' Label18
-        ' 
-        Label18.AutoSize = True
-        Label18.Location = New Point(560, 628)
-        Label18.Name = "Label18"
-        Label18.Size = New Size(49, 25)
-        Label18.TabIndex = 101
-        Label18.Text = "8pm"
-        ' 
-        ' Label19
-        ' 
-        Label19.AutoSize = True
-        Label19.Location = New Point(392, 628)
-        Label19.Name = "Label19"
-        Label19.Size = New Size(49, 25)
-        Label19.TabIndex = 100
-        Label19.Text = "4pm"
-        ' 
-        ' Label20
-        ' 
-        Label20.AutoSize = True
-        Label20.Location = New Point(350, 628)
-        Label20.Name = "Label20"
-        Label20.Size = New Size(49, 25)
-        Label20.TabIndex = 99
-        Label20.Text = "3pm"
-        ' 
-        ' Label14
-        ' 
-        Label14.AutoSize = True
-        Label14.Location = New Point(179, 628)
-        Label14.Name = "Label14"
-        Label14.Size = New Size(57, 25)
-        Label14.TabIndex = 98
-        Label14.Text = "11am"
-        ' 
-        ' Label13
-        ' 
-        Label13.AutoSize = True
-        Label13.Location = New Point(222, 628)
-        Label13.Name = "Label13"
-        Label13.Size = New Size(59, 25)
-        Label13.TabIndex = 97
-        Label13.Text = "12pm"
-        ' 
-        ' Label12
-        ' 
-        Label12.AutoSize = True
-        Label12.Location = New Point(266, 628)
-        Label12.Name = "Label12"
-        Label12.Size = New Size(49, 25)
-        Label12.TabIndex = 96
-        Label12.Text = "1pm"
-        ' 
-        ' Label11
-        ' 
-        Label11.AutoSize = True
-        Label11.Location = New Point(308, 628)
-        Label11.Name = "Label11"
-        Label11.Size = New Size(49, 25)
-        Label11.TabIndex = 95
-        Label11.Text = "2pm"
-        ' 
-        ' Label10
-        ' 
-        Label10.AutoSize = True
-        Label10.Location = New Point(137, 628)
-        Label10.Name = "Label10"
-        Label10.Size = New Size(57, 25)
-        Label10.TabIndex = 94
-        Label10.Text = "10am"
-        ' 
-        ' Label9
-        ' 
-        Label9.AutoSize = True
-        Label9.Location = New Point(98, 628)
-        Label9.Name = "Label9"
-        Label9.Size = New Size(47, 25)
-        Label9.TabIndex = 93
-        Label9.Text = "9am"
-        ' 
-        ' slot_matrix_tablelayout
-        ' 
-        slot_matrix_tablelayout.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
-        slot_matrix_tablelayout.ColumnCount = 13
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 50F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
-        slot_matrix_tablelayout.Controls.Add(Label8, 0, 6)
-        slot_matrix_tablelayout.Controls.Add(Label7, 0, 5)
-        slot_matrix_tablelayout.Controls.Add(Label6, 0, 4)
-        slot_matrix_tablelayout.Controls.Add(Label5, 0, 3)
-        slot_matrix_tablelayout.Controls.Add(Label4, 0, 2)
-        slot_matrix_tablelayout.Controls.Add(Label3, 0, 1)
-        slot_matrix_tablelayout.Controls.Add(Label2, 0, 0)
-        slot_matrix_tablelayout.Location = New Point(60, 646)
-        slot_matrix_tablelayout.Name = "slot_matrix_tablelayout"
-        slot_matrix_tablelayout.RowCount = 7
-        slot_matrix_tablelayout.RowStyles.Add(New RowStyle(SizeType.Percent, 14.2857141F))
-        slot_matrix_tablelayout.RowStyles.Add(New RowStyle(SizeType.Percent, 14.2857141F))
-        slot_matrix_tablelayout.RowStyles.Add(New RowStyle(SizeType.Percent, 14.2857141F))
-        slot_matrix_tablelayout.RowStyles.Add(New RowStyle(SizeType.Percent, 14.2857141F))
-        slot_matrix_tablelayout.RowStyles.Add(New RowStyle(SizeType.Percent, 14.2857141F))
-        slot_matrix_tablelayout.RowStyles.Add(New RowStyle(SizeType.Percent, 14.2857141F))
-        slot_matrix_tablelayout.RowStyles.Add(New RowStyle(SizeType.Percent, 14.2857141F))
-        slot_matrix_tablelayout.Size = New Size(558, 259)
-        slot_matrix_tablelayout.TabIndex = 92
-        ' 
-        ' Label8
-        ' 
-        Label8.Dock = DockStyle.Fill
-        Label8.Location = New Point(4, 217)
-        Label8.Name = "Label8"
-        Label8.Size = New Size(44, 41)
-        Label8.TabIndex = 6
-        Label8.Text = "Sun"
-        Label8.TextAlign = ContentAlignment.MiddleCenter
-        ' 
-        ' Label7
-        ' 
-        Label7.Dock = DockStyle.Fill
-        Label7.Location = New Point(4, 181)
-        Label7.Name = "Label7"
-        Label7.Size = New Size(44, 35)
-        Label7.TabIndex = 5
-        Label7.Text = "Sat"
-        Label7.TextAlign = ContentAlignment.MiddleCenter
-        ' 
-        ' Label6
-        ' 
-        Label6.Dock = DockStyle.Fill
-        Label6.Location = New Point(4, 145)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(44, 35)
-        Label6.TabIndex = 4
-        Label6.Text = "Fri"
-        Label6.TextAlign = ContentAlignment.MiddleCenter
-        ' 
-        ' Label5
-        ' 
-        Label5.Dock = DockStyle.Fill
-        Label5.Location = New Point(4, 109)
-        Label5.Name = "Label5"
-        Label5.Size = New Size(44, 35)
-        Label5.TabIndex = 3
-        Label5.Text = "Thru"
-        Label5.TextAlign = ContentAlignment.MiddleCenter
-        ' 
-        ' Label4
-        ' 
-        Label4.Dock = DockStyle.Fill
-        Label4.Location = New Point(4, 73)
-        Label4.Name = "Label4"
-        Label4.Size = New Size(44, 35)
-        Label4.TabIndex = 2
-        Label4.Text = "Wed"
-        Label4.TextAlign = ContentAlignment.MiddleCenter
-        ' 
-        ' Label3
-        ' 
-        Label3.Dock = DockStyle.Fill
-        Label3.Location = New Point(4, 37)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(44, 35)
-        Label3.TabIndex = 1
-        Label3.Text = "Tue"
-        Label3.TextAlign = ContentAlignment.MiddleCenter
-        ' 
-        ' Label2
-        ' 
-        Label2.Dock = DockStyle.Fill
-        Label2.Location = New Point(4, 1)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(44, 35)
-        Label2.TabIndex = 0
-        Label2.Text = "Mon"
-        Label2.TextAlign = ContentAlignment.MiddleCenter
-        ' 
-        ' slot_label
-        ' 
-        slot_label.Font = New Font("Segoe UI", 10F)
-        slot_label.Location = New Point(33, 581)
-        slot_label.Name = "slot_label"
-        slot_label.Size = New Size(167, 22)
-        slot_label.TabIndex = 91
-        slot_label.Text = "Slot Timings :"
-        ' 
-        ' contact_label
-        ' 
-        contact_label.Font = New Font("Segoe UI", 10F)
-        contact_label.Location = New Point(33, 377)
-        contact_label.Name = "contact_label"
-        contact_label.Size = New Size(276, 36)
-        contact_label.TabIndex = 106
-        contact_label.Text = "Contact Number : "
-        ' 
-        ' Provider_Profile_page
-        ' 
-        AutoScaleMode = AutoScaleMode.None
-        AutoScroll = True
-        AutoScrollMinSize = New Size(0, 1000)
-        BackColor = SystemColors.Control
-        ClientSize = New Size(822, 610)
-        Controls.Add(contact_label)
-        Controls.Add(Label21)
-        Controls.Add(Label15)
-        Controls.Add(Label16)
-        Controls.Add(Label17)
-        Controls.Add(Label18)
-        Controls.Add(Label19)
-        Controls.Add(Label20)
-        Controls.Add(Label14)
-        Controls.Add(Label13)
-        Controls.Add(Label12)
-        Controls.Add(Label11)
-        Controls.Add(Label10)
-        Controls.Add(Label9)
-        Controls.Add(slot_matrix_tablelayout)
-        Controls.Add(slot_label)
-        Controls.Add(rate_label)
-        Controls.Add(Button1)
-        Controls.Add(location_label)
-        Controls.Add(email_label)
-        Controls.Add(Panel1)
-        Controls.Add(Service_label)
-        Controls.Add(profilepic_pb)
-        Controls.Add(Name_label)
-        Name = "Provider_Profile_page"
-        Text = "Provider_Profile_page"
-        CType(profilepic_pb, ComponentModel.ISupportInitialize).EndInit()
-        Panel1.ResumeLayout(False)
-        CType(PictureBox6, ComponentModel.ISupportInitialize).EndInit()
-        CType(PictureBox5, ComponentModel.ISupportInitialize).EndInit()
-        CType(PictureBox4, ComponentModel.ISupportInitialize).EndInit()
-        CType(PictureBox3, ComponentModel.ISupportInitialize).EndInit()
-        CType(PictureBox2, ComponentModel.ISupportInitialize).EndInit()
-        slot_matrix_tablelayout.ResumeLayout(False)
-        ResumeLayout(False)
-        PerformLayout()
+    Private Sub Changepic_pb_Click(sender As Object, e As EventArgs) Handles changepic_pb.Click
+        Dim openFileDialog As New OpenFileDialog()
+        openFileDialog.Filter = "Image Files|*.bmp;*.jpg;*.jpeg;*.png;*.gif;*.tif;*.tiff"
+
+        If openFileDialog.ShowDialog() = DialogResult.OK Then
+            Try
+                ' Set the selected image to the PictureBox
+                profilepic_pb.Image = Image.FromFile(openFileDialog.FileName)
+            Catch ex As Exception
+                MessageBox.Show("An error occurred while loading the image: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        End If
     End Sub
 
-    Friend WithEvents profilepic_pb As PictureBox
-    Friend WithEvents Panel1 As Panel
-    Friend WithEvents PictureBox6 As PictureBox
-    Friend WithEvents PictureBox5 As PictureBox
-    Friend WithEvents PictureBox4 As PictureBox
-    Friend WithEvents PictureBox3 As PictureBox
-    Friend WithEvents PictureBox2 As PictureBox
-    Friend WithEvents rate_label As Label
-    Friend WithEvents location_label As Label
-    Friend WithEvents email_label As Label
-    Friend WithEvents Service_label As Label
-    Friend WithEvents Name_label As Label
-    Friend WithEvents Button1 As Button
-    Friend WithEvents Label21 As Label
-    Friend WithEvents Label15 As Label
-    Friend WithEvents Label16 As Label
-    Friend WithEvents Label17 As Label
-    Friend WithEvents Label18 As Label
-    Friend WithEvents Label19 As Label
-    Friend WithEvents Label20 As Label
-    Friend WithEvents Label14 As Label
-    Friend WithEvents Label13 As Label
-    Friend WithEvents Label12 As Label
-    Friend WithEvents Label11 As Label
-    Friend WithEvents Label10 As Label
-    Friend WithEvents Label9 As Label
-    Friend WithEvents slot_matrix_tablelayout As TableLayoutPanel
-    Friend WithEvents Label8 As Label
-    Friend WithEvents Label7 As Label
-    Friend WithEvents Label6 As Label
-    Friend WithEvents Label5 As Label
-    Friend WithEvents Label4 As Label
-    Friend WithEvents Label3 As Label
-    Friend WithEvents Label2 As Label
-    Friend WithEvents slot_label As Label
-    Friend WithEvents contact_label As Label
+
+    Private Sub Back_btn_Click(sender As Object, e As EventArgs) Handles back_btn.Click
+        Me.Close()
+    End Sub
+
+    Private Sub Save_btn_Click(sender As Object, e As EventArgs) Handles save_btn.Click
+        Dim providerID As Integer = 3 ' Replace 3 with the actual provider ID
+
+        ' Get the values from the UI controls
+        Dim providerName As String = name_label.Text
+        Dim email As String = email_label.Text
+        Dim phoneNumber As String = contactnumber_tb.Text
+        Dim service As String = servicetype_combox.SelectedItem.ToString()
+        Dim costPerHour As String = cos_tb.Text
+
+        ' Convert the profile image to a byte array
+        Dim profileImageBytes As Byte() = Nothing
+        If profilepic_pb.Image IsNot Nothing Then
+            Using ms As New MemoryStream()
+                ' Set the position of the MemoryStream to the beginning
+                ms.Position = 0
+                profilepic_pb.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png)
+                profileImageBytes = ms.ToArray()
+                Try
+                    ' Save the image
+                    profilepic_pb.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg)
+                    profileImageBytes = ms.ToArray()
+                Catch ex As Exception
+                    ' Handle the exception
+                    MessageBox.Show("Error saving the image: " & ex.Message)
+                End Try
+            End Using
+        End If
+
+
+
+        ' Construct the binary string for the working hours
+        Dim workingHour As New StringBuilder()
+        For row As Integer = 0 To 6
+            For col As Integer = 1 To 12
+                Dim checkBox As CheckBox = CType(slot_matrix_tablelayout.GetControlFromPosition(col, row), CheckBox)
+                If checkBox.Checked Then
+                    workingHour.Append("1")
+                Else
+                    workingHour.Append("0")
+                End If
+            Next
+        Next
+
+        ' Update the provider table
+        Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+        Dim query As String = "UPDATE provider SET providername = @ProviderName, email = @Email, phone_number = @PhoneNumber, service = @Service, cost_per_hour = @CostPerHour, profile_image = CONVERT(varbinary(max), @ProfileImage), working_hour = @WorkingHour WHERE provider_id = @ProviderID"
+
+        Using sqlConnection As New SqlConnection(connectionString)
+            sqlConnection.Open()
+
+            Using sqlCommand As New SqlCommand(query, sqlConnection)
+                sqlCommand.Parameters.AddWithValue("@ProviderName", providerName)
+                sqlCommand.Parameters.AddWithValue("@Email", email)
+                sqlCommand.Parameters.AddWithValue("@PhoneNumber", phoneNumber)
+                sqlCommand.Parameters.AddWithValue("@Service", service)
+                sqlCommand.Parameters.AddWithValue("@CostPerHour", costPerHour)
+                sqlCommand.Parameters.AddWithValue("@ProfileImage", If(profileImageBytes IsNot Nothing, CType(profileImageBytes, Object), DBNull.Value))
+                sqlCommand.Parameters.AddWithValue("@WorkingHour", workingHour.ToString())
+                sqlCommand.Parameters.AddWithValue("@ProviderID", providerID)
+
+                Dim rowsAffected As Integer = sqlCommand.ExecuteNonQuery()
+                If rowsAffected > 0 Then
+                    MessageBox.Show("Provider information updated successfully!")
+                Else
+                    MessageBox.Show("Failed to update provider information.")
+                End If
+            End Using
+
+            ' Retrieve the list of locations currently stored in the database for the provider
+            Dim existingLocations As New List(Of String)()
+            Dim existingLocationQuery As String = "SELECT location FROM location WHERE provider_id = @ProviderID"
+            Using existingLocationCommand As New SqlCommand(existingLocationQuery, sqlConnection)
+                existingLocationCommand.Parameters.AddWithValue("@ProviderID", 3)
+                Dim existingLocationReader As SqlDataReader = existingLocationCommand.ExecuteReader()
+                While existingLocationReader.Read()
+                    existingLocations.Add(existingLocationReader("location").ToString())
+                End While
+                existingLocationReader.Close()
+            End Using
+
+            ' Compare the existing locations with the checked items in the location_checklistbox
+            For Each existingLocation As String In existingLocations
+                If Not location_checklistbox.CheckedItems.Contains(existingLocation) Then
+                    ' Delete the location from the database
+                    Dim deleteLocationQuery As String = "DELETE FROM location WHERE provider_id = @ProviderID AND location = @LocationName"
+                    Using deleteLocationCommand As New SqlCommand(deleteLocationQuery, sqlConnection)
+                        deleteLocationCommand.Parameters.AddWithValue("@ProviderID", 3)
+                        deleteLocationCommand.Parameters.AddWithValue("@LocationName", existingLocation)
+                        Dim deletedRows As Integer = deleteLocationCommand.ExecuteNonQuery()
+                        If deletedRows > 0 Then
+                            MessageBox.Show("Location removed successfully: " & existingLocation)
+                        Else
+                            MessageBox.Show("Failed to remove location: " & existingLocation)
+                        End If
+                    End Using
+                End If
+            Next
+
+            ' Insert or update the checked locations in the location table
+            For Each item As String In location_checklistbox.CheckedItems
+                Dim locationQuery As String = "IF EXISTS (SELECT 1 FROM location WHERE provider_id = @ProviderID AND location = @LocationName) " &
+                                  "UPDATE location SET provider_id = @ProviderID, location = @LocationName WHERE provider_id = @ProviderID AND location = @LocationName " &
+                                  "ELSE " &
+                                  "INSERT INTO location (provider_id, location) VALUES (@ProviderID, @LocationName)"
+
+                Using locationCommand As New SqlCommand(locationQuery, sqlConnection)
+                    locationCommand.Parameters.AddWithValue("@ProviderID", providerID)
+                    locationCommand.Parameters.AddWithValue("@LocationName", item)
+
+                    Dim locationRowsAffected As Integer = locationCommand.ExecuteNonQuery()
+                    If locationRowsAffected > 0 Then
+                        MessageBox.Show("Location information updated successfully!")
+                    Else
+                        MessageBox.Show("Failed to update location information.")
+                    End If
+                End Using
+            Next
+        End Using
+    End Sub
+
+
 End Class
