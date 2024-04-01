@@ -1,12 +1,7 @@
 ﻿Public Class provider_template
 
     Private Sub provider_template_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        With provider_appointments
-            .TopLevel = False
-            SplitContainer1.Panel2.Controls.Add(provider_appointments)
-            .BringToFront()
-            .Show()
-        End With
+        ShowForm(New provider_dashboard)
     End Sub
 
     Private Sub ShowForm(form As Form)
