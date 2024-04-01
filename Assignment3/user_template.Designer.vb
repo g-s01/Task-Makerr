@@ -259,7 +259,7 @@ Partial Class user_template
         AutoScaleMode = AutoScaleMode.None
         ClientSize = New Size(1132, 666)
         Controls.Add(SplitContainer1)
-        Font = New Font("Microsoft YaHei", 9F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Font = New Font("Microsoft YaHei", 9.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Name = "user_template"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Form1"
