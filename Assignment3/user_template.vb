@@ -47,6 +47,16 @@ Public Class user_template
         End With
     End Sub
 
+    Sub Reset_Buttons()
+        Button1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = SystemColors.Control
+    End Sub
+
     ' Home button
     ' author: sarg19
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click

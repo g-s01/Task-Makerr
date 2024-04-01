@@ -113,6 +113,7 @@ Public Class UserHome
         ' Get the provider id
         Provider_ID = clickedTile.Provider
         user_template.SplitContainer1.Panel2.Controls.Clear()
+        slot_back_choice = 1
         With Book_slots
             .TopLevel = False
             .AutoSize = True
