@@ -1,105 +1,90 @@
-﻿Public Class user_profile
+﻿Imports Microsoft.Data.SqlClient
+
+Public Class user_profile
+
+    ' Connection string for connecting to the database
+    Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+
     Private Sub user_profile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        TextBox1.Text = "Pratham Malviuya"
-        TextBox2.Text = "abc@gmail.com"
-
-
-        Dim Rating As Double = 2.5
-        Dim integerPart As Integer = CInt(Math.Truncate(Rating))
-        Dim remainder As Double = Rating - integerPart
-        For i As Integer = 0 To 4
-            If i < integerPart Then
-                ' This star is fully filled
-                SetStarImage(i, My.Resources.star_filled)
-            ElseIf i = integerPart AndAlso remainder >= 0.75 Then
-                ' More than three-quarters filled, display filled star
-                SetStarImage(i, My.Resources.star_filled)
-            ElseIf i = integerPart AndAlso remainder >= 0.25 Then
-                ' More than one-quarter filled, display half-filled star
-                SetStarImage(i, My.Resources.star_empty1)
-            Else
-                ' Less than one-quarter filled, display empty star
-                SetStarImage(i, My.Resources.star_half_filled)
-            End If
-        Next
-
-        Dim data As New List(Of (Name As String, Location As String, Cost As Decimal)) From
-        {
-            ("Product 1", "Location 1", 10.5),
-            ("Product 2", "Location 2", 15.75),
-            ("Product 3", "Location 3", 20.0),
-            ("Product 1", "Location 1", 10.5),
-            ("Product 2", "Location 2", 15.75),
-            ("Product 3", "Location 3", 20.0)
-        }
-
-        ' Add labels to the panel for each item in the data
-        ' Set initial Y position
-        Dim yPos As Integer = 0
-
-        ' Add panels to the panel3 for each item in the data
-        For Each item In data
-            Dim panelItem As New Panel()
-            panelItem.BackColor = ColorTranslator.FromHtml("#F0DAF8") ' Set background color
-            panelItem.Size = New Size(740, 60) ' Set size of panelItem
-            panelItem.Location = New Point(0, yPos) ' Set panelItem position
-            panelItem.Margin = New Padding(5) ' Add margin for spacing
-
-            Dim nameLabel As New Label()
-            nameLabel.Text = item.Name
-            nameLabel.Font = New Font("Arial", 12, FontStyle.Bold) ' Larger font for the name
-            nameLabel.AutoSize = True
-            nameLabel.Location = New Point(5, 5) ' Position name label within panelItem
-
-            Dim locationLabel As New Label()
-            locationLabel.Text = item.Location
-            locationLabel.Font = New Font("Arial", 10) ' Smaller font for the location
-            locationLabel.AutoSize = True
-            locationLabel.Location = New Point(5, nameLabel.Bottom + 5) ' Position location label below name label
-
-            Dim costLabel As New Label()
-            costLabel.Text = $"Cost: {item.Cost:C}"
-            costLabel.Font = New Font("Arial", 12, FontStyle.Bold) ' Font for the cost
-            costLabel.AutoSize = True
-            costLabel.Location = New Point(panelItem.Width - costLabel.Width - 10, (panelItem.Height - costLabel.Height) \ 2) ' Position cost label on the right side and vertically centered
-
-            ' Add labels to the panelItem
-            panelItem.Controls.Add(nameLabel)
-            panelItem.Controls.Add(locationLabel)
-            panelItem.Controls.Add(costLabel)
-
-            ' Add the panelItem to the panel3
-            Panel3.Controls.Add(panelItem)
-
-            ' Update the Y position for the next panelItem
-            yPos += panelItem.Height + 5 ' Add spacing between panelItems
-        Next
-
-
+        ' Load user data from the database when the form loads
+        LoadUserData()
+        ' Load user rating when the form loads
+        LoadUserRating()
     End Sub
 
-    Private Sub SetStarImage(index As Integer, image As Image)
-        Select Case index
-            Case 0
-                PictureBox2.Image = image
-            Case 1
-                PictureBox3.Image = image
-            Case 2
-                PictureBox4.Image = image
-            Case 3
-                PictureBox5.Image = image
-            Case 4
-                PictureBox6.Image = image
-        End Select
+    Private Sub LoadUserData()
+        ' Load user data from the database
+        Try
+            Using connection As New SqlConnection(connectionString)
+                connection.Open()
+
+                ' Example query to retrieve user data
+                Dim sql As String = "SELECT username, email FROM customer WHERE user_id = @UserId"
+                Using command As New SqlCommand(sql, connection)
+                    ' Assuming you have a UserId to identify the user
+                    ' Replace @UserId with the actual user ID
+                    command.Parameters.AddWithValue("@UserId", User_ID) ' Change 1 to the actual user ID
+                    Dim reader As SqlDataReader = command.ExecuteReader()
+                    If reader.Read() Then
+                        TextBox1.Text = reader("username").ToString()
+                        TextBox2.Text = reader("email").ToString()
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("An error occurred while loading user data: " & ex.Message)
+        End Try
     End Sub
 
+    Private Sub LoadUserRating()
+        ' Load user's rating from the database
+        ' Example code to retrieve user's rating from the database
+        ' Replace this with your actual database query
+
+        Try
+            ' Your code to retrieve user's rating from the database
+            ' and set the stars accordingly
+        Catch ex As Exception
+            MessageBox.Show("An error occurred while loading user's rating: " & ex.Message)
+        End Try
+    End Sub
+
+    ' Update the user profile when the "Edit Profile" button is clicked
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        ' Enable editing of textboxes and show the "Save Changes" button
         TextBox1.ReadOnly = False
         TextBox2.ReadOnly = False
         Button2.Visible = True
     End Sub
 
+    ' Save the changes made to the user profile when the "Save Changes" button is clicked
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Try
+            ' Connect to the database
+            Using connection As New SqlConnection(connectionString)
+                connection.Open()
+
+                ' Update the user's information in the database
+                Dim sql As String = "UPDATE customer SET username = @Username, email = @Email WHERE user_id = @UserId"
+                Using command As New SqlCommand(sql, connection)
+                    command.Parameters.AddWithValue("@Username", TextBox1.Text)
+                    command.Parameters.AddWithValue("@Email", TextBox2.Text)
+                    ' Assuming you have a UserId to identify the user
+                    ' Replace @UserId with the actual user ID
+                    command.Parameters.AddWithValue("@UserId", User_ID) ' Change 1 to the actual user ID
+                    Dim rowsAffected As Integer = command.ExecuteNonQuery()
+                    If rowsAffected > 0 Then
+                        MessageBox.Show("User profile updated successfully.")
+                    Else
+                        MessageBox.Show("No user found with the specified ID.")
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("An error occurred while updating user profile: " & ex.Message)
+        End Try
+
+        ' Disable editing of textboxes and hide the "Save Changes" button
         TextBox1.ReadOnly = True
         TextBox2.ReadOnly = True
         Button2.Visible = False
