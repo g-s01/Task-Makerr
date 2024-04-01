@@ -123,16 +123,7 @@ Public Class user_template
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
-        Button1.BackColor = SystemColors.Control
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-
-        'switchPanel(user_search)
-
+        MessageBox.Show("Hello World!")
     End Sub
 
     Private Sub Logout_btn_Click(sender As Object, e As EventArgs) Handles logout_btn.Click
