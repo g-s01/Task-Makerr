@@ -5,7 +5,7 @@ Public Class Provider_Profile_page
     Public Event EditProfileClicked As EventHandler
 
     ' Handle the click event of the "Edit_profile_btn" button
-    Private Sub Edit_profile_btn_Click(sender As Object, e As EventArgs) Handles Edit_profile_btn.Click
+    Private Sub Edit_profile_btn_Click(sender As Object, e As EventArgs) Handles Edit_profile_btn.Click, Edit_profile_btn.Click
         ' Raise the EditProfileClicked event
         RaiseEvent EditProfileClicked(Me, EventArgs.Empty)
     End Sub
@@ -47,10 +47,6 @@ Public Class Provider_Profile_page
                 slot_matrix_tablelayout.Controls.Add(checkBox, col, row)
             Next
         Next
-    End Sub
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        EditProfilePage.Show()
     End Sub
 
     Private Sub SetStarImage(index As Integer, image As Image)
