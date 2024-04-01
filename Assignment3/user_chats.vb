@@ -3,35 +3,33 @@ Imports System.Configuration
 Imports System.Runtime.InteropServices.JavaScript.JSType
 Imports Azure.Messaging
 Imports Microsoft.Data.SqlClient
+
 'Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 
 Public Class user_chats
 
-    Dim listchat As New List(Of Tuple(Of String, Integer, Integer))() ' providername, chat_room_id, provider_id
-    Dim messages As New List(Of List(Of String))()
+    Dim roomchat As New List(Of Tuple(Of String, Integer, Integer))() ' providername, chat_room_id, provider_id
+    Dim messages As New List(Of Tuple(Of Integer, Integer, String, String, String))()
     Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-
-
     Dim user_role As String = "customer"
-    Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
-        listchat.Add(New Tuple(Of String, Integer, Integer)("Apple", 1, 0))
-        listchat.Add(New Tuple(Of String, Integer, Integer)("Banana", 2, 0))
-        listchat.Add(New Tuple(Of String, Integer, Integer)("Orange", 3, 0))
-        listchat.Add(New Tuple(Of String, Integer, Integer)("Grapes", 4, 0))
+    Dim userId As Integer = 1
+    Dim dealId As Integer = -1
 
-        ' Add items to listChat using sql query
+    ' for getting sql connection
+    Private Function GetSqlConnection() As SqlConnection
+        Return New SqlConnection(connectionString)
+    End Function
 
-        Dim query As String = "SELECT chat_room_id,providername,provider_id FROM chat_room WHERE user_id = @UserId"
-        Debug.WriteLine(0)
-
-        Using connection As New SqlConnection(connectionString)
+    Private Sub LoadRoomsFromDatabase(userId As Integer)
+        Dim query As String = "SELECT chat_room_id, providername, provider_id FROM chat_room WHERE user_id = @UserId"
+        Using connection As SqlConnection = GetSqlConnection()
             Using command As New SqlCommand(query, connection)
                 ' Add parameters to the SQL query to prevent SQL injection
-                command.Parameters.AddWithValue("@UserId", 2)
+                command.Parameters.AddWithValue("@UserId", userId)
+
                 Dim provider_id As Integer
                 Dim providername As String
                 Dim chat_room_id As Integer
-
 
                 Try
                     connection.Open()
@@ -40,13 +38,11 @@ Public Class user_chats
                     If reader.HasRows Then
                         ' Loop through the rows
                         While reader.Read()
-
                             ' Access columns by name or index
                             provider_id = reader.GetInt32(reader.GetOrdinal("provider_id"))
                             chat_room_id = reader.GetInt32(reader.GetOrdinal("chat_room_id"))
                             providername = reader.GetString(reader.GetOrdinal("providername"))
-                            listchat.Add(New Tuple(Of String, Integer, Integer)(providername, chat_room_id, provider_id))
-
+                            roomchat.Add(New Tuple(Of String, Integer, Integer)(providername, chat_room_id, provider_id))
                         End While
                     End If
 
@@ -56,12 +52,93 @@ Public Class user_chats
                 End Try
             End Using
         End Using
+    End Sub
+
+    Private Sub LoadMessagesFromDatabase(userId As Integer, dealId As Integer)
+        Dim query As String = "SELECT m.* FROM chat_room cr JOIN messages m ON cr.chat_room_id = m.chat_room_id WHERE cr.user_id = @UserId and m.deal_id = @DealId"
+
+        Using connection As SqlConnection = GetSqlConnection()
+            Using command As New SqlCommand(query, connection)
+                ' Add parameters to the SQL query to prevent SQL injection
+                command.Parameters.AddWithValue("@UserId", userId)
+                command.Parameters.AddWithValue("@DealId", dealId)
+
+                Try
+                    connection.Open()
+                    Dim reader As SqlDataReader = command.ExecuteReader()
+
+                    If reader.HasRows Then
+                        ' Loop through the rows
+                        While reader.Read()
+                            ' Access columns by name or index
+                            Dim chat_room_id As Integer = reader.GetInt32(reader.GetOrdinal("chat_room_id"))
+                            Dim deal_id As Integer = reader.GetInt32(reader.GetOrdinal("deal_id"))
+                            Dim message_content As String = reader.GetString(reader.GetOrdinal("message_content"))
+                            Dim sender_type As String = reader.GetString(reader.GetOrdinal("sender_type"))
+                            Dim timestamp As String = reader.GetDateTime(reader.GetOrdinal("sent_timestamp")).ToString()
+
+                            ' Add the message to the messages list
+                            messages.Add(New Tuple(Of Integer, Integer, String, String, String)(chat_room_id, deal_id, sender_type, message_content, timestamp))
+                        End While
+                    End If
+                    reader.Close()
+                Catch ex As Exception
+                    MessageBox.Show("Error: " & ex.Message)
+                End Try
+            End Using
+        End Using
+    End Sub
 
 
-        get_messages()
+    Private Function InsertMessageIntoDatabase(room As Integer, dealId As Integer, user_role As String, messageText As String, timeStamp As DateTime) As Boolean
+        Dim query As String = "INSERT INTO messages (chat_room_id, deal_id, sender_type, message_content, sent_timestamp) VALUES (@ChatRoomId, @DealId, @SenderType, @MessageContent, @SentTimestamp)"
+        Using connection As New SqlConnection(connectionString)
+            Using command As New SqlCommand(query, connection)
+                ' Add parameters to the SQL query to prevent SQL injection
+                command.Parameters.AddWithValue("@ChatRoomId", room)
+                command.Parameters.AddWithValue("@DealId", dealId)
+                command.Parameters.AddWithValue("@SenderType", user_role)
+                command.Parameters.AddWithValue("@MessageContent", messageText)
+                command.Parameters.AddWithValue("@SentTimestamp", timeStamp)
+
+                Try
+                    connection.Open()
+                    ' Execute the insert query
+                    Dim rowsAffected As Integer = command.ExecuteNonQuery()
+
+                    If rowsAffected <= 0 Then
+                        MessageBox.Show("Error: No rows were inserted")
+                        Return False
+                    Else
+                        Return True
+                    End If
+                Catch ex As Exception
+                    MessageBox.Show("Error: " & ex.Message)
+                    Return False
+                End Try
+            End Using
+        End Using
+    End Function
+
+
+    Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
+        roomchat.Add(New Tuple(Of String, Integer, Integer)("Apple", 1, 0))
+        roomchat.Add(New Tuple(Of String, Integer, Integer)("Banana", 2, 0))
+        roomchat.Add(New Tuple(Of String, Integer, Integer)("Orange", 3, 0))
+        roomchat.Add(New Tuple(Of String, Integer, Integer)("Grapes", 4, 0))
+        messages.Clear()
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "customer", "Hey there!", "2024-03-30 10:00:00"))
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "How are you?", "2024-03-30 10:05:00"))
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "provider", "What's up?", "2024-03-30 10:10:00"))
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "customer", "Good morning!", "2024-03-30 10:15:00"))
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "provider", "How's it going?", "2024-03-30 10:20:00"))
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "Want to hang out later?", "2024-03-30 10:25:00"))
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "customer", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "provider", "Sounds good!", "2024-03-30 10:35:00"))
+
 
         Dim yPos As Integer = 10 ' Initial y position for buttons
-        For Each item As Tuple(Of String, Integer, Integer) In listchat
+        For Each item As Tuple(Of String, Integer, Integer) In roomchat
             Dim newButton As New Button()
             newButton.Name = "btn" & item.Item1 ' Set button name
             newButton.Text = item.Item1 ' Set button text
@@ -73,7 +150,7 @@ Public Class user_chats
             newButton.FlatAppearance.BorderSize = 0 ' Remove border
             newButton.Font = New Font(newButton.Font.FontFamily, 12)
             newButton.ImageAlign = ContentAlignment.MiddleLeft ' Set image alignment
-            newButton.TextImageRelation = TextImageRelation.ImageBeforeText ' Position image before text
+            newButton.TextImageRelation = TextImageRelation.ImageBeforeText ' Position image before tex
 
             ' Resize the image to match the button height
             Dim scaledImagenew As Image = New Bitmap(My.Resources.prov, New Size(35, 35))
@@ -143,59 +220,7 @@ Public Class user_chats
         'chat.Visible = False
     End Sub
 
-    Private Sub get_messages()
 
-        messages.Clear()
-
-
-        messages.Add(New List(Of String)() From {1, -1, "customer", "Hey there!", "2024-03-30 10:00:00"})
-        messages.Add(New List(Of String)() From {2, -1, "provider", "How are you?", "2024-03-30 10:05:00"})
-        messages.Add(New List(Of String)() From {3, -1, "provider", "What's up?", "2024-03-30 10:10:00"})
-        messages.Add(New List(Of String)() From {4, -1, "customer", "Good morning!", "2024-03-30 10:15:00"})
-        messages.Add(New List(Of String)() From {1, -1, "provider", "How's it going?", "2024-03-30 10:20:00"})
-        messages.Add(New List(Of String)() From {2, -1, "provider", "Want to hang out later?", "2024-03-30 10:25:00"})
-        messages.Add(New List(Of String)() From {3, -1, "customer", "Sure, let's meet at 4!", "2024-03-30 10:30:00"})
-        messages.Add(New List(Of String)() From {4, -1, "provider", "Sounds good!", "2024-03-30 10:35:00"})
-
-        Dim query As String = "SELECT m.* FROM chat_room cr JOIN messages m ON cr.chat_room_id = m.chat_room_id WHERE cr.user_id = @UserId"
-
-        Using connection As New SqlConnection(connectionString)
-            Using command As New SqlCommand(query, connection)
-                ' Add parameters to the SQL query to prevent SQL injection
-                command.Parameters.AddWithValue("@UserId", 2)
-
-                Dim message_content As String
-                Dim sender_type As String
-                Dim chat_room_id As String
-                Dim timestamp As String
-
-
-                Try
-                    connection.Open()
-                    Dim reader As SqlDataReader = command.ExecuteReader()
-
-                    If reader.HasRows Then
-                        ' Loop through the rows
-                        While reader.Read()
-
-                            ' Access columns by name or index
-                            chat_room_id = reader.GetInt32(reader.GetOrdinal("chat_room_id")).ToString()
-                            message_content = reader.GetString(reader.GetOrdinal("message_content"))
-                            sender_type = reader.GetString(reader.GetOrdinal("sender_type"))
-                            timestamp = reader.GetDateTime(reader.GetOrdinal("sent_timestamp"))
-                            messages.Add(New List(Of String)() From {chat_room_id, -1, sender_type, message_content, timestamp})
-                        End While
-
-                    End If
-
-                    reader.Close()
-                Catch ex As Exception
-                    MessageBox.Show("Error: " & ex.Message)
-                End Try
-            End Using
-        End Using
-
-    End Sub
     Private Sub Button_Click(sender As Object, e As EventArgs)
         ' Handle button click event
         chat.Visible = True
@@ -218,7 +243,7 @@ Public Class user_chats
 
         Dim room As Integer
 
-        For Each pair As Tuple(Of String, Integer, Integer) In listchat
+        For Each pair As Tuple(Of String, Integer, Integer) In roomchat
             ' Check if the receiver matches the first item in the tuple
             If pair.Item1 = clickedButton.Text Then
                 ' Fetch the second item (number) in the tuple
@@ -229,7 +254,6 @@ Public Class user_chats
         Next
 
         PrintMessagesBetweenUsers(room)
-
     End Sub
 
     Private Sub sendButton_Click(sender As Object, e As EventArgs)
@@ -243,7 +267,7 @@ Public Class user_chats
 
         Dim room As Integer
 
-        For Each pair As Tuple(Of String, Integer, Integer) In listchat
+        For Each pair As Tuple(Of String, Integer, Integer) In roomchat
             ' Check if the receiver matches the first item in the tuple
             If pair.Item1 = receiverName Then
                 ' Fetch the second item (number) in the tuple
@@ -253,46 +277,13 @@ Public Class user_chats
             End If
         Next
 
-        ' Create a new list containing sender, receiver, message, and timestamp
-        Dim newMessage As New List(Of String)() From {room, -1, user_role, messageText, timeStamp}
-
+        Dim newMessage As New Tuple(Of Integer, Integer, String, String, String)(room, dealId, user_role, messageText, timeStamp)
         ' Add the new message to the messages list
-
-        Dim query As String = "INSERT INTO messages (chat_room_id, deal_id, sender_type, message_content, sent_timestamp) VALUES (@ChatRoomId, @DealId, @SenderType, @MessageContent, @SentTimestamp)"
-
-
-        Using connection As New SqlConnection(connectionString)
-            Using command As New SqlCommand(query, connection)
-                ' Add parameters to the SQL query to prevent SQL injection
-                command.Parameters.AddWithValue("@ChatRoomId", room)
-                command.Parameters.AddWithValue("@DealId", -1)
-                command.Parameters.AddWithValue("@SenderType", user_role)
-                command.Parameters.AddWithValue("@MessageContent", messageText)
-                command.Parameters.AddWithValue("@SentTimestamp", timeStamp)
-
-
-
-                Try
-                    connection.Open()
-                    ' Execute the insert query
-                    Dim rowsAffected As Integer = command.ExecuteNonQuery()
-
-                    If rowsAffected <= 0 Then
-                        MessageBox.Show("Error " & "No rows were inserted")
-                    End If
-                Catch ex As Exception
-                    MessageBox.Show("Error: " & ex.Message)
-                End Try
-            End Using
-        End Using
-
+        messages.Add(newMessage)
         ' Optionally, you can clear the TextBox after sending the message
         chat.Controls("textBox1").Text = ""
-
-
-        messages.Add(newMessage)
+        ' Print messages between users
         PrintMessagesBetweenUsers(room)
-
     End Sub
 
     Private Sub PrintMessagesBetweenUsers(roomId As Integer)
@@ -306,50 +297,44 @@ Public Class user_chats
             End If
         Next
 
+        ' Filter messages for the given roomId
+        Dim messagesInRoom = messages.Where(Function(msg) msg.Item1 = roomId)
+
         ' Sort messages by timestamp
-        Dim sortedMessages = messages.OrderBy(Function(msg) DateTime.Parse(msg(4)))
+        Dim sortedMessages = messagesInRoom.OrderBy(Function(msg) DateTime.Parse(msg.Item5))
 
         ' Y position for labels
         Dim yPos As Integer = 55
 
         ' Iterate through messages
         For Each msg In sortedMessages
-            Dim room As Integer = msg(0)
-            Dim deal As Integer = msg(1)
-            Dim senderType As String = msg(2)
-            Dim messageText As String = msg(3)
-            Dim timeStamp As String = msg(4)
+            Dim room As Integer = msg.Item1
+            Dim deal As Integer = msg.Item2
+            Dim senderType As String = msg.Item3
+            Dim messageText As String = msg.Item4
+            Dim timeStamp As String = msg.Item5
 
-            ' Check if the message is between the desired users
-            If (room = roomId) Then
-                ' Create a label for the message
-                Dim messageLabel As New Label()
-                messageLabel.AutoSize = True
-                messageLabel.Text = messageText '& " (" & timeStamp & ")"
-                messageLabel.Font = New Font(messageLabel.Font.FontFamily, 10)
-                messageLabel.Padding = New Padding(5)
+            ' Create a label for the message
+            Dim messageLabel As New Label()
+            messageLabel.AutoSize = True
+            messageLabel.Text = messageText '& " (" & timeStamp & ")"
+            messageLabel.Font = New Font(messageLabel.Font.FontFamily, 10)
+            messageLabel.Padding = New Padding(5)
 
-                'MessageBox.Show("height :" & messageLabel.Width & "", "Message Sent", MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-
-                ' Align labels based on sender
-                If senderType = "provider" Then
-                    messageLabel.Location = New Point(10, yPos)
-                ElseIf senderType = "customer" Then
-                    messageLabel.Anchor = AnchorStyles.Right
-                    'messageLabel.Location = New Point(chat.Width - messageLabel.Width - 10, yPos)
-                    messageLabel.Location = New Point(messageLabel.Location.X, yPos)
-                End If
-
-                ' Set label position
-                'messageLabel.Location = New Point(10, yPos)
-                yPos += messageLabel.Height + 10
-
-                ' Add label to the chat panel
-                chat.Controls.Add(messageLabel)
+            ' Align labels based on sender
+            If senderType = "provider" Then
+                messageLabel.Location = New Point(10, yPos)
+            ElseIf senderType = "customer" Then
+                messageLabel.Anchor = AnchorStyles.Right
+                messageLabel.Location = New Point(chat.Width - messageLabel.Width - 10, yPos)
             End If
-        Next
 
+            ' Set label position
+            yPos += messageLabel.Height + 10
+
+            ' Add label to the chat panel
+            chat.Controls.Add(messageLabel)
+        Next
     End Sub
 
 End Class
