@@ -190,47 +190,6 @@ Public Class user_provider_chats
         PopulateRooms()
         HandleTitle()
 
-        Dim textBox1 As New TextBox()
-        textBox1.Name = "textBox1"
-        textBox1.Size = New Size(250, 30)
-
-        ' Calculate the Y position for the TextBox
-        Dim textBoxYPosition As Integer = chat.Height - textBox1.Height - 10 ' Adjust 10 for padding
-
-        ' Set the location of the TextBox
-        textBox1.Location = New Point(10, textBoxYPosition)
-        textBox1.Multiline = True
-        textBox1.ScrollBars = ScrollBars.Vertical
-        'textBox1.WordWrap = True ' Enable text wrapping
-        'textBox1.MaxLength = 50 ' Set the maximum length of the text
-
-
-        ' Create and configure the Button
-        Dim button1 As New Button()
-        button1.Name = "button1"
-        button1.Text = "Send"
-        button1.Size = New Size(70, 30)
-
-        ' Calculate the X position for the Button
-        Dim buttonXPosition As Integer = chat.Width - button1.Width - 10 ' Adjust 10 for padding
-
-        ' Set the location of the Button
-        button1.Location = New Point(buttonXPosition, textBoxYPosition)
-        AddHandler button1.Click, AddressOf sendButton_Click ' Add click event handler
-
-
-        ' Add the controls to the panel
-        chat.Controls.Add(textBox1)
-        chat.Controls.Add(button1)
-        chat.HorizontalScroll.Visible = False
-        chat.AutoScroll = True
-        'chat_list.VerticalScroll.Enabled = True
-        'chat_list.VerticalScroll.Visible = True
-        chat.HorizontalScroll.Enabled = False
-        chat.HorizontalScroll.Maximum = 0
-        chat.HorizontalScroll.Minimum = 0
-        chat.Visible = False
-
         'chat_list.Visible = False
     End Sub
 
@@ -270,7 +229,8 @@ Public Class user_provider_chats
         PrintMessagesBetweenUsers(room)
     End Sub
 
-    Private Sub sendButton_Click(sender As Object, e As EventArgs)
+
+    Private Sub sendButton_Click(sender As Object, e As EventArgs) Handles sendBtn.Click
         'Dim messageText As String = chat_list.Controls("textBox1").Text ' Assuming TextBox1 is the name of the TextBox
 
         ' Get the receiver name from the label text within the chat_list panel
@@ -292,7 +252,7 @@ Public Class user_provider_chats
         Next
 
         Dim maxLength As Integer = 30 ' Set the maximum length before inserting a newline
-        Dim inputString As String = chat.Controls("textBox1").Text
+        Dim inputString As String = sendTextBox.Text
         Dim messageText As String = ""
 
         For i As Integer = 0 To inputString.Length - 1 Step maxLength
@@ -307,7 +267,7 @@ Public Class user_provider_chats
         ' Add the new message to the messages list
         messages.Add(newMessage)
         ' Optionally, you can clear the TextBox after sending the message
-        chat.Controls("textBox1").Text = ""
+        sendTextBox.Text = ""
         ' Print messages between users
         PrintMessagesBetweenUsers(room)
     End Sub
@@ -316,8 +276,8 @@ Public Class user_provider_chats
         ' Clear existing messages on the chat_list panel
         For i As Integer = chat.Controls.Count - 1 To 0 Step -1
             Dim ctrl As Control = chat.Controls(i)
-            ' Check if the control is not lblHeader, textBox1, or sendButton
-            If ctrl.Name <> "lblHeader" AndAlso ctrl.Name <> "textBox1" AndAlso ctrl.Name <> "button1" Then
+            ' Check if the control is not lblHeader
+            If ctrl.Name <> "lblHeader" Then
                 ' Remove the control from the chat_list panel
                 chat.Controls.RemoveAt(i)
             End If
@@ -348,7 +308,7 @@ Public Class user_provider_chats
             messageLabel.Text = messageText '& " (" & timeStamp & ")"
             messageLabel.Font = New Font(messageLabel.Font.FontFamily, 10)
             messageLabel.Padding = New Padding(5)
-
+            messageLabel.BackColor = ColorTranslator.FromHtml("#D9D9D9")
             Dim textHeight As Integer = TextRenderer.MeasureText(messageText, messageLabel.Font).Height
             Dim labelHeight As Integer = messageLabel.Height
 
@@ -372,9 +332,5 @@ Public Class user_provider_chats
             ' Add label to the chat_list panel
             chat.Controls.Add(messageLabel)
         Next
-    End Sub
-
-    Private Sub chat_Paint(sender As Object, e As PaintEventArgs) Handles chat.Paint
-
     End Sub
 End Class

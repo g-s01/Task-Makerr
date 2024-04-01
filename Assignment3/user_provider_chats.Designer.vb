@@ -24,10 +24,13 @@ Partial Class user_provider_chats
     Private Sub InitializeComponent()
         chat = New Panel()
         chat_list = New Panel()
+        sendTextBox = New TextBox()
+        sendBtn = New Button()
         SuspendLayout()
         ' 
         ' chat
         ' 
+        chat.AutoScroll = True
         chat.Location = New Point(115, 94)
         chat.Margin = New Padding(4)
         chat.Name = "chat"
@@ -43,20 +46,43 @@ Partial Class user_provider_chats
         chat_list.Size = New Size(360, 720)
         chat_list.TabIndex = 1
         ' 
-        ' user_chats
+        ' sendTextBox
+        ' 
+        sendTextBox.Location = New Point(115, 849)
+        sendTextBox.Multiline = True
+        sendTextBox.Name = "sendTextBox"
+        sendTextBox.ScrollBars = ScrollBars.Vertical
+        sendTextBox.Size = New Size(835, 101)
+        sendTextBox.TabIndex = 2
+        ' 
+        ' sendBtn
+        ' 
+        sendBtn.Location = New Point(956, 849)
+        sendBtn.Name = "sendBtn"
+        sendBtn.Size = New Size(131, 75)
+        sendBtn.TabIndex = 3
+        sendBtn.Text = "Send"
+        sendBtn.UseVisualStyleBackColor = True
+        ' 
+        ' user_provider_chats
         ' 
         AutoScaleDimensions = New SizeF(12F, 30F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1493, 850)
+        ClientSize = New Size(1493, 929)
+        Controls.Add(sendBtn)
+        Controls.Add(sendTextBox)
         Controls.Add(chat_list)
         Controls.Add(chat)
         FormBorderStyle = FormBorderStyle.None
         Margin = New Padding(4)
-        Name = "user_chats"
+        Name = "user_provider_chats"
         Text = "user_chats"
         ResumeLayout(False)
+        PerformLayout()
     End Sub
 
     Friend WithEvents chat As Panel
     Friend WithEvents chat_list As Panel
+    Friend WithEvents sendTextBox As TextBox
+    Friend WithEvents sendBtn As Button
 End Class
