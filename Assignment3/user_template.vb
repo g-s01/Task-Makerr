@@ -129,6 +129,7 @@ Public Class user_template
         switchPanel(user_provider_chats)
     End Sub
 
+
     ' Help button
     ' author: sarg19
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
@@ -140,8 +141,7 @@ Public Class user_template
         Button6.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         Button7.BackColor = SystemColors.Control
 
-        'switchPanel(user_search)
-
+        switchPanel(support_chat)
     End Sub
 
     ' Feedback button
@@ -164,7 +164,5 @@ Public Class user_template
         Login.Show()
     End Sub
 
-    Private Sub SplitContainer1_Panel1_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel1.Paint
 
-    End Sub
 End Class

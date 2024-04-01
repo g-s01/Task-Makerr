@@ -1,7 +1,4 @@
-﻿Imports System.Collections.Generic
-Imports System.Configuration
-Imports System.Runtime.InteropServices.JavaScript.JSType
-Imports Azure.Messaging
+﻿Imports System.Configuration
 Imports Microsoft.Data.SqlClient
 
 'Imports System.Windows.Forms.VisualStyles.VisualStyleElement
