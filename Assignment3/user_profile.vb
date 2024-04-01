@@ -53,10 +53,23 @@ Public Class user_profile
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         ' Enable editing of textboxes and show the "Save Changes" button
         TextBox1.ReadOnly = False
-        TextBox2.ReadOnly = False
+        TextBox2.ReadOnly = True
         Button2.Visible = True
     End Sub
 
+    Private Sub Changepic_pb_Click(sender As Object, e As EventArgs) Handles changepic_pb.Click
+        Dim openFileDialog As New OpenFileDialog()
+        openFileDialog.Filter = "Image Files|*.bmp;*.jpg;*.jpeg;*.png;*.gif;*.tif;*.tiff"
+
+        If openFileDialog.ShowDialog() = DialogResult.OK Then
+            Try
+                ' Set the selected image to the PictureBox
+                profilepic_pb.Image = Image.FromFile(openFileDialog.FileName)
+            Catch ex As Exception
+                MessageBox.Show("An error occurred while loading the image: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        End If
+    End Sub
     ' Save the changes made to the user profile when the "Save Changes" button is clicked
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Try
