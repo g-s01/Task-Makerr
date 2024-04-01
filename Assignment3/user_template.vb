@@ -126,9 +126,7 @@ Public Class user_template
         Button5.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         Button6.BackColor = SystemColors.Control
         Button7.BackColor = SystemColors.Control
-
-        switchPanel(user_chats)
-
+        switchPanel(user_provider_chats)
     End Sub
 
     ' Help button
@@ -166,5 +164,7 @@ Public Class user_template
         Login.Show()
     End Sub
 
+    Private Sub SplitContainer1_Panel1_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel1.Paint
 
+    End Sub
 End Class

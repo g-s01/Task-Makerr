@@ -92,6 +92,7 @@
         Needhelp_btn.BackColor = SystemColors.Control
         Feedback_btn.BackColor = SystemColors.Control
         SplitContainer1.Panel2.Controls.Clear()
+        ShowForm(New user_provider_chats())
     End Sub
 
     Private Sub Needhelp_btn_Click(sender As Object, e As EventArgs) Handles Needhelp_btn.Click
@@ -120,5 +121,6 @@
         Me.Close()
         Login.Show()
     End Sub
+
 
 End Class

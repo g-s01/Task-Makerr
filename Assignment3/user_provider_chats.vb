@@ -6,7 +6,7 @@ Imports Microsoft.Data.SqlClient
 
 'Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 
-Public Class user_chats
+Public Class user_provider_chats
 
     Dim roomchat As New List(Of Tuple(Of String, Integer, Integer))() ' providername, chat_room_id, provider_id
     Dim messages As New List(Of Tuple(Of Integer, Integer, String, String, String))()
@@ -120,24 +120,9 @@ Public Class user_chats
         End Using
     End Function
 
-
-    Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
-        roomchat.Add(New Tuple(Of String, Integer, Integer)("Apple", 1, 0))
-        roomchat.Add(New Tuple(Of String, Integer, Integer)("Banana", 2, 0))
-        roomchat.Add(New Tuple(Of String, Integer, Integer)("Orange", 3, 0))
-        roomchat.Add(New Tuple(Of String, Integer, Integer)("Grapes", 4, 0))
-        messages.Clear()
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "customer", "Hey there!", "2024-03-30 10:00:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "How are you?", "2024-03-30 10:05:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "provider", "What's up?", "2024-03-30 10:10:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "customer", "Good morning!", "2024-03-30 10:15:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "provider", "How's it going?", "2024-03-30 10:20:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "Want to hang out later?", "2024-03-30 10:25:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "customer", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "provider", "Sounds good!", "2024-03-30 10:35:00"))
-
-
+    Private Sub PopulateRooms()
         Dim yPos As Integer = 10 ' Initial y position for buttons
+
         For Each item As Tuple(Of String, Integer, Integer) In roomchat
             Dim newButton As New Button()
             newButton.Name = "btn" & item.Item1 ' Set button name
@@ -151,7 +136,6 @@ Public Class user_chats
             newButton.Font = New Font(newButton.Font.FontFamily, 12)
             newButton.ImageAlign = ContentAlignment.MiddleLeft ' Set image alignment
             newButton.TextImageRelation = TextImageRelation.ImageBeforeText ' Position image before tex
-
             ' Resize the image to match the button height
             Dim scaledImagenew As Image = New Bitmap(My.Resources.prov, New Size(35, 35))
             newButton.Image = scaledImagenew
@@ -161,7 +145,10 @@ Public Class user_chats
             chat_list.Controls.Add(newButton) ' Add button to panel
             yPos += 37 ' Increment y position for next button
         Next
+    End Sub
 
+
+    Private Sub HandleTitle()
         ' Create and configure the Label
         Dim newLabel As New Label()
         newLabel.Name = "lblHeader"
@@ -183,6 +170,26 @@ Public Class user_chats
 
         ' Add controls to the panel
         chat.Controls.Add(newLabel)
+    End Sub
+
+    Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
+        roomchat.Add(New Tuple(Of String, Integer, Integer)("Apple", 1, 0))
+        roomchat.Add(New Tuple(Of String, Integer, Integer)("Banana", 2, 0))
+        roomchat.Add(New Tuple(Of String, Integer, Integer)("Orange", 3, 0))
+        roomchat.Add(New Tuple(Of String, Integer, Integer)("Grapes", 4, 0))
+        messages.Clear()
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "customer", "Hey there!", "2024-03-30 10:00:00"))
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "How are you?", "2024-03-30 10:05:00"))
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "provider", "What's up?", "2024-03-30 10:10:00"))
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "customer", "Good morning!", "2024-03-30 10:15:00"))
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "provider", "How's it going?", "2024-03-30 10:20:00"))
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "Want to hang out later?", "2024-03-30 10:25:00"))
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "customer", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
+        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "provider", "Sounds good!", "2024-03-30 10:35:00"))
+
+        PopulateRooms()
+        HandleTitle()
+
         Dim textBox1 As New TextBox()
         textBox1.Name = "textBox1"
         textBox1.Size = New Size(250, 30)
@@ -217,14 +224,14 @@ Public Class user_chats
         chat.Controls.Add(button1)
         chat.HorizontalScroll.Visible = False
         chat.AutoScroll = True
-        'chat.VerticalScroll.Enabled = True
-        'chat.VerticalScroll.Visible = True
+        'chat_list.VerticalScroll.Enabled = True
+        'chat_list.VerticalScroll.Visible = True
         chat.HorizontalScroll.Enabled = False
         chat.HorizontalScroll.Maximum = 0
         chat.HorizontalScroll.Minimum = 0
         chat.Visible = False
 
-        'chat.Visible = False
+        'chat_list.Visible = False
     End Sub
 
 
@@ -264,9 +271,9 @@ Public Class user_chats
     End Sub
 
     Private Sub sendButton_Click(sender As Object, e As EventArgs)
-        'Dim messageText As String = chat.Controls("textBox1").Text ' Assuming TextBox1 is the name of the TextBox
+        'Dim messageText As String = chat_list.Controls("textBox1").Text ' Assuming TextBox1 is the name of the TextBox
 
-        ' Get the receiver name from the label text within the chat panel
+        ' Get the receiver name from the label text within the chat_list panel
         Dim receiverName As String = chat.Controls("lblHeader").Text ' Assuming Label1 contains the receiver name
 
         ' Get the current timestamp
@@ -306,12 +313,12 @@ Public Class user_chats
     End Sub
 
     Private Sub PrintMessagesBetweenUsers(roomId As Integer)
-        ' Clear existing messages on the chat panel
+        ' Clear existing messages on the chat_list panel
         For i As Integer = chat.Controls.Count - 1 To 0 Step -1
             Dim ctrl As Control = chat.Controls(i)
             ' Check if the control is not lblHeader, textBox1, or sendButton
             If ctrl.Name <> "lblHeader" AndAlso ctrl.Name <> "textBox1" AndAlso ctrl.Name <> "button1" Then
-                ' Remove the control from the chat panel
+                ' Remove the control from the chat_list panel
                 chat.Controls.RemoveAt(i)
             End If
         Next
@@ -337,7 +344,7 @@ Public Class user_chats
             Dim messageLabel As New Label()
             messageLabel.AutoSize = True
 
-            'messageLabel.MaximumSize = New Size(chat.Width * 3 \ 4, 25)
+            'messageLabel.MaximumSize = New Size(chat_list.Width * 3 \ 4, 25)
             messageLabel.Text = messageText '& " (" & timeStamp & ")"
             messageLabel.Font = New Font(messageLabel.Font.FontFamily, 10)
             messageLabel.Padding = New Padding(5)
@@ -362,9 +369,12 @@ Public Class user_chats
             ' Set label position
             yPos += messageLabel.Height + 10
 
-            ' Add label to the chat panel
+            ' Add label to the chat_list panel
             chat.Controls.Add(messageLabel)
         Next
     End Sub
 
+    Private Sub chat_Paint(sender As Object, e As PaintEventArgs) Handles chat.Paint
+
+    End Sub
 End Class
