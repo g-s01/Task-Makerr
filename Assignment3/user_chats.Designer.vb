@@ -48,6 +48,7 @@ Partial Class user_chats
         ClientSize = New Size(1244, 708)
         Controls.Add(chat)
         Controls.Add(chat_list)
+        FormBorderStyle = FormBorderStyle.None
         Name = "user_chats"
         Text = "user_chats"
         ResumeLayout(False)
