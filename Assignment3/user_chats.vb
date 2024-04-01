@@ -185,13 +185,18 @@ Public Class user_chats
         chat.Controls.Add(newLabel)
         Dim textBox1 As New TextBox()
         textBox1.Name = "textBox1"
-        textBox1.Size = New Size(145, 30)
+        textBox1.Size = New Size(250, 30)
 
         ' Calculate the Y position for the TextBox
         Dim textBoxYPosition As Integer = chat.Height - textBox1.Height - 10 ' Adjust 10 for padding
 
         ' Set the location of the TextBox
         textBox1.Location = New Point(10, textBoxYPosition)
+        textBox1.Multiline = True
+        textBox1.ScrollBars = ScrollBars.Vertical
+        'textBox1.WordWrap = True ' Enable text wrapping
+        'textBox1.MaxLength = 50 ' Set the maximum length of the text
+
 
         ' Create and configure the Button
         Dim button1 As New Button()
@@ -210,11 +215,13 @@ Public Class user_chats
         ' Add the controls to the panel
         chat.Controls.Add(textBox1)
         chat.Controls.Add(button1)
-        'chat.AutoScroll = True
+        chat.HorizontalScroll.Visible = False
+        chat.AutoScroll = True
         'chat.VerticalScroll.Enabled = True
         'chat.VerticalScroll.Visible = True
-        'chat.HorizontalScroll.Enabled = True
-        'chat.HorizontalScroll.Visible = True
+        chat.HorizontalScroll.Enabled = False
+        chat.HorizontalScroll.Maximum = 0
+        chat.HorizontalScroll.Minimum = 0
         chat.Visible = False
 
         'chat.Visible = False
@@ -257,7 +264,7 @@ Public Class user_chats
     End Sub
 
     Private Sub sendButton_Click(sender As Object, e As EventArgs)
-        Dim messageText As String = chat.Controls("textBox1").Text ' Assuming TextBox1 is the name of the TextBox
+        'Dim messageText As String = chat.Controls("textBox1").Text ' Assuming TextBox1 is the name of the TextBox
 
         ' Get the receiver name from the label text within the chat panel
         Dim receiverName As String = chat.Controls("lblHeader").Text ' Assuming Label1 contains the receiver name
@@ -274,6 +281,18 @@ Public Class user_chats
                 room = pair.Item2
                 ' Do something with the number...
                 Exit For ' Exit loop if the match is found
+            End If
+        Next
+
+        Dim maxLength As Integer = 30 ' Set the maximum length before inserting a newline
+        Dim inputString As String = chat.Controls("textBox1").Text
+        Dim messageText As String = ""
+
+        For i As Integer = 0 To inputString.Length - 1 Step maxLength
+            Dim substringLength As Integer = Math.Min(maxLength, inputString.Length - i)
+            messageText += inputString.Substring(i, substringLength)
+            If i + substringLength < inputString.Length Then
+                messageText += vbCrLf ' Insert a newline character if there are more characters remaining
             End If
         Next
 
@@ -317,16 +336,27 @@ Public Class user_chats
             ' Create a label for the message
             Dim messageLabel As New Label()
             messageLabel.AutoSize = True
+
+            'messageLabel.MaximumSize = New Size(chat.Width * 3 \ 4, 25)
             messageLabel.Text = messageText '& " (" & timeStamp & ")"
             messageLabel.Font = New Font(messageLabel.Font.FontFamily, 10)
             messageLabel.Padding = New Padding(5)
+
+            Dim textHeight As Integer = TextRenderer.MeasureText(messageText, messageLabel.Font).Height
+            Dim labelHeight As Integer = messageLabel.Height
+
+            messageLabel.Padding = New Padding(0, (labelHeight - textHeight) \ 2, 0, 0)
+
+            ' Assuming label1 is the name of your label control
+            messageLabel.TextAlign = ContentAlignment.MiddleRight
 
             ' Align labels based on sender
             If senderType = "provider" Then
                 messageLabel.Location = New Point(10, yPos)
             ElseIf senderType = "customer" Then
                 messageLabel.Anchor = AnchorStyles.Right
-                messageLabel.Location = New Point(chat.Width - messageLabel.Width - 10, yPos)
+                messageLabel.Location = New Point(chat.Width - messageLabel.PreferredWidth - 10, yPos)
+
             End If
 
             ' Set label position
