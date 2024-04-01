@@ -8,4 +8,6 @@
     Public DealID_Reschedule = 2
     Public Appointment_Det_DealId As Integer = 1
     Public slot_back_choice As Integer = 1
+    Public cost_of_booking As Integer
+    Public payment_successful As Integer = 0
 End Module

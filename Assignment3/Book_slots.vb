@@ -4,6 +4,7 @@ Imports System.Configuration
 Imports System.IO
 Imports FastReport.DataVisualization.Charting
 Imports System.Net.NetworkInformation
+Imports System.Threading
 
 Public Class Book_slots
     Public user As Integer = Module_global.User_ID
@@ -11,16 +12,18 @@ Public Class Book_slots
     Public ProviderName As String = "NULL"
     Public user_name As String = "NULL"
     Public binaryImageData As Byte()
-    Public availability(7, 13) As Integer ' 7 days, 24 hours , Load it from database
+    Public availability(7, 12) As Integer ' 7 days, 24 hours , Load it from database
     Public BookedList As New List(Of Integer())
     Public Avaiability_String As String = "NULL"
+    Public cost_per_hour As Integer = 0
+    Public is_null_image As Integer = 0
     ' Store the user home form
     'Public UserHome As New U'serHome()
     Public Sub Book_slots_load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Run your function here
         'MessageBox.Show(1)
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-        Dim provider_query As String = "SELECT providername,working_hour FROM provider WHERE provider_id = @Provider_ID"
+        Dim provider_query As String = "SELECT providername,working_hour,cost_per_hour FROM provider WHERE provider_id = @Provider_ID"
         Dim user_query As String = "SELECT username,profile_image FROM customer WHERE user_id = @User_ID"
         Using connection As New SqlConnection(connectionString)
             Using command As New SqlCommand(provider_query, connection)
@@ -35,6 +38,7 @@ Public Class Book_slots
                     ' Retrieve the provider name from the reader
                     ProviderName = reader.GetString(0)
                     Avaiability_String = reader.GetString(1)
+                    cost_per_hour = reader.GetInt32(2)
                     ' Do something with the retrieved values, such as displaying them in a MessageBox
                 End While
 
@@ -55,6 +59,9 @@ Public Class Book_slots
                 While reader.Read()
                     ' Retrieve the provider name from the reader
                     user_name = reader.GetString(0)
+                    If (reader.IsDBNull("profile_image")) Then
+                        is_null_image = 1
+                    End If
                     Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
                     binaryImageData = imageData
                     ' Convert byte array to image
@@ -92,8 +99,8 @@ Public Class Book_slots
         For i As Integer = 0 To 6
             Dim nextDate As DateTime = startDate.AddDays(i).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
             Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
-            For j As Integer = 0 To 12
-                If (Avaiability_String.ElementAt(((i + indexFromMonday) * 13 + j) Mod 91) = "1") Then
+            For j As Integer = 0 To 11
+                If (Avaiability_String.ElementAt(((i + indexFromMonday) * 12 + j) Mod 84) = "1") Then
                     availability(i, j) = 1
                 End If
 
@@ -190,7 +197,7 @@ Public Class Book_slots
         Next
         'MessageBox.Show(9)
         ' Add labels for 12-hour format time from 9:00 AM to 9:00 PM
-        For i As Integer = 9 To 21
+        For i As Integer = 9 To 20
             Dim timeLabel As New Label()
             Dim hour As Integer = If(i > 12, i Mod 12, i) ' Convert to 12-hour format
             Dim suffix As String = If(i >= 12, "PM", "AM") ' Determine AM/PM suffix
@@ -210,7 +217,7 @@ Public Class Book_slots
         ' Add buttons for each time slot
         Schedule_Table.SuspendLayout()
         For i As Integer = 0 To 6
-            For j As Integer = 0 To 12
+            For j As Integer = 0 To 11
                 Dim btn As New Button()
                 btn.Text = ""
                 btn.Dock = DockStyle.Fill
@@ -288,10 +295,15 @@ Public Class Book_slots
         ' Set the PictureBox's region to the circle defined by the GraphicsPath
         pictureBox.Region = New Region(path)
         'Change according to the user after fetching from the database
+        Dim image As Image
+        If (is_null_image = 1) Then
+            image = My.Resources.male
 
+            ' Convert binary data back to an image
+        Else
 
-        ' Convert binary data back to an image
-        Dim image As Image = ImageFromBinary(binaryImageData)
+            image = ImageFromBinary(binaryImageData)
+        End If
 
         pictureBox.Image = image
         pictureBox.SizeMode = PictureBoxSizeMode.Zoom
@@ -333,16 +345,54 @@ Public Class Book_slots
             If rowsAffected > 0 Then
                 MessageBox.Show("Data ins.rted successfully.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 payments.Show()
-                Make_Schedule_Table()
+                Thread.Sleep(1000)
+                If (Module_global.payment_successful = 1) Then
+                    Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location);"
+                    Dim zeros As String = New String("0"c, 84)
+                    Dim charArray() As Char = zeros.ToCharArray()
+
+                    ' Set specific characters to '1' at desired indices
+
+                    For Each Pair In BookedList
+                        charArray(Pair(0) * 12 + Pair(1)) = "1"c
+                    Next
+
+                    ' Convert the character array back to a string
+                    Dim result As New String(charArray)
+
+                    Using command As New SqlCommand(InsertQuery, connection)
+                        command.Parameters.AddWithValue("@User_ID", user)
+                        command.Parameters.AddWithValue("@Provider_ID", provider)
+                        command.Parameters.AddWithValue("@Time", result)
+                        command.Parameters.AddWithValue("@Status", 1)
+                        command.Parameters.AddWithValue("@Dates", DateTime.Now())
+                        command.Parameters.AddWithValue("@Location", Address_TxtBox.Text)
+                        rowsAffected = command.ExecuteNonQuery()
+                        If rowsAffected = 0 Then
+                            MessageBox.Show("Some unusual error happened.")
+                        End If
+                    End Using
+                    Make_Schedule_Table()
+                Else
+                    MessageBox.Show("Payment was not successful. Please try again.")
+                End If
+
 
             Else
-                MessageBox.Show("Please select some slots to book!")
+                    MessageBox.Show("Please select some slots to book!")
             End If
 
         End Using
     End Sub
 
+    Private Async Sub Sleep()
+        ' Perform some actions before sleeping
 
+        ' Pause execution of this form for 1 second (1000 milliseconds)
+        Await Task.Delay(10000)
+
+        ' Continue with other actions after sleeping
+    End Sub
     Private Sub Back_Btn_Click(sender As Object, e As EventArgs) Handles Back_Btn.Click
         user_template.SplitContainer1.Panel2.Controls.Clear()
         If slot_back_choice = 1 Then
