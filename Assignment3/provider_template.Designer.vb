@@ -23,16 +23,16 @@ Partial Class provider_template
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         SplitContainer1 = New SplitContainer()
-        Button5 = New Button()
+        Chats_Navi_btn = New Button()
         Label2 = New Label()
         Label1 = New Label()
         logout_btn = New Button()
-        Button6 = New Button()
-        Button7 = New Button()
+        Needhelp_btn = New Button()
+        Feedback_btn = New Button()
         Profile_Navi_btn = New Button()
-        Button3 = New Button()
-        Button2 = New Button()
-        Button1 = New Button()
+        Notifications_Navi_btn = New Button()
+        Appointments_Navi_btn = New Button()
+        Dashboard_Navi_btn = New Button()
         PictureBox2 = New PictureBox()
         PictureBox1 = New PictureBox()
         CType(SplitContainer1, ComponentModel.ISupportInitialize).BeginInit()
@@ -50,16 +50,16 @@ Partial Class provider_template
         ' 
         ' SplitContainer1.Panel1
         ' 
-        SplitContainer1.Panel1.Controls.Add(Button5)
+        SplitContainer1.Panel1.Controls.Add(Chats_Navi_btn)
         SplitContainer1.Panel1.Controls.Add(Label2)
         SplitContainer1.Panel1.Controls.Add(Label1)
         SplitContainer1.Panel1.Controls.Add(logout_btn)
-        SplitContainer1.Panel1.Controls.Add(Button6)
-        SplitContainer1.Panel1.Controls.Add(Button7)
+        SplitContainer1.Panel1.Controls.Add(Needhelp_btn)
+        SplitContainer1.Panel1.Controls.Add(Feedback_btn)
         SplitContainer1.Panel1.Controls.Add(Profile_Navi_btn)
-        SplitContainer1.Panel1.Controls.Add(Button3)
-        SplitContainer1.Panel1.Controls.Add(Button2)
-        SplitContainer1.Panel1.Controls.Add(Button1)
+        SplitContainer1.Panel1.Controls.Add(Notifications_Navi_btn)
+        SplitContainer1.Panel1.Controls.Add(Appointments_Navi_btn)
+        SplitContainer1.Panel1.Controls.Add(Dashboard_Navi_btn)
         SplitContainer1.Panel1.Controls.Add(PictureBox2)
         SplitContainer1.Panel1.Controls.Add(PictureBox1)
         ' 
@@ -71,23 +71,23 @@ Partial Class provider_template
         SplitContainer1.SplitterWidth = 1
         SplitContainer1.TabIndex = 1
         ' 
-        ' Button5
+        ' Chats_Navi_btn
         ' 
-        Button5.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button5.BackColor = SystemColors.Control
-        Button5.FlatAppearance.BorderSize = 0
-        Button5.FlatStyle = FlatStyle.Flat
-        Button5.Font = New Font("Microsoft YaHei", 10.2F)
-        Button5.Image = My.Resources.Resources.chats
-        Button5.ImageAlign = ContentAlignment.MiddleLeft
-        Button5.Location = New Point(3, 307)
-        Button5.Name = "Button5"
-        Button5.Padding = New Padding(15, 0, 0, 0)
-        Button5.Size = New Size(282, 36)
-        Button5.TabIndex = 11
-        Button5.Text = "     Chats"
-        Button5.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button5.UseVisualStyleBackColor = False
+        Chats_Navi_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        Chats_Navi_btn.BackColor = SystemColors.Control
+        Chats_Navi_btn.FlatAppearance.BorderSize = 0
+        Chats_Navi_btn.FlatStyle = FlatStyle.Flat
+        Chats_Navi_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        Chats_Navi_btn.Image = My.Resources.Resources.chats
+        Chats_Navi_btn.ImageAlign = ContentAlignment.MiddleLeft
+        Chats_Navi_btn.Location = New Point(3, 307)
+        Chats_Navi_btn.Name = "Chats_Navi_btn"
+        Chats_Navi_btn.Padding = New Padding(15, 0, 0, 0)
+        Chats_Navi_btn.Size = New Size(282, 36)
+        Chats_Navi_btn.TabIndex = 11
+        Chats_Navi_btn.Text = "     Chats"
+        Chats_Navi_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        Chats_Navi_btn.UseVisualStyleBackColor = False
         ' 
         ' Label2
         ' 
@@ -96,7 +96,7 @@ Partial Class provider_template
         Label2.ForeColor = Color.DimGray
         Label2.Location = New Point(22, 470)
         Label2.Name = "Label2"
-        Label2.Size = New Size(75, 23)
+        Label2.Size = New Size(92, 28)
         Label2.TabIndex = 10
         Label2.Text = "Support"
         ' 
@@ -107,7 +107,7 @@ Partial Class provider_template
         Label1.ForeColor = Color.DimGray
         Label1.Location = New Point(22, 100)
         Label1.Name = "Label1"
-        Label1.Size = New Size(57, 23)
+        Label1.Size = New Size(71, 28)
         Label1.TabIndex = 9
         Label1.Text = "Menu"
         ' 
@@ -130,39 +130,39 @@ Partial Class provider_template
         logout_btn.TextImageRelation = TextImageRelation.ImageBeforeText
         logout_btn.UseVisualStyleBackColor = False
         ' 
-        ' Button6
+        ' Needhelp_btn
         ' 
-        Button6.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button6.BackColor = SystemColors.Control
-        Button6.FlatAppearance.BorderSize = 0
-        Button6.FlatStyle = FlatStyle.Flat
-        Button6.Font = New Font("Microsoft YaHei", 10.2F)
-        Button6.ImageAlign = ContentAlignment.MiddleLeft
-        Button6.Location = New Point(3, 509)
-        Button6.Name = "Button6"
-        Button6.Padding = New Padding(15, 0, 0, 0)
-        Button6.Size = New Size(282, 36)
-        Button6.TabIndex = 7
-        Button6.Text = "Need Help?"
-        Button6.TextAlign = ContentAlignment.MiddleLeft
-        Button6.UseVisualStyleBackColor = False
+        Needhelp_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        Needhelp_btn.BackColor = SystemColors.Control
+        Needhelp_btn.FlatAppearance.BorderSize = 0
+        Needhelp_btn.FlatStyle = FlatStyle.Flat
+        Needhelp_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        Needhelp_btn.ImageAlign = ContentAlignment.MiddleLeft
+        Needhelp_btn.Location = New Point(3, 509)
+        Needhelp_btn.Name = "Needhelp_btn"
+        Needhelp_btn.Padding = New Padding(15, 0, 0, 0)
+        Needhelp_btn.Size = New Size(282, 36)
+        Needhelp_btn.TabIndex = 7
+        Needhelp_btn.Text = "Need Help?"
+        Needhelp_btn.TextAlign = ContentAlignment.MiddleLeft
+        Needhelp_btn.UseVisualStyleBackColor = False
         ' 
-        ' Button7
+        ' Feedback_btn
         ' 
-        Button7.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button7.BackColor = SystemColors.Control
-        Button7.FlatAppearance.BorderSize = 0
-        Button7.FlatStyle = FlatStyle.Flat
-        Button7.Font = New Font("Microsoft YaHei", 10.2F)
-        Button7.ImageAlign = ContentAlignment.MiddleLeft
-        Button7.Location = New Point(3, 551)
-        Button7.Name = "Button7"
-        Button7.Padding = New Padding(15, 0, 0, 0)
-        Button7.Size = New Size(282, 36)
-        Button7.TabIndex = 6
-        Button7.Text = "Give Feedback"
-        Button7.TextAlign = ContentAlignment.MiddleLeft
-        Button7.UseVisualStyleBackColor = False
+        Feedback_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        Feedback_btn.BackColor = SystemColors.Control
+        Feedback_btn.FlatAppearance.BorderSize = 0
+        Feedback_btn.FlatStyle = FlatStyle.Flat
+        Feedback_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        Feedback_btn.ImageAlign = ContentAlignment.MiddleLeft
+        Feedback_btn.Location = New Point(3, 551)
+        Feedback_btn.Name = "Feedback_btn"
+        Feedback_btn.Padding = New Padding(15, 0, 0, 0)
+        Feedback_btn.Size = New Size(282, 36)
+        Feedback_btn.TabIndex = 6
+        Feedback_btn.Text = "Give Feedback"
+        Feedback_btn.TextAlign = ContentAlignment.MiddleLeft
+        Feedback_btn.UseVisualStyleBackColor = False
         ' 
         ' Profile_Navi_btn
         ' 
@@ -182,59 +182,59 @@ Partial Class provider_template
         Profile_Navi_btn.TextImageRelation = TextImageRelation.ImageBeforeText
         Profile_Navi_btn.UseVisualStyleBackColor = False
         ' 
-        ' Button3
+        ' Notifications_Navi_btn
         ' 
-        Button3.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button3.BackColor = SystemColors.Control
-        Button3.FlatAppearance.BorderSize = 0
-        Button3.FlatStyle = FlatStyle.Flat
-        Button3.Font = New Font("Microsoft YaHei", 10.2F)
-        Button3.Image = My.Resources.Resources.notifications
-        Button3.ImageAlign = ContentAlignment.MiddleLeft
-        Button3.Location = New Point(3, 223)
-        Button3.Name = "Button3"
-        Button3.Padding = New Padding(15, 0, 0, 0)
-        Button3.Size = New Size(282, 36)
-        Button3.TabIndex = 4
-        Button3.Text = "     Notifications"
-        Button3.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button3.UseVisualStyleBackColor = False
+        Notifications_Navi_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        Notifications_Navi_btn.BackColor = SystemColors.Control
+        Notifications_Navi_btn.FlatAppearance.BorderSize = 0
+        Notifications_Navi_btn.FlatStyle = FlatStyle.Flat
+        Notifications_Navi_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        Notifications_Navi_btn.Image = My.Resources.Resources.notifications
+        Notifications_Navi_btn.ImageAlign = ContentAlignment.MiddleLeft
+        Notifications_Navi_btn.Location = New Point(3, 223)
+        Notifications_Navi_btn.Name = "Notifications_Navi_btn"
+        Notifications_Navi_btn.Padding = New Padding(15, 0, 0, 0)
+        Notifications_Navi_btn.Size = New Size(282, 36)
+        Notifications_Navi_btn.TabIndex = 4
+        Notifications_Navi_btn.Text = "     Notifications"
+        Notifications_Navi_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        Notifications_Navi_btn.UseVisualStyleBackColor = False
         ' 
-        ' Button2
+        ' Appointments_Navi_btn
         ' 
-        Button2.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button2.BackColor = SystemColors.Control
-        Button2.FlatAppearance.BorderSize = 0
-        Button2.FlatStyle = FlatStyle.Flat
-        Button2.Font = New Font("Microsoft YaHei", 10.2F)
-        Button2.Image = My.Resources.Resources.appointments
-        Button2.ImageAlign = ContentAlignment.MiddleLeft
-        Button2.Location = New Point(3, 181)
-        Button2.Name = "Button2"
-        Button2.Padding = New Padding(15, 0, 0, 0)
-        Button2.Size = New Size(282, 36)
-        Button2.TabIndex = 3
-        Button2.Text = "      Appointments"
-        Button2.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button2.UseVisualStyleBackColor = False
+        Appointments_Navi_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        Appointments_Navi_btn.BackColor = SystemColors.Control
+        Appointments_Navi_btn.FlatAppearance.BorderSize = 0
+        Appointments_Navi_btn.FlatStyle = FlatStyle.Flat
+        Appointments_Navi_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        Appointments_Navi_btn.Image = My.Resources.Resources.appointments
+        Appointments_Navi_btn.ImageAlign = ContentAlignment.MiddleLeft
+        Appointments_Navi_btn.Location = New Point(3, 181)
+        Appointments_Navi_btn.Name = "Appointments_Navi_btn"
+        Appointments_Navi_btn.Padding = New Padding(15, 0, 0, 0)
+        Appointments_Navi_btn.Size = New Size(282, 36)
+        Appointments_Navi_btn.TabIndex = 3
+        Appointments_Navi_btn.Text = "      Appointments"
+        Appointments_Navi_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        Appointments_Navi_btn.UseVisualStyleBackColor = False
         ' 
-        ' Button1
+        ' Dashboard_Navi_btn
         ' 
-        Button1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button1.FlatAppearance.BorderSize = 0
-        Button1.FlatStyle = FlatStyle.Flat
-        Button1.Font = New Font("Microsoft YaHei", 10.2F)
-        Button1.Image = My.Resources.Resources.home
-        Button1.ImageAlign = ContentAlignment.MiddleLeft
-        Button1.Location = New Point(3, 139)
-        Button1.Name = "Button1"
-        Button1.Padding = New Padding(15, 0, 0, 0)
-        Button1.Size = New Size(282, 36)
-        Button1.TabIndex = 2
-        Button1.Text = "     Dashboard"
-        Button1.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button1.UseVisualStyleBackColor = False
+        Dashboard_Navi_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        Dashboard_Navi_btn.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Dashboard_Navi_btn.FlatAppearance.BorderSize = 0
+        Dashboard_Navi_btn.FlatStyle = FlatStyle.Flat
+        Dashboard_Navi_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        Dashboard_Navi_btn.Image = My.Resources.Resources.home
+        Dashboard_Navi_btn.ImageAlign = ContentAlignment.MiddleLeft
+        Dashboard_Navi_btn.Location = New Point(3, 139)
+        Dashboard_Navi_btn.Name = "Dashboard_Navi_btn"
+        Dashboard_Navi_btn.Padding = New Padding(15, 0, 0, 0)
+        Dashboard_Navi_btn.Size = New Size(282, 36)
+        Dashboard_Navi_btn.TabIndex = 2
+        Dashboard_Navi_btn.Text = "     Dashboard"
+        Dashboard_Navi_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        Dashboard_Navi_btn.UseVisualStyleBackColor = False
         ' 
         ' PictureBox2
         ' 
@@ -272,16 +272,16 @@ Partial Class provider_template
     End Sub
 
     Friend WithEvents SplitContainer1 As SplitContainer
-    Friend WithEvents Button5 As Button
+    Friend WithEvents Chats_Navi_btn As Button
     Friend WithEvents Label2 As Label
     Friend WithEvents Label1 As Label
     Friend WithEvents logout_btn As Button
-    Friend WithEvents Button6 As Button
-    Friend WithEvents Button7 As Button
+    Friend WithEvents Needhelp_btn As Button
+    Friend WithEvents Feedback_btn As Button
     Friend WithEvents Profile_Navi_btn As Button
-    Friend WithEvents Button3 As Button
-    Friend WithEvents Button2 As Button
-    Friend WithEvents Button1 As Button
+    Friend WithEvents Notifications_Navi_btn As Button
+    Friend WithEvents Appointments_Navi_btn As Button
+    Friend WithEvents Dashboard_Navi_btn As Button
     Friend WithEvents PictureBox2 As PictureBox
     Friend WithEvents PictureBox1 As PictureBox
 End Class
