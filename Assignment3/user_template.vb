@@ -117,7 +117,7 @@ Public Class user_template
         Button6.BackColor = SystemColors.Control
         Button7.BackColor = SystemColors.Control
 
-        'switchPanel(user_search)
+        switchPanel(user_chats)
 
     End Sub
 
@@ -147,7 +147,7 @@ Public Class user_template
         Button6.BackColor = SystemColors.Control
         Button7.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
 
-        'switchPanel(user_search)
+        switchPanel(user_feedback)
     End Sub
 
     ' Logout button
