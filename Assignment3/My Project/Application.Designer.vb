@@ -30,7 +30,6 @@ Namespace My
             Me.ShutDownStyle = Global.Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterMainFormCloses
             Me.HighDpiMode = HighDpiMode.DpiUnaware
         End Sub
-
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>
         Protected Overrides Sub OnCreateMainForm()
             Me.MainForm = Global.Assignment3.Landing
