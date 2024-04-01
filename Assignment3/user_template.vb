@@ -64,4 +64,18 @@ Public Class user_template
             .Show()
         End With
     End Sub
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Button2.BackColor = Color.FromArgb(&HFFCCFF)
+        SplitContainer1.Panel2.Controls.Clear()
+        With user_search
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            SplitContainer1.Panel2.Controls.Add(user_search)
+            .BringToFront()
+            .Show()
+
+        End With
+
+    End Sub
 End Class

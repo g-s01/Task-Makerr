@@ -42,12 +42,12 @@ Public Class Prov_tile
         Dim toolTip1 As New ToolTip()
         toolTip1.SetToolTip(Label2, Label2.Text)
 
-        AddHandler Me.Click, AddressOf UserControl_Click
+        'AddHandler Me.Click, AddressOf UserControl_Click
 
         ' Add the same Click event handler to the Click events of the child controls
-        For Each control As Control In Me.Controls
-            AddHandler control.Click, AddressOf UserControl_Click
-        Next
+        'For Each control As Control In Me.Controls
+        '   AddHandler control.Click, AddressOf UserControl_Click
+        'Next
         AddHandler Me.MouseEnter, AddressOf UserControl_MouseEnter
         AddHandler Me.MouseLeave, AddressOf UserControl_MouseLeave
 
@@ -58,14 +58,14 @@ Public Class Prov_tile
         Next
     End Sub
 
-    Private Sub UserControl_Click(sender As Object, e As EventArgs)
-        ' Create an instance of the new form
+    'Private Sub UserControl_Click(sender As Object, e As EventArgs)
+    ' Create an instance of the new form
 
-        Dim newForm As New Book_slots() ' Replace 'Form2' with the name of your form
+    'Dim newForm As New Book_slots() ' Replace 'Form2' with the name of your form
 
-        ' Show the new form
-        newForm.Show()
-    End Sub
+    ' Show the new form
+    '   newForm.Show()
+    'End Sub
     Private Sub UserControl_MouseEnter(sender As Object, e As EventArgs)
         ' Change the BackColor of the UserControl to the hover color
         Me.BackColor = Color.LightBlue ' Replace 'Color.LightBlue' with your hover color
