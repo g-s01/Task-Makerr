@@ -35,6 +35,7 @@ Partial Class user_chats
         ' 
         ' chat
         ' 
+        chat.AutoSizeMode = AutoSizeMode.GrowAndShrink
         chat.Location = New Point(402, 78)
         chat.Name = "chat"
         chat.Size = New Size(808, 600)

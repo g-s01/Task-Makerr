@@ -37,7 +37,7 @@ Partial Class Book_slots
         ' 
         ' Profile_Pic
         ' 
-        Profile_Pic.Location = New Point(697, 12)
+        Profile_Pic.Location = New Point(736, 12)
         Profile_Pic.Name = "Profile_Pic"
         Profile_Pic.Size = New Size(125, 62)
         Profile_Pic.TabIndex = 0
@@ -47,7 +47,7 @@ Partial Class Book_slots
         ' 
         Username.AutoSize = True
         Username.Font = New Font("Microsoft Sans Serif", 10.2F)
-        Username.Location = New Point(697, 77)
+        Username.Location = New Point(736, 77)
         Username.Name = "Username"
         Username.Size = New Size(86, 20)
         Username.TabIndex = 1
@@ -81,7 +81,7 @@ Partial Class Book_slots
         Schedule_Table.ColumnCount = 14
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 19.6245728F))
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 80.37543F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 305.0F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 301.0F))
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
@@ -89,8 +89,8 @@ Partial Class Book_slots
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 32.0F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 8.0F))
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 22.0F))
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
         Schedule_Table.Location = New Point(3, 3)
@@ -98,13 +98,13 @@ Partial Class Book_slots
         Schedule_Table.RowCount = 8
         Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Percent, 26.1083736F))
         Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Percent, 73.8916245F))
+        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 19.0F))
+        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 30.0F))
+        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 10.0F))
         Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
         Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
         Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
-        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
-        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
-        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
-        Schedule_Table.Size = New Size(801, 293)
+        Schedule_Table.Size = New Size(828, 428)
         Schedule_Table.TabIndex = 4
         ' 
         ' Panel1
@@ -113,14 +113,14 @@ Partial Class Book_slots
         Panel1.Controls.Add(Schedule_Table)
         Panel1.Location = New Point(15, 144)
         Panel1.Name = "Panel1"
-        Panel1.Size = New Size(807, 302)
+        Panel1.Size = New Size(828, 431)
         Panel1.TabIndex = 5
         ' 
         ' Address_Lbl
         ' 
         Address_Lbl.AutoSize = True
         Address_Lbl.Font = New Font("Microsoft YaHei", 13.0F)
-        Address_Lbl.Location = New Point(15, 495)
+        Address_Lbl.Location = New Point(12, 635)
         Address_Lbl.Name = "Address_Lbl"
         Address_Lbl.Size = New Size(96, 30)
         Address_Lbl.TabIndex = 6
@@ -130,7 +130,7 @@ Partial Class Book_slots
         ' 
         Address_TxtBox.BackColor = Color.FromArgb(CByte(247), CByte(231), CByte(248))
         Address_TxtBox.Font = New Font("Microsoft YaHei", 10.2F)
-        Address_TxtBox.Location = New Point(133, 498)
+        Address_TxtBox.Location = New Point(133, 635)
         Address_TxtBox.Name = "Address_TxtBox"
         Address_TxtBox.Size = New Size(689, 30)
         Address_TxtBox.TabIndex = 7
@@ -140,7 +140,7 @@ Partial Class Book_slots
         Book_Btn.BackColor = Color.FromArgb(CByte(245), CByte(140), CByte(215))
         Book_Btn.Font = New Font("Microsoft YaHei", 12.0F)
         Book_Btn.ForeColor = Color.Black
-        Book_Btn.Location = New Point(566, 584)
+        Book_Btn.Location = New Point(592, 742)
         Book_Btn.Name = "Book_Btn"
         Book_Btn.Size = New Size(230, 51)
         Book_Btn.TabIndex = 8
@@ -153,7 +153,7 @@ Partial Class Book_slots
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.White
         BackgroundImageLayout = ImageLayout.Stretch
-        ClientSize = New Size(844, 666)
+        ClientSize = New Size(932, 920)
         Controls.Add(Book_Btn)
         Controls.Add(Address_TxtBox)
         Controls.Add(Address_Lbl)
