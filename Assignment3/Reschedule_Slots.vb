@@ -11,7 +11,7 @@ Public Class Reschedule_Slots
     Public ProviderName As String = "NULL"
     Public user_name As String = "NULL"
     Public binaryImageData As Byte()
-    Public availability(7, 23) As Integer ' 7 days, 24 hours , Load it from database
+    Public availability(7, 13) As Integer ' 7 days, 24 hours , Load it from database
     Public BookedList As New List(Of Integer())
     Public PreviouslyBookedList As New List(Of Integer())
     Public Avaiability_String As String = "NULL"
@@ -85,7 +85,7 @@ Public Class Reschedule_Slots
         ' Set the time to 12:00 AM
         Dim startDate As DateTime = New DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 0, 0, 0)
 
-        For i As Integer = 0 To 7
+        For i As Integer = 0 To 6
             Dim nextDate As DateTime = startDate.AddDays(i).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
             Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
             For j As Integer = 0 To 12
@@ -132,7 +132,8 @@ Public Class Reschedule_Slots
                                 ' Check if the bit is '1' (indicating working day)
                                 If bit = "1"c Then
                                     ' Calculate the day index based on the current day index and the index i
-                                    Dim dayIndex As Integer = I / 13 - differenceInDays
+                                    MessageBox.Show(Math.Floor(I / 13))
+                                    Dim dayIndex As Integer = Math.Floor(I / 13) - differenceInDays
                                     Dim slot As Integer = I Mod 13
 
                                     availability(dayIndex, slot) = 3
@@ -182,6 +183,9 @@ Public Class Reschedule_Slots
                 deleteCommand.Parameters.AddWithValue("@time", formattedDate)
                 deleteCommand.Parameters.AddWithValue("@slots", pair(1))
                 Dim rowsAffected As Integer = deleteCommand.ExecuteNonQuery()
+                MessageBox.Show(formattedDate)
+                MessageBox.Show(pair(1))
+
                 If rowsAffected > 0 Then
                     Console.WriteLine("Deleted")
                 Else
