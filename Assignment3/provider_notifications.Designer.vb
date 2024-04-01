@@ -66,7 +66,7 @@ Partial Class provider_notifications
         Button4.Name = "Button4"
         Button4.Size = New Size(170, 56)
         Button4.TabIndex = 6
-        Button4.Text = "Chats"
+        Button4.Text = "Reviews"
         Button4.UseVisualStyleBackColor = False
         ' 
         ' Button3
