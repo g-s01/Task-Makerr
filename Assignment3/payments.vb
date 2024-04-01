@@ -15,8 +15,8 @@ Public Class payments
     Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
     ' Define a global identifiers of the user
     Dim ID As String = Email
-    Dim ProviderEmailID As String = "None"
-    Dim CostOfService As Integer = 0
+    Dim ProviderEmailID As String
+    Dim CostOfService As Integer
     ' this is a function to pay money to the provider
     ' author: g-s01
     Private Sub payButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles payButton.Click
@@ -100,6 +100,7 @@ Public Class payments
             ' Apply cashback
             ApplyCashback(ID, paymentAmount)
         End If
+        Me.Close()
     End Sub
     ' function to send email from admin
     ' parameter 1: randomNumber -> OTP
