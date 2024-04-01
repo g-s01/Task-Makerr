@@ -15,9 +15,10 @@ Public Class Book_slots
     Public BookedList As New List(Of Integer())
     Public Avaiability_String As String = "NULL"
     ' Store the user home form
-    Public UserHome As New UserHome()
+    'Public UserHome As New U'serHome()
     Public Sub Book_slots_load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Run your function here
+        'MessageBox.Show(1)
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
         Dim provider_query As String = "SELECT providername,working_hour FROM provider WHERE provider_id = @Provider_ID"
         Dim user_query As String = "SELECT username,profile_image FROM customer WHERE user_id = @User_ID"
@@ -40,6 +41,7 @@ Public Class Book_slots
             End Using
         End Using
         Provider_Name_Loc_Lbl.Text = ProviderName
+        'MessageBox.Show(2)
         Using connection As New SqlConnection(connectionString)
             Using command As New SqlCommand(user_query, connection)
                 ' Add parameters
@@ -63,8 +65,9 @@ Public Class Book_slots
 
             End Using
         End Using
-
+        'MessageBox.Show(3)
         MakePictureBoxRound(Profile_Pic)
+        'MessageBox.Show(4)
         Make_Schedule_Table()
 
     End Sub
@@ -85,7 +88,7 @@ Public Class Book_slots
 
         ' Set the time to 12:00 AM
         Dim startDate As DateTime = New DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 0, 0, 0)
-
+        'MessageBox.Show(5)
         For i As Integer = 0 To 6
             Dim nextDate As DateTime = startDate.AddDays(i).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
             Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
@@ -96,6 +99,7 @@ Public Class Book_slots
 
             Next
         Next
+
         'Dim selectQuery As String = "SELECT user_id, provider_id, time, status, dates, location FROM deals WHERE deal_id = @deal_id"
 
         ' Define the DELETE query to delete the deal
@@ -109,6 +113,7 @@ Public Class Book_slots
 
         'MessageBox.Show(Avaiability_String.Length)
         ' Create a connection to the database
+        'MessageBox.Show(6)
         Using connection As New SqlConnection(connectionString)
             ' Open the connection
             connection.Open()
@@ -148,9 +153,11 @@ Public Class Book_slots
                 End Using
             End Using
         End Using
+        'MessageBox.Show(7)
         PopulateScheduleTable()
     End Sub
     Private Sub PopulateScheduleTable()
+
         ' Clear existing controls in the table layout panel
         'MessageBox.Show("0")
         Schedule_Table.Controls.Clear()
@@ -163,7 +170,7 @@ Public Class Book_slots
         ' Calculate percentage for each column and row
         Dim columnPercentage As Single = 100.0F / Schedule_Table.ColumnCount
         Dim rowPercentage As Single = 100.0F / Schedule_Table.RowCount
-
+        'MessageBox.Show(8)
         ' Set equal column and row styles
         For i As Integer = 0 To Schedule_Table.ColumnCount + 1
             Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, columnPercentage))
@@ -181,7 +188,7 @@ Public Class Book_slots
             dayLabel.Font = New Font("Arial", 12, FontStyle.Bold)
             Schedule_Table.Controls.Add(dayLabel, 0, i + 1) ' Add to the first row, starting from column index 1
         Next
-
+        'MessageBox.Show(9)
         ' Add labels for 12-hour format time from 9:00 AM to 9:00 PM
         For i As Integer = 9 To 21
             Dim timeLabel As New Label()
@@ -199,7 +206,9 @@ Public Class Book_slots
                 control.BackColor = ColorTranslator.FromHtml("#F58CD7")
             End If
         Next
+        'MessageBox.Show(10)
         ' Add buttons for each time slot
+        Schedule_Table.SuspendLayout()
         For i As Integer = 0 To 6
             For j As Integer = 0 To 12
                 Dim btn As New Button()
@@ -213,12 +222,16 @@ Public Class Book_slots
                 Else
                     btn.BackColor = Color.Transparent ' Unavailable
                 End If
+
                 btn.Margin = New Padding(0)
                 btn.FlatStyle = FlatStyle.Flat ' Set the button to have a flat appearance
                 Schedule_Table.Controls.Add(btn, j + 1, i + 1)
                 AddHandler btn.Click, AddressOf TimeSlot_Click
             Next
         Next
+
+        Schedule_Table.ResumeLayout(True)
+        'MessageBox.Show(11)
     End Sub
 
     Private Sub TimeSlot_Click(sender As Object, e As EventArgs)
@@ -319,6 +332,7 @@ Public Class Book_slots
             Next
             If rowsAffected > 0 Then
                 MessageBox.Show("Data ins.rted successfully.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                payments.Show()
                 Make_Schedule_Table()
 
             Else
