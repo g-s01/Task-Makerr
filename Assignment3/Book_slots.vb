@@ -14,6 +14,8 @@ Public Class Book_slots
     Public availability(7, 13) As Integer ' 7 days, 24 hours , Load it from database
     Public BookedList As New List(Of Integer())
     Public Avaiability_String As String = "NULL"
+    ' Store the user home form
+    Public UserHome As New UserHome()
     Public Sub Book_slots_load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Run your function here
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
@@ -326,4 +328,17 @@ Public Class Book_slots
         End Using
     End Sub
 
+
+    Private Sub Back_Btn_Click(sender As Object, e As EventArgs) Handles Back_Btn.Click
+        user_template.SplitContainer1.Panel2.Controls.Clear()
+        With UserHome
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(UserHome)
+            .BringToFront()
+            .Show()
+
+        End With
+    End Sub
 End Class

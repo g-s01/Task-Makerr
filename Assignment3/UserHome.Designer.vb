@@ -32,29 +32,30 @@ Partial Class UserHome
         Label1.AutoSize = True
         Label1.Font = New Font("Segoe UI", 15F, FontStyle.Bold)
         Label1.ForeColor = SystemColors.ControlDarkDark
-        Label1.Location = New Point(12, 34)
+        Label1.Location = New Point(14, 39)
         Label1.Name = "Label1"
-        Label1.Size = New Size(177, 35)
+        Label1.Size = New Size(195, 38)
         Label1.TabIndex = 0
         Label1.Text = "Top Providers"
         ' 
         ' PictureBox1
         ' 
         PictureBox1.Image = My.Resources.Resources.Ellipse_6
-        PictureBox1.Location = New Point(807, 20)
+        PictureBox1.Location = New Point(908, 23)
         PictureBox1.Name = "PictureBox1"
-        PictureBox1.Size = New Size(80, 62)
+        PictureBox1.Size = New Size(90, 71)
         PictureBox1.TabIndex = 1
         PictureBox1.TabStop = False
         ' 
         ' UserHome
         ' 
-        AutoScaleDimensions = New SizeF(8F, 20F)
+        AutoScaleDimensions = New SizeF(9F, 23F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
-        ClientSize = New Size(932, 666)
+        ClientSize = New Size(1049, 1058)
         Controls.Add(PictureBox1)
         Controls.Add(Label1)
+        FormBorderStyle = FormBorderStyle.None
         Name = "UserHome"
         Text = "UserHome"
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
