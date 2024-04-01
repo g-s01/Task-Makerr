@@ -20,8 +20,6 @@
         form.Show()
     End Sub
 
-    Private WithEvents providerprofile As Provider_Profile_page
-
     Private Sub Profile_Navi_btn_Click(sender As Object, e As EventArgs) Handles Profile_Navi_btn.Click
         Profile_Navi_btn.BackColor = Color.FromArgb(220, 189, 232)
         Dashboard_Navi_btn.BackColor = SystemColors.Control
@@ -30,7 +28,25 @@
         Chats_Navi_btn.BackColor = SystemColors.Control
         Needhelp_btn.BackColor = SystemColors.Control
         Feedback_btn.BackColor = SystemColors.Control
-        ShowForm(New Provider_Profile_page())
+
+        ' Create an instance of the Provider_Profile_page form
+        Dim providerProfile As New Provider_Profile_page()
+
+        ' Set properties to ensure proper embedding
+        providerProfile.TopLevel = False
+        providerprofile.FormBorderStyle = FormBorderStyle.None
+        providerprofile.Dock = DockStyle.Fill
+
+        ' Subscribe to the EditProfileClicked event
+        AddHandler providerprofile.EditProfileClicked, AddressOf ProviderProfile_EditProfileClicked
+
+        ' Add the embedded form to the panel
+        SplitContainer1.Panel2.Controls.Add(providerprofile)
+        providerprofile.BringToFront()
+
+        ' Show the embedded form
+        providerprofile.Show()
+
     End Sub
 
     Private Sub ProviderProfile_EditProfileClicked(sender As Object, e As EventArgs)
