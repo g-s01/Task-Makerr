@@ -30,6 +30,7 @@ Public Class payments
         If otp_auth.ShowDialog = DialogResult.OK Then
             If Integer.TryParse(otp_auth.InputValue, code) Then
                 If code = randomNumber Then
+                    Module_global.payment_successful = 1
                     ' updating balance of both the users
                     Dim sqlQuery As String = "UPDATE customer SET balance = CASE WHEN email = @AccountNumber1 THEN balance - @AmountToUpdate WHEN email = @AccountNumber2 THEN balance + @AmountToUpdate END WHERE email IN (@AccountNumber1, @AccountNumber2);"
 

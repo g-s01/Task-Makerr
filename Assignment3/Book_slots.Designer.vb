@@ -78,7 +78,7 @@ Partial Class Book_slots
         Schedule_Table.AutoScroll = True
         Schedule_Table.AutoSize = True
         Schedule_Table.BackColor = Color.FromArgb(CByte(247), CByte(231), CByte(248))
-        Schedule_Table.ColumnCount = 14
+        Schedule_Table.ColumnCount = 13
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 19.6245728F))
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 80.37543F))
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 301.0F))
