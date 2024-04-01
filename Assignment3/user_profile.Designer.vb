@@ -253,6 +253,7 @@ Partial Class user_profile
         Controls.Add(Panel2)
         Controls.Add(Panel1)
         Controls.Add(PictureBox1)
+        FormBorderStyle = FormBorderStyle.None
         Name = "user_profile"
         Text = "user_Profile_page"
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
