@@ -90,7 +90,7 @@ Public Class user_chats
         newLabel.Name = "lblHeader"
         newLabel.Text = "Header Text"
         newLabel.TextAlign = ContentAlignment.MiddleCenter
-        newLabel.Width = chat_list.Width
+        newLabel.Width = chat.Width
         newLabel.Height = 35 ' Set label height
         newLabel.BackColor = Color.FromArgb(220, 189, 232) ' Set background color
         newLabel.Font = New Font(newLabel.Font.FontFamily, 12)
@@ -133,7 +133,11 @@ Public Class user_chats
         ' Add the controls to the panel
         chat.Controls.Add(textBox1)
         chat.Controls.Add(button1)
-        chat.AutoScroll = True
+        'chat.AutoScroll = True
+        'chat.VerticalScroll.Enabled = True
+        'chat.VerticalScroll.Visible = True
+        'chat.HorizontalScroll.Enabled = True
+        'chat.HorizontalScroll.Visible = True
         chat.Visible = False
 
         'chat.Visible = False
@@ -198,6 +202,8 @@ Public Class user_chats
 
         Dim clickedButton As Button = CType(sender, Button)
         Dim labelHeader As Label = CType(chat.Controls("lblHeader"), Label)
+
+
 
         clickedButton.BackColor = Color.FromArgb(190, 159, 192) ' Set background color
 
@@ -323,14 +329,16 @@ Public Class user_chats
                 messageLabel.Font = New Font(messageLabel.Font.FontFamily, 10)
                 messageLabel.Padding = New Padding(5)
 
-                'MessageBox.Show("height :" & messageLabel.Height & "", "Message Sent", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                'MessageBox.Show("height :" & messageLabel.Width & "", "Message Sent", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
 
                 ' Align labels based on sender
                 If senderType = "provider" Then
                     messageLabel.Location = New Point(10, yPos)
                 ElseIf senderType = "customer" Then
-                    messageLabel.Location = New Point(chat.Width - messageLabel.Width - 10, yPos)
+                    messageLabel.Anchor = AnchorStyles.Right
+                    'messageLabel.Location = New Point(chat.Width - messageLabel.Width - 10, yPos)
+                    messageLabel.Location = New Point(messageLabel.Location.X, yPos)
                 End If
 
                 ' Set label position
