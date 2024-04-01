@@ -43,6 +43,7 @@ Partial Class user_search
         Button1 = New Button()
         PictureBox2 = New PictureBox()
         Label1 = New Label()
+        Button2 = New Button()
         Panel1.SuspendLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         TableLayoutPanel1.SuspendLayout()
@@ -89,11 +90,11 @@ Partial Class user_search
         TableLayoutPanel1.BackColor = Color.FromArgb(CByte(240), CByte(218), CByte(248))
         TableLayoutPanel1.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         TableLayoutPanel1.ColumnCount = 6
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 230.0F))
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 150.0F))
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 230F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 150F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle())
         TableLayoutPanel1.Controls.Add(Panel2, 0, 0)
         TableLayoutPanel1.Controls.Add(Panel3, 1, 0)
@@ -104,7 +105,7 @@ Partial Class user_search
         TableLayoutPanel1.Margin = New Padding(0)
         TableLayoutPanel1.Name = "TableLayoutPanel1"
         TableLayoutPanel1.RowCount = 1
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
         TableLayoutPanel1.Size = New Size(768, 44)
         TableLayoutPanel1.TabIndex = 1
         ' 
@@ -121,7 +122,7 @@ Partial Class user_search
         ' 
         Label2.Anchor = AnchorStyles.None
         Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label2.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label2.Location = New Point(42, 7)
         Label2.Margin = New Padding(0)
         Label2.Name = "Label2"
@@ -142,7 +143,7 @@ Partial Class user_search
         ' 
         Label3.Anchor = AnchorStyles.None
         Label3.AutoSize = True
-        Label3.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label3.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label3.Location = New Point(13, 7)
         Label3.Margin = New Padding(0)
         Label3.Name = "Label3"
@@ -163,7 +164,7 @@ Partial Class user_search
         ' 
         Label4.Anchor = AnchorStyles.None
         Label4.AutoSize = True
-        Label4.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label4.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label4.Location = New Point(7, 7)
         Label4.Margin = New Padding(0)
         Label4.Name = "Label4"
@@ -184,7 +185,7 @@ Partial Class user_search
         ' 
         Label5.Anchor = AnchorStyles.None
         Label5.AutoSize = True
-        Label5.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label5.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label5.Location = New Point(15, 7)
         Label5.Margin = New Padding(0)
         Label5.Name = "Label5"
@@ -205,7 +206,7 @@ Partial Class user_search
         ' 
         Label6.Anchor = AnchorStyles.None
         Label6.AutoSize = True
-        Label6.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label6.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label6.Location = New Point(11, 7)
         Label6.Margin = New Padding(0)
         Label6.Name = "Label6"
@@ -217,18 +218,18 @@ Partial Class user_search
         ' 
         providersTablePanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         providersTablePanel.ColumnCount = 6
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 230.0F))
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 150.0F))
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 230F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 150F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
         providersTablePanel.ColumnStyles.Add(New ColumnStyle())
         providersTablePanel.Location = New Point(37, 192)
         providersTablePanel.Margin = New Padding(0)
         providersTablePanel.Name = "providersTablePanel"
         providersTablePanel.RowCount = 1
         providersTablePanel.RowStyles.Add(New RowStyle())
-        providersTablePanel.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
+        providersTablePanel.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
         providersTablePanel.Size = New Size(767, 372)
         providersTablePanel.TabIndex = 2
         ' 
@@ -296,11 +297,24 @@ Partial Class user_search
         Label1.TabIndex = 8
         Label1.Text = "Username"
         ' 
+        ' Button2
+        ' 
+        Button2.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
+        Button2.FlatStyle = FlatStyle.Popup
+        Button2.Location = New Point(366, 597)
+        Button2.Margin = New Padding(0)
+        Button2.Name = "Button2"
+        Button2.Size = New Size(112, 31)
+        Button2.TabIndex = 9
+        Button2.Text = "Book a Slot"
+        Button2.UseVisualStyleBackColor = False
+        ' 
         ' user_search
         ' 
         AutoScaleMode = AutoScaleMode.None
         BackColor = Color.White
         ClientSize = New Size(844, 666)
+        Controls.Add(Button2)
         Controls.Add(Label1)
         Controls.Add(PictureBox2)
         Controls.Add(Button1)
@@ -353,4 +367,5 @@ Partial Class user_search
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents PictureBox2 As PictureBox
     Friend WithEvents Label1 As Label
+    Friend WithEvents Button2 As Button
 End Class
