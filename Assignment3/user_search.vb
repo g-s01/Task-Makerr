@@ -80,6 +80,8 @@ Public Class user_search
         providersTablePanel.Controls.Clear()
         'LoadProviders()
 
+        providersTablePanel.SuspendLayout()
+
         ' Add borrowedBooks to the table
         For rowIndex As Integer = 0 To providers.Count - 1
             Dim entry As Entry = providers(rowIndex)
@@ -127,6 +129,8 @@ Public Class user_search
         Dim adjustLabel As New Label()
         adjustLabel.Text = ""
         providersTablePanel.Controls.Add(adjustLabel, 1, providers.Count)
+
+        providersTablePanel.ResumeLayout(True)
 
     End Sub
 
@@ -189,10 +193,26 @@ Public Class user_search
     ' Book slot function: Navigate to book slots page
     ' author: sarg19
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        ' Create an instance of the new form
-        Dim newForm As New Book_slots()
+        For Each entry As Entry In providers
+            If entry.RadioButton.Checked Then
+                ' Get the provider id
+                Provider_ID = entry.providerID
+                user_template.SplitContainer1.Panel2.Controls.Clear()
+                slot_back_choice = 2
+                With Book_slots
+                    .TopLevel = False
+                    .AutoSize = True
+                    .Dock = DockStyle.Fill
+                    user_template.SplitContainer1.Panel2.Controls.Add(Book_slots)
+                    .BringToFront()
+                    .Show()
+                End With
 
-        ' Show the new form
-        newForm.Show()
+                Exit Sub
+            End If
+        Next
+
+        MessageBox.Show("Select a provider first!")
+
     End Sub
 End Class

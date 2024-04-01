@@ -345,14 +345,27 @@ Public Class Book_slots
 
     Private Sub Back_Btn_Click(sender As Object, e As EventArgs) Handles Back_Btn.Click
         user_template.SplitContainer1.Panel2.Controls.Clear()
-        With UserHome
-            .TopLevel = False
-            .AutoSize = True
-            .Dock = DockStyle.Fill
-            user_template.SplitContainer1.Panel2.Controls.Add(UserHome)
-            .BringToFront()
-            .Show()
+        If slot_back_choice = 1 Then
+            With UserHome
+                .TopLevel = False
+                .AutoSize = True
+                .Dock = DockStyle.Fill
+                user_template.SplitContainer1.Panel2.Controls.Add(UserHome)
+                .BringToFront()
+                .Show()
 
-        End With
+            End With
+        ElseIf slot_back_choice = 2 Then
+            With user_search
+                .TopLevel = False
+                .AutoSize = True
+                .Dock = DockStyle.Fill
+                user_template.SplitContainer1.Panel2.Controls.Add(user_search)
+                .BringToFront()
+                .Show()
+
+            End With
+        End If
+
     End Sub
 End Class
