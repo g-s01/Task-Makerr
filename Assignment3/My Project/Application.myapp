@@ -2,7 +2,8 @@
 <MyApplicationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <MySubMain>true</MySubMain>
 
-  <MainForm>UserHome</MainForm>
+  <MainForm>user_template</MainForm>
+
 
   <SingleInstance>false</SingleInstance>
   <ShutdownMode>0</ShutdownMode>

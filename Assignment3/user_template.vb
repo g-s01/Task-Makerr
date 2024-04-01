@@ -20,24 +20,16 @@ Public Class user_template
         '        MessageBox.Show("Error connecting to database: " & ex.Message)
         '    End Try
         'End Using
-        With user_appointments
+        SplitContainer1.Panel2.Controls.Clear()
+        With UserHome
             .TopLevel = False
-            SplitContainer1.Panel2.Controls.Add(user_appointments)
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            SplitContainer1.Panel2.Controls.Add(UserHome)
             .BringToFront()
             .Show()
         End With
 
-        With user_appointment_details
-            .TopLevel = False
-            SplitContainer1.Panel2.Controls.Add(user_appointment_details)
-            .BringToFront()
-        End With
-
-        With pending_payment
-            .TopLevel = False
-            SplitContainer1.Panel2.Controls.Add(pending_payment)
-            .BringToFront()
-        End With
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
@@ -47,5 +39,29 @@ Public Class user_template
     Private Sub Logout_btn_Click(sender As Object, e As EventArgs) Handles logout_btn.Click
         Me.Close()
         Login.Show()
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        SplitContainer1.Panel2.Controls.Clear()
+        With UserHome
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            SplitContainer1.Panel2.Controls.Add(UserHome)
+            .BringToFront()
+            .Show()
+        End With
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        SplitContainer1.Panel2.Controls.Clear()
+        With user_appointments
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            SplitContainer1.Panel2.Controls.Add(user_appointments)
+            .BringToFront()
+            .Show()
+        End With
     End Sub
 End Class

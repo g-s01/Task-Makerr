@@ -33,8 +33,8 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-    
-            Me.MainForm = Global.Assignment3.UserHome
+
+            Me.MainForm = Global.Assignment3.user_template
 
         End Sub
         
