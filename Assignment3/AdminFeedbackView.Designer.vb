@@ -79,14 +79,14 @@ Partial Class AdminFeedbackView
         ' Panel2
         ' 
         Panel2.AutoScroll = True
-        Panel2.Location = New Point(22, 105)
+        Panel2.Location = New Point(31, 105)
         Panel2.Name = "Panel2"
-        Panel2.Size = New Size(812, 550)
+        Panel2.Size = New Size(787, 539)
         Panel2.TabIndex = 0
         ' 
         ' AdminFeedbackView
         ' 
-        AutoScaleDimensions = New SizeF(8.0F, 20.0F)
+        AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(846, 667)
         Controls.Add(separatorLine)
