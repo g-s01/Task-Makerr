@@ -97,6 +97,7 @@ Public Class UserHome
 
             For Each tile As Prov_tile In pair.Value
                 Dim tileControl As New Prov_tile(tile.Provider, tile.ProviderName, tile.Loc, tile.Rating, tile.ItemImage)
+                AddHandler tileControl.Click, AddressOf tileControl_Click
                 flowLayoutPanel.Controls.Add(tileControl)
             Next
             Me.Controls.Add(flowLayoutPanel)
@@ -105,5 +106,21 @@ Public Class UserHome
         Next
 
         ' Create tile controls for each item
+    End Sub
+    Private Sub tileControl_Click(sender As Object, e As EventArgs)
+
+        Dim clickedTile As Prov_tile = CType(sender, Prov_tile)
+        ' Get the provider id
+        Provider_ID = clickedTile.Provider
+        user_template.SplitContainer1.Panel2.Controls.Clear()
+        With Book_slots
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(Book_slots)
+            .BringToFront()
+            .Show()
+        End With
+
     End Sub
 End Class
