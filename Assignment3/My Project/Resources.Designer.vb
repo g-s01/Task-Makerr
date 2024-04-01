@@ -399,15 +399,47 @@ Namespace My.Resources
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property Vector() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Vector", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
+                Return CType(obj, System.Drawing.Bitmap)
+            End Get
+        End Property
+
+        Friend ReadOnly Property half_star() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("half_star", resourceCulture)
+                Return CType(obj, System.Drawing.Bitmap)
+            End Get
+        End Property
+        Friend ReadOnly Property grey_star() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("grey_star", resourceCulture)
+                Return CType(obj, System.Drawing.Bitmap)
+            End Get
+        End Property
+        Friend ReadOnly Property gold_star() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("gold_star", resourceCulture)
+                Return CType(obj, System.Drawing.Bitmap)
+            End Get
+        End Property
+        Friend ReadOnly Property bg_star() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("bg_star", resourceCulture)
+                Return CType(obj, System.Drawing.Bitmap)
+            End Get
+        End Property
+        Friend ReadOnly Property yellow_star() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("yellow_star", resourceCulture)
+                Return CType(obj, System.Drawing.Bitmap)
             End Get
         End Property
     End Module
+
 End Namespace

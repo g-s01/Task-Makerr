@@ -3,6 +3,7 @@ Imports Microsoft.Data.SqlClient
 Imports System.Configuration
 Imports System.IO
 Imports FastReport.DataVisualization.Charting
+Imports System.Net.NetworkInformation
 
 Public Class Book_slots
     Public user As Integer = Module_global.User_ID
@@ -10,9 +11,11 @@ Public Class Book_slots
     Public ProviderName As String = "NULL"
     Public user_name As String = "NULL"
     Public binaryImageData As Byte()
-    Public availability(7, 23) As Boolean ' 7 days, 24 hours , Load it from database
+    Public availability(7, 13) As Integer ' 7 days, 24 hours , Load it from database
     Public BookedList As New List(Of Integer())
     Public Avaiability_String As String = "NULL"
+    ' Store the user home form
+    Public UserHome As New UserHome()
     Public Sub Book_slots_load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Run your function here
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
@@ -67,7 +70,7 @@ Public Class Book_slots
     End Sub
 
     Private Sub Make_Schedule_Table()
-        MessageBox.Show("-2")
+        'MessageBox.Show("-2")
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
         Dim currentDayOfWeek As DayOfWeek = DateTime.Today.DayOfWeek
 
@@ -82,62 +85,80 @@ Public Class Book_slots
 
         ' Set the time to 12:00 AM
         Dim startDate As DateTime = New DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 0, 0, 0)
-        MessageBox.Show("-1.5")
 
-        For i As Integer = 0 To 7
-                Dim nextDate As DateTime = startDate.AddDays(i).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
-                Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
-                For j As Integer = 0 To 12
-
-                    availability(i, j) = Avaiability_String.ElementAt(((i + indexFromMonday) * 12 + j) Mod 84) = "1"
-                    If (availability(i, j) = True) Then
-                        Dim query As String = "SELECT COUNT(*) AS count_records FROM schedule WHERE  slots= @slotIndex AND time = @selectedDate AND user_id <> 0;"
-                    Using connection As New SqlConnection(connectionString)
-                        connection.Open()
-                        Using command As New SqlCommand(query, connection)
-                            ' Add parameters
-
-                            command.Parameters.AddWithValue("@slotIndex", j)
-                            command.Parameters.AddWithValue("@selectedDate", formattedDate)
-
-
-                            ' Execute the select command
-                            Dim reader As SqlDataReader = command.ExecuteReader()
-
-                            While reader.Read()
-                                ' Retrieve the provider name from the reader
-
-                                ' Convert byte array to image
-
-                                Dim count As Integer = reader(0)
-
-                                If (count > 0) Then
-                                    availability(i, j) = 0
-                                End If
-                                ' Do something with the retrieved values, such as displaying them in a MessageBox
-                            End While
-
-                        End Using
-                    End Using
+        For i As Integer = 0 To 6
+            Dim nextDate As DateTime = startDate.AddDays(i).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
+            Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
+            For j As Integer = 0 To 12
+                If (Avaiability_String.ElementAt(((i + indexFromMonday) * 13 + j) Mod 91) = "1") Then
+                    availability(i, j) = 1
                 End If
-                Next
+
             Next
+        Next
+        'Dim selectQuery As String = "SELECT user_id, provider_id, time, status, dates, location FROM deals WHERE deal_id = @deal_id"
+
+        ' Define the DELETE query to delete the deal
+        'String = "DELETE FROM schedule WHERE user_id=@user_id AND provider_id=@provider_id AND time=@time AND slots=@slots AND time=@time"
 
 
 
-        MessageBox.Show("-1")
-        ' Populate the schedule table
+        '' Now we have stored the previously booked slots in the PreviouslyBookedList
+
+        Dim query As String = "SELECT user_id, time, slots FROM schedule WHERE provider_id = @providerId"
+
+        'MessageBox.Show(Avaiability_String.Length)
+        ' Create a connection to the database
+        Using connection As New SqlConnection(connectionString)
+            ' Open the connection
+            connection.Open()
+
+            ' Create a SqlCommand object with the query and connection
+            Using command As New SqlCommand(query, connection)
+                ' Add parameters to the command
+                command.Parameters.AddWithValue("@providerId", Module_global.Provider_ID)
+
+                ' Execute the command and obtain a SqlDataReader
+                Using reader As SqlDataReader = command.ExecuteReader()
+                    ' Iterate through the results and process each appointment
+                    While reader.Read()
+                        ' Retrieve data for each appointment
+                        Dim userId As Integer = reader.GetInt32(0) ' Assuming userId is an integer
+                        Dim appointmentDateTime As DateTime = reader.GetDateTime(1) ' Assuming day is a datetime
+                        Dim slot As Integer = reader.GetInt32(2) ' Assuming slot is an integer
+
+                        Dim TodayDate As DateTime = DateTime.Today
+
+                        ' Specify the target date
+                        Dim targetDate As DateTime = TodayDate.Date
+
+                        ' Calculate the number of days between the current date and the target date
+                        Dim daysDifference As Integer = (appointmentDateTime - targetDate).Days
+                        If (daysDifference < 0) Then
+                            Continue While
+                        End If
+                        ' Process the appointment data as needed
+                        If userId = Module_global.User_ID Then
+                            availability(daysDifference, slot) = 2
+                        Else
+                            availability(daysDifference, slot) = 0
+                        End If
+
+                    End While
+                End Using
+            End Using
+        End Using
         PopulateScheduleTable()
     End Sub
     Private Sub PopulateScheduleTable()
         ' Clear existing controls in the table layout panel
-        MessageBox.Show("0")
+        'MessageBox.Show("0")
         Schedule_Table.Controls.Clear()
-        MessageBox.Show("1")
+        'MessageBox.Show("1")
         ' Clear any existing column and row styles
         Schedule_Table.ColumnStyles.Clear()
         Schedule_Table.RowStyles.Clear() '''
-        MessageBox.Show("2")
+        'MessageBox.Show("2")
 
         ' Calculate percentage for each column and row
         Dim columnPercentage As Single = 100.0F / Schedule_Table.ColumnCount
@@ -185,8 +206,10 @@ Public Class Book_slots
                 btn.Text = ""
                 btn.Dock = DockStyle.Fill
 
-                If availability(i, j) Then
+                If availability(i, j) = 1 Then
                     btn.BackColor = Color.LightGreen ' Available
+                ElseIf availability(i, j) = 2 Then
+                    btn.BackColor = Color.DarkGreen
                 Else
                     btn.BackColor = Color.Transparent ' Unavailable
                 End If
@@ -205,8 +228,8 @@ Public Class Book_slots
         Dim dayIndex As Integer = cellPosition.Row - 1
         Dim hourIndex As Integer = cellPosition.Column - 1
 
-        If availability(dayIndex, hourIndex) Then
-            MessageBox.Show("Hi")
+        If availability(dayIndex, hourIndex) = 1 Then
+            ' MessageBox.Show("Hi")
             Dim targetPair As Integer() = {dayIndex, hourIndex}
 
             ' Perform linear search
@@ -235,6 +258,8 @@ Public Class Book_slots
                 MessageBox.Show("Slot removed")
                 btn.BackColor = Color.LightGreen
             End If
+        ElseIf availability(dayIndex, hourIndex) = 2 Then
+            MessageBox.Show($"You have already booked this slot({DateTime.Today.AddDays(dayIndex).ToString("ddd, dd MMM")} at {(hourIndex + 9).ToString("00")}:00.")
         Else
             ' Schedule unavailable
             MessageBox.Show($"This time slot is already booked for {DateTime.Today.AddDays(dayIndex).ToString("ddd, dd MMM")} at {(hourIndex + 9).ToString("00")}:00.")
@@ -303,4 +328,17 @@ Public Class Book_slots
         End Using
     End Sub
 
+
+    Private Sub Back_Btn_Click(sender As Object, e As EventArgs) Handles Back_Btn.Click
+        user_template.SplitContainer1.Panel2.Controls.Clear()
+        With UserHome
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(UserHome)
+            .BringToFront()
+            .Show()
+
+        End With
+    End Sub
 End Class

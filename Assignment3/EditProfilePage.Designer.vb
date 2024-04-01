@@ -65,7 +65,7 @@ Partial Class EditProfilePage
         ' 
         ' contactnumber_tb
         ' 
-        contactnumber_tb.Font = New Font("Segoe UI", 10F)
+        contactnumber_tb.Font = New Font("Segoe UI", 10.0F)
         contactnumber_tb.ForeColor = SystemColors.WindowText
         contactnumber_tb.Location = New Point(222, 320)
         contactnumber_tb.Name = "contactnumber_tb"
@@ -96,7 +96,7 @@ Partial Class EditProfilePage
         ' 
         ' contact_label
         ' 
-        contact_label.Font = New Font("Segoe UI", 10F)
+        contact_label.Font = New Font("Segoe UI", 10.0F)
         contact_label.Location = New Point(49, 323)
         contact_label.Name = "contact_label"
         contact_label.Size = New Size(167, 22)
@@ -119,7 +119,7 @@ Partial Class EditProfilePage
         ' 
         ' cos_tb
         ' 
-        cos_tb.Font = New Font("Segoe UI", 10F)
+        cos_tb.Font = New Font("Segoe UI", 10.0F)
         cos_tb.ForeColor = SystemColors.WindowText
         cos_tb.Location = New Point(222, 633)
         cos_tb.Name = "cos_tb"
@@ -128,7 +128,7 @@ Partial Class EditProfilePage
         ' 
         ' cps_label
         ' 
-        cps_label.Font = New Font("Segoe UI", 10F)
+        cps_label.Font = New Font("Segoe UI", 10.0F)
         cps_label.Location = New Point(49, 636)
         cps_label.Name = "cps_label"
         cps_label.Size = New Size(167, 22)
@@ -137,7 +137,7 @@ Partial Class EditProfilePage
         ' 
         ' type_label
         ' 
-        type_label.Font = New Font("Segoe UI", 10F)
+        type_label.Font = New Font("Segoe UI", 10.0F)
         type_label.Location = New Point(49, 369)
         type_label.Name = "type_label"
         type_label.Size = New Size(167, 22)
@@ -274,7 +274,7 @@ Partial Class EditProfilePage
         ' 
         slot_matrix_tablelayout.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         slot_matrix_tablelayout.ColumnCount = 13
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 50F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 50.0F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
@@ -379,7 +379,7 @@ Partial Class EditProfilePage
         ' 
         ' slot_label
         ' 
-        slot_label.Font = New Font("Segoe UI", 10F)
+        slot_label.Font = New Font("Segoe UI", 10.0F)
         slot_label.Location = New Point(49, 694)
         slot_label.Name = "slot_label"
         slot_label.Size = New Size(167, 22)
@@ -396,7 +396,7 @@ Partial Class EditProfilePage
         ' 
         ' location_label
         ' 
-        location_label.Font = New Font("Segoe UI", 10F)
+        location_label.Font = New Font("Segoe UI", 10.0F)
         location_label.Location = New Point(49, 420)
         location_label.Name = "location_label"
         location_label.Size = New Size(167, 22)
@@ -405,7 +405,7 @@ Partial Class EditProfilePage
         ' 
         ' name_label
         ' 
-        name_label.Font = New Font("Segoe UI", 10F)
+        name_label.Font = New Font("Segoe UI", 10.0F)
         name_label.Location = New Point(606, 257)
         name_label.Name = "name_label"
         name_label.Size = New Size(167, 22)
@@ -415,7 +415,7 @@ Partial Class EditProfilePage
         ' 
         ' email_label
         ' 
-        email_label.Font = New Font("Segoe UI", 10F)
+        email_label.Font = New Font("Segoe UI", 10.0F)
         email_label.Location = New Point(606, 282)
         email_label.Name = "email_label"
         email_label.Size = New Size(167, 22)
@@ -440,7 +440,7 @@ Partial Class EditProfilePage
         AutoScaleMode = AutoScaleMode.None
         AutoScroll = True
         AutoScrollMinSize = New Size(0, 1100)
-        ClientSize = New Size(831, 636)
+        ClientSize = New Size(822, 610)
         Controls.Add(back_btn)
         Controls.Add(email_label)
         Controls.Add(name_label)

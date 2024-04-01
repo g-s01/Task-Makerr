@@ -1,6 +1,7 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class user_template
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class view_more_user
     Inherits System.Windows.Forms.Form
+
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()>
@@ -22,11 +23,12 @@ Partial Class user_template
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        components = New ComponentModel.Container()
         SplitContainer1 = New SplitContainer()
         Button5 = New Button()
         Label2 = New Label()
         Label1 = New Label()
-        logout_btn = New Button()
+        Button8 = New Button()
         Button6 = New Button()
         Button7 = New Button()
         Button4 = New Button()
@@ -35,11 +37,18 @@ Partial Class user_template
         Button1 = New Button()
         PictureBox2 = New PictureBox()
         PictureBox1 = New PictureBox()
+        Label3 = New Label()
+        ComboBox2 = New ComboBox()
+        ComboBox1 = New ComboBox()
+        PictureBox3 = New PictureBox()
+        ContextMenuStrip1 = New ContextMenuStrip(components)
         CType(SplitContainer1, ComponentModel.ISupportInitialize).BeginInit()
         SplitContainer1.Panel1.SuspendLayout()
+        SplitContainer1.Panel2.SuspendLayout()
         SplitContainer1.SuspendLayout()
         CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
+        CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' SplitContainer1
@@ -53,7 +62,7 @@ Partial Class user_template
         SplitContainer1.Panel1.Controls.Add(Button5)
         SplitContainer1.Panel1.Controls.Add(Label2)
         SplitContainer1.Panel1.Controls.Add(Label1)
-        SplitContainer1.Panel1.Controls.Add(logout_btn)
+        SplitContainer1.Panel1.Controls.Add(Button8)
         SplitContainer1.Panel1.Controls.Add(Button6)
         SplitContainer1.Panel1.Controls.Add(Button7)
         SplitContainer1.Panel1.Controls.Add(Button4)
@@ -65,7 +74,11 @@ Partial Class user_template
         ' 
         ' SplitContainer1.Panel2
         ' 
-        SplitContainer1.Panel2.BackColor = SystemColors.ActiveBorder
+        SplitContainer1.Panel2.BackColor = SystemColors.Control
+        SplitContainer1.Panel2.Controls.Add(Label3)
+        SplitContainer1.Panel2.Controls.Add(ComboBox2)
+        SplitContainer1.Panel2.Controls.Add(ComboBox1)
+        SplitContainer1.Panel2.Controls.Add(PictureBox3)
         SplitContainer1.Size = New Size(1132, 666)
         SplitContainer1.SplitterDistance = 288
         SplitContainer1.SplitterWidth = 1
@@ -96,7 +109,7 @@ Partial Class user_template
         Label2.ForeColor = Color.DimGray
         Label2.Location = New Point(22, 470)
         Label2.Name = "Label2"
-        Label2.Size = New Size(85, 25)
+        Label2.Size = New Size(75, 23)
         Label2.TabIndex = 10
         Label2.Text = "Support"
         ' 
@@ -107,28 +120,28 @@ Partial Class user_template
         Label1.ForeColor = Color.DimGray
         Label1.Location = New Point(22, 100)
         Label1.Name = "Label1"
-        Label1.Size = New Size(66, 25)
+        Label1.Size = New Size(57, 23)
         Label1.TabIndex = 9
         Label1.Text = "Menu"
         ' 
-        ' logout_btn
+        ' Button8
         ' 
-        logout_btn.Anchor = AnchorStyles.Left Or AnchorStyles.Right
-        logout_btn.BackColor = SystemColors.Control
-        logout_btn.FlatAppearance.BorderSize = 0
-        logout_btn.FlatStyle = FlatStyle.Flat
-        logout_btn.Font = New Font("Microsoft YaHei", 10.2F)
-        logout_btn.ForeColor = Color.Red
-        logout_btn.Image = My.Resources.Resources.Vector
-        logout_btn.ImageAlign = ContentAlignment.MiddleLeft
-        logout_btn.Location = New Point(3, 619)
-        logout_btn.Name = "logout_btn"
-        logout_btn.Padding = New Padding(15, 0, 0, 0)
-        logout_btn.Size = New Size(282, 36)
-        logout_btn.TabIndex = 8
-        logout_btn.Text = "     Logout"
-        logout_btn.TextImageRelation = TextImageRelation.ImageBeforeText
-        logout_btn.UseVisualStyleBackColor = False
+        Button8.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        Button8.BackColor = SystemColors.Control
+        Button8.FlatAppearance.BorderSize = 0
+        Button8.FlatStyle = FlatStyle.Flat
+        Button8.Font = New Font("Microsoft YaHei", 10.2F)
+        Button8.ForeColor = Color.Red
+        Button8.Image = My.Resources.Resources.Vector
+        Button8.ImageAlign = ContentAlignment.MiddleLeft
+        Button8.Location = New Point(3, 619)
+        Button8.Name = "Button8"
+        Button8.Padding = New Padding(15, 0, 0, 0)
+        Button8.Size = New Size(282, 36)
+        Button8.TabIndex = 8
+        Button8.Text = "     Logout"
+        Button8.TextImageRelation = TextImageRelation.ImageBeforeText
+        Button8.UseVisualStyleBackColor = False
         ' 
         ' Button6
         ' 
@@ -254,21 +267,70 @@ Partial Class user_template
         PictureBox1.TabIndex = 0
         PictureBox1.TabStop = False
         ' 
-        ' user_template
+        ' Label3
+        ' 
+        Label3.AutoSize = True
+        Label3.Font = New Font("Microsoft YaHei", 13.0F)
+        Label3.Location = New Point(34, 100)
+        Label3.Name = "Label3"
+        Label3.Size = New Size(145, 30)
+        Label3.TabIndex = 4
+        Label3.Text = "Service Type"
+        ' 
+        ' ComboBox2
+        ' 
+        ComboBox2.Font = New Font("Microsoft YaHei", 10.2F)
+        ComboBox2.FormattingEnabled = True
+        ComboBox2.Location = New Point(292, 36)
+        ComboBox2.Name = "ComboBox2"
+        ComboBox2.Size = New Size(151, 31)
+        ComboBox2.TabIndex = 2
+        ComboBox2.Text = "    Location"
+        ' 
+        ' ComboBox1
+        ' 
+        ComboBox1.Font = New Font("Microsoft YaHei", 10.2F)
+        ComboBox1.FormattingEnabled = True
+        ComboBox1.Location = New Point(34, 36)
+        ComboBox1.Name = "ComboBox1"
+        ComboBox1.Size = New Size(151, 31)
+        ComboBox1.TabIndex = 1
+        ComboBox1.Text = "    Filter"
+        ' 
+        ' PictureBox3
+        ' 
+        PictureBox3.Image = My.Resources.Resources.Ellipse_6
+        PictureBox3.InitialImage = My.Resources.Resources.Ellipse_6
+        PictureBox3.Location = New Point(729, 22)
+        PictureBox3.Name = "PictureBox3"
+        PictureBox3.Size = New Size(50, 58)
+        PictureBox3.TabIndex = 0
+        PictureBox3.TabStop = False
+        ' 
+        ' ContextMenuStrip1
+        ' 
+        ContextMenuStrip1.ImageScalingSize = New Size(20, 20)
+        ContextMenuStrip1.Name = "ContextMenuStrip1"
+        ContextMenuStrip1.Size = New Size(61, 4)
+        ' 
+        ' view_more_user
         ' 
         AutoScaleMode = AutoScaleMode.None
         ClientSize = New Size(1132, 666)
         Controls.Add(SplitContainer1)
         Font = New Font("Microsoft YaHei", 9.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Name = "user_template"
+        Name = "view_more_user"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Form1"
         SplitContainer1.Panel1.ResumeLayout(False)
         SplitContainer1.Panel1.PerformLayout()
+        SplitContainer1.Panel2.ResumeLayout(False)
+        SplitContainer1.Panel2.PerformLayout()
         CType(SplitContainer1, ComponentModel.ISupportInitialize).EndInit()
         SplitContainer1.ResumeLayout(False)
         CType(PictureBox2, ComponentModel.ISupportInitialize).EndInit()
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
+        CType(PictureBox3, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
 
@@ -279,11 +341,16 @@ Partial Class user_template
     Friend WithEvents Button4 As Button
     Friend WithEvents Button3 As Button
     Friend WithEvents Button2 As Button
-    Friend WithEvents logout_btn As Button
+    Friend WithEvents Button8 As Button
     Friend WithEvents Button6 As Button
     Friend WithEvents Button7 As Button
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents Button5 As Button
+    Friend WithEvents PictureBox3 As PictureBox
+    Friend WithEvents ComboBox1 As ComboBox
+    Friend WithEvents ComboBox2 As ComboBox
+    Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
+    Friend WithEvents Label3 As Label
 
 End Class
