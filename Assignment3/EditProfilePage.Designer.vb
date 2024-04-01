@@ -65,11 +65,11 @@ Partial Class EditProfilePage
         ' 
         ' contactnumber_tb
         ' 
-        contactnumber_tb.Font = New Font("Segoe UI", 10.0F)
+        contactnumber_tb.Font = New Font("Segoe UI", 10F)
         contactnumber_tb.ForeColor = SystemColors.WindowText
         contactnumber_tb.Location = New Point(222, 320)
         contactnumber_tb.Name = "contactnumber_tb"
-        contactnumber_tb.Size = New Size(297, 34)
+        contactnumber_tb.Size = New Size(297, 30)
         contactnumber_tb.TabIndex = 99
         ' 
         ' changepic_pb
@@ -89,14 +89,14 @@ Partial Class EditProfilePage
         profilepic_pb.Dock = DockStyle.Top
         profilepic_pb.Location = New Point(0, 0)
         profilepic_pb.Name = "profilepic_pb"
-        profilepic_pb.Size = New Size(805, 246)
+        profilepic_pb.Size = New Size(810, 246)
         profilepic_pb.SizeMode = PictureBoxSizeMode.StretchImage
         profilepic_pb.TabIndex = 97
         profilepic_pb.TabStop = False
         ' 
         ' contact_label
         ' 
-        contact_label.Font = New Font("Segoe UI", 10.0F)
+        contact_label.Font = New Font("Segoe UI", 10F)
         contact_label.Location = New Point(49, 323)
         contact_label.Name = "contact_label"
         contact_label.Size = New Size(167, 22)
@@ -119,16 +119,16 @@ Partial Class EditProfilePage
         ' 
         ' cos_tb
         ' 
-        cos_tb.Font = New Font("Segoe UI", 10.0F)
+        cos_tb.Font = New Font("Segoe UI", 10F)
         cos_tb.ForeColor = SystemColors.WindowText
         cos_tb.Location = New Point(222, 633)
         cos_tb.Name = "cos_tb"
-        cos_tb.Size = New Size(298, 34)
+        cos_tb.Size = New Size(298, 30)
         cos_tb.TabIndex = 94
         ' 
         ' cps_label
         ' 
-        cps_label.Font = New Font("Segoe UI", 10.0F)
+        cps_label.Font = New Font("Segoe UI", 10F)
         cps_label.Location = New Point(49, 636)
         cps_label.Name = "cps_label"
         cps_label.Size = New Size(167, 22)
@@ -137,7 +137,7 @@ Partial Class EditProfilePage
         ' 
         ' type_label
         ' 
-        type_label.Font = New Font("Segoe UI", 10.0F)
+        type_label.Font = New Font("Segoe UI", 10F)
         type_label.Location = New Point(49, 369)
         type_label.Name = "type_label"
         type_label.Size = New Size(167, 22)
@@ -150,7 +150,7 @@ Partial Class EditProfilePage
         servicetype_combox.Items.AddRange(New Object() {"Painter", "Designer", "Kuchh", "Kuchh", "Kuchh"})
         servicetype_combox.Location = New Point(222, 368)
         servicetype_combox.Name = "servicetype_combox"
-        servicetype_combox.Size = New Size(298, 33)
+        servicetype_combox.Size = New Size(298, 28)
         servicetype_combox.TabIndex = 91
         ' 
         ' Label21
@@ -158,7 +158,7 @@ Partial Class EditProfilePage
         Label21.AutoSize = True
         Label21.Location = New Point(618, 741)
         Label21.Name = "Label21"
-        Label21.Size = New Size(49, 25)
+        Label21.Size = New Size(39, 20)
         Label21.TabIndex = 90
         Label21.Text = "9pm"
         ' 
@@ -167,7 +167,7 @@ Partial Class EditProfilePage
         Label15.AutoSize = True
         Label15.Location = New Point(450, 741)
         Label15.Name = "Label15"
-        Label15.Size = New Size(49, 25)
+        Label15.Size = New Size(39, 20)
         Label15.TabIndex = 89
         Label15.Text = "5pm"
         ' 
@@ -176,7 +176,7 @@ Partial Class EditProfilePage
         Label16.AutoSize = True
         Label16.Location = New Point(492, 741)
         Label16.Name = "Label16"
-        Label16.Size = New Size(49, 25)
+        Label16.Size = New Size(39, 20)
         Label16.TabIndex = 88
         Label16.Text = "6pm"
         ' 
@@ -185,7 +185,7 @@ Partial Class EditProfilePage
         Label17.AutoSize = True
         Label17.Location = New Point(534, 741)
         Label17.Name = "Label17"
-        Label17.Size = New Size(49, 25)
+        Label17.Size = New Size(39, 20)
         Label17.TabIndex = 87
         Label17.Text = "7pm"
         ' 
@@ -194,7 +194,7 @@ Partial Class EditProfilePage
         Label18.AutoSize = True
         Label18.Location = New Point(576, 741)
         Label18.Name = "Label18"
-        Label18.Size = New Size(49, 25)
+        Label18.Size = New Size(39, 20)
         Label18.TabIndex = 86
         Label18.Text = "8pm"
         ' 
@@ -203,7 +203,7 @@ Partial Class EditProfilePage
         Label19.AutoSize = True
         Label19.Location = New Point(408, 741)
         Label19.Name = "Label19"
-        Label19.Size = New Size(49, 25)
+        Label19.Size = New Size(39, 20)
         Label19.TabIndex = 85
         Label19.Text = "4pm"
         ' 
@@ -212,7 +212,7 @@ Partial Class EditProfilePage
         Label20.AutoSize = True
         Label20.Location = New Point(366, 741)
         Label20.Name = "Label20"
-        Label20.Size = New Size(49, 25)
+        Label20.Size = New Size(39, 20)
         Label20.TabIndex = 84
         Label20.Text = "3pm"
         ' 
@@ -221,7 +221,7 @@ Partial Class EditProfilePage
         Label14.AutoSize = True
         Label14.Location = New Point(195, 741)
         Label14.Name = "Label14"
-        Label14.Size = New Size(57, 25)
+        Label14.Size = New Size(46, 20)
         Label14.TabIndex = 83
         Label14.Text = "11am"
         ' 
@@ -230,7 +230,7 @@ Partial Class EditProfilePage
         Label13.AutoSize = True
         Label13.Location = New Point(238, 741)
         Label13.Name = "Label13"
-        Label13.Size = New Size(59, 25)
+        Label13.Size = New Size(47, 20)
         Label13.TabIndex = 82
         Label13.Text = "12pm"
         ' 
@@ -239,7 +239,7 @@ Partial Class EditProfilePage
         Label12.AutoSize = True
         Label12.Location = New Point(282, 741)
         Label12.Name = "Label12"
-        Label12.Size = New Size(49, 25)
+        Label12.Size = New Size(39, 20)
         Label12.TabIndex = 81
         Label12.Text = "1pm"
         ' 
@@ -248,7 +248,7 @@ Partial Class EditProfilePage
         Label11.AutoSize = True
         Label11.Location = New Point(324, 741)
         Label11.Name = "Label11"
-        Label11.Size = New Size(49, 25)
+        Label11.Size = New Size(39, 20)
         Label11.TabIndex = 80
         Label11.Text = "2pm"
         ' 
@@ -257,7 +257,7 @@ Partial Class EditProfilePage
         Label10.AutoSize = True
         Label10.Location = New Point(153, 741)
         Label10.Name = "Label10"
-        Label10.Size = New Size(57, 25)
+        Label10.Size = New Size(46, 20)
         Label10.TabIndex = 79
         Label10.Text = "10am"
         ' 
@@ -266,7 +266,7 @@ Partial Class EditProfilePage
         Label9.AutoSize = True
         Label9.Location = New Point(114, 741)
         Label9.Name = "Label9"
-        Label9.Size = New Size(47, 25)
+        Label9.Size = New Size(38, 20)
         Label9.TabIndex = 78
         Label9.Text = "9am"
         ' 
@@ -274,7 +274,7 @@ Partial Class EditProfilePage
         ' 
         slot_matrix_tablelayout.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         slot_matrix_tablelayout.ColumnCount = 13
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 50.0F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 50F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
@@ -379,7 +379,7 @@ Partial Class EditProfilePage
         ' 
         ' slot_label
         ' 
-        slot_label.Font = New Font("Segoe UI", 10.0F)
+        slot_label.Font = New Font("Segoe UI", 10F)
         slot_label.Location = New Point(49, 694)
         slot_label.Name = "slot_label"
         slot_label.Size = New Size(167, 22)
@@ -389,15 +389,14 @@ Partial Class EditProfilePage
         ' location_checklistbox
         ' 
         location_checklistbox.FormattingEnabled = True
-        location_checklistbox.Items.AddRange(New Object() {"Guwahati", "Tezpur", "Jorhat", "Changsari", "Sualkuchi", "Palasbari", "Maliata", "Panbazar", "Panikhaiti", "Amsing", "Jorabat", "Lalmati", "Kahikuchi"})
         location_checklistbox.Location = New Point(223, 420)
         location_checklistbox.Name = "location_checklistbox"
-        location_checklistbox.Size = New Size(297, 172)
+        location_checklistbox.Size = New Size(297, 158)
         location_checklistbox.TabIndex = 75
         ' 
         ' location_label
         ' 
-        location_label.Font = New Font("Segoe UI", 10.0F)
+        location_label.Font = New Font("Segoe UI", 10F)
         location_label.Location = New Point(49, 420)
         location_label.Name = "location_label"
         location_label.Size = New Size(167, 22)
@@ -406,7 +405,7 @@ Partial Class EditProfilePage
         ' 
         ' name_label
         ' 
-        name_label.Font = New Font("Segoe UI", 10.0F)
+        name_label.Font = New Font("Segoe UI", 10F)
         name_label.Location = New Point(606, 257)
         name_label.Name = "name_label"
         name_label.Size = New Size(167, 22)
@@ -416,7 +415,7 @@ Partial Class EditProfilePage
         ' 
         ' email_label
         ' 
-        email_label.Font = New Font("Segoe UI", 10.0F)
+        email_label.Font = New Font("Segoe UI", 10F)
         email_label.Location = New Point(606, 282)
         email_label.Name = "email_label"
         email_label.Size = New Size(167, 22)
