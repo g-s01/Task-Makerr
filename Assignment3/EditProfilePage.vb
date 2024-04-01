@@ -8,6 +8,7 @@ Public Class EditProfilePage
     Dim code As Integer
     Dim location_array(13) As Boolean
     Dim locations() As String = {"Guwahati", "Tezpur", "Delhi", "Amritsar", "Banglore"}
+    Dim providerID As Integer = Module_global.Provider_ID
 
     Private Sub Provider_Signup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
@@ -40,7 +41,7 @@ Public Class EditProfilePage
 
             ' Create and execute the SQL command to fetch provider information
             Using sqlCommand As New SqlCommand(query, sqlConnection)
-                sqlCommand.Parameters.AddWithValue("@ProviderID", 3) ' You need to replace providerID with the actual provider ID of the current user
+                sqlCommand.Parameters.AddWithValue("@ProviderID", providerID) ' You need to replace providerID with the actual provider ID of the current user
                 Dim reader As SqlDataReader = sqlCommand.ExecuteReader()
 
                 ' Check if any rows were returned
@@ -78,7 +79,7 @@ Public Class EditProfilePage
                     ' Fetch locations associated with the provider from the location table
                     Dim locationQuery As String = "SELECT location FROM location WHERE provider_id = @ProviderID"
                     Using locationCommand As New SqlCommand(locationQuery, sqlConnection)
-                        locationCommand.Parameters.AddWithValue("@ProviderID", 3)
+                        locationCommand.Parameters.AddWithValue("@ProviderID", providerID)
                         Dim locationReader As SqlDataReader = locationCommand.ExecuteReader()
 
                         ' Mark the locations as checked in the checklistbox
@@ -94,20 +95,32 @@ Public Class EditProfilePage
                         locationReader.Close()
                     End Using
 
-                    ' Mark the checkboxes in the slot_matrix_tablelayout based on the working_hour bits
-                    Dim bitIndex As Integer = 0
-                    For row As Integer = 0 To 6
-                        For col As Integer = 1 To 12
-                            ' Convert the binary string to an integer to check the bit at the current index
-                            Dim bit As Integer = Integer.Parse(workingHour.Substring(bitIndex, 1))
-                            ' Get the checkbox at the current position
-                            Dim checkBox As CheckBox = CType(slot_matrix_tablelayout.GetControlFromPosition(col, row), CheckBox)
-                            ' Check the checkbox if the bit is 1
-                            checkBox.Checked = (bit = 1)
-                            ' Move to the next bit
-                            bitIndex += 1
+                    If String.IsNullOrEmpty(workingHour) Then
+                        ' Handle the case where workingHour is NULL or empty
+                        ' For example, you can set all checkboxes to unchecked
+                        For Each control As Control In slot_matrix_tablelayout.Controls
+                            If TypeOf control Is CheckBox Then
+                                Dim checkBox As CheckBox = DirectCast(control, CheckBox)
+                                checkBox.Checked = False
+                            End If
                         Next
-                    Next
+                    Else
+
+                        ' Mark the checkboxes in the slot_matrix_tablelayout based on the working_hour bits
+                        Dim bitIndex As Integer = 0
+                        For row As Integer = 0 To 6
+                            For col As Integer = 1 To 12
+                                ' Convert the binary string to an integer to check the bit at the current index
+                                Dim bit As Integer = Integer.Parse(workingHour.Substring(bitIndex, 1))
+                                ' Get the checkbox at the current position
+                                Dim checkBox As CheckBox = CType(slot_matrix_tablelayout.GetControlFromPosition(col, row), CheckBox)
+                                ' Check the checkbox if the bit is 1
+                                checkBox.Checked = (bit = 1)
+                                ' Move to the next bit
+                                bitIndex += 1
+                            Next
+                        Next
+                    End If
 
                 End If
 
@@ -139,7 +152,6 @@ Public Class EditProfilePage
     End Sub
 
     Private Sub Save_btn_Click(sender As Object, e As EventArgs) Handles save_btn.Click
-        Dim providerID As Integer = 3 ' Replace 3 with the actual provider ID
 
         ' Get the values from the UI controls
         Dim providerName As String = name_label.Text
@@ -211,7 +223,7 @@ Public Class EditProfilePage
             Dim existingLocations As New List(Of String)()
             Dim existingLocationQuery As String = "SELECT location FROM location WHERE provider_id = @ProviderID"
             Using existingLocationCommand As New SqlCommand(existingLocationQuery, sqlConnection)
-                existingLocationCommand.Parameters.AddWithValue("@ProviderID", 3)
+                existingLocationCommand.Parameters.AddWithValue("@ProviderID", providerID)
                 Dim existingLocationReader As SqlDataReader = existingLocationCommand.ExecuteReader()
                 While existingLocationReader.Read()
                     existingLocations.Add(existingLocationReader("location").ToString())
@@ -225,7 +237,7 @@ Public Class EditProfilePage
                     ' Delete the location from the database
                     Dim deleteLocationQuery As String = "DELETE FROM location WHERE provider_id = @ProviderID AND location = @LocationName"
                     Using deleteLocationCommand As New SqlCommand(deleteLocationQuery, sqlConnection)
-                        deleteLocationCommand.Parameters.AddWithValue("@ProviderID", 3)
+                        deleteLocationCommand.Parameters.AddWithValue("@ProviderID", providerID)
                         deleteLocationCommand.Parameters.AddWithValue("@LocationName", existingLocation)
                         Dim deletedRows As Integer = deleteLocationCommand.ExecuteNonQuery()
                         If deletedRows > 0 Then

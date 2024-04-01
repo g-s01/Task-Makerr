@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Data.SqlClient
+﻿Imports System.Reflection
+Imports Microsoft.Data.SqlClient
 Imports Microsoft.VisualBasic.ApplicationServices
 
 Public Class Login
@@ -39,6 +40,7 @@ Public Class Login
                     If result IsNot Nothing AndAlso Not DBNull.Value.Equals(result) Then
                         Provider_ID = Convert.ToInt32(result)
                         MessageBox.Show("Provider ID: " & Provider_ID.ToString(), "Provider ID Found", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        Module_global.Provider_ID = Provider_ID
                         Me.Close()
                         provider_template.Show()
                     Else
