@@ -15,6 +15,8 @@ Public Class payments
     Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
     ' Define a global identifiers of the user
     Dim ID As String = Email
+    Dim ProviderEmailID As String = "None"
+    Dim CostOfService As Integer = 0
     ' this is a function to pay money to the provider
     ' author: g-s01
     Private Sub payButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles payButton.Click
@@ -36,7 +38,6 @@ Public Class payments
                             command.Parameters.AddWithValue("@AccountNumber1", ID)
                             command.Parameters.AddWithValue("@AccountNumber2", TextBox1.Text)
                             command.Parameters.AddWithValue("@AmountToUpdate", TextBox2.Text)
-
                             connection.Open()
                             command.ExecuteNonQuery()
                         End Using
@@ -156,5 +157,10 @@ Public Class payments
         End If
     End Sub
 
-
+    Private Sub payments_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        TextBox1.Text = ProviderEmailID
+        TextBox1.Enabled = False
+        TextBox2.Text = CostOfService.ToString
+        TextBox2.Enabled = False
+    End Sub
 End Class

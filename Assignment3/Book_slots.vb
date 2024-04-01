@@ -317,6 +317,7 @@ Public Class Book_slots
             Next
             If rowsAffected > 0 Then
                 MessageBox.Show("Data ins.rted successfully.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                payments.Show()
                 Make_Schedule_Table()
 
             Else
