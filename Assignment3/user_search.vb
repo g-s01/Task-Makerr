@@ -11,6 +11,7 @@ Public Class user_search
     Dim providers As New List(Of Entry)
 
     ' Define a structure to hold provider details
+    ' author: sarg19
     Structure Entry
         Public providerID As Integer
         Public providerName As String
@@ -54,6 +55,7 @@ Public Class user_search
         PopulateTable()
     End Sub
 
+    ' author: sarg19
     Private Sub TextBox1_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles TextBox1.GotFocus
         ' When the TextBox gains focus, clear the placeholder text if it's present
         If TextBox1.Text = "Search for providers by name" Then
@@ -62,6 +64,7 @@ Public Class user_search
         End If
     End Sub
 
+    ' author: sarg19
     Private Sub TextBox1_LostFocus(ByVal sender As Object, ByVal e As EventArgs) Handles TextBox1.LostFocus
         ' When the TextBox loses focus and it's empty, display the placeholder text
         If TextBox1.Text = "" Then
@@ -70,6 +73,8 @@ Public Class user_search
         End If
     End Sub
 
+    ' function to populate the table by the data in providers list
+    ' author: sarg19
     Private Sub PopulateTable()
 
         providersTablePanel.Controls.Clear()
@@ -125,6 +130,8 @@ Public Class user_search
 
     End Sub
 
+    ' To load the initial providers list
+    ' author: sarg19
     Private Sub LoadProviders()
         providers.Clear()
         providers.Add(New Entry With {.providerID = 123, .providerName = "testProvider", .service = "testService", .location = "testLocation", .cost = 100, .rating = 4.4, .RadioButton = New RadioButton()})
@@ -138,6 +145,8 @@ Public Class user_search
 
     End Sub
 
+    ' Search button: Implemented search by name for now
+    ' author: sarg19
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         If TextBox1.Text = "" Or TextBox1.Text = "Search for providers by name" Then
             MessageBox.Show("Enter a text to search")
@@ -147,13 +156,13 @@ Public Class user_search
             Using connection As New SqlConnection(connectionString)
                 Try
                     connection.Open()
-                    Dim command As New SqlCommand("SELECT * FROM provider WHERE providername like '" & TextBox1.Text & "'", connection)
+                    Dim command As New SqlCommand("SELECT provider.*, location.* FROM provider INNER JOIN location ON provider.provider_id = location.provider_id WHERE providername like '" & TextBox1.Text & "'", connection)
                     Using reader As SqlDataReader = command.ExecuteReader()
                         ' Loop through the SqlDataReader
                         While reader.Read()
                             ' Get the values of the current row
                             Dim service As String = reader.GetString(reader.GetOrdinal("service"))
-                            'Dim loc As String = reader.GetString(reader.GetOrdinal("location"))
+                            Dim loc As String = reader.GetString(reader.GetOrdinal("location"))
                             Dim name As String = reader.GetString(reader.GetOrdinal("providername"))
                             Dim provider As Int32 = reader.GetInt32(reader.GetOrdinal("provider_id"))
                             Dim cost As Double = reader.GetInt32(reader.GetOrdinal("cost_per_hour"))
@@ -175,5 +184,15 @@ Public Class user_search
             PopulateTable()
         End If
 
+    End Sub
+
+    ' Book slot function: Navigate to book slots page
+    ' author: sarg19
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        ' Create an instance of the new form
+        Dim newForm As New Book_slots()
+
+        ' Show the new form
+        newForm.Show()
     End Sub
 End Class

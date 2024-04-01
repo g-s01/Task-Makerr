@@ -32,6 +32,8 @@ Public Class user_template
 
     End Sub
 
+    ' function to switch panel
+    ' author: sarg19
     Sub switchPanel(ByVal panel As Form)
         SplitContainer1.Panel2.Controls.Clear()
 
@@ -45,6 +47,8 @@ Public Class user_template
         End With
     End Sub
 
+    ' Home button
+    ' author: sarg19
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Button1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         Button2.BackColor = SystemColors.Control
@@ -57,6 +61,8 @@ Public Class user_template
         switchPanel(UserHome)
     End Sub
 
+    ' Search button
+    ' author: sarg19
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Button1.BackColor = SystemColors.Control
         Button2.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
@@ -70,6 +76,8 @@ Public Class user_template
 
     End Sub
 
+    ' Appointments button
+    ' author: sarg19
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         Button1.BackColor = SystemColors.Control
         Button2.BackColor = SystemColors.Control
@@ -83,6 +91,8 @@ Public Class user_template
 
     End Sub
 
+    ' Profile button
+    ' author: sarg19
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Button1.BackColor = SystemColors.Control
         Button2.BackColor = SystemColors.Control
@@ -96,6 +106,8 @@ Public Class user_template
 
     End Sub
 
+    ' Chats button
+    ' author: sarg19
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         Button1.BackColor = SystemColors.Control
         Button2.BackColor = SystemColors.Control
@@ -109,6 +121,8 @@ Public Class user_template
 
     End Sub
 
+    ' Help button
+    ' author: sarg19
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
         Button1.BackColor = SystemColors.Control
         Button2.BackColor = SystemColors.Control
@@ -122,10 +136,21 @@ Public Class user_template
 
     End Sub
 
+    ' Feedback button
+    ' author: sarg19
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
-        MessageBox.Show("Hello World!")
+        Button1.BackColor = SystemColors.Control
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+
+        'switchPanel(user_search)
     End Sub
 
+    ' Logout button
     Private Sub Logout_btn_Click(sender As Object, e As EventArgs) Handles logout_btn.Click
         Me.Close()
         Login.Show()
