@@ -20,32 +20,124 @@ Public Class user_template
         '        MessageBox.Show("Error connecting to database: " & ex.Message)
         '    End Try
         'End Using
-        With user_appointments
+        SplitContainer1.Panel2.Controls.Clear()
+        With UserHome
             .TopLevel = False
-            SplitContainer1.Panel2.Controls.Add(user_appointments)
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            SplitContainer1.Panel2.Controls.Add(UserHome)
             .BringToFront()
             .Show()
         End With
 
-        With user_appointment_details
-            .TopLevel = False
-            SplitContainer1.Panel2.Controls.Add(user_appointment_details)
-            .BringToFront()
-        End With
+    End Sub
 
-        With pending_payment
+    Sub switchPanel(ByVal panel As Form)
+        SplitContainer1.Panel2.Controls.Clear()
+
+        With panel
             .TopLevel = False
-            SplitContainer1.Panel2.Controls.Add(pending_payment)
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            SplitContainer1.Panel2.Controls.Add(panel)
             .BringToFront()
+            .Show()
         End With
     End Sub
 
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Button1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = SystemColors.Control
+
+        switchPanel(UserHome)
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Button1.BackColor = SystemColors.Control
+        Button2.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = SystemColors.Control
+
+        switchPanel(user_search)
+
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Button1.BackColor = SystemColors.Control
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = SystemColors.Control
+
+        switchPanel(user_appointments)
+
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Button1.BackColor = SystemColors.Control
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = SystemColors.Control
+
+        switchPanel(user_profile)
+
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        Button1.BackColor = SystemColors.Control
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = SystemColors.Control
+
+        'switchPanel(user_search)
+
+    End Sub
+
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        Button1.BackColor = SystemColors.Control
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button7.BackColor = SystemColors.Control
+
+        'switchPanel(user_search)
+
+    End Sub
+
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
-        MessageBox.Show("Hello World!")
+        Button1.BackColor = SystemColors.Control
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+
+        'switchPanel(user_search)
+
     End Sub
 
     Private Sub Logout_btn_Click(sender As Object, e As EventArgs) Handles logout_btn.Click
         Me.Close()
         Login.Show()
     End Sub
+
 End Class
