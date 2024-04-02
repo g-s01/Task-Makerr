@@ -141,28 +141,8 @@ Public Class provider_appointment_details
         rtb2.Select(startIndex, length)
     
         ' rtb2.SelectionFont = New Font(rtb2.Font, FontStyle.Bold)
-        MakeChatVisible()
     End Sub
-
-    Private Sub MakeChatVisible()
-        SplitContainer1.Panel2.Controls.Clear()
-        Dim chatForm As New appointmentChat()
-
-        ' Set TopLevel property to False to allow embedding in another container
-        chatForm.TopLevel = False
-
-        ' Set the form's Dock property to fill the panel
-        chatForm.Dock = DockStyle.Fill
-
-        ' Set the form's border style to None
-        chatForm.FormBorderStyle = FormBorderStyle.None
-
-        ' Add the form to the SplitContainer.Panel2
-        SplitContainer1.Panel2.Controls.Add(chatForm)
-        ' Show the form
-        chatForm.Show()
-    End Sub
-
+    
     Private Sub btn_cancel_Click(sender As Object, e As EventArgs) Handles btn_cancel.Click
         Dim currentDate As DateTime = DateTime.Now
 
