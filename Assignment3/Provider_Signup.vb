@@ -40,14 +40,14 @@ Public Class Provider_Signup
         Dim smtpServer As String = "smtp-mail.outlook.com"
         Dim port As Integer = 587
 
-        Dim message As New MailMessage("task-makerr-cs346@outlook.in", email_tb.Text) With {
+        Dim message As New MailMessage("group1b-cs346@outlook.com", email_tb.Text) With {
             .Subject = "Registration confirmation",
             .Body = "Welcome to the Taskmakerr! Your OTP is " + randomNumber.ToString
         }
 
         Dim smtpClient As New SmtpClient(smtpServer) With {
             .Port = port,
-            .Credentials = New System.Net.NetworkCredential("task-makerr-cs346@outlook.in", "hC-aw6:wqmfpMs4"),
+            .Credentials = New System.Net.NetworkCredential("group1b-cs346@outlook.com", "chillSreehari"),
             .EnableSsl = True
         }
 
@@ -125,5 +125,9 @@ Public Class Provider_Signup
 
             End If
         End If
+    End Sub
+
+    Private Sub Panel2_Paint(sender As Object, e As PaintEventArgs) Handles Panel2.Paint
+
     End Sub
 End Class

@@ -139,13 +139,13 @@ Public Class payments
         Dim smtpServer As String = "smtp-mail.outlook.com"
         Dim port As Integer = 587
 
-        Dim message As New MailMessage("task-makerr-cs346@outlook.in", ID)
+        Dim message As New MailMessage("group1b-cs346@outlook.com", ID)
         message.Subject = subject
         message.Body = body & vbCrLf & "Your OTP is " + randomNumber.ToString
 
         Dim smtpClient As New SmtpClient(smtpServer)
         smtpClient.Port = port
-        smtpClient.Credentials = New System.Net.NetworkCredential("task-makerr-cs346@outlook.in", "hC-aw6:wqmfpMs4")
+        smtpClient.Credentials = New System.Net.NetworkCredential("group1b-cs346@outlook.com", "chillSreehari")
         smtpClient.EnableSsl = True
 
         Try
