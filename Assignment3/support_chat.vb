@@ -1,5 +1,5 @@
 ﻿Public Class support_chat
-    Dim user_role As String = "customer"
+    Dim user_role As String = "user"
     Dim userId As Integer = 1
     Dim dealId As Integer = -1
     Dim roomId As Integer = 1
@@ -8,14 +8,14 @@
 
     Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
         messages.Clear()
-        messages.Add(New Tuple(Of Integer, String, String, String)(1, "customer", "Hey there!", "2024-03-30 10:00:00"))
+        messages.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Hey there!", "2024-03-30 10:00:00"))
         messages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "How are you?", "2024-03-30 10:05:00"))
         messages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "What's up?", "2024-03-30 10:10:00"))
-        messages.Add(New Tuple(Of Integer, String, String, String)(1, "customer", "Good morning!", "2024-03-30 10:15:00"))
+        messages.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Good morning!", "2024-03-30 10:15:00"))
         messages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "How's it going?", "2024-03-30 10:20:00"))
-        messages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "Want to hang out later?", "2024-03-30 10:25:00"))
+        messages.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Want to hang out later?", "2024-03-30 10:25:00"))
         messages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "Sounds good!", "2024-03-30 10:35:00"))
-        messages.Add(New Tuple(Of Integer, String, String, String)(1, "customer", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
+        messages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
         PrintMessages()
     End Sub
 

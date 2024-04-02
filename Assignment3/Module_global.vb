@@ -8,6 +8,4 @@
     Public DealID_Reschedule = 2
     Public Appointment_Det_DealId As Integer = 1
     Public slot_back_choice As Integer = 1
-    ' Adding the user role
-    Public user_Role As String = "provider"
 End Module
