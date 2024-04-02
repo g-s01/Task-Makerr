@@ -59,6 +59,7 @@ Public Class captcha
         Else
             MessageBox.Show("CAPTCHA failed! Please try again.")
             TextBox1.Clear()
+            captchaText = GenerateRandomText()
             DrawCaptcha() ' Redraw the captcha image
         End If
     End Sub
