@@ -149,16 +149,15 @@ Public Class user_provider_chats
         ' Create and configure the Label
         Dim newLabel As New Label()
         newLabel.Name = "lblHeader"
-        newLabel.Text = "Header Text"
+        newLabel.Text = "Receiver Name"
         newLabel.TextAlign = ContentAlignment.MiddleCenter
         newLabel.Width = chat.Width
-        newLabel.Height = 35 ' Set label height
-        newLabel.BackColor = Color.FromArgb(220, 189, 232) ' Set background color
-        newLabel.Font = New Font(newLabel.Font.FontFamily, 12)
+        newLabel.Height = 40 ' Set label height
+        newLabel.BackColor = Color.FromArgb(214, 179, 227) ' Set background color
+        newLabel.Font = New Font("Microsoft YaHei", 12, FontStyle.Bold)
         newLabel.Location = New Point(10, 10) ' Set label position at the top of the panel
         newLabel.ImageAlign = ContentAlignment.MiddleLeft ' Set image alignment
         newLabel.TextAlign = ContentAlignment.MiddleCenter
-        newLabel.Font = New Font(newLabel.Font.FontFamily, 12)
 
         ' Resize the image to match the button height
         Dim scaledImage As Image = New Bitmap(My.Resources.prov, New Size(35, 35))
@@ -329,5 +328,9 @@ Public Class user_provider_chats
             ' Add label to the chat_list panel
             chat.Controls.Add(messageLabel)
         Next
+    End Sub
+
+    Private Sub sendTextBox_TextChanged(sender As Object, e As EventArgs) Handles sendTextBox.TextChanged
+
     End Sub
 End Class
