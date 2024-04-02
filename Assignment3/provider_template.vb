@@ -10,7 +10,6 @@
     End Sub
 
     Private Sub ShowForm(form As Form)
-
         ' Clear the panel and add the new form
         SplitContainer1.Panel2.Controls.Clear()
         form.TopLevel = False
@@ -116,7 +115,7 @@
         Notifications_Navi_btn.BackColor = SystemColors.Control
         Chats_Navi_btn.BackColor = SystemColors.Control
         Needhelp_btn.BackColor = SystemColors.Control
-        ShowForm(New provider_feedback_view())
+        ShowForm(New FeedbackForm())
     End Sub
 
     Private Sub Logout_btn_Click(sender As Object, e As EventArgs) Handles logout_btn.Click

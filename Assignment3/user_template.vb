@@ -39,6 +39,7 @@ Public Class user_template
 
         With panel
             .TopLevel = False
+            .FormBorderStyle = FormBorderStyle.None
             .AutoSize = True
             .Dock = DockStyle.Fill
             SplitContainer1.Panel2.Controls.Add(panel)
@@ -155,7 +156,7 @@ Public Class user_template
         Button6.BackColor = SystemColors.Control
         Button7.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
 
-        switchPanel(user_feedback)
+        switchPanel(FeedbackForm)
     End Sub
 
     ' Logout button
