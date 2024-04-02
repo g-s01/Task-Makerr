@@ -139,10 +139,9 @@ Public Class provider_appointment_details
         startIndex = rtb2.Text.IndexOf(" Charges for the Appointment")
         length = " Charges for the Appointment".Length
         rtb2.Select(startIndex, length)
-    
         ' rtb2.SelectionFont = New Font(rtb2.Font, FontStyle.Bold)
     End Sub
-    
+
     Private Sub btn_cancel_Click(sender As Object, e As EventArgs) Handles btn_cancel.Click
         Dim currentDate As DateTime = DateTime.Now
 
