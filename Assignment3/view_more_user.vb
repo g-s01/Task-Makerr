@@ -1,6 +1,8 @@
 ﻿Imports Microsoft.Data.SqlClient
+Imports Org.BouncyCastle.Crypto.Asymmetric.AsymmetricRsaKey
 Imports System.Configuration
 Imports System.Drawing
+Imports System.Text
 Imports System.Windows.Forms.AxHost
 
 Public Class view_more_user
@@ -17,26 +19,33 @@ Public Class view_more_user
         'For that you need to add nuget.org as source in Tools->NuGet...
         'Ask GPT for details.
         'As it stands, the System.Data.SqlClient does not work on .NET 5+ or .NET core (I assume default installed will be 8.0)
-        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-        Using connection As New SqlConnection(connectionString)
-            Try
-                connection.Open()
-                ' MessageBox.Show("Connection successful!")
-
-            Catch ex As Exception
-                ' MessageBox.Show("Error connecting to database: " & ex.Message)
-            End Try
-        End Using
-
-
+        'Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+        '  Using connection As New SqlConnection(connectionString)
+        '  Try
+        '  connection.Open()
+        '         ' MessageBox.Show("Connection successful!")
+        '
+        ' Catch ex As Exception
+        ' MessageBox.Show("Error connecting to database: " & ex.Message)
+        'End Try
+        ' End Using
 
 
 
-        ComboBox1.Items.Add("Option 1")
-        ComboBox1.Items.Add("Option 2")
-        ComboBox1.Items.Add("Option 3")
 
-        Dim Locations() As String = {"Option A", "Option B", "Option C"}
+
+
+        Dim serviceType As String = "Designer"
+        Label3.Text = serviceType
+
+
+
+        ComboBox1.Items.Add("Sorted by Rating")
+        ComboBox1.Items.Add("A-Z by Location")
+        Dim filter_by_loc As String = "Filter by Location"
+        ComboBox1.Items.Add(filter_by_loc)
+
+        Dim Locations() As String = {"Location A", "Location B", "Location C"}
         ComboBox2.Items.AddRange(Locations)
 
 
@@ -45,6 +54,79 @@ Public Class view_more_user
 
         ' Hide comboBox2 initially
         ComboBox2.Visible = False
+
+
+
+
+
+
+        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+        Dim providers As New Dictionary(Of Integer, ProviderData)()
+        Using connection As New SqlConnection(connectionString)
+            connection.Open()
+            Dim query As String = "SELECT " &
+              "provider.provider_id, " &
+              "provider.providername, " &
+              "provider.service, " &
+              "location.location, " &
+              "COALESCE(SUM(review.rating), -1) AS sum_of_ratings, " &
+              "COALESCE(COUNT(review.rating), -1) AS count_of_ratings " &
+              "FROM " &
+              "provider " &
+              "LEFT JOIN deals ON provider.provider_id = deals.provider_id " &
+              "LEFT JOIN review ON deals.deal_id = review.deal_id " &
+              "JOIN location ON provider.provider_id = location.provider_id " &
+              "WHERE " &
+              "provider.service = @serviceType " &
+              "GROUP BY " &
+              "provider.provider_id, provider.providername, provider.service, location.location"
+
+            Using command As New SqlCommand(query, connection)
+                command.Parameters.AddWithValue("@serviceType", serviceType)
+
+                Try
+                    Using reader As SqlDataReader = command.ExecuteReader()
+                        While reader.Read()
+                            Dim providerId As Integer = reader.GetInt32(reader.GetOrdinal("provider_id"))
+                            Dim providerName As String = reader.GetString(reader.GetOrdinal("providername"))
+                            Dim serviceName As String = reader.GetString(reader.GetOrdinal("service"))
+                            Dim location As String = reader.GetString(reader.GetOrdinal("location"))
+                            Dim sumOfRatings As Integer = reader.GetInt32(reader.GetOrdinal("sum_of_ratings"))
+                            Dim countOfRatings As Integer = reader.GetInt32(reader.GetOrdinal("count_of_ratings"))
+                            Dim avgRating As Double = If(countOfRatings > 0, sumOfRatings / countOfRatings, -1)
+
+                            If Not providers.ContainsKey(providerId) Then
+                                ' If the provider is not already in the dictionary, create a new ProviderData object
+                                providers.Add(providerId, New ProviderData(providerId, serviceName, providerName, New List(Of String)(), avgRating))
+                            End If
+
+                            ' Add location to the provider's list of locations
+                            providers(providerId).Locations.Add(location)
+                        End While
+
+                        '  ' Display data in a message box
+                        '  Dim message As New StringBuilder()
+                        '  For Each kvp In providers
+                        '      Dim pr As ProviderData = kvp.Value
+                        '      message.AppendLine($"Provider ID: {pr.ProviderId}, Provider Name: {pr.ProviderName}, Service: {pr.ServiceName}, Avg Rating: {pr.AverageRating}")
+                        '      message.AppendLine("Locations:")
+                        '      For Each lo In pr.Locations
+                        '          message.AppendLine($"- {lo}")
+                        '      Next
+                        '      message.AppendLine() ' Add a blank line between providers
+                        '  Next
+                        '
+                        '  MessageBox.Show(message.ToString(), "Provider Data", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    End Using
+                Catch ex As Exception
+                    MessageBox.Show("Error reading data: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End Try
+            End Using
+        End Using
+
+
+
+
 
 
 
@@ -73,20 +155,6 @@ Public Class view_more_user
 
 
 
-        Dim data As New List(Of (Username As String, Location As List(Of String), Rating As Integer))()
-        data.Add(("User1", New List(Of String) From {"Location1", "Location2", "Location1", "Location2", "Location1", "Location2", "Location1", "Location2"}, 4))
-        data.Add(("User2", New List(Of String) From {"Location3", "Location4"}, 3))
-        data.Add(("User3", New List(Of String) From {"Location5", "Location6"}, 5))
-        data.Add(("User4", New List(Of String) From {"Location1", "Location2"}, 4))
-        data.Add(("User5", New List(Of String) From {"Location3", "Location4"}, 3))
-        data.Add(("User6", New List(Of String) From {"Location5", "Location6"}, 5))
-        data.Add(("User7", New List(Of String) From {"Location1", "Location2"}, 4))
-        data.Add(("User8", New List(Of String) From {"Location3", "Location4"}, 3))
-        data.Add(("User9", New List(Of String) From {"Location5", "Location6"}, 5))
-
-
-
-
         Dim numOfTiles As Integer = 11
 
 
@@ -97,7 +165,7 @@ Public Class view_more_user
 
 
 
-        innerPanel.AutoScrollMinSize = New Size(1000, 500 + (buttonHeight + buttonSpacing) * 1.0 * CInt(Math.Ceiling(numberOfButtons / CDbl(2)))) ' Adjust scroll area size as needed
+        innerPanel.AutoScrollMinSize = New Size(1000, 500 + (buttonHeight + buttonSpacing) * 1.0 * providers.Count) ' Adjust scroll area size as needed
 
 
 
@@ -113,28 +181,33 @@ Public Class view_more_user
         Dim tileClickedHandlers(numOfTiles - 1) As Action(Of Object, Integer)
 
 
-        For i As Integer = 0 To numOfTiles - 1
+
+        Dim i As Integer = 0 ' Initialize i outside the loop
+
+        For Each kvp As KeyValuePair(Of Integer, ProviderData) In providers
             ' Calculate startX and startY based on the position in the grid
             Dim currentRow As Integer = i \ 2 ' Integer division to determine the row
             Dim currentColumn As Integer = i Mod 2 ' Modulus to determine the column
             Dim startX As Integer = currentColumn * (buttonWidth + buttonSpacing)
             Dim startY As Integer = currentRow * (buttonHeight + buttonSpacing)
 
-            ' Create a viewMore instance with index, startX, and startY
-            Dim userTile As New viewMore(i, startX, startY, New List(Of String) From {"Location3", "Location4"}, 4.5)
+            ' Create a viewMore instance with data from the ProviderData object
+            Dim providerData As ProviderData = kvp.Value
+            Dim userTile As New viewMore(providerData.ProviderId, startX, startY, providerData.Locations, providerData.AverageRating)
 
             ' Set the username for the viewMore instance
-            userTile.Username = "Provider" & (i + 1).ToString()
-
-            ' Add the viewMore instance to the array
-            userTiles(i) = userTile
+            userTile.Username = providerData.ProviderName
 
             ' Add event handler for TileClicked event
             AddHandler userTile.TileClicked, AddressOf viewMore_TileClicked
 
             ' Add the viewMore instance to the innerPanel
             innerPanel.Controls.Add(userTile)
+
+            ' Increment i for the next iteration
+            i += 1
         Next
+
 
 
 
@@ -155,17 +228,9 @@ Public Class view_more_user
 
 
 
-
-
-
-
-    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
-        MessageBox.Show("Hello World!")
-    End Sub
-
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
         ' Check if "Option 3" is selected
-        If ComboBox1.SelectedItem IsNot Nothing AndAlso ComboBox1.SelectedItem.ToString() = "Option 3" Then
+        If ComboBox1.SelectedItem IsNot Nothing AndAlso ComboBox1.SelectedItem.ToString() = "Filter by Location" Then
             ' Show comboBox2 if "Option 3" is selected
             ComboBox2.Visible = True
         Else
@@ -173,12 +238,155 @@ Public Class view_more_user
             ComboBox2.Visible = False
         End If
     End Sub
+    Public Class ProviderData
+        Public Property ProviderId As Integer
+        Public Property ProviderName As String
+        Public Property ServiceName As String
+        Public Property Locations As List(Of String)
+        Public Property AverageRating As Double ' Ensure this property exists
 
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs)
+        Public Sub New(providerId As Integer, serviceName As String, providerName As String, locations As List(Of String), averageRating As Double)
+            Me.ProviderId = providerId
+            Me.ProviderName = providerName
+            Me.ServiceName = serviceName
+            Me.Locations = locations
+            Me.AverageRating = averageRating
+        End Sub
+    End Class
+
+
+    ' function to switch panel
+    ' author: sarg19
+    Sub switchPanel(ByVal panel As Form)
+        SplitContainer1.Panel2.Controls.Clear()
+
+        With panel
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            SplitContainer1.Panel2.Controls.Add(panel)
+            .BringToFront()
+            .Show()
+        End With
+    End Sub
+
+
+    Sub Reset_Buttons()
+        Button1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = SystemColors.Control
+    End Sub
+
+    ' Home button
+    ' author: sarg19
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Button1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = SystemColors.Control
+
+        switchPanel(UserHome)
+    End Sub
+
+    ' Search button
+    ' author: sarg19
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Button1.BackColor = SystemColors.Control
+        Button2.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = SystemColors.Control
+
+        switchPanel(user_search)
 
     End Sub
 
-    Private Sub SplitContainer1_Panel2_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel2.Paint
+    ' Appointments button
+    ' author: sarg19
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Button1.BackColor = SystemColors.Control
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = SystemColors.Control
 
+        switchPanel(user_appointments)
+
+    End Sub
+
+    ' Profile button
+    ' author: sarg19
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Button1.BackColor = SystemColors.Control
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = SystemColors.Control
+
+        switchPanel(user_profile)
+
+    End Sub
+
+    ' Chats button
+    ' author: sarg19
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        Button1.BackColor = SystemColors.Control
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = SystemColors.Control
+
+        switchPanel(user_chats)
+
+    End Sub
+
+    ' Help button
+    ' author: sarg19
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        Button1.BackColor = SystemColors.Control
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button7.BackColor = SystemColors.Control
+
+        'switchPanel(user_search)
+
+    End Sub
+
+    ' Feedback button
+    ' author: sarg19
+    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        Button1.BackColor = SystemColors.Control
+        Button2.BackColor = SystemColors.Control
+        Button3.BackColor = SystemColors.Control
+        Button4.BackColor = SystemColors.Control
+        Button5.BackColor = SystemColors.Control
+        Button6.BackColor = SystemColors.Control
+        Button7.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+
+        switchPanel(user_feedback)
+    End Sub
+
+    ' Logout button
+    Private Sub Logout_btn_Click(sender As Object, e As EventArgs) Handles logout_btn.Click
+        Me.Close()
+        Login.Show()
     End Sub
 End Class

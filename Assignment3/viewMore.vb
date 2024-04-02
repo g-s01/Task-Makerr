@@ -34,7 +34,14 @@ Public Class viewMore
 
         ' Set label text
         label2.Text = "Locations :" & Environment.NewLine & String.Join(", ", locations)
-        label3.Text = "Rating: " & rating.ToString() & "/5"
+
+        If rating = -1 Then
+            label3.Text = "Rating: " & "Not rated"
+        Else
+
+            label3.Text = "Rating: " & rating.ToString() & "/5"
+        End If
+
     End Sub
 
     ' Property to get the index
