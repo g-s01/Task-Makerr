@@ -1,5 +1,7 @@
 ﻿Imports System.Configuration
+Imports System.Threading
 Imports Microsoft.Data.SqlClient
+Imports Microsoft.VisualBasic.ApplicationServices
 
 
 Public Class pending_payment
@@ -120,7 +122,34 @@ Public Class pending_payment
         rtb2.SelectionFont = New Font(rtb2.Font, FontStyle.Bold)
     End Sub
 
-    Private Sub btn_pay_Click(sender As Object, e As EventArgs) Handles btn_pay.Click
+    Public variableChanged As New ManualResetEvent(False)
+
+    ' Variable to monitor for changes
+    Public myVariable As Integer = 0
+
+    Private Async Function WaitForVariableChangeOrTimeoutAsync(timeoutMilliseconds As Integer) As Task
+        ' Wait for either the variable to change or the timeout to elapse
+        Await Task.WhenAny(Task.Delay(timeoutMilliseconds), Task.Run(Sub() variableChanged.WaitOne()))
+
+        ' After the wait, you can check if the variable changed or timeout happened
+        If myVariable <> 0 Then
+            ' The variable changed
+            Console.WriteLine("Payment Successful")
+
+        Else
+            ' Timeout occurred
+            MessageBox.Show("Timeout occurred.")
+            If payments IsNot Nothing AndAlso Not payments.IsDisposed Then
+                payments.Close()
+            End If
+            If otp_auth IsNot Nothing AndAlso Not otp_auth.IsDisposed Then
+                otp_auth.Close()
+            End If
+
+        End If
+    End Function
+
+    Private Async Sub btn_pay_Click(sender As Object, e As EventArgs) Handles btn_pay.Click
         'MessageBox.Show(slots.ToString + " " + costPerHour.ToString)
         payments.CostOfService = (slots * costPerHour) / 2
         Dim query2 As String = "SELECT email FROM provider WHERE provider_id = @ProviderID"
@@ -143,6 +172,41 @@ Public Class pending_payment
         End Using
         'MessageBox.Show(payments.CostOfService.ToString + " " + payments.ProviderEmailID.ToString)
         payments.Show()
+
+        Await WaitForVariableChangeOrTimeoutAsync(900000000)
+        If (Module_global.payment_successful = 1) Then
+
+            MessageBox.Show("yayyy.")
+            Dim query As String = "UPDATE deals SET status = 3 WHERE deal_id = @DealID"
+
+            ' Create connection and command objects
+            Using connection As New SqlConnection(connectionString)
+                Using command As New SqlCommand(query, connection)
+                    ' Add parameters to prevent SQL injection
+                    command.Parameters.AddWithValue("@DealID", dealID)
+
+                    Try
+                        ' Open connection
+                        connection.Open()
+
+                        ' Execute the update query
+                        command.ExecuteNonQuery()
+
+                        MessageBox.Show("Deal status updated successfully.")
+                    Catch ex As Exception
+                        MessageBox.Show("An error occurred: " & ex.Message)
+                    End Try
+                End Using
+            End Using
+
+            MessageBox.Show("Payment done successfully.")
+
+            Me.Hide()
+            user_appointments.Show()
+        Else
+            Me.Hide()
+            user_appointments.Show()
+        End If
     End Sub
     Private Sub btn_upcoming_Click(sender As Object, e As EventArgs) Handles btn_upcoming.Click
         Me.Hide()
