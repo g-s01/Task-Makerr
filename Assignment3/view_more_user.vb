@@ -352,7 +352,17 @@ Public Class view_more_user
         Button6.BackColor = SystemColors.Control
         Button7.BackColor = SystemColors.Control
 
-        switchPanel(user_chats)
+        'switchPanel(user_chats)
+        user_template.SplitContainer1.Panel2.Controls.Clear()
+        With user_provider_chats
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(user_provider_chats)
+            .BringToFront()
+            .Show()
+        End With
+
 
     End Sub
 
