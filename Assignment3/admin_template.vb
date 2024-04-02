@@ -22,6 +22,7 @@
             .TopLevel = False
             .AutoSize = True
             .Dock = DockStyle.Fill
+            .FormBorderStyle = FormBorderStyle.None
             SplitContainer1.Panel2.Controls.Add(panel)
             .BringToFront()
             .Show()

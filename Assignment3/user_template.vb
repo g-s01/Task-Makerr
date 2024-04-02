@@ -25,6 +25,7 @@ Public Class user_template
             .TopLevel = False
             .AutoSize = True
             .Dock = DockStyle.Fill
+            .FormBorderStyle = FormBorderStyle.None
             SplitContainer1.Panel2.Controls.Add(UserHome)
             .BringToFront()
             .Show()
