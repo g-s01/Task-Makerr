@@ -44,7 +44,7 @@
 
     Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
         support_rooms.Add(New Tuple(Of String, String, Integer, Integer)("Apple", "provider", 1, 1))
-        support_rooms.Add(New Tuple(Of String, String, Integer, Integer)("Banana", "customer", 2, 2))
+        support_rooms.Add(New Tuple(Of String, String, Integer, Integer)("Banana", "customer", 2, 1))
         support_rooms.Add(New Tuple(Of String, String, Integer, Integer)("Orange", "provider", 3, 3))
         support_rooms.Add(New Tuple(Of String, String, Integer, Integer)("Grapes", "customer", 4, 4))
 
@@ -60,7 +60,7 @@
 
         PopulateRooms()
         chat.Visible = False
-        Panel2.Visible=False
+        Panel2.Visible = False
     End Sub
 
     Private Sub userButton_Click(sender As Object, e As EventArgs) Handles userButton.Click
@@ -69,22 +69,23 @@
         userButton.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         PopulateRooms()
         chat.Visible = False
-        Panel2.Visible=False
+        Panel2.Visible = False
     End Sub
+
     Private Sub providerButton_Click(sender As Object, e As EventArgs) Handles providerButton.Click
         rooms_type = "provider"
         userButton.BackColor = SystemColors.Control
         providerButton.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         PopulateRooms()
         chat.Visible = False
-        Panel2.Visible=False
+        Panel2.Visible = False
     End Sub
 
 
     Private Sub Button_Click(sender As Object, e As EventArgs)
         ' Handle button click event
         chat.Visible = True
-    
+
         Dim clickedButton As Button = CType(sender, Button)
         clickedButton.BackColor = Color.FromArgb(190, 159, 192) ' Set background color
         ' Update the label text with the name of the clicked button
@@ -95,7 +96,7 @@
                 otherButton.BackColor = Color.FromArgb(220, 189, 232) ' Original color
             End If
         Next
-        
+
         Dim room As Integer
 
         For Each pair As Tuple(Of String, String, Integer, Integer) In support_rooms
@@ -109,7 +110,7 @@
 
         PrintMessages(room)
         chat.Visible = True
-        Panel2.Visible=True
+        Panel2.Visible = True
     End Sub
 
     Private Sub PrintMessages(roomId As Integer)
