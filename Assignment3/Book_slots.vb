@@ -61,9 +61,11 @@ Public Class Book_slots
                     user_name = reader.GetString(0)
                     If (reader.IsDBNull("profile_image")) Then
                         is_null_image = 1
+                    Else
+                        Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
+                        binaryImageData = imageData
                     End If
-                    Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
-                    binaryImageData = imageData
+
                     ' Convert byte array to image
 
                     Username.Text = user_name
@@ -318,8 +320,32 @@ Public Class Book_slots
         ' Your function code here
         MessageBox.Show("This message appears when the form loads.")
     End Sub
+    Public variableChanged As New ManualResetEvent(False)
 
-    Private Sub Book_Btn_Click(sender As Object, e As EventArgs) Handles Book_Btn.Click
+    ' Variable to monitor for changes
+    Public myVariable As Integer = 0
+    Private Async Function WaitForVariableChangeOrTimeoutAsync(timeoutMilliseconds As Integer) As Task
+        ' Wait for either the variable to change or the timeout to elapse
+        Await Task.WhenAny(Task.Delay(timeoutMilliseconds), Task.Run(Sub() variableChanged.WaitOne()))
+
+        ' After the wait, you can check if the variable changed or timeout happened
+        If myVariable <> 0 Then
+            ' The variable changed
+            Console.WriteLine("Payment Successful")
+
+        Else
+            ' Timeout occurred
+            MessageBox.Show("Timeout occurred.")
+            If payments IsNot Nothing AndAlso Not payments.IsDisposed Then
+                payments.Close()
+            End If
+            If otp_auth IsNot Nothing AndAlso Not otp_auth.IsDisposed Then
+                otp_auth.Close()
+            End If
+
+        End If
+    End Function
+    Private Async Sub Book_Btn_Click(sender As Object, e As EventArgs) Handles Book_Btn.Click
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
 
         Using connection As New SqlConnection(connectionString)
@@ -328,7 +354,9 @@ Public Class Book_slots
             ' Add parameters
 
             Dim rowsAffected As Integer = 0
+            Dim Total_slots As Integer = 0
             For Each slot As Integer() In BookedList
+                Total_slots += 1
                 Dim provider_query As String = "INSERT INTO schedule (user_id,provider_id,slots,time) VALUES (@User_ID,@Provider_ID,@Slot,@Time);" ' Add the query here
                 Using command As New SqlCommand(provider_query, connection)
                     command.Parameters.AddWithValue("@User_ID", user)
@@ -343,9 +371,13 @@ Public Class Book_slots
                 End Using
             Next
             If rowsAffected > 0 Then
-                MessageBox.Show("Data ins.rted successfully.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Dim Total_cost As Integer = cost_per_hour * Total_slots
+                Module_global.cost_of_booking = Total_cost
+                payments.CostOfService = Total_cost
+                payments.ProviderEmailID = ProviderName
+                MessageBox.Show($"Data inserted successfully, you need to pay a total of {Total_cost}Rs.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 payments.Show()
-                Thread.Sleep(1000)
+                Await WaitForVariableChangeOrTimeoutAsync(10000)
                 If (Module_global.payment_successful = 1) Then
                     Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location);"
                     Dim zeros As String = New String("0"c, 84)
@@ -372,14 +404,35 @@ Public Class Book_slots
                             MessageBox.Show("Some unusual error happened.")
                         End If
                     End Using
+                    Module_global.payment_successful = 0
+                    myVariable = 0
                     Make_Schedule_Table()
+                    MessageBox.Show("Successfully Booked the slots.")
                 Else
                     MessageBox.Show("Payment was not successful. Please try again.")
+                    Dim deleteSchedule As String = "DELETE FROM schedule WHERE user_id=@user_id AND provider_id=@provider_id AND time=@time AND slots=@slots AND time=@time"
+                    For Each pair In BookedList
+                        Dim deleteCommand As New SqlCommand(deleteSchedule, connection)
+                        deleteCommand.Parameters.AddWithValue("@user_id", Module_global.User_ID)
+                        deleteCommand.Parameters.AddWithValue("@provider_id", Module_global.Provider_ID)
+                        Dim nextDate As DateTime = DateTime.Today.Date.AddDays(pair(0)).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
+                        Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
+                        deleteCommand.Parameters.AddWithValue("@time", formattedDate)
+                        deleteCommand.Parameters.AddWithValue("@slots", pair(1))
+                        Dim rowsAffected1 As Integer = deleteCommand.ExecuteNonQuery()
+
+                        If rowsAffected > 0 Then
+                            Console.WriteLine("Deleted")
+                        Else
+                            MessageBox.Show("Error!")
+                        End If
+                        ' Execute the DELETE query to delete the Schedules
+                    Next
                 End If
 
 
             Else
-                    MessageBox.Show("Please select some slots to book!")
+                MessageBox.Show("Please select some slots to book!")
             End If
 
         End Using
