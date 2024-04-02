@@ -22,111 +22,113 @@ Public Class payments
     ' this is a function to pay money to the provider
     ' author: g-s01
     Private Sub payButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles payButton.Click
-        Dim random As New Random()
-        Dim randomNumber As Integer = random.Next(100000, 999999)
-        Dim subject As String = "Payment to " + TextBox1.Text
-        Dim body As String = "You are going to pay " + TextBox1.Text + "an amount of " + TextBox2.Text
-        ' sending otp on mail
-        sendEmail(randomNumber, subject, body)
-        Dim code As Integer
-        If otp_auth.ShowDialog = DialogResult.OK Then
-            If Integer.TryParse(otp_auth.InputValue, code) Then
-                If code = randomNumber Then
-                    ' checks if the user has enough money in his account or not
-                    Dim bal As Decimal = 0
-                    Dim balanceQuery As String = "SELECT balance FROM customer WHERE email = @UserID;"
-                    Using connection As New SqlConnection(connectionString)
-                        connection.Open()
-                        Using command As New SqlCommand(balanceQuery, connection)
-                            command.Parameters.AddWithValue("@UserId", ID)
-                            Using reader As SqlDataReader = command.ExecuteReader()
-                                If reader.Read() AndAlso Not reader.IsDBNull(0) Then
-                                    bal = Convert.ToDecimal(reader("balance"))
-                                    MessageBox.Show(bal)
-                                Else
-                                    MessageBox.Show("User balance not found.")
-                                    Return
-                                End If
-                            End Using
-                        End Using
-                    End Using
-                    If bal >= Decimal.Parse(TextBox2.Text) Then
-                        Module_global.payment_successful = 1
-                        ' updating balance of both the users
-                        Dim sqlQuery As String = "UPDATE customer SET balance = CASE WHEN email = @AccountNumber1 THEN balance - @AmountToUpdate WHEN email = @AccountNumber2 THEN balance + @AmountToUpdate END WHERE email IN (@AccountNumber1, @AccountNumber2);"
-
+        If captcha.ShowDialog = DialogResult.OK Then
+            Dim random As New Random()
+            Dim randomNumber As Integer = random.Next(100000, 999999)
+            Dim subject As String = "Payment to " + TextBox1.Text
+            Dim body As String = "You are going to pay " + TextBox1.Text + "an amount of " + TextBox2.Text
+            ' sending otp on mail
+            sendEmail(randomNumber, subject, body)
+            Dim code As Integer
+            If otp_auth.ShowDialog = DialogResult.OK Then
+                If Integer.TryParse(otp_auth.InputValue, code) Then
+                    If code = randomNumber Then
+                        ' checks if the user has enough money in his account or not
+                        Dim bal As Decimal = 0
+                        Dim balanceQuery As String = "SELECT balance FROM customer WHERE email = @UserID;"
                         Using connection As New SqlConnection(connectionString)
-                            Using command As New SqlCommand(sqlQuery, connection)
-                                command.Parameters.AddWithValue("@AccountNumber1", ID)
-                                command.Parameters.AddWithValue("@AccountNumber2", TextBox1.Text)
-                                command.Parameters.AddWithValue("@AmountToUpdate", TextBox2.Text)
-                                connection.Open()
-                                command.ExecuteNonQuery()
-                            End Using
-                        End Using
-
-                        Dim query As String = "SELECT balance FROM customer WHERE email = @AccountNumber;"
-                        Using connection As New SqlConnection(connectionString)
-                            Using command As New SqlCommand(query, connection)
-                                command.Parameters.AddWithValue("@AccountNumber", ID)
-
-                                connection.Open()
-                                Dim balance As Object = command.ExecuteScalar()
-
-                                If balance IsNot Nothing AndAlso Not DBNull.Value.Equals(balance) Then
-                                    ' Balance is retrieved successfully
-                                    Dim balanceValue As Decimal = Convert.ToDecimal(balance)
-                                    MessageBox.Show("Balance of account " + ID + ": " + balanceValue.ToString)
-                                Else
-                                    ' Account number not found or balance is NULL
-                                    MessageBox.Show("Account number " + ID + " not found or balance is NULL")
-                                End If
-                            End Using
-                        End Using
-                        Book_slots.variableChanged.Set()
-                        Book_slots.myVariable = 1
-                        'receipt generation
-                        Dim saveDialog As New SaveFileDialog()
-                        saveDialog.Filter = "PDF File (*.pdf)|*.pdf"
-                        saveDialog.FileName = "Receipt.pdf"
-                        If saveDialog.ShowDialog() = DialogResult.OK Then
-                            Try
-                                Using pdfWriter As New PdfWriter(saveDialog.FileName)
-                                    Using pdfDocument As New PdfDocument(pdfWriter)
-                                        Dim document As New Document(pdfDocument)
-
-                                        ' Add content to the PDF
-                                        document.Add(New Paragraph("Receipt").SetTextAlignment(TextAlignment.CENTER).SetFont(PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD)))
-                                        document.Add(New Paragraph("------------------------------------------------------------------------------------------------------------------"))
-                                        document.Add(New Paragraph("Date: " & DateTime.Now.ToString()))
-                                        document.Add(New Paragraph("Amount: " + TextBox2.Text))
-                                        document.Add(New Paragraph("Description: " + ID + " paid " + TextBox1.Text + ": " + TextBox2.Text))
-
-                                        document.Close()
-
-                                        MessageBox.Show("Receipt generated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                    End Using
+                            connection.Open()
+                            Using command As New SqlCommand(balanceQuery, connection)
+                                command.Parameters.AddWithValue("@UserId", ID)
+                                Using reader As SqlDataReader = command.ExecuteReader()
+                                    If reader.Read() AndAlso Not reader.IsDBNull(0) Then
+                                        bal = Convert.ToDecimal(reader("balance"))
+                                        MessageBox.Show(bal)
+                                    Else
+                                        MessageBox.Show("User balance not found.")
+                                        Return
+                                    End If
                                 End Using
-                            Catch ex As Exception
-                                MessageBox.Show($"Error generating PDF: {ex.ToString()}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                            End Try
-                        End If
-                        Dim paymentAmount As Decimal
-                        If Decimal.TryParse(TextBox2.Text, paymentAmount) Then
-                            ' Apply cashback
-                            ApplyCashback(ID, paymentAmount)
+                            End Using
+                        End Using
+                        If bal >= Decimal.Parse(TextBox2.Text) Then
+                            Module_global.payment_successful = 1
+                            ' updating balance of both the users
+                            Dim sqlQuery As String = "UPDATE customer SET balance = CASE WHEN email = @AccountNumber1 THEN balance - @AmountToUpdate WHEN email = @AccountNumber2 THEN balance + @AmountToUpdate END WHERE email IN (@AccountNumber1, @AccountNumber2);"
+
+                            Using connection As New SqlConnection(connectionString)
+                                Using command As New SqlCommand(sqlQuery, connection)
+                                    command.Parameters.AddWithValue("@AccountNumber1", ID)
+                                    command.Parameters.AddWithValue("@AccountNumber2", TextBox1.Text)
+                                    command.Parameters.AddWithValue("@AmountToUpdate", TextBox2.Text)
+                                    connection.Open()
+                                    command.ExecuteNonQuery()
+                                End Using
+                            End Using
+
+                            Dim query As String = "SELECT balance FROM customer WHERE email = @AccountNumber;"
+                            Using connection As New SqlConnection(connectionString)
+                                Using command As New SqlCommand(query, connection)
+                                    command.Parameters.AddWithValue("@AccountNumber", ID)
+
+                                    connection.Open()
+                                    Dim balance As Object = command.ExecuteScalar()
+
+                                    If balance IsNot Nothing AndAlso Not DBNull.Value.Equals(balance) Then
+                                        ' Balance is retrieved successfully
+                                        Dim balanceValue As Decimal = Convert.ToDecimal(balance)
+                                        MessageBox.Show("Balance of account " + ID + ": " + balanceValue.ToString)
+                                    Else
+                                        ' Account number not found or balance is NULL
+                                        MessageBox.Show("Account number " + ID + " not found or balance is NULL")
+                                    End If
+                                End Using
+                            End Using
+                            Book_slots.variableChanged.Set()
+                            Book_slots.myVariable = 1
+                            'receipt generation
+                            Dim saveDialog As New SaveFileDialog()
+                            saveDialog.Filter = "PDF File (*.pdf)|*.pdf"
+                            saveDialog.FileName = "Receipt.pdf"
+                            If saveDialog.ShowDialog() = DialogResult.OK Then
+                                Try
+                                    Using pdfWriter As New PdfWriter(saveDialog.FileName)
+                                        Using pdfDocument As New PdfDocument(pdfWriter)
+                                            Dim document As New Document(pdfDocument)
+
+                                            ' Add content to the PDF
+                                            document.Add(New Paragraph("Receipt").SetTextAlignment(TextAlignment.CENTER).SetFont(PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD)))
+                                            document.Add(New Paragraph("------------------------------------------------------------------------------------------------------------------"))
+                                            document.Add(New Paragraph("Date: " & DateTime.Now.ToString()))
+                                            document.Add(New Paragraph("Amount: " + TextBox2.Text))
+                                            document.Add(New Paragraph("Description: " + ID + " paid " + TextBox1.Text + ": " + TextBox2.Text))
+
+                                            document.Close()
+
+                                            MessageBox.Show("Receipt generated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                        End Using
+                                    End Using
+                                Catch ex As Exception
+                                    MessageBox.Show($"Error generating PDF: {ex.ToString()}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                                End Try
+                            End If
+                            Dim paymentAmount As Decimal
+                            If Decimal.TryParse(TextBox2.Text, paymentAmount) Then
+                                ' Apply cashback
+                                ApplyCashback(ID, paymentAmount)
+                            End If
+                        Else
+                            MessageBox.Show("Your balance is less than the amount to be paid, kindly update your balance and try again")
                         End If
                     Else
-                        MessageBox.Show("Your balance is less than the amount to be paid, kindly update your balance and try again")
+                        MessageBox.Show("Write correct OTP please.")
                     End If
                 Else
-                    MessageBox.Show("Write correct OTP please.")
+                    MessageBox.Show("The OTP is a 6 digit number, please adhere to the convention.")
                 End If
-            Else
-                MessageBox.Show("The OTP is a 6 digit number, please adhere to the convention.")
             End If
+            Close()
         End If
-        'Me.Close()
     End Sub
     ' function to send email from admin
     ' parameter 1: randomNumber -> OTP
