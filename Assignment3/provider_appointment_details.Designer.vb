@@ -22,7 +22,6 @@ Partial Class provider_appointment_details
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-
         SplitContainer1 = New SplitContainer()
         Label1 = New Label()
         rtb1 = New RichTextBox()
@@ -39,7 +38,6 @@ Partial Class provider_appointment_details
         SplitContainer1.Dock = DockStyle.Fill
         SplitContainer1.Location = New Point(0, 0)
         SplitContainer1.Name = "SplitContainer1"
-        ' SplitContainer1.Panel1.BackColor = Color.Red
         ' 
         ' SplitContainer1.Panel1
         ' 
@@ -48,11 +46,13 @@ Partial Class provider_appointment_details
         SplitContainer1.Panel1.Controls.Add(rtb2)
         SplitContainer1.Panel1.Controls.Add(btn_appointment_completed)
         SplitContainer1.Panel1.Controls.Add(btn_cancel)
+        ' 
+        ' SplitContainer1.Panel2
+        ' 
         SplitContainer1.Size = New Size(844, 666)
         SplitContainer1.SplitterDistance = 422
         SplitContainer1.SplitterWidth = 1
         SplitContainer1.TabIndex = 0
-
         ' 
         ' Label1
         ' 
@@ -60,10 +60,9 @@ Partial Class provider_appointment_details
         Label1.Font = New Font("Segoe UI", 13.0F, FontStyle.Bold)
         Label1.Location = New Point(14, 42)
         Label1.Name = "Label1"
-        Label1.Size = New Size(134, 30)
+        Label1.Size = New Size(228, 30)
         Label1.TabIndex = 3
         Label1.Text = "Appointment Details"
-
         ' 
         ' rtb1
         ' 
@@ -117,7 +116,7 @@ Partial Class provider_appointment_details
         btn_cancel.Text = "Cancel"
         btn_cancel.UseVisualStyleBackColor = False
         ' 
-        ' user_appointment_details
+        ' provider_appointment_details
         ' 
         AutoScaleMode = AutoScaleMode.None
         BackColor = Color.White
@@ -125,9 +124,10 @@ Partial Class provider_appointment_details
         Controls.Add(SplitContainer1)
         Font = New Font("Microsoft YaHei", 9.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         FormBorderStyle = FormBorderStyle.None
-        Name = "user_appointment_details"
+        Name = "provider_appointment_details"
         Text = "Form1"
         SplitContainer1.Panel1.ResumeLayout(False)
+        SplitContainer1.Panel1.PerformLayout()
         CType(SplitContainer1, ComponentModel.ISupportInitialize).EndInit()
         SplitContainer1.ResumeLayout(False)
         ResumeLayout(False)
