@@ -371,13 +371,13 @@ Public Class Book_slots
                 End Using
             Next
             If rowsAffected > 0 Then
-                Dim Total_cost As Integer = cost_per_hour * Total_slots
+                Dim Total_cost As Integer = (cost_per_hour * Total_slots) / 2
                 Module_global.cost_of_booking = Total_cost
                 payments.CostOfService = Total_cost
                 payments.ProviderEmailID = ProviderName
                 MessageBox.Show($"Data inserted successfully, you need to pay a total of {Total_cost}Rs.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 payments.Show()
-                Await WaitForVariableChangeOrTimeoutAsync(10000)
+                Await WaitForVariableChangeOrTimeoutAsync(900000000)
                 If (Module_global.payment_successful = 1) Then
                     Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location);"
                     Dim zeros As String = New String("0"c, 84)

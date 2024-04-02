@@ -23,10 +23,10 @@ Partial Class otp_auth
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         GroupBox1 = New GroupBox()
-        Label1 = New Label()
-        Label2 = New Label()
-        BackgroundWorker1 = New ComponentModel.BackgroundWorker()
         TextBox1 = New TextBox()
+        Label2 = New Label()
+        Label1 = New Label()
+        BackgroundWorker1 = New ComponentModel.BackgroundWorker()
         Button1 = New Button()
         GroupBox1.SuspendLayout()
         SuspendLayout()
@@ -42,15 +42,12 @@ Partial Class otp_auth
         GroupBox1.TabIndex = 0
         GroupBox1.TabStop = False
         ' 
-        ' Label1
+        ' TextBox1
         ' 
-        Label1.AutoSize = True
-        Label1.Font = New Font("Microsoft YaHei", 18F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        Label1.Location = New Point(116, 37)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(234, 31)
-        Label1.TabIndex = 1
-        Label1.Text = "OTP Confirmation"
+        TextBox1.Location = New Point(144, 57)
+        TextBox1.Name = "TextBox1"
+        TextBox1.Size = New Size(111, 23)
+        TextBox1.TabIndex = 1
         ' 
         ' Label2
         ' 
@@ -62,12 +59,15 @@ Partial Class otp_auth
         Label2.TabIndex = 0
         Label2.Text = "Write OTP received on your registered mail here"
         ' 
-        ' TextBox1
+        ' Label1
         ' 
-        TextBox1.Location = New Point(144, 57)
-        TextBox1.Name = "TextBox1"
-        TextBox1.Size = New Size(111, 23)
-        TextBox1.TabIndex = 1
+        Label1.AutoSize = True
+        Label1.Font = New Font("Microsoft YaHei", 18F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label1.Location = New Point(116, 37)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(234, 31)
+        Label1.TabIndex = 1
+        Label1.Text = "OTP Confirmation"
         ' 
         ' Button1
         ' 

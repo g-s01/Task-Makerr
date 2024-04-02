@@ -5,7 +5,6 @@
     End Sub
 
     Private Sub ShowForm(form As Form)
-
         ' Clear the panel and add the new form
         SplitContainer1.Panel2.Controls.Clear()
         form.TopLevel = False
@@ -103,7 +102,9 @@
         Needhelp_btn.BackColor = SystemColors.Control
         Feedback_btn.BackColor = SystemColors.Control
         SplitContainer1.Panel2.Controls.Clear()
+        ShowForm(New user_provider_chats())
     End Sub
+
 
     Private Sub Needhelp_btn_Click(sender As Object, e As EventArgs) Handles Needhelp_btn.Click
         Needhelp_btn.BackColor = Color.FromArgb(220, 189, 232)
@@ -114,6 +115,7 @@
         Chats_Navi_btn.BackColor = SystemColors.Control
         Feedback_btn.BackColor = SystemColors.Control
         SplitContainer1.Panel2.Controls.Clear()
+        ShowForm(New support_chat())
     End Sub
 
     Private Sub Feedback_btn_Click(sender As Object, e As EventArgs) Handles Feedback_btn.Click
@@ -124,7 +126,7 @@
         Notifications_Navi_btn.BackColor = SystemColors.Control
         Chats_Navi_btn.BackColor = SystemColors.Control
         Needhelp_btn.BackColor = SystemColors.Control
-        ShowForm(New provider_feedback_view())
+        ShowForm(New FeedbackForm())
     End Sub
 
     Private Sub Logout_btn_Click(sender As Object, e As EventArgs) Handles logout_btn.Click
@@ -132,4 +134,7 @@
         Login.Show()
     End Sub
 
+    Private Sub SplitContainer1_Panel2_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel2.Paint
+
+    End Sub
 End Class

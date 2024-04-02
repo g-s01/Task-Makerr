@@ -29,7 +29,15 @@ Public Class user_appointments
         Module_global.Appointment_Det_DealId = Integer.Parse(clickedPanel.Name)
 
         Me.Hide()
-        user_appointment_details.Show()
+
+        With user_appointment_details
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(user_appointment_details)
+            .BringToFront()
+            .Show()
+        End With
 
         ' Show related form for upper panel click
         'Dim relatedForm As New RelatedForm() ' Replace RelatedForm with the actual name of your related form class
@@ -45,7 +53,14 @@ Public Class user_appointments
         Module_global.Appointment_Det_DealId = Integer.Parse(clickedPanel.Name)
 
         Me.Hide()
-        pending_payment.Show()
+        With pending_payment
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(pending_payment)
+            .BringToFront()
+            .Show()
+        End With
 
         ' Show related form for upper panel click
         'Dim relatedForm As New RelatedForm() ' Replace RelatedForm with the actual name of your related form class
@@ -110,6 +125,8 @@ Public Class user_appointments
         splitContainerArray(i).Panel1.BackColor = System.Drawing.Color.FromArgb(CByte(240), CByte(218), CByte(248))
 
         AddHandler splitContainerArray(i).Panel1.Click, AddressOf Panel_Click2
+
+        splitContainerArray(i).Panel1.Name = DealId.ToString()
 
         Dim name As New Label()
         name.AutoSize = True

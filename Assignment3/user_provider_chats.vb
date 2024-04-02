@@ -1,15 +1,13 @@
-﻿Imports System.Collections.Generic
-Imports System.Configuration
-Imports System.Runtime.InteropServices.JavaScript.JSType
-Imports Azure.Messaging
+﻿Imports System.Configuration
 Imports Microsoft.Data.SqlClient
 
 'Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 
-Public Class user_chats
+Public Class user_provider_chats
 
     Dim roomchat As New List(Of Tuple(Of String, Integer, Integer))() ' providername, chat_room_id, provider_id
     Dim messages As New List(Of Tuple(Of Integer, Integer, String, String, String))()
+
     Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
     Dim user_role As String = "customer"
     Dim userId As Integer = 1
@@ -120,24 +118,9 @@ Public Class user_chats
         End Using
     End Function
 
-
-    Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
-        roomchat.Add(New Tuple(Of String, Integer, Integer)("Apple", 1, 0))
-        roomchat.Add(New Tuple(Of String, Integer, Integer)("Banana", 2, 0))
-        roomchat.Add(New Tuple(Of String, Integer, Integer)("Orange", 3, 0))
-        roomchat.Add(New Tuple(Of String, Integer, Integer)("Grapes", 4, 0))
-        messages.Clear()
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "customer", "Hey there!", "2024-03-30 10:00:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "How are you?", "2024-03-30 10:05:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "provider", "What's up?", "2024-03-30 10:10:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "customer", "Good morning!", "2024-03-30 10:15:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "provider", "How's it going?", "2024-03-30 10:20:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "Want to hang out later?", "2024-03-30 10:25:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "customer", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "provider", "Sounds good!", "2024-03-30 10:35:00"))
-
-
+    Private Sub PopulateRooms()
         Dim yPos As Integer = 10 ' Initial y position for buttons
+
         For Each item As Tuple(Of String, Integer, Integer) In roomchat
             Dim newButton As New Button()
             newButton.Name = "btn" & item.Item1 ' Set button name
@@ -151,7 +134,6 @@ Public Class user_chats
             newButton.Font = New Font(newButton.Font.FontFamily, 12)
             newButton.ImageAlign = ContentAlignment.MiddleLeft ' Set image alignment
             newButton.TextImageRelation = TextImageRelation.ImageBeforeText ' Position image before tex
-
             ' Resize the image to match the button height
             Dim scaledImagenew As Image = New Bitmap(My.Resources.prov, New Size(35, 35))
             newButton.Image = scaledImagenew
@@ -161,20 +143,22 @@ Public Class user_chats
             chat_list.Controls.Add(newButton) ' Add button to panel
             yPos += 37 ' Increment y position for next button
         Next
+    End Sub
 
+
+    Private Sub HandleTitle()
         ' Create and configure the Label
         Dim newLabel As New Label()
         newLabel.Name = "lblHeader"
-        newLabel.Text = "Header Text"
+        newLabel.Text = "Receiver Name"
         newLabel.TextAlign = ContentAlignment.MiddleCenter
         newLabel.Width = chat.Width
-        newLabel.Height = 35 ' Set label height
-        newLabel.BackColor = Color.FromArgb(220, 189, 232) ' Set background color
-        newLabel.Font = New Font(newLabel.Font.FontFamily, 12)
+        newLabel.Height = 40 ' Set label height
+        newLabel.BackColor = Color.FromArgb(214, 179, 227) ' Set background color
+        newLabel.Font = New Font("Microsoft YaHei", 12, FontStyle.Bold)
         newLabel.Location = New Point(10, 10) ' Set label position at the top of the panel
         newLabel.ImageAlign = ContentAlignment.MiddleLeft ' Set image alignment
         newLabel.TextAlign = ContentAlignment.MiddleCenter
-        newLabel.Font = New Font(newLabel.Font.FontFamily, 12)
 
         ' Resize the image to match the button height
         Dim scaledImage As Image = New Bitmap(My.Resources.prov, New Size(35, 35))
@@ -183,41 +167,27 @@ Public Class user_chats
 
         ' Add controls to the panel
         chat.Controls.Add(newLabel)
-        Dim textBox1 As New TextBox()
-        textBox1.Name = "textBox1"
-        textBox1.Size = New Size(145, 30)
+    End Sub
 
-        ' Calculate the Y position for the TextBox
-        Dim textBoxYPosition As Integer = chat.Height - textBox1.Height - 10 ' Adjust 10 for padding
+    Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
+        roomchat.Add(New Tuple(Of String, Integer, Integer)("Apple", 1, 0))
+        roomchat.Add(New Tuple(Of String, Integer, Integer)("Banana", 2, 0))
+        roomchat.Add(New Tuple(Of String, Integer, Integer)("Orange", 3, 0))
+        roomchat.Add(New Tuple(Of String, Integer, Integer)("Grapes", 4, 0))
+        ' messages.Clear()
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "customer", "Hey there!", "2024-03-30 10:00:00"))
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "How are you?", "2024-03-30 10:05:00"))
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "provider", "What's up?", "2024-03-30 10:10:00"))
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "customer", "Good morning!", "2024-03-30 10:15:00"))
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "provider", "How's it going?", "2024-03-30 10:20:00"))
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "Want to hang out later?", "2024-03-30 10:25:00"))
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "customer", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "provider", "Sounds good!", "2024-03-30 10:35:00"))
+        
+        PopulateRooms()
+        HandleTitle()
 
-        ' Set the location of the TextBox
-        textBox1.Location = New Point(10, textBoxYPosition)
-
-        ' Create and configure the Button
-        Dim button1 As New Button()
-        button1.Name = "button1"
-        button1.Text = "Send"
-        button1.Size = New Size(70, 30)
-
-        ' Calculate the X position for the Button
-        Dim buttonXPosition As Integer = chat.Width - button1.Width - 10 ' Adjust 10 for padding
-
-        ' Set the location of the Button
-        button1.Location = New Point(buttonXPosition, textBoxYPosition)
-        AddHandler button1.Click, AddressOf sendButton_Click ' Add click event handler
-
-
-        ' Add the controls to the panel
-        chat.Controls.Add(textBox1)
-        chat.Controls.Add(button1)
-        'chat.AutoScroll = True
-        'chat.VerticalScroll.Enabled = True
-        'chat.VerticalScroll.Visible = True
-        'chat.HorizontalScroll.Enabled = True
-        'chat.HorizontalScroll.Visible = True
-        chat.Visible = False
-
-        'chat.Visible = False
+        'chat_list.Visible = False
     End Sub
 
 
@@ -256,10 +226,11 @@ Public Class user_chats
         PrintMessagesBetweenUsers(room)
     End Sub
 
-    Private Sub sendButton_Click(sender As Object, e As EventArgs)
-        Dim messageText As String = chat.Controls("textBox1").Text ' Assuming TextBox1 is the name of the TextBox
 
-        ' Get the receiver name from the label text within the chat panel
+    Private Sub sendButton_Click(sender As Object, e As EventArgs) Handles sendBtn.Click
+        'Dim messageText As String = chat_list.Controls("textBox1").Text ' Assuming TextBox1 is the name of the TextBox
+
+        ' Get the receiver name from the label text within the chat_list panel
         Dim receiverName As String = chat.Controls("lblHeader").Text ' Assuming Label1 contains the receiver name
 
         ' Get the current timestamp
@@ -277,22 +248,34 @@ Public Class user_chats
             End If
         Next
 
+        Dim maxLength As Integer = 30 ' Set the maximum length before inserting a newline
+        Dim inputString As String = sendTextBox.Text
+        Dim messageText As String = ""
+
+        For i As Integer = 0 To inputString.Length - 1 Step maxLength
+            Dim substringLength As Integer = Math.Min(maxLength, inputString.Length - i)
+            messageText += inputString.Substring(i, substringLength)
+            If i + substringLength < inputString.Length Then
+                messageText += vbCrLf ' Insert a newline character if there are more characters remaining
+            End If
+        Next
+
         Dim newMessage As New Tuple(Of Integer, Integer, String, String, String)(room, dealId, user_role, messageText, timeStamp)
         ' Add the new message to the messages list
         messages.Add(newMessage)
         ' Optionally, you can clear the TextBox after sending the message
-        chat.Controls("textBox1").Text = ""
+        sendTextBox.Text = ""
         ' Print messages between users
         PrintMessagesBetweenUsers(room)
     End Sub
 
     Private Sub PrintMessagesBetweenUsers(roomId As Integer)
-        ' Clear existing messages on the chat panel
+        ' Clear existing messages on the chat_list panel
         For i As Integer = chat.Controls.Count - 1 To 0 Step -1
             Dim ctrl As Control = chat.Controls(i)
-            ' Check if the control is not lblHeader, textBox1, or sendButton
-            If ctrl.Name <> "lblHeader" AndAlso ctrl.Name <> "textBox1" AndAlso ctrl.Name <> "button1" Then
-                ' Remove the control from the chat panel
+            ' Check if the control is not lblHeader
+            If ctrl.Name <> "lblHeader" Then
+                ' Remove the control from the chat_list panel
                 chat.Controls.RemoveAt(i)
             End If
         Next
@@ -317,24 +300,38 @@ Public Class user_chats
             ' Create a label for the message
             Dim messageLabel As New Label()
             messageLabel.AutoSize = True
+
+            'messageLabel.MaximumSize = New Size(chat_list.Width * 3 \ 4, 25)
             messageLabel.Text = messageText '& " (" & timeStamp & ")"
             messageLabel.Font = New Font(messageLabel.Font.FontFamily, 10)
             messageLabel.Padding = New Padding(5)
+            messageLabel.BackColor = ColorTranslator.FromHtml("#D9D9D9")
+            Dim textHeight As Integer = TextRenderer.MeasureText(messageText, messageLabel.Font).Height
+            Dim labelHeight As Integer = messageLabel.Height
+
+            messageLabel.Padding = New Padding(0, (labelHeight - textHeight) \ 2, 0, 0)
+
+            ' Assuming label1 is the name of your label control
+            messageLabel.TextAlign = ContentAlignment.MiddleRight
 
             ' Align labels based on sender
             If senderType = "provider" Then
                 messageLabel.Location = New Point(10, yPos)
             ElseIf senderType = "customer" Then
                 messageLabel.Anchor = AnchorStyles.Right
-                messageLabel.Location = New Point(chat.Width - messageLabel.Width - 10, yPos)
+                messageLabel.Location = New Point(chat.Width - messageLabel.PreferredWidth - 10, yPos)
+
             End If
 
             ' Set label position
             yPos += messageLabel.Height + 10
 
-            ' Add label to the chat panel
+            ' Add label to the chat_list panel
             chat.Controls.Add(messageLabel)
         Next
     End Sub
 
+    Private Sub sendTextBox_TextChanged(sender As Object, e As EventArgs) Handles sendTextBox.TextChanged
+
+    End Sub
 End Class
