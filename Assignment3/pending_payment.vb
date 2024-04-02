@@ -172,11 +172,10 @@ Public Class pending_payment
         End Using
         'MessageBox.Show(payments.CostOfService.ToString + " " + payments.ProviderEmailID.ToString)
         payments.Show()
-
-        Await WaitForVariableChangeOrTimeoutAsync(900000000)
+        Await WaitForVariableChangeOrTimeoutAsync(20000)
         If (Module_global.payment_successful = 1) Then
 
-            MessageBox.Show("yayyy.")
+
             Dim query As String = "UPDATE deals SET status = 3 WHERE deal_id = @DealID"
 
             ' Create connection and command objects
