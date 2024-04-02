@@ -44,14 +44,14 @@ Public Class User_Signup
         Dim smtpServer As String = "smtp-mail.outlook.com"
         Dim port As Integer = 587
 
-        Dim message As New MailMessage("task-makerr-cs346@outlook.com", email_tb.Text) With {
+        Dim message As New MailMessage("task-makerr-cs346@outlook.in", email_tb.Text) With {
             .Subject = "Registration confirmation",
             .Body = "Welcome to the Taskmakerr! Your OTP is " + randomNumber.ToString
         }
 
         Dim smtpClient As New SmtpClient(smtpServer) With {
             .Port = port,
-            .Credentials = New System.Net.NetworkCredential("task-makerr-cs346@outlook.com", "hC-aw6:wqmfpMs4"),
+            .Credentials = New System.Net.NetworkCredential("task-makerr-cs346@outlook.in", "hC-aw6:wqmfpMs4"),
             .EnableSsl = True
         }
 
@@ -100,7 +100,7 @@ Public Class User_Signup
             Else
                 Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
                 Dim query As String = "SELECT COUNT(*) FROM customer WHERE email = @Email"
-                Dim insertQuery As String = "INSERT INTO customer (username, email, password) VALUES (@Username, @Email, @Password)"
+                Dim insertQuery As String = "INSERT INTO customer (username, email, password, balance) VALUES (@Username, @Email, @Password, 0)"
 
                 Using sqlConnection As New SqlConnection(connectionString)
                     sqlConnection.Open()
