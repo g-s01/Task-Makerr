@@ -26,11 +26,9 @@ Partial Class admin_dashboard
         Chart2 = New FastReport.DataVisualization.Charting.Chart()
         Label1 = New Label()
         Label2 = New Label()
-        Label3 = New Label()
         Panel1 = New Panel()
         PictureBox1 = New PictureBox()
         Panel3 = New Panel()
-        Label10 = New Label()
         PictureBox3 = New PictureBox()
         Label7 = New Label()
         Label8 = New Label()
@@ -112,30 +110,17 @@ Partial Class admin_dashboard
         Label2.Font = New Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label2.ForeColor = SystemColors.ControlDarkDark
         Label2.ImageAlign = ContentAlignment.MiddleLeft
-        Label2.Location = New Point(12, 115)
+        Label2.Location = New Point(12, 123)
         Label2.Name = "Label2"
         Label2.Size = New Size(134, 32)
         Label2.TabIndex = 3
         Label2.Text = "Total Sales"
-        ' 
-        ' Label3
-        ' 
-        Label3.AutoSize = True
-        Label3.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Label3.Font = New Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label3.ForeColor = Color.Green
-        Label3.Location = New Point(12, 165)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(170, 25)
-        Label3.TabIndex = 4
-        Label3.Text = "+6% from last week"
         ' 
         ' Panel1
         ' 
         Panel1.Anchor = AnchorStyles.None
         Panel1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         Panel1.Controls.Add(PictureBox1)
-        Panel1.Controls.Add(Label3)
         Panel1.Controls.Add(Label1)
         Panel1.Controls.Add(Label2)
         Panel1.Location = New Point(31, 22)
@@ -156,7 +141,6 @@ Partial Class admin_dashboard
         ' 
         Panel3.Anchor = AnchorStyles.None
         Panel3.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Panel3.Controls.Add(Label10)
         Panel3.Controls.Add(PictureBox3)
         Panel3.Controls.Add(Label7)
         Panel3.Controls.Add(Label8)
@@ -165,18 +149,6 @@ Partial Class admin_dashboard
         Panel3.Name = "Panel3"
         Panel3.Size = New Size(176, 205)
         Panel3.TabIndex = 6
-        ' 
-        ' Label10
-        ' 
-        Label10.AutoSize = True
-        Label10.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Label10.Font = New Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label10.ForeColor = Color.LightSeaGreen
-        Label10.Location = New Point(12, 180)
-        Label10.Name = "Label10"
-        Label10.Size = New Size(201, 25)
-        Label10.TabIndex = 5
-        Label10.Text = "33% from Provider Side"
         ' 
         ' PictureBox3
         ' 
@@ -193,7 +165,7 @@ Partial Class admin_dashboard
         Label7.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         Label7.Font = New Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label7.ForeColor = Color.LightSeaGreen
-        Label7.Location = New Point(12, 165)
+        Label7.Location = New Point(12, 166)
         Label7.Name = "Label7"
         Label7.Size = New Size(170, 25)
         Label7.TabIndex = 4
@@ -218,7 +190,7 @@ Partial Class admin_dashboard
         Label9.Font = New Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label9.ForeColor = SystemColors.ControlDarkDark
         Label9.ImageAlign = ContentAlignment.MiddleLeft
-        Label9.Location = New Point(12, 115)
+        Label9.Location = New Point(12, 123)
         Label9.Name = "Label9"
         Label9.Size = New Size(166, 32)
         Label9.TabIndex = 3
@@ -327,7 +299,7 @@ Partial Class admin_dashboard
         Label11.Name = "Label11"
         Label11.Size = New Size(285, 32)
         Label11.TabIndex = 5
-        Label11.Text = "Users Mapping by Citites"
+        Label11.Text = "Deals Mapping by Citites"
         Label11.TextAlign = ContentAlignment.MiddleLeft
         ' 
         ' Label14
@@ -447,7 +419,7 @@ Partial Class admin_dashboard
         Label20.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         Label20.Font = New Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label20.ImageAlign = ContentAlignment.MiddleLeft
-        Label20.Location = New Point(243, 7)
+        Label20.Location = New Point(215, 7)
         Label20.Name = "Label20"
         Label20.Size = New Size(144, 32)
         Label20.TabIndex = 11
@@ -545,7 +517,6 @@ Partial Class admin_dashboard
     Friend WithEvents Chart2 As FastReport.DataVisualization.Charting.Chart
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
-    Friend WithEvents Label3 As Label
     Friend WithEvents Panel1 As Panel
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents Panel3 As Panel
@@ -553,7 +524,6 @@ Partial Class admin_dashboard
     Friend WithEvents Label7 As Label
     Friend WithEvents Label8 As Label
     Friend WithEvents Label9 As Label
-    Friend WithEvents Label10 As Label
     Friend WithEvents Panel4 As Panel
     Friend WithEvents PictureBox4 As PictureBox
     Friend WithEvents Label12 As Label
