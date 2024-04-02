@@ -3,6 +3,13 @@ Imports Microsoft.Data.SqlClient
 
 Public Class provider_dashboard
     Private Sub provider_dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Label11.Text = Date.Today.ToString("dd-MM-yyyy")
+        Label10.Text = Date.Today.AddDays(1).ToString("dd-MM-yyyy")
+        Label9.Text = Date.Today.AddDays(2).ToString("dd-MM-yyyy")
+        Label5.Text = Date.Today.AddDays(3).ToString("dd-MM-yyyy")
+        Label6.Text = Date.Today.AddDays(4).ToString("dd-MM-yyyy")
+        Label7.Text = Date.Today.AddDays(5).ToString("dd-MM-yyyy")
+        Label8.Text = Date.Today.AddDays(6).ToString("dd-MM-yyyy")
         Chart_Init()
         GetTimeTable()
     End Sub

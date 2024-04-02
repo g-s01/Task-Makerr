@@ -170,4 +170,7 @@ Public Class user_appointment_details
         user_appointments.Show()
     End Sub
 
+    Private Sub btn_reschedule_Click(sender As Object, e As EventArgs) Handles btn_reschedule.Click
+        'TODO: @Sreehari
+    End Sub
 End Class

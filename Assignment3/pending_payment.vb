@@ -5,7 +5,9 @@ Imports Microsoft.Data.SqlClient
 Public Class pending_payment
 
     Public dealID As Integer = Module_global.Appointment_Det_DealId
-
+    Public slots As Integer
+    Public costPerHour As Decimal
+    Dim provider As Integer = 0
     Protected Overrides Sub OnVisibleChanged(e As EventArgs)
         MyBase.OnVisibleChanged(e)
         If Me.Visible Then
@@ -19,7 +21,6 @@ Public Class pending_payment
 
 
         Dim query As String = "SELECT * FROM deals WHERE deal_id = @DealID"
-        Dim provider As Integer = 0
         Dim dates As DateTime
         Dim time As String = ""
 
@@ -82,7 +83,7 @@ Public Class pending_payment
 
         Dim query2 As String = "SELECT cost_per_hour FROM provider WHERE provider_id = @ProviderID"
 
-        Dim slots As Integer = 0
+        slots = 0
         For Each character As Char In time
             If character = "1" Then
                 slots += 1
@@ -96,7 +97,7 @@ Public Class pending_payment
 
                 Try
                     connection.Open()
-                    Dim costPerHour As Decimal = Convert.ToDecimal(command.ExecuteScalar())
+                    costPerHour = Convert.ToDecimal(command.ExecuteScalar())
 
                     ' Do something with the retrieved cost per hour
                     rtb2.Text = vbLf & "   Charges for the Appointment" & vbLf & vbLf & vbLf & "   Charges per Slot: Rs " & costPerHour & vbLf & vbLf & "   Overall Service Cost: Rs " & slots * costPerHour
@@ -120,7 +121,28 @@ Public Class pending_payment
     End Sub
 
     Private Sub btn_pay_Click(sender As Object, e As EventArgs) Handles btn_pay.Click
+        'MessageBox.Show(slots.ToString + " " + costPerHour.ToString)
+        payments.CostOfService = (slots * costPerHour) / 2
+        Dim query2 As String = "SELECT email FROM provider WHERE provider_id = @ProviderID"
+        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+        Using connection As New SqlConnection(connectionString)
+            Using command As New SqlCommand(query2, connection)
+                ' Add parameters to the SQL query to prevent SQL injection
+                command.Parameters.AddWithValue("@ProviderID", provider)
 
+                Try
+                    connection.Open()
+                    Dim mail As String = Convert.ToString(command.ExecuteScalar())
+
+                    payments.ProviderEmailID = mail
+
+                Catch ex As Exception
+                    Console.WriteLine("Error: " & ex.Message)
+                End Try
+            End Using
+        End Using
+        'MessageBox.Show(payments.CostOfService.ToString + " " + payments.ProviderEmailID.ToString)
+        payments.Show()
     End Sub
     Private Sub btn_upcoming_Click(sender As Object, e As EventArgs) Handles btn_upcoming.Click
         Me.Hide()
