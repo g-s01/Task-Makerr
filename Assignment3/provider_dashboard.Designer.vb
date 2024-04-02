@@ -101,7 +101,7 @@ Partial Class provider_dashboard
         ' Label24
         ' 
         Label24.AutoSize = True
-        Label24.Location = New Point(769, 64)
+        Label24.Location = New Point(789, 64)
         Label24.Name = "Label24"
         Label24.Size = New Size(39, 20)
         Label24.TabIndex = 41
@@ -110,7 +110,7 @@ Partial Class provider_dashboard
         ' Label23
         ' 
         Label23.AutoSize = True
-        Label23.Location = New Point(710, 64)
+        Label23.Location = New Point(733, 64)
         Label23.Name = "Label23"
         Label23.Size = New Size(39, 20)
         Label23.TabIndex = 40
@@ -119,7 +119,7 @@ Partial Class provider_dashboard
         ' Label22
         ' 
         Label22.AutoSize = True
-        Label22.Location = New Point(650, 64)
+        Label22.Location = New Point(676, 64)
         Label22.Name = "Label22"
         Label22.Size = New Size(39, 20)
         Label22.TabIndex = 39
@@ -128,7 +128,7 @@ Partial Class provider_dashboard
         ' Label21
         ' 
         Label21.AutoSize = True
-        Label21.Location = New Point(590, 64)
+        Label21.Location = New Point(613, 64)
         Label21.Name = "Label21"
         Label21.Size = New Size(39, 20)
         Label21.TabIndex = 38
@@ -137,7 +137,7 @@ Partial Class provider_dashboard
         ' Label20
         ' 
         Label20.AutoSize = True
-        Label20.Location = New Point(535, 64)
+        Label20.Location = New Point(557, 64)
         Label20.Name = "Label20"
         Label20.Size = New Size(39, 20)
         Label20.TabIndex = 37
@@ -146,7 +146,7 @@ Partial Class provider_dashboard
         ' Label19
         ' 
         Label19.AutoSize = True
-        Label19.Location = New Point(476, 64)
+        Label19.Location = New Point(503, 64)
         Label19.Name = "Label19"
         Label19.Size = New Size(39, 20)
         Label19.TabIndex = 36
@@ -155,7 +155,7 @@ Partial Class provider_dashboard
         ' Label18
         ' 
         Label18.AutoSize = True
-        Label18.Location = New Point(418, 64)
+        Label18.Location = New Point(444, 64)
         Label18.Name = "Label18"
         Label18.Size = New Size(39, 20)
         Label18.TabIndex = 35
@@ -164,7 +164,7 @@ Partial Class provider_dashboard
         ' Label17
         ' 
         Label17.AutoSize = True
-        Label17.Location = New Point(362, 64)
+        Label17.Location = New Point(383, 64)
         Label17.Name = "Label17"
         Label17.Size = New Size(39, 20)
         Label17.TabIndex = 34
@@ -173,7 +173,7 @@ Partial Class provider_dashboard
         ' Label16
         ' 
         Label16.AutoSize = True
-        Label16.Location = New Point(305, 64)
+        Label16.Location = New Point(329, 64)
         Label16.Name = "Label16"
         Label16.Size = New Size(39, 20)
         Label16.TabIndex = 33
@@ -182,7 +182,7 @@ Partial Class provider_dashboard
         ' Label15
         ' 
         Label15.AutoSize = True
-        Label15.Location = New Point(243, 64)
+        Label15.Location = New Point(265, 64)
         Label15.Name = "Label15"
         Label15.Size = New Size(47, 20)
         Label15.TabIndex = 32
@@ -191,7 +191,7 @@ Partial Class provider_dashboard
         ' Label14
         ' 
         Label14.AutoSize = True
-        Label14.Location = New Point(182, 64)
+        Label14.Location = New Point(203, 64)
         Label14.Name = "Label14"
         Label14.Size = New Size(46, 20)
         Label14.TabIndex = 31
@@ -200,7 +200,7 @@ Partial Class provider_dashboard
         ' Label13
         ' 
         Label13.AutoSize = True
-        Label13.Location = New Point(120, 64)
+        Label13.Location = New Point(151, 64)
         Label13.Name = "Label13"
         Label13.Size = New Size(46, 20)
         Label13.TabIndex = 30
@@ -209,7 +209,7 @@ Partial Class provider_dashboard
         ' Label12
         ' 
         Label12.AutoSize = True
-        Label12.Location = New Point(76, 64)
+        Label12.Location = New Point(98, 64)
         Label12.Name = "Label12"
         Label12.Size = New Size(38, 20)
         Label12.TabIndex = 29
@@ -219,20 +219,19 @@ Partial Class provider_dashboard
         ' 
         slot_matrix_tablelayout.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         slot_matrix_tablelayout.ColumnCount = 13
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 57F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387291F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387291F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387291F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387291F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387291F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387291F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387291F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387291F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387291F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387291F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387291F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 7.739794F))
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387292F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387292F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387292F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387292F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387292F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387292F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387292F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387292F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387292F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387292F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.387292F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 7.73979425F))
         slot_matrix_tablelayout.Controls.Add(Label8, 0, 6)
         slot_matrix_tablelayout.Controls.Add(Label7, 0, 5)
         slot_matrix_tablelayout.Controls.Add(Label6, 0, 4)
@@ -240,7 +239,7 @@ Partial Class provider_dashboard
         slot_matrix_tablelayout.Controls.Add(Label9, 0, 2)
         slot_matrix_tablelayout.Controls.Add(Label10, 0, 1)
         slot_matrix_tablelayout.Controls.Add(Label11, 0, 0)
-        slot_matrix_tablelayout.Location = New Point(31, 88)
+        slot_matrix_tablelayout.Location = New Point(13, 88)
         slot_matrix_tablelayout.Margin = New Padding(3, 4, 3, 4)
         slot_matrix_tablelayout.Name = "slot_matrix_tablelayout"
         slot_matrix_tablelayout.RowCount = 7
@@ -251,7 +250,7 @@ Partial Class provider_dashboard
         slot_matrix_tablelayout.RowStyles.Add(New RowStyle(SizeType.Percent, 14.2857141F))
         slot_matrix_tablelayout.RowStyles.Add(New RowStyle(SizeType.Percent, 14.2857141F))
         slot_matrix_tablelayout.RowStyles.Add(New RowStyle(SizeType.Percent, 14.2857141F))
-        slot_matrix_tablelayout.Size = New Size(754, 218)
+        slot_matrix_tablelayout.Size = New Size(795, 218)
         slot_matrix_tablelayout.TabIndex = 28
         ' 
         ' Label8
@@ -259,7 +258,7 @@ Partial Class provider_dashboard
         Label8.Dock = DockStyle.Fill
         Label8.Location = New Point(4, 187)
         Label8.Name = "Label8"
-        Label8.Size = New Size(51, 30)
+        Label8.Size = New Size(94, 30)
         Label8.TabIndex = 6
         Label8.Text = "Sun"
         Label8.TextAlign = ContentAlignment.MiddleCenter
@@ -269,7 +268,7 @@ Partial Class provider_dashboard
         Label7.Dock = DockStyle.Fill
         Label7.Location = New Point(4, 156)
         Label7.Name = "Label7"
-        Label7.Size = New Size(51, 30)
+        Label7.Size = New Size(94, 30)
         Label7.TabIndex = 5
         Label7.Text = "Sat"
         Label7.TextAlign = ContentAlignment.MiddleCenter
@@ -279,7 +278,7 @@ Partial Class provider_dashboard
         Label6.Dock = DockStyle.Fill
         Label6.Location = New Point(4, 125)
         Label6.Name = "Label6"
-        Label6.Size = New Size(51, 30)
+        Label6.Size = New Size(94, 30)
         Label6.TabIndex = 4
         Label6.Text = "Fri"
         Label6.TextAlign = ContentAlignment.MiddleCenter
@@ -289,7 +288,7 @@ Partial Class provider_dashboard
         Label5.Dock = DockStyle.Fill
         Label5.Location = New Point(4, 94)
         Label5.Name = "Label5"
-        Label5.Size = New Size(51, 30)
+        Label5.Size = New Size(94, 30)
         Label5.TabIndex = 3
         Label5.Text = "Thru"
         Label5.TextAlign = ContentAlignment.MiddleCenter
@@ -299,7 +298,7 @@ Partial Class provider_dashboard
         Label9.Dock = DockStyle.Fill
         Label9.Location = New Point(4, 63)
         Label9.Name = "Label9"
-        Label9.Size = New Size(51, 30)
+        Label9.Size = New Size(94, 30)
         Label9.TabIndex = 2
         Label9.Text = "Wed"
         Label9.TextAlign = ContentAlignment.MiddleCenter
@@ -309,7 +308,7 @@ Partial Class provider_dashboard
         Label10.Dock = DockStyle.Fill
         Label10.Location = New Point(4, 32)
         Label10.Name = "Label10"
-        Label10.Size = New Size(51, 30)
+        Label10.Size = New Size(94, 30)
         Label10.TabIndex = 1
         Label10.Text = "Tue"
         Label10.TextAlign = ContentAlignment.MiddleCenter
@@ -319,7 +318,7 @@ Partial Class provider_dashboard
         Label11.Dock = DockStyle.Fill
         Label11.Location = New Point(4, 1)
         Label11.Name = "Label11"
-        Label11.Size = New Size(51, 30)
+        Label11.Size = New Size(94, 30)
         Label11.TabIndex = 0
         Label11.Text = "Mon"
         Label11.TextAlign = ContentAlignment.MiddleCenter
@@ -473,7 +472,6 @@ Partial Class provider_dashboard
         ' 
         ' provider_dashboard
         ' 
-        AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(842, 666)
         Controls.Add(Panel3)
