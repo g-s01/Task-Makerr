@@ -49,7 +49,12 @@
         switchPanel(AdminFeedbackView)
     End Sub
 
-
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Button1.BackColor = SystemColors.Control
+        Button2.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        Button3.BackColor = SystemColors.Control
+        switchPanel(admin_side_chat)
+    End Sub
 
 
     Private Sub Logout_btn_Click(sender As Object, e As EventArgs) Handles logout_btn.Click
@@ -57,5 +62,7 @@
         Admin_Login.Show()
     End Sub
 
+    Private Sub SplitContainer1_Panel2_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel2.Paint
 
+    End Sub
 End Class

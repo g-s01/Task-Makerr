@@ -23,15 +23,15 @@ Partial Class admin_side_chat
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Panel1 = New Panel()
-        chat_list = New Panel()
-        chat = New Panel()
-        sendTextBox = New TextBox()
-        sendBtn = New Button()
-        separatorLine = New Label()
-        userButton = New Button()
-        providerButton = New Button()
         Panel2 = New Panel()
-        Label1 = New Label()
+        senderName = New Label()
+        providerButton = New Button()
+        userButton = New Button()
+        separatorLine = New Label()
+        sendBtn = New Button()
+        sendTextBox = New TextBox()
+        chat = New Panel()
+        room_list = New Panel()
         Panel1.SuspendLayout()
         Panel2.SuspendLayout()
         SuspendLayout()
@@ -45,79 +45,34 @@ Partial Class admin_side_chat
         Panel1.Controls.Add(sendBtn)
         Panel1.Controls.Add(sendTextBox)
         Panel1.Controls.Add(chat)
-        Panel1.Controls.Add(chat_list)
+        Panel1.Controls.Add(room_list)
         Panel1.Dock = DockStyle.Fill
         Panel1.Location = New Point(0, 0)
+        Panel1.Margin = New Padding(4)
         Panel1.Name = "Panel1"
-        Panel1.Size = New Size(852, 672)
+        Panel1.Size = New Size(1278, 1008)
         Panel1.TabIndex = 0
         ' 
-        ' chat_list
+        ' Panel2
         ' 
-        chat_list.AutoSizeMode = AutoSizeMode.GrowAndShrink
-        chat_list.BackColor = Color.FromArgb(CByte(242), CByte(209), CByte(245))
-        chat_list.Location = New Point(642, 79)
-        chat_list.Name = "chat_list"
-        chat_list.Size = New Size(195, 530)
-        chat_list.TabIndex = 8
+        Panel2.BackColor = Color.FromArgb(CByte(214), CByte(179), CByte(227))
+        Panel2.Controls.Add(senderName)
+        Panel2.Location = New Point(28, 120)
+        Panel2.Margin = New Padding(4)
+        Panel2.Name = "Panel2"
+        Panel2.Size = New Size(926, 63)
+        Panel2.TabIndex = 14
         ' 
-        ' chat
+        ' senderName
         ' 
-        chat.AutoScroll = True
-        chat.Font = New Font("Microsoft YaHei", 10.2F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        chat.Location = New Point(19, 121)
-        chat.Name = "chat"
-        chat.Size = New Size(617, 446)
-        chat.TabIndex = 7
-        ' 
-        ' sendTextBox
-        ' 
-        sendTextBox.BorderStyle = BorderStyle.None
-        sendTextBox.Font = New Font("Microsoft YaHei", 10.2F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        sendTextBox.Location = New Point(19, 572)
-        sendTextBox.Margin = New Padding(2)
-        sendTextBox.Multiline = True
-        sendTextBox.Name = "sendTextBox"
-        sendTextBox.PlaceholderText = "   write .."
-        sendTextBox.Size = New Size(531, 37)
-        sendTextBox.TabIndex = 10
-        ' 
-        ' sendBtn
-        ' 
-        sendBtn.BackColor = Color.FromArgb(CByte(214), CByte(179), CByte(227))
-        sendBtn.FlatAppearance.BorderSize = 0
-        sendBtn.FlatStyle = FlatStyle.Flat
-        sendBtn.Font = New Font("Microsoft YaHei", 10.2F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        sendBtn.Location = New Point(549, 572)
-        sendBtn.Margin = New Padding(2)
-        sendBtn.Name = "sendBtn"
-        sendBtn.Size = New Size(87, 37)
-        sendBtn.TabIndex = 9
-        sendBtn.Text = "Send"
-        sendBtn.UseVisualStyleBackColor = False
-        ' 
-        ' separatorLine
-        ' 
-        separatorLine.BorderStyle = BorderStyle.FixedSingle
-        separatorLine.Location = New Point(19, 59)
-        separatorLine.Margin = New Padding(4, 0, 4, 0)
-        separatorLine.Name = "separatorLine"
-        separatorLine.Size = New Size(680, 2)
-        separatorLine.TabIndex = 11
-        ' 
-        ' userButton
-        ' 
-        userButton.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        userButton.FlatAppearance.BorderSize = 0
-        userButton.FlatStyle = FlatStyle.Flat
-        userButton.Font = New Font("Microsoft YaHei", 10.2F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        userButton.Location = New Point(19, 14)
-        userButton.Margin = New Padding(4, 5, 4, 5)
-        userButton.Name = "userButton"
-        userButton.Size = New Size(129, 45)
-        userButton.TabIndex = 12
-        userButton.Text = "Users "
-        userButton.UseVisualStyleBackColor = False
+        senderName.AutoSize = True
+        senderName.Font = New Font("Microsoft YaHei", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        senderName.Location = New Point(324, 9)
+        senderName.Margin = New Padding(4, 0, 4, 0)
+        senderName.Name = "senderName"
+        senderName.Size = New Size(207, 37)
+        senderName.TabIndex = 0
+        senderName.Text = "Sender Name"
         ' 
         ' providerButton
         ' 
@@ -125,39 +80,88 @@ Partial Class admin_side_chat
         providerButton.FlatAppearance.BorderSize = 0
         providerButton.FlatStyle = FlatStyle.Flat
         providerButton.Font = New Font("Microsoft YaHei", 10.2F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        providerButton.Location = New Point(156, 13)
-        providerButton.Margin = New Padding(4, 5, 4, 5)
+        providerButton.Location = New Point(234, 20)
+        providerButton.Margin = New Padding(6, 8, 6, 8)
         providerButton.Name = "providerButton"
-        providerButton.Size = New Size(138, 46)
+        providerButton.Size = New Size(207, 69)
         providerButton.TabIndex = 13
         providerButton.Text = "Providers "
         providerButton.UseVisualStyleBackColor = False
         ' 
-        ' Panel2
+        ' userButton
         ' 
-        Panel2.BackColor = Color.FromArgb(CByte(214), CByte(179), CByte(227))
-        Panel2.Controls.Add(Label1)
-        Panel2.Location = New Point(19, 80)
-        Panel2.Name = "Panel2"
-        Panel2.Size = New Size(617, 42)
-        Panel2.TabIndex = 14
+        userButton.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        userButton.FlatAppearance.BorderSize = 0
+        userButton.FlatStyle = FlatStyle.Flat
+        userButton.Font = New Font("Microsoft YaHei", 10.2F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        userButton.Location = New Point(28, 21)
+        userButton.Margin = New Padding(6, 8, 6, 8)
+        userButton.Name = "userButton"
+        userButton.Size = New Size(194, 68)
+        userButton.TabIndex = 12
+        userButton.Text = "Users "
+        userButton.UseVisualStyleBackColor = False
         ' 
-        ' Label1
+        ' separatorLine
         ' 
-        Label1.AutoSize = True
-        Label1.Font = New Font("Microsoft YaHei", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        Label1.Location = New Point(216, 6)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(149, 27)
-        Label1.TabIndex = 0
-        Label1.Text = "Sender Name"
+        separatorLine.BorderStyle = BorderStyle.FixedSingle
+        separatorLine.Location = New Point(28, 88)
+        separatorLine.Margin = New Padding(6, 0, 6, 0)
+        separatorLine.Name = "separatorLine"
+        separatorLine.Size = New Size(1019, 2)
+        separatorLine.TabIndex = 11
+        ' 
+        ' sendBtn
+        ' 
+        sendBtn.BackColor = Color.FromArgb(CByte(214), CByte(179), CByte(227))
+        sendBtn.FlatAppearance.BorderSize = 0
+        sendBtn.FlatStyle = FlatStyle.Flat
+        sendBtn.Font = New Font("Microsoft YaHei", 10.2F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        sendBtn.Location = New Point(824, 858)
+        sendBtn.Name = "sendBtn"
+        sendBtn.Size = New Size(130, 56)
+        sendBtn.TabIndex = 9
+        sendBtn.Text = "Send"
+        sendBtn.UseVisualStyleBackColor = False
+        ' 
+        ' sendTextBox
+        ' 
+        sendTextBox.BorderStyle = BorderStyle.None
+        sendTextBox.Font = New Font("Microsoft YaHei", 10.2F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        sendTextBox.Location = New Point(28, 858)
+        sendTextBox.Multiline = True
+        sendTextBox.Name = "sendTextBox"
+        sendTextBox.PlaceholderText = "   write .."
+        sendTextBox.Size = New Size(796, 56)
+        sendTextBox.TabIndex = 10
+        ' 
+        ' chat
+        ' 
+        chat.AutoScroll = True
+        chat.Font = New Font("Microsoft YaHei", 10.2F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        chat.Location = New Point(28, 182)
+        chat.Margin = New Padding(4)
+        chat.Name = "chat"
+        chat.Size = New Size(926, 669)
+        chat.TabIndex = 7
+        ' 
+        ' room_list
+        ' 
+        room_list.AutoSizeMode = AutoSizeMode.GrowAndShrink
+        room_list.BackColor = Color.FromArgb(CByte(242), CByte(209), CByte(245))
+        room_list.Location = New Point(963, 118)
+        room_list.Margin = New Padding(4)
+        room_list.Name = "room_list"
+        room_list.Size = New Size(292, 795)
+        room_list.TabIndex = 8
         ' 
         ' admin_side_chat
         ' 
-        AutoScaleDimensions = New SizeF(8F, 20F)
+        AutoScaleDimensions = New SizeF(12F, 30F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(852, 672)
+        ClientSize = New Size(1278, 1008)
         Controls.Add(Panel1)
+        Margin = New Padding(4)
         Name = "admin_side_chat"
         Text = "admin_side_chat"
         Panel1.ResumeLayout(False)
@@ -173,8 +177,8 @@ Partial Class admin_side_chat
     Friend WithEvents sendBtn As Button
     Friend WithEvents sendTextBox As TextBox
     Friend WithEvents chat As Panel
-    Friend WithEvents chat_list As Panel
+    Friend WithEvents room_list As Panel
     Friend WithEvents providerButton As Button
     Friend WithEvents Panel2 As Panel
-    Friend WithEvents Label1 As Label
+    Friend WithEvents senderName As Label
 End Class

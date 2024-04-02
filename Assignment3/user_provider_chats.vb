@@ -7,6 +7,7 @@ Public Class user_provider_chats
 
     Dim roomchat As New List(Of Tuple(Of String, Integer, Integer))() ' providername, chat_room_id, provider_id
     Dim messages As New List(Of Tuple(Of Integer, Integer, String, String, String))()
+
     Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
     Dim user_role As String = "customer"
     Dim userId As Integer = 1
@@ -173,16 +174,16 @@ Public Class user_provider_chats
         roomchat.Add(New Tuple(Of String, Integer, Integer)("Banana", 2, 0))
         roomchat.Add(New Tuple(Of String, Integer, Integer)("Orange", 3, 0))
         roomchat.Add(New Tuple(Of String, Integer, Integer)("Grapes", 4, 0))
-        messages.Clear()
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "customer", "Hey there!", "2024-03-30 10:00:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "How are you?", "2024-03-30 10:05:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "provider", "What's up?", "2024-03-30 10:10:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "customer", "Good morning!", "2024-03-30 10:15:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "provider", "How's it going?", "2024-03-30 10:20:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "Want to hang out later?", "2024-03-30 10:25:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "customer", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "provider", "Sounds good!", "2024-03-30 10:35:00"))
-
+        ' messages.Clear()
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "customer", "Hey there!", "2024-03-30 10:00:00"))
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "How are you?", "2024-03-30 10:05:00"))
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "provider", "What's up?", "2024-03-30 10:10:00"))
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "customer", "Good morning!", "2024-03-30 10:15:00"))
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "provider", "How's it going?", "2024-03-30 10:20:00"))
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "Want to hang out later?", "2024-03-30 10:25:00"))
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "customer", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
+        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "provider", "Sounds good!", "2024-03-30 10:35:00"))
+        
         PopulateRooms()
         HandleTitle()
 

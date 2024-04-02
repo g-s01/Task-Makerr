@@ -28,12 +28,12 @@ Namespace My
             Me.EnableVisualStyles = true
             Me.SaveMySettingsOnExit = true
             Me.ShutDownStyle = Global.Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterMainFormCloses
-            Me.HighDpiMode = HighDpiMode.PerMonitor
+            Me.HighDpiMode = HighDpiMode.DpiUnaware
         End Sub
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.Assignment3.Landing
+            Me.MainForm = Global.Assignment3.admin_template
         End Sub
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
