@@ -7,6 +7,7 @@ Public Class FeedbackForm
     Dim senderId As Integer = -1 ' Global variable for user_id or provider_id
     Dim userType As String = ""
     Dim Rating As Integer = 0
+    Dim sendername As String = "sender name"
 
     Private Sub FeedbackForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -76,9 +77,31 @@ Public Class FeedbackForm
             If txtFeedback.Text = "Write your feedback here..." Then
                 feedbackText = ""
             End If
-            InsertFeedback(feedbackId, senderId, "SenderName", userType, feedbackText, timestamp, Rating)
+
+            Dim query As String = ""
+
+            If userType = "customer" Then
+                query = " select username from customer where user_id=@sender_id"
+            Else
+                query = " select providername from provider where user_id=@sender_id"
+            End If
+
+            Using connection As New SqlConnection(connectionString)
+                Using command As New SqlCommand(query, connection)
+                    command.Parameters.AddWithValue("@sender_id", senderId)
+                    connection.Open()
+                    sendername = (command.ExecuteScalar()).ToString()
+                End Using
+            End Using
+
+            InsertFeedback(feedbackId, senderId, sendername, userType, feedbackText, timestamp, Rating)
 
             MessageBox.Show("Thank you for your feedback!", "Feedback Submitted", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            For i As Integer = 0 To stars.Count - 1
+                stars(i).Image = My.Resources.bg_star ' Change to your grey star image
+            Next
+
+            txtFeedback.Text = "write your feedback here..."
         Else
             MessageBox.Show("Error occurred while submitting feedback.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If

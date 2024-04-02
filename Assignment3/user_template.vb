@@ -25,6 +25,7 @@ Public Class user_template
             .TopLevel = False
             .AutoSize = True
             .Dock = DockStyle.Fill
+            .FormBorderStyle = FormBorderStyle.None
             SplitContainer1.Panel2.Controls.Add(UserHome)
             .BringToFront()
             .Show()
@@ -39,6 +40,7 @@ Public Class user_template
 
         With panel
             .TopLevel = False
+            .FormBorderStyle = FormBorderStyle.None
             .AutoSize = True
             .Dock = DockStyle.Fill
             .FormBorderStyle = BorderStyle.None
@@ -127,10 +129,9 @@ Public Class user_template
         Button5.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         Button6.BackColor = SystemColors.Control
         Button7.BackColor = SystemColors.Control
-
-        switchPanel(user_chats)
-
+        switchPanel(user_provider_chats)
     End Sub
+
 
     ' Help button
     ' author: sarg19
@@ -143,8 +144,7 @@ Public Class user_template
         Button6.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         Button7.BackColor = SystemColors.Control
 
-        'switchPanel(user_search)
-
+        switchPanel(support_chat)
     End Sub
 
     ' Feedback button
@@ -158,7 +158,7 @@ Public Class user_template
         Button6.BackColor = SystemColors.Control
         Button7.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
 
-        switchPanel(user_feedback)
+        switchPanel(FeedbackForm)
     End Sub
 
     ' Logout button
