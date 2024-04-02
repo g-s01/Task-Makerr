@@ -60,6 +60,7 @@ Public Class view_more_user
 
 
 
+
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
         Dim providers As New Dictionary(Of Integer, ProviderData)()
         Using connection As New SqlConnection(connectionString)
@@ -149,8 +150,8 @@ Public Class view_more_user
 
         ' Define button size and spacing
         Dim buttonWidth = 350
-        Dim buttonHeight = 150
         Dim buttonSpacing = 35
+        Dim buttonHeight = 150
 
 
 
