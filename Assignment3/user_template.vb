@@ -41,6 +41,7 @@ Public Class user_template
             .TopLevel = False
             .AutoSize = True
             .Dock = DockStyle.Fill
+            .FormBorderStyle = BorderStyle.None
             SplitContainer1.Panel2.Controls.Add(panel)
             .BringToFront()
             .Show()
