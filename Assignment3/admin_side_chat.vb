@@ -1,4 +1,7 @@
-﻿Public Class admin_side_chat
+﻿Imports System.Globalization
+Imports Microsoft.CodeAnalysis.Text
+
+Public Class admin_side_chat
     ' user name, user type , support room, user id 
     Dim support_rooms As New List(Of Tuple(Of String, String, Integer, Integer))
     ' room_id,sender_type msg_content send timestamp
@@ -49,7 +52,7 @@
         support_rooms.Add(New Tuple(Of String, String, Integer, Integer)("Grapes", "customer", 4, 4))
 
         support_msgs.Clear()
-        support_msgs.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Hey there!", "2024-03-30 10:00:00"))
+        support_msgs.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Hey  akjd  ln afb a fbak fa fkba fafk af akf ka fa fk afadfkb afjv bafdj adfsj adsf af as dfa hfaf jhfaf  there!", "2024-03-30 10:00:00"))
         support_msgs.Add(New Tuple(Of Integer, String, String, String)(2, "admin", "How are you?", "2024-03-30 10:05:00"))
         support_msgs.Add(New Tuple(Of Integer, String, String, String)(3, "user", "What's up?", "2024-03-30 10:10:00"))
         support_msgs.Add(New Tuple(Of Integer, String, String, String)(4, "admin", "Good morning!", "2024-03-30 10:15:00"))
@@ -70,6 +73,15 @@
         PopulateRooms()
         chat.Visible = False
         Panel2.Visible = False
+    End Sub
+
+    Private Sub sendTextBox_KeyDown(sender As Object, e As KeyEventArgs) Handles sendTextBox.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            ' Call the sendButton_Click event handler
+            sendButton_Click(sender, e)
+            ' Prevent the key press from being handled by the TextBox
+            e.SuppressKeyPress = True
+        End If
     End Sub
 
     Private Sub providerButton_Click(sender As Object, e As EventArgs) Handles providerButton.Click
@@ -130,6 +142,7 @@
         For Each msg In sortedMessages
             Dim senderType As String = msg.Item2
             Dim messageText As String = msg.Item3
+            Dim timeStamp As String = DateTime.ParseExact(msg.Item4, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
 
             ' Create a label for the message
             Dim messageLabel As New Label()
@@ -138,24 +151,65 @@
             messageLabel.Font = New Font(messageLabel.Font.FontFamily, 10)
             messageLabel.Padding = New Padding(5)
             messageLabel.BackColor = ColorTranslator.FromHtml("#D9D9D9")
+            messageLabel.MaximumSize = New Size(chat.Width - 220, 0)
+            Dim textSize = TextRenderer.MeasureText(messageLabel.Text, messageLabel.Font, messageLabel.MaximumSize, TextFormatFlags.WordBreak)
 
-            ' Assuming label1 is the name of your label control
-            messageLabel.TextAlign = ContentAlignment.MiddleLeft
 
-            ' Align labels based on sender
+            Dim textHeight As Integer = textSize.Height
+            Dim labelHeight As Integer = messageLabel.Height
+
+            messageLabel.Padding = New Padding(0, (labelHeight - textHeight) \ 2, 0, 0)
+
+
+
+
+
+            Dim label2 As New Label()
+            label2.AutoSize = True
+            label2.Margin = New Padding(0)
+
+            label2.BackColor = Color.Transparent
+
+            label2.Padding = New Padding(0, 0, 0, 0)
+
+            label2.ForeColor = Color.Brown
             If senderType <> user_role Then
-                messageLabel.Location = New Point(10, yPos)
+                messageLabel.Left = 10
+                label2.Left = textSize.Width - 15
+
             Else
-                messageLabel.Anchor = AnchorStyles.Right
-                messageLabel.Location = New Point(chat.Width - messageLabel.PreferredWidth - 10, yPos)
+                messageLabel.Left = chat.Width - messageLabel.PreferredWidth - 10 - 5
+                label2.Left = messageLabel.Left + messageLabel.PreferredWidth + messageLabel.Width - 125
             End If
 
+            label2.AutoEllipsis = False ' Allow the label to display all text
+
+            label2.Text = timeStamp
+
+
+            label2.Font = New Font(messageLabel.Font.FontFamily, 7, FontStyle.Italic)
+            messageLabel.Height = textSize.Height
+            messageLabel.Top = yPos   ' Set the vertical position
+
+
+
+            label2.Top = yPos + messageLabel.Height
+
+            ' Manually calculate the height of the label based on the text and the maximum width
+
+
+
             ' Set label position
-            yPos += messageLabel.Height + 10
+            yPos += messageLabel.Height + label2.Height
 
             ' Add label to the chat_list panel
             chat.Controls.Add(messageLabel)
+            chat.Controls.Add(label2)
+
         Next
+        ' Ensure the panel scrolls to the bottom to show the latest message
+        chat.AutoScrollPosition = New Point(0, chat.AutoScrollPosition.Y + yPos)
+
     End Sub
 
 

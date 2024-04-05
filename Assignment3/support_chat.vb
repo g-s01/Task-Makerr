@@ -1,4 +1,5 @@
-﻿Imports Microsoft.CodeAnalysis.Text
+﻿Imports System.Globalization
+Imports Microsoft.CodeAnalysis.Text
 
 Public Class support_chat
     Dim user_role As String = "user"
@@ -21,13 +22,24 @@ Public Class support_chat
         PrintMessages()
     End Sub
 
+    Private WithEvents sendTextBox As TextBox
+
+    Private Sub sendTextBox_KeyDown(sender As Object, e As KeyEventArgs) Handles inputTextBox.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            ' Call the sendButton_Click event handler
+            sendButton_Click(sender, e)
+            ' Prevent the key press from being handled by the TextBox
+            e.SuppressKeyPress = True
+        End If
+    End Sub
+
 
     Private Sub sendButton_Click(sender As Object, e As EventArgs) Handles sendButton.Click
 
 
         ' Get the current timestamp
         Dim timeStamp As String = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-        Dim maxLength As Integer = 30 ' Set the maximum length before inserting a newline
+        Dim maxLength As Integer = 70 ' Set the maximum length before inserting a newline
         Dim inputString As String = inputTextBox.Text
         Dim messageText As String = ""
 
@@ -64,7 +76,7 @@ Public Class support_chat
             Dim room As Integer = msg.Item1
             Dim senderType As String = msg.Item2
             Dim messageText As String = msg.Item3
-            Dim timeStamp As String = msg.Item4
+            Dim timeStamp As String = DateTime.ParseExact(msg.Item4, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
 
             ' Create a label for the message
             Dim messageLabel As New Label()
@@ -75,6 +87,7 @@ Public Class support_chat
             messageLabel.Font = New Font(messageLabel.Font.FontFamily, 10)
             messageLabel.Padding = New Padding(5)
             messageLabel.BackColor = ColorTranslator.FromHtml("#D9D9D9")
+            messageLabel.MaximumSize = New Size(Chat.Width - 10 * 3, 0)
             Dim textSize = TextRenderer.MeasureText(messageLabel.Text, messageLabel.Font, messageLabel.MaximumSize, TextFormatFlags.WordBreak)
 
             Dim textHeight As Integer = textSize.Height
@@ -82,8 +95,6 @@ Public Class support_chat
 
             messageLabel.Padding = New Padding(0, (labelHeight - textHeight) \ 2, 0, 0)
 
-            ' Assuming label1 is the name of your label control
-            messageLabel.TextAlign = ContentAlignment.MiddleRight
 
 
             Dim label2 As New Label()
@@ -98,16 +109,18 @@ Public Class support_chat
             label2.ForeColor = Color.Brown
 
             If senderType <> user_role Then
-                messageLabel.Left = Chat.Width - messageLabel.PreferredWidth - 10 - 25
-                label2.Left = messageLabel.Left + messageLabel.PreferredWidth - 35 + messageLabel.Width - 88
-            Else
                 messageLabel.Left = 10
-                label2.Left = textSize.Width - 5
+                label2.Left = textSize.Width - 15
+
+            Else
+                messageLabel.Left = Chat.Width - messageLabel.PreferredWidth - 10 - 5
+                label2.Left = messageLabel.Left + messageLabel.PreferredWidth - 35 + messageLabel.Width - 88
             End If
 
             label2.AutoEllipsis = False ' Allow the label to display all text
 
-            label2.Text = DateTime.Now.ToString("hh:mm")
+            label2.Text = timeStamp
+
 
             label2.Font = New Font(messageLabel.Font.FontFamily, 7, FontStyle.Italic)
 
@@ -123,14 +136,26 @@ Public Class support_chat
 
 
             ' Set label position
-            yPos += messageLabel.Height + Label1.Height - 5
+            yPos += messageLabel.Height + label2.Height
 
             ' Add label to the chat_list panel
             Support.Controls.Add(messageLabel)
+            Support.Controls.Add(label2)
 
         Next
         ' Ensure the panel scrolls to the bottom to show the latest message
         Support.AutoScrollPosition = New Point(0, Support.AutoScrollPosition.Y + yPos)
     End Sub
 
+    Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
+
+    End Sub
+
+    Private Sub Support_Paint(sender As Object, e As PaintEventArgs) Handles Support.Paint
+
+    End Sub
+
+    Private Sub inputTextBox_TextChanged(sender As Object, e As EventArgs) Handles inputTextBox.TextChanged
+
+    End Sub
 End Class
