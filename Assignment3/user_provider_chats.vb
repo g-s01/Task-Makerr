@@ -152,7 +152,7 @@ Public Class user_provider_chats
         newLabel.Name = "lblHeader"
         newLabel.Text = "Receiver Name"
         newLabel.TextAlign = ContentAlignment.MiddleCenter
-        newLabel.Width = chat.Width
+        newLabel.Width = chat.Width - 10
         newLabel.Height = 40 ' Set label height
         newLabel.BackColor = Color.FromArgb(214, 179, 227) ' Set background color
         newLabel.Font = New Font("Microsoft YaHei", 12, FontStyle.Bold)
@@ -287,7 +287,11 @@ Public Class user_provider_chats
         Dim sortedMessages = messagesInRoom.OrderBy(Function(msg) DateTime.Parse(msg.Item5))
 
         ' Y position for labels
-        Dim yPos As Integer = 55
+
+
+        Dim yPos As Integer = 60
+
+
 
         ' Iterate through messages
         For Each msg In sortedMessages
@@ -306,7 +310,11 @@ Public Class user_provider_chats
             messageLabel.Font = New Font(messageLabel.Font.FontFamily, 10)
             messageLabel.Padding = New Padding(5)
             messageLabel.BackColor = ColorTranslator.FromHtml("#D9D9D9")
-            Dim textHeight As Integer = TextRenderer.MeasureText(messageText, messageLabel.Font).Height
+
+            messageLabel.MaximumSize = New Size(chat.Width - 10 * 3, 0)
+            Dim textSize = TextRenderer.MeasureText(messageLabel.Text, messageLabel.Font, messageLabel.MaximumSize, TextFormatFlags.WordBreak)
+
+            Dim textHeight As Integer = textSize.Height
             Dim labelHeight As Integer = messageLabel.Height
 
             messageLabel.Padding = New Padding(0, (labelHeight - textHeight) \ 2, 0, 0)
@@ -314,21 +322,59 @@ Public Class user_provider_chats
             ' Assuming label1 is the name of your label control
             messageLabel.TextAlign = ContentAlignment.MiddleRight
 
-            ' Align labels based on sender
-            If senderType = "provider" Then
-                messageLabel.Location = New Point(10, yPos)
-            ElseIf senderType = "customer" Then
-                messageLabel.Anchor = AnchorStyles.Right
-                messageLabel.Location = New Point(chat.Width - messageLabel.PreferredWidth - 10, yPos)
 
-            End If
 
-            ' Set label position
-            yPos += messageLabel.Height + 10
+
+
+            Dim label2 As New Label()
+
+        label2.AutoSize = True
+        label2.Margin = New Padding(0)
+
+        label2.BackColor = Color.Transparent
+
+        label2.Padding = New Padding(0, 0, 0, 0)
+
+        label2.ForeColor = Color.Brown
+
+            If senderType = "customer" Then
+                messageLabel.Left = chat.Width - messageLabel.PreferredWidth - 10 - 25
+                label2.Left = messageLabel.Left + messageLabel.PreferredWidth - 35 + messageLabel.Width - 88
+            ElseIf senderType = "provider" Then
+                messageLabel.Left = 10
+                label2.Left = textSize.Width - 5
+        End If
+
+            label2.AutoEllipsis = False ' Allow the label to display all text
+
+            label2.Text = DateTime.Now.ToString("hh:mm")
+
+            label2.Font = New Font(messageLabel.Font.FontFamily, 7, FontStyle.Italic)
+
+            messageLabel.Height = textSize.Height
+            messageLabel.Top = yPos   ' Set the vertical position
+
+
+
+            label2.Top = yPos + messageLabel.Height
+
+            ' Manually calculate the height of the label based on the text and the maximum width
+
+
+
+
+            ' Increment the vertical position for the next message with gap
+
+            yPos += messageLabel.Height + Label1.Height - 5
 
             ' Add label to the chat_list panel
             chat.Controls.Add(messageLabel)
+            chat.Controls.Add(label2)
         Next
+
+
+        ' Ensure the panel scrolls to the bottom to show the latest message
+        chat.AutoScrollPosition = New Point(0, chat.AutoScrollPosition.Y + yPos)
     End Sub
 
     Private Sub sendTextBox_TextChanged(sender As Object, e As EventArgs) Handles sendTextBox.TextChanged
