@@ -178,7 +178,7 @@ Public Class admin_side_chat
                 label2.Left = textSize.Width - 15
 
             Else
-                messageLabel.Left = chat.Width - messageLabel.PreferredWidth - 10 - 5
+                messageLabel.Left = chat.Width - messageLabel.PreferredWidth - 10 - 15
                 label2.Left = messageLabel.Left + messageLabel.PreferredWidth + messageLabel.Width - 125
             End If
 
