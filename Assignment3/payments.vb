@@ -21,6 +21,10 @@ Public Class payments
     Public CostOfService As Integer
     ' this is a function to pay money to the provider
     ' author: g-s01
+
+    Public Sub Payment_load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Module_global.payment_successful = 0
+    End Sub
     Private Sub payButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles payButton.Click
         If captcha.ShowDialog = DialogResult.OK Then
             Dim random As New Random()
