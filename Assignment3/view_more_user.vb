@@ -35,7 +35,6 @@ Public Class view_more_user
 
 
 
-        Dim serviceType As String = "Designer"
         Label3.Text = serviceType
 
 

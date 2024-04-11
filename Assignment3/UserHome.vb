@@ -8,11 +8,21 @@ Public Class UserHome
 
     Dim map As New Dictionary(Of String, List(Of Prov_tile))()
     Dim reviews As New Dictionary(Of Int32, Tuple(Of Integer, Integer))()
-    Dim rating_prov As New Dictionary(Of Int32, Double)()
+    Dim rating_prov As New Dictionary(Of Int32, Double)()      'provider id,rating
+    ' Dictionary to store provider locations
+    Dim provider_locations As New Dictionary(Of Integer, List(Of String))
+    ' Dictionary to store provider keys
+    Dim provider_keys As New Dictionary(Of Integer, String)
+    ' Dictionary to store provider services
+    Dim provider_service As New Dictionary(Of Integer, String)
+    Dim buttonLoc As Integer
+    Dim user_name As String
 
     Private Sub UserHome_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Set the FlowLayoutPanel's properties
         Dim image As Image = My.Resources.Ellipse_6
+
+        buttonLoc = Me.Width - 110
         'Dim newItem As New Prov_tile(1, "Item 5", "Description 5", 4.5, image)
         'map.Add("electric", New List(Of Prov_tile))
         'map("electric").Add(newItem)
@@ -38,6 +48,16 @@ Public Class UserHome
                     End If
                 End While
             End Using
+            Dim command_user As New SqlCommand("SELECT customer.* FROM customer ", connection)
+            Using reader As SqlDataReader = command_user.ExecuteReader()
+                While reader.Read()
+                    Dim user As Int32 = reader.GetInt32(reader.GetOrdinal("user_id"))
+                    Dim username As String = reader.GetString(reader.GetOrdinal("username"))
+                    If user = Module_global.User_ID Then
+                        user_name = username
+                    End If
+                End While
+            End Using
             Dim command As New SqlCommand("SELECT provider.*, location.* FROM provider INNER JOIN location ON provider.provider_id = location.provider_id", connection)
             For Each pair As KeyValuePair(Of Int32, Tuple(Of Integer, Integer)) In reviews
                 Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
@@ -55,19 +75,45 @@ Public Class UserHome
                     Dim name As String = reader.GetString(reader.GetOrdinal("providername"))
                     Dim provider As Int32 = reader.GetInt32(reader.GetOrdinal("provider_id"))
                     Dim rating As Double = 6.0
+
                     If reviews.ContainsKey(provider) Then
                         Dim currentValue As Tuple(Of Integer, Integer) = reviews(provider)
                         rating = rating_prov(provider)
                     End If
-                    If map.ContainsKey(service) Then
-                        map(service).Add(New Prov_tile(provider, name, loc, rating, image))
+                    If provider_locations.ContainsKey(provider) Then
+                        provider_locations(provider).Add(loc)
                     Else
-                        map.Add(service, New List(Of Prov_tile)())
-                        map(service).Add(New Prov_tile(provider, name, loc, rating, image))
+                        provider_locations.Add(provider, New List(Of String) From {loc})
+                    End If
+                    If Not provider_service.ContainsKey(provider) Then
+                        provider_service(provider) = service
+                    End If
+                    If Not provider_keys.ContainsKey(provider) Then
+                        provider_keys(provider) = name
                     End If
                 End While
             End Using
+            For Each kvp As KeyValuePair(Of Integer, List(Of String)) In provider_locations
+                Dim provider As Integer = kvp.Key
+                Dim locations As String = String.Join(", ", kvp.Value)
+                Dim name As String = provider_keys(provider)
+                Dim service As String = provider_service(provider)
+                Dim rating As Double = 6.0
+
+                ' Get rating if available
+                If rating_prov.ContainsKey(provider) Then
+                    rating = rating_prov(provider)
+                End If
+
+                ' Add tile to map
+                If map.ContainsKey(service) Then
+                    map(service).Add(New Prov_tile(provider, name, locations, rating, image))
+                Else
+                    map.Add(service, New List(Of Prov_tile) From {New Prov_tile(provider, name, locations, rating, image)})
+                End If
+            Next
         End Using
+        Username.Text = user_name
         For Each pair As KeyValuePair(Of String, List(Of Prov_tile)) In map
             ' Sort the list based on the values in the 'rating_prov' dictionary
             pair.Value.Sort(Function(a, b)
@@ -77,7 +123,7 @@ Public Class UserHome
                             End Function)
         Next
         ' Add more items as needed
-        Dim yPos As Integer = 60 ' Initial vertical position for the first FlowLayoutPanel
+        Dim yPos As Integer = 70 ' Initial vertical position for the first FlowLayoutPanel
 
         ' Iterate through the dictionary
         For Each pair As KeyValuePair(Of String, List(Of Prov_tile)) In map
@@ -86,6 +132,14 @@ Public Class UserHome
             label.Font = New Font(label.Font.FontFamily, 12)
             label.Location = New Point(10, yPos)
             Me.Controls.Add(label)
+            Dim btnViewMore As New Button()
+            btnViewMore.Text = "View All"
+            btnViewMore.Size = New Size(100, 30)
+            btnViewMore.Location = New Point(buttonLoc, yPos)
+            btnViewMore.Tag = pair.Key
+            ' Inside the UserHome_Load method, after creating the btnViewMore button
+            AddHandler btnViewMore.Click, AddressOf btnViewMore_Click
+            Me.Controls.Add(btnViewMore)
             yPos += (label.Height + 10)
             ' Create a new FlowLayoutPanel
             Dim flowLayoutPanel As New FlowLayoutPanel()
@@ -107,11 +161,26 @@ Public Class UserHome
 
         ' Create tile controls for each item
     End Sub
+
+    Private Sub btnViewMore_Click(sender As Object, e As EventArgs)
+        ' Navigate to another page here
+        Dim clickedButton As Button = CType(sender, Button)
+        Module_global.serviceType = CType(clickedButton.Tag, String)
+        user_template.SplitContainer1.Panel2.Controls.Clear()
+        With view_more_user
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(view_more_user)
+            .BringToFront()
+            .Show()
+        End With
+    End Sub
     Private Sub tileControl_Click(sender As Object, e As EventArgs)
 
         Dim clickedTile As Prov_tile = CType(sender, Prov_tile)
         ' Get the provider id
-        Provider_ID = clickedTile.Provider
+        Module_global.Provider_ID = clickedTile.Provider
         user_template.SplitContainer1.Panel2.Controls.Clear()
         slot_back_choice = 1
         With Book_slots

@@ -23,8 +23,9 @@ Partial Class UserHome
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Label1 = New Label()
-        PictureBox1 = New PictureBox()
-        CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
+        Profile_Pic = New PictureBox()
+        Username = New Label()
+        CType(Profile_Pic, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' Label1
@@ -32,37 +33,48 @@ Partial Class UserHome
         Label1.AutoSize = True
         Label1.Font = New Font("Segoe UI", 15F, FontStyle.Bold)
         Label1.ForeColor = SystemColors.ControlDarkDark
-        Label1.Location = New Point(14, 39)
+        Label1.Location = New Point(12, 34)
         Label1.Name = "Label1"
-        Label1.Size = New Size(195, 38)
+        Label1.Size = New Size(177, 35)
         Label1.TabIndex = 0
         Label1.Text = "Top Providers"
         ' 
-        ' PictureBox1
+        ' Profile_Pic
         ' 
-        PictureBox1.Image = My.Resources.Resources.Ellipse_6
-        PictureBox1.Location = New Point(908, 23)
-        PictureBox1.Name = "PictureBox1"
-        PictureBox1.Size = New Size(90, 71)
-        PictureBox1.TabIndex = 1
-        PictureBox1.TabStop = False
+        Profile_Pic.Image = My.Resources.Resources.Ellipse_6
+        Profile_Pic.Location = New Point(736, 12)
+        Profile_Pic.Name = "Profile_Pic"
+        Profile_Pic.Size = New Size(125, 62)
+        Profile_Pic.TabIndex = 2
+        Profile_Pic.TabStop = False
+        ' 
+        ' Username
+        ' 
+        Username.AutoSize = True
+        Username.Font = New Font("Microsoft Sans Serif", 10.2F)
+        Username.Location = New Point(736, 77)
+        Username.Name = "Username"
+        Username.Size = New Size(0, 20)
+        Username.TabIndex = 3
         ' 
         ' UserHome
         ' 
-        AutoScaleDimensions = New SizeF(9F, 23F)
+        AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
-        ClientSize = New Size(1049, 1058)
-        Controls.Add(PictureBox1)
+        ClientSize = New Size(932, 920)
+        Controls.Add(Username)
+        Controls.Add(Profile_Pic)
         Controls.Add(Label1)
         FormBorderStyle = FormBorderStyle.None
         Name = "UserHome"
         Text = "UserHome"
-        CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
+        CType(Profile_Pic, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()
     End Sub
 
     Friend WithEvents Label1 As Label
-    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents Profile_Pic As PictureBox
+    Friend WithEvents Username As Label
 End Class
