@@ -1,4 +1,5 @@
 ﻿Imports System.Configuration
+Imports System.Globalization
 Imports Microsoft.Data.SqlClient
 
 'Imports System.Windows.Forms.VisualStyles.VisualStyleElement
@@ -152,7 +153,7 @@ Public Class user_provider_chats
         newLabel.Name = "lblHeader"
         newLabel.Text = "Receiver Name"
         newLabel.TextAlign = ContentAlignment.MiddleCenter
-        newLabel.Width = chat.Width
+        newLabel.Width = chat.Width - 30
         newLabel.Height = 40 ' Set label height
         newLabel.BackColor = Color.FromArgb(214, 179, 227) ' Set background color
         newLabel.Font = New Font("Microsoft YaHei", 12, FontStyle.Bold)
@@ -183,7 +184,7 @@ Public Class user_provider_chats
         ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "Want to hang out later?", "2024-03-30 10:25:00"))
         ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "customer", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
         ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "provider", "Sounds good!", "2024-03-30 10:35:00"))
-        
+
         PopulateRooms()
         HandleTitle()
 
@@ -226,6 +227,14 @@ Public Class user_provider_chats
         PrintMessagesBetweenUsers(room)
     End Sub
 
+    Private Sub sendTextBox_KeyDown(sender As Object, e As KeyEventArgs) Handles sendTextBox.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            ' Call the sendButton_Click event handler
+            sendButton_Click(sender, e)
+            ' Prevent the key press from being handled by the TextBox
+            e.SuppressKeyPress = True
+        End If
+    End Sub
 
     Private Sub sendButton_Click(sender As Object, e As EventArgs) Handles sendBtn.Click
         'Dim messageText As String = chat_list.Controls("textBox1").Text ' Assuming TextBox1 is the name of the TextBox
@@ -248,7 +257,7 @@ Public Class user_provider_chats
             End If
         Next
 
-        Dim maxLength As Integer = 30 ' Set the maximum length before inserting a newline
+        Dim maxLength As Integer = 50 ' Set the maximum length before inserting a newline
         Dim inputString As String = sendTextBox.Text
         Dim messageText As String = ""
 
@@ -287,7 +296,11 @@ Public Class user_provider_chats
         Dim sortedMessages = messagesInRoom.OrderBy(Function(msg) DateTime.Parse(msg.Item5))
 
         ' Y position for labels
-        Dim yPos As Integer = 55
+
+
+        Dim yPos As Integer = 60
+
+
 
         ' Iterate through messages
         For Each msg In sortedMessages
@@ -295,7 +308,9 @@ Public Class user_provider_chats
             Dim deal As Integer = msg.Item2
             Dim senderType As String = msg.Item3
             Dim messageText As String = msg.Item4
-            Dim timeStamp As String = msg.Item5
+            Dim timeStamp As String = DateTime.ParseExact(msg.Item5, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
+
+
 
             ' Create a label for the message
             Dim messageLabel As New Label()
@@ -306,29 +321,67 @@ Public Class user_provider_chats
             messageLabel.Font = New Font(messageLabel.Font.FontFamily, 10)
             messageLabel.Padding = New Padding(5)
             messageLabel.BackColor = ColorTranslator.FromHtml("#D9D9D9")
-            Dim textHeight As Integer = TextRenderer.MeasureText(messageText, messageLabel.Font).Height
+
+            messageLabel.MaximumSize = New Size(chat.Width - 10 * 3, 0)
+            Dim textSize = TextRenderer.MeasureText(messageLabel.Text, messageLabel.Font, messageLabel.MaximumSize, TextFormatFlags.WordBreak)
+
+            Dim textHeight As Integer = textSize.Height
             Dim labelHeight As Integer = messageLabel.Height
 
             messageLabel.Padding = New Padding(0, (labelHeight - textHeight) \ 2, 0, 0)
 
-            ' Assuming label1 is the name of your label control
-            messageLabel.TextAlign = ContentAlignment.MiddleRight
 
-            ' Align labels based on sender
-            If senderType = "provider" Then
-                messageLabel.Location = New Point(10, yPos)
-            ElseIf senderType = "customer" Then
-                messageLabel.Anchor = AnchorStyles.Right
-                messageLabel.Location = New Point(chat.Width - messageLabel.PreferredWidth - 10, yPos)
 
+
+
+
+            Dim label2 As New Label()
+
+            label2.AutoSize = True
+            label2.Margin = New Padding(0)
+            label2.BackColor = Color.Transparent
+            label2.Padding = New Padding(0, 0, 0, 0)
+
+            label2.ForeColor = Color.Brown
+
+            If senderType = "customer" Then
+                messageLabel.Left = chat.Width - messageLabel.PreferredWidth - 10 - 20
+                label2.Left = messageLabel.Left + messageLabel.PreferredWidth - 35 + messageLabel.Width - 88
+            ElseIf senderType = "provider" Then
+                messageLabel.Left = 10
+                label2.Left = textSize.Width - 15
             End If
 
-            ' Set label position
-            yPos += messageLabel.Height + 10
+            label2.AutoEllipsis = False ' Allow the label to display all text
+
+            label2.Text = timeStamp
+
+            label2.Font = New Font(messageLabel.Font.FontFamily, 7, FontStyle.Italic)
+
+            messageLabel.Height = textSize.Height
+            messageLabel.Top = yPos   ' Set the vertical position
+
+
+
+            label2.Top = yPos + messageLabel.Height
+
+            ' Manually calculate the height of the label based on the text and the maximum width
+
+
+
+
+            ' Increment the vertical position for the next message with gap
+
+            yPos += messageLabel.Height + label2.Height - 5
 
             ' Add label to the chat_list panel
             chat.Controls.Add(messageLabel)
+            chat.Controls.Add(label2)
         Next
+
+
+        ' Ensure the panel scrolls to the bottom to show the latest message
+        chat.AutoScrollPosition = New Point(0, chat.AutoScrollPosition.Y + yPos)
     End Sub
 
     Private Sub sendTextBox_TextChanged(sender As Object, e As EventArgs) Handles sendTextBox.TextChanged
