@@ -24,6 +24,8 @@ Public Class payments
 
     Public Sub Payment_load(sender As Object, e As EventArgs) Handles MyBase.Load
         Module_global.payment_successful = 0
+        Book_slots.variableChanged.Reset()
+        Book_slots.myVariable = 0
     End Sub
     Private Sub payButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles payButton.Click
         If captcha.ShowDialog = DialogResult.OK Then
@@ -139,6 +141,15 @@ Public Class payments
     ' parameter 2: subject -> subject of the mail
     ' parameter 3: body -> body of the mail
     ' author: g-s01
+    Private Sub PaymentForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        If Book_slots.myVariable = 0 Then
+            ' Notify the book_slots form about incomplete payment
+            Module_global.payment_successful = 0
+            Book_slots.variableChanged.Set()
+            Book_slots.myVariable = 0
+            MessageBox.Show("hi")
+        End If
+    End Sub
     Private Sub sendEmail(randomNumber As Integer, subject As String, body As String)
         Dim smtpServer As String = "smtp-mail.outlook.com"
         Dim port As Integer = 587
@@ -258,5 +269,9 @@ Public Class payments
                 MessageBox.Show("The OTP is a 6 digit number, please adhere to the convention.")
             End If
         End If
+    End Sub
+
+    Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
+        '' Implement Closing Logic
     End Sub
 End Class

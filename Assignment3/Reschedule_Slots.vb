@@ -426,7 +426,7 @@ Public Class Reschedule_Slots
 
         Else
             ' Timeout occurred
-            MessageBox.Show("Timeout occurred.")
+            MessageBox.Show("Timeout occurred or Some error occured during Payment")
             If payments IsNot Nothing AndAlso Not payments.IsDisposed Then
                 payments.Close()
             End If
