@@ -90,6 +90,7 @@ Public Class Book_slots
                      End Using
                  End Function)
     )
+        'MessageBox.Show(user_name)
 
         ' Update UI with retrieved data
         Provider_Name_Loc_Lbl.Text = ProviderName
@@ -196,20 +197,22 @@ Public Class Book_slots
             End Using
         End Using
         'MessageBox.Show(7)
-        PopulateScheduleTable()
+        Try
+            Await PopulateScheduleTableAsync()
+            MessageBox.Show("Schedule populated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Catch ex As Exception
+            MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            ' Perform cleanup tasks or handle completion/error scenarios (optional)
+        End Try
     End Function
-    Private Sub PopulateScheduleTable()
-
-        ' Clear existing controls in the table layout panel
-        'MessageBox.Show("0")
+    Private Async Function PopulateScheduleTableAsync() As Task
+        Schedule_Table.SuspendLayout()
         Schedule_Table.Controls.Clear()
-        'MessageBox.Show("1")
-        ' Clear any existing column and row styles
         Schedule_Table.ColumnStyles.Clear()
-        Schedule_Table.RowStyles.Clear() '''
-        'MessageBox.Show("2")
+        Schedule_Table.RowStyles.Clear()
 
-        ' Calculate percentage for each column and row
+        ' Add column styles for time slots
         Dim columnPercentage As Single = 100.0F / Schedule_Table.ColumnCount
         Dim rowPercentage As Single = 100.0F / Schedule_Table.RowCount
         'MessageBox.Show(8)
@@ -222,6 +225,7 @@ Public Class Book_slots
             Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Percent, rowPercentage))
         Next
         Schedule_Table.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
+        ' Create and add labels for days of the week asynchronously
         For i As Integer = 0 To 6
             Dim dayLabel As New Label()
             dayLabel.Text = DateTime.Today.AddDays(i).ToString("ddd, dd MMM")
@@ -242,55 +246,31 @@ Public Class Book_slots
             timeLabel.Font = New Font("Arial", 12, FontStyle.Bold)
             Schedule_Table.Controls.Add(timeLabel, i - 8, 0) ' Add to the first column, starting from row index 1
         Next
-        For Each control As Control In Schedule_Table.Controls
-            Dim cellPosition As TableLayoutPanelCellPosition = Schedule_Table.GetPositionFromControl(control)
-            If cellPosition.Column = 0 Or cellPosition.Row = 0 Then
-                control.BackColor = ColorTranslator.FromHtml("#F58CD7")
-            End If
-        Next
-        'MessageBox.Show(10)
-        ' Add buttons for each time slot
-        ' Suspend layout to prevent unnecessary redraws during control modification
-        Schedule_Table.SuspendLayout()
 
-        Try
-            ' Loop through rows (0 to 6) and columns (0 to 11)
-            For i As Integer = 0 To 6
-                For j As Integer = 0 To 11
-                    ' Create a new Button
-                    Dim btn As New Button()
-
-                    ' Common button properties
-                    With btn
-                        .Text = ""
-                        .Dock = DockStyle.Fill
-                        .Margin = New Padding(0)
-                        .FlatStyle = FlatStyle.Flat ' Set the button to have a flat appearance
-                    End With
-
-                    ' Determine button background color based on availability
-                    Select Case availability(i, j)
-                        Case 1 ' Available
-                            btn.BackColor = Color.LightGreen
-                        Case 2 ' Dark green (for specific condition)
-                            btn.BackColor = Color.DarkGreen
-                        Case Else ' Unavailable (default)
-                            btn.BackColor = Color.Transparent
-                    End Select
-
-                    ' Add the button to the TableLayoutPanel at specified row and column
-                    Schedule_Table.Controls.Add(btn, j + 1, i + 1)
-
-                    ' Attach a Click event handler to the button
-                    AddHandler btn.Click, AddressOf TimeSlot_Click
-                Next
+        ' Create and add buttons for time slots asynchronously
+        For i As Integer = 0 To 6
+            For j As Integer = 0 To 11
+                Dim btn As New Button()
+                btn.Dock = DockStyle.Fill
+                btn.FlatStyle = FlatStyle.Flat
+                btn.Margin = New Padding(0)
+                btn.BackColor = If(availability(i, j) = 1, Color.LightGreen, If(availability(i, j) = 2, Color.DarkGreen, Color.Transparent))
+                Await AddControlToScheduleTableAsync(btn, i + 1, j + 1)
             Next
-        Finally
-            ' Resume layout after all controls are added
-            Schedule_Table.ResumeLayout()
-        End Try
-        'MessageBox.Show(11)
-    End Sub
+        Next
+
+        Schedule_Table.ResumeLayout(True)
+    End Function
+
+
+    Private Async Function AddControlToScheduleTableAsync(control As Control, column As Integer, row As Integer) As Task
+        ' Use Control.Invoke to update the UI on the main UI thread
+        Schedule_Table.Invoke(Sub()
+                                  Schedule_Table.Controls.Add(control, row, column)
+                              End Sub)
+        AddHandler control.Click, AddressOf TimeSlot_Click
+    End Function
+
 
     Private Sub TimeSlot_Click(sender As Object, e As EventArgs)
         Dim btn As Button = DirectCast(sender, Button)
@@ -369,8 +349,8 @@ Public Class Book_slots
         ' Your function code here
         MessageBox.Show("This message appears when the form loads.")
     End Sub
-    Public variableChanged As New ManualResetEvent(False)
 
+    Public variableChanged As New ManualResetEvent(False)
     ' Variable to monitor for changes
     Public myVariable As Integer = 0
     Private Async Function WaitForVariableChangeOrTimeoutAsync(timeoutMilliseconds As Integer) As Task
@@ -384,7 +364,7 @@ Public Class Book_slots
 
         Else
             ' Timeout occurred
-            MessageBox.Show("Timeout occurred.")
+            MessageBox.Show("Timeout occurred or some error occured during payment")
             If payments IsNot Nothing AndAlso Not payments.IsDisposed Then
                 payments.Close()
             End If
@@ -394,6 +374,12 @@ Public Class Book_slots
 
         End If
     End Function
+    Sub ClearListOfLists(list As List(Of List(Of Integer)))
+        For Each innerList As List(Of Integer) In list
+            innerList.Clear() ' Remove all elements from the inner list
+        Next
+        list.Clear() ' Finally, clear the outer list
+    End Sub
     Private Async Sub Book_Btn_Click(sender As Object, e As EventArgs) Handles Book_Btn.Click
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
 
@@ -456,6 +442,11 @@ Public Class Book_slots
                         End Using
                         Module_global.payment_successful = 0
                         myVariable = 0
+                        variableChanged.Reset()
+
+
+                        ' Call the function to clear the list of lists
+                        BookedList.Clear()
                         Make_Schedule_Table()
                         MessageBox.Show("Successfully Booked the slots.")
                     Else
@@ -470,12 +461,16 @@ Public Class Book_slots
                             deleteCommand.Parameters.AddWithValue("@time", formattedDate)
                             deleteCommand.Parameters.AddWithValue("@slots", pair(1))
                             Dim rowsAffected1 As Integer = deleteCommand.ExecuteNonQuery()
-
+                            BookedList.Clear()
                             If rowsAffected > 0 Then
                                 Console.WriteLine("Deleted")
                             Else
                                 MessageBox.Show("Error!")
                             End If
+                            Module_global.payment_successful = 0
+                            myVariable = 0
+                            variableChanged.Reset()
+                            Make_Schedule_Table()
                             ' Execute the DELETE query to delete the Schedules
                         Next
                     End If
@@ -489,6 +484,8 @@ Public Class Book_slots
                 If ex.Number = 2601 OrElse ex.Number = 2627 Then
                     ' Duplicate key violation error (constraint violation)
                     MessageBox.Show("This slot is already booked.", "Booking Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+                    BookedList.Clear()
                     Make_Schedule_Table()
                 Else
                     ' Other SQL error occurred, handle accordingly
@@ -503,14 +500,6 @@ Public Class Book_slots
         End Using
     End Sub
 
-    Private Async Sub Sleep()
-        ' Perform some actions before sleeping
-
-        ' Pause execution of this form for 1 second (1000 milliseconds)
-        Await Task.Delay(10000)
-
-        ' Continue with other actions after sleeping
-    End Sub
     Private Sub Back_Btn_Click(sender As Object, e As EventArgs) Handles Back_Btn.Click
         user_template.SplitContainer1.Panel2.Controls.Clear()
         If slot_back_choice = 1 Then
