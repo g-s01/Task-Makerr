@@ -10,4 +10,6 @@
     Public slot_back_choice As Integer = 1
     Public cost_of_booking As Integer
     Public payment_successful As Integer = 0
+    Public serviceType As String = ""
 End Module
+
