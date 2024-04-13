@@ -29,7 +29,7 @@ Public Class Book_slots
             Await LoadData()
 
             ' Display the result (optional)
-            MessageBox.Show($"Data loaded")
+            'MessageBox.Show($"Data loaded")
         Catch ex As Exception
             ' MessageBox.Show($"An error occurred: {ex.Message}")
         Finally
@@ -345,10 +345,7 @@ Public Class Book_slots
         End Using
     End Function
 
-    Private Sub DisplayMessageOnLoad()
-        ' Your function code here
-        MessageBox.Show("This message appears when the form loads.")
-    End Sub
+
 
     Public variableChanged As New ManualResetEvent(False)
     ' Variable to monitor for changes
@@ -374,12 +371,7 @@ Public Class Book_slots
 
         End If
     End Function
-    Sub ClearListOfLists(list As List(Of List(Of Integer)))
-        For Each innerList As List(Of Integer) In list
-            innerList.Clear() ' Remove all elements from the inner list
-        Next
-        list.Clear() ' Finally, clear the outer list
-    End Sub
+
     Private Async Sub Book_Btn_Click(sender As Object, e As EventArgs) Handles Book_Btn.Click
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
 
@@ -412,10 +404,12 @@ Public Class Book_slots
                     payments.CostOfService = Total_cost
                     payments.ProviderEmailID = ProviderName
                     MessageBox.Show($"Data inserted successfully, you need to pay a total of {Total_cost}Rs.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    variableChanged.Reset()
+                    myVariable = 0
                     payments.Show()
                     Await WaitForVariableChangeOrTimeoutAsync(900000000)
                     If (Module_global.payment_successful = 1) Then
-                        Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location);"
+                        Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location,deal_amount) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location,@TotalCost);"
                         Dim zeros As String = New String("0"c, 84)
                         Dim charArray() As Char = zeros.ToCharArray()
 
@@ -435,6 +429,7 @@ Public Class Book_slots
                             command.Parameters.AddWithValue("@Status", 1)
                             command.Parameters.AddWithValue("@Dates", DateTime.Now())
                             command.Parameters.AddWithValue("@Location", Address_TxtBox.Text)
+                            command.Parameters.AddWithValue("@TotalCost", Total_cost * 2)
                             rowsAffected = command.ExecuteNonQuery()
                             If rowsAffected = 0 Then
                                 MessageBox.Show("Some unusual error happened.")
@@ -448,6 +443,7 @@ Public Class Book_slots
                         ' Call the function to clear the list of lists
                         BookedList.Clear()
                         Make_Schedule_Table()
+                        'Await (task2)
                         MessageBox.Show("Successfully Booked the slots.")
                     Else
                         MessageBox.Show("Payment was not successful. Please try again.")
@@ -471,6 +467,7 @@ Public Class Book_slots
                             myVariable = 0
                             variableChanged.Reset()
                             Make_Schedule_Table()
+                            ' Await (task2)
                             ' Execute the DELETE query to delete the Schedules
                         Next
                     End If
@@ -486,14 +483,17 @@ Public Class Book_slots
                     MessageBox.Show("This slot is already booked.", "Booking Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
 
                     BookedList.Clear()
+                    myVariable = 0
+                    variableChanged.Reset()
                     Make_Schedule_Table()
+
                 Else
                     ' Other SQL error occurred, handle accordingly
-                    MessageBox.Show($"SQL Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    'MessageBox.Show($"SQL Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
             Catch ex As Exception
                 ' Generic error handling for other exceptions
-                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                'MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
 
@@ -508,6 +508,7 @@ Public Class Book_slots
                 .AutoSize = True
                 .Dock = DockStyle.Fill
                 user_template.SplitContainer1.Panel2.Controls.Add(UserHome)
+                Me.Close()
                 .BringToFront()
                 .Show()
 
@@ -517,6 +518,7 @@ Public Class Book_slots
                 .TopLevel = False
                 .AutoSize = True
                 .Dock = DockStyle.Fill
+                Me.Close()
                 user_template.SplitContainer1.Panel2.Controls.Add(user_search)
                 .BringToFront()
                 .Show()
