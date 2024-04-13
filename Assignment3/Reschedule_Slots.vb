@@ -443,58 +443,39 @@ Public Class Reschedule_Slots
         Dim prevBookListSize As Integer = PreviouslyBookedList.Count
         Dim currBookListSize As Integer = BookedList.Count
 
-        If prevBookListSize > currBookListSize Then
-            ' Slots removed - Cancellation cost.
-            ' Choosing last slots for less fees.
-            ' But assume time is 9:00 AM from today.
-            For I As Integer = currBookListSize To prevBookListSize - 1
-                Dim cancelledSlot As Integer() = PreviouslyBookedList(I)
-                Dim diff1 As Double = cancelledSlot(0) + cancelledSlot(1) * 13
-                If diff1 >= 2 * 91 / 3 Then
-                    reschedule_cost += 2.5 / 2 * (1 / 100) * Cost_per_hour
-                ElseIf diff1 >= 91 / 2 Then
-                    reschedule_cost += 5 / 2 * (1 / 100) * Cost_per_hour
-                ElseIf diff1 >= 91 / 3 Then
-                    reschedule_cost += 7.5 / 2 * (1 / 100) * Cost_per_hour
-                ElseIf diff1 >= 91 / 6 Then
-                    reschedule_cost += 10 / 2 * (1 / 100) * Cost_per_hour
-                Else
-                    reschedule_cost += 12.5 / 2 * (1 / 100) * Cost_per_hour
-                End If
-            Next
-        ElseIf prevBookListSize < currBookListSize Then
-            ' New Slots booked - New slots cost.
-            reschedule_cost += CType(Cost_per_hour, Decimal) * (currBookListSize - prevBookListSize)
-        End If
-        ' Pure Rescheduling cost
-        Dim sortedBookedList As List(Of Integer()) = BookedList
-        sortedBookedList.Sort(AddressOf PairComparator)
-        For I As Integer = 0 To Math.Min(prevBookListSize, currBookListSize) - 1
-            Dim newSlot As Integer() = sortedBookedList(I)
-            Dim oldSlot As Integer() = PreviouslyBookedList(I)
-            Dim diff As Decimal = CType((newSlot(0) - oldSlot(0) + (newSlot(1) - oldSlot(1)) * 13), Decimal)
-            If diff < 0 Then
-                diff *= -0.75
-            End If
-            If diff >= 2 * 91 / 3 Then
-                reschedule_cost += 2 / 3 * 2.5 * (1 / 100) * Cost_per_hour
-            ElseIf diff >= 91 / 2 Then
-                reschedule_cost += 2 / 3 * 5 * (1 / 100) * Cost_per_hour
-            ElseIf diff >= 91 / 3 Then
-                reschedule_cost += 2 / 3 * 7.5 * (1 / 100) * Cost_per_hour
-            ElseIf diff >= 91 / 6 Then
-                reschedule_cost += 2 / 3 * 10 * (1 / 100) * Cost_per_hour
-            Else
-                reschedule_cost += 2 / 3 * 12.5 * (1 / 100) * Cost_per_hour
-            End If
-        Next
         Using connection As New SqlConnection(connectionString)
             connection.Open()
-
+            If prevBookListSize = currBookListSize Then
+                ' No description of how to map the slots one to one...
+                ' So take one to one in-order map of the sorted lists.
+                Dim sortedCurrBookedList As List(Of Integer()) = BookedList
+                Dim sortedPrevBookedList As List(Of Integer()) = PreviouslyBookedList
+                sortedCurrBookedList.Sort(AddressOf PairComparator)
+                sortedPrevBookedList.Sort(AddressOf PairComparator)
+                ' y = 1 if postpone
+                Dim y As Decimal = 1.0
+                For I As Integer = 0 To currBookListSize - 1
+                    If PairComparator(sortedCurrBookedList(I), sortedPrevBookedList(I)) < 0 Then
+                        'y = 1.05 if prepone
+                        y += 0.05
+                    End If
+                    ' No description of booking time...
+                    ' So take booking time as current day with starting slot.
+                    reschedule_cost += Math.Abs((sortedCurrBookedList(I)(0) * 13 + sortedCurrBookedList(I)(1))) * 0.7 + Math.Abs((sortedPrevBookedList(I)(0) * 13 + sortedPrevBookedList(I)(1))) * 0.3
+                    reschedule_cost *= y
+                    reschedule_cost /= 84.0
+                    y = 1.0
+                Next
+                reschedule_cost /= 2.0
+                reschedule_cost /= currBookListSize
+            Else
+                MessageBox.Show("Please choose same number of slots. If you want to add or remove slots from the current schedule, you must cancel this booking.")
+                GoTo Rollback
+            End If
             Dim response As DialogResult = MessageBox.Show($"The rescheduling cost is {reschedule_cost}, Do you wish to continue", "Done", MessageBoxButtons.YesNo, MessageBoxIcon.Information)
             If response = DialogResult.No Then
                 ' Roll back Schedule insertion
-
+Rollback:
                 ' Re insert old slots
                 For Each slot As Integer() In PreviouslyBookedList
                     Dim provider_query As String = "INSERT INTO schedule (user_id,provider_id,slots,time) VALUES (@User_ID,@Provider_ID,@Slot,@Time);" ' Add the query here
