@@ -11,6 +11,7 @@ Imports iText.IO.Font.Constants
 Imports Microsoft.Identity.Client.NativeInterop
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports System.Collections.ObjectModel
+Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 
 Public Class payments
     ' to connect with the database
@@ -24,7 +25,7 @@ Public Class payments
 
     Public Sub Payment_load(sender As Object, e As EventArgs) Handles MyBase.Load
         Module_global.payment_successful = 0
-        Book_slots.variableChanged.Reset()
+        ''  Book_slots.variableChanged.Reset()
         Book_slots.myVariable = 0
     End Sub
     Private Sub payButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles payButton.Click
@@ -59,6 +60,8 @@ Public Class payments
                         End Using
                         If bal >= Decimal.Parse(TextBox2.Text) Then
                             Module_global.payment_successful = 1
+                            Book_slots.myVariable = 1
+                            Book_slots.variableChanged.Set()
                             ' updating balance of both the users
                             Dim sqlQuery As String = "UPDATE customer SET balance = CASE WHEN email = @AccountNumber1 THEN balance - @AmountToUpdate WHEN email = @AccountNumber2 THEN balance + @AmountToUpdate END WHERE email IN (@AccountNumber1, @AccountNumber2);"
 
@@ -90,9 +93,7 @@ Public Class payments
                                     End If
                                 End Using
                             End Using
-                            Book_slots.variableChanged.Set()
-                            Book_slots.myVariable = 1
-                            'receipt generation
+
                             Dim saveDialog As New SaveFileDialog()
                             saveDialog.Filter = "PDF File (*.pdf)|*.pdf"
                             saveDialog.FileName = "Receipt.pdf"
@@ -148,7 +149,15 @@ Public Class payments
             Book_slots.variableChanged.Set()
             Book_slots.myVariable = 0
             MessageBox.Show("hi")
+        Else
+            Module_global.payment_successful = 1
+            MessageBox.Show(Book_slots.myVariable)
+            'Book_slots.variableChanged.Set()
+
+            'receipt generation
         End If
+
+
     End Sub
     Private Sub sendEmail(randomNumber As Integer, subject As String, body As String)
         Dim smtpServer As String = "smtp-mail.outlook.com"
@@ -274,4 +283,5 @@ Public Class payments
     Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
         '' Implement Closing Logic
     End Sub
+
 End Class

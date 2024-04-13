@@ -75,7 +75,7 @@ Partial Class payments
         ' Label1
         ' 
         Label1.AutoSize = True
-        Label1.Font = New Font("Microsoft YaHei", 20.25F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label1.Font = New Font("Microsoft YaHei", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0)
         Label1.Location = New Point(14, 131)
         Label1.Name = "Label1"
         Label1.Size = New Size(334, 45)
@@ -85,7 +85,7 @@ Partial Class payments
         ' Label2
         ' 
         Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label2.Font = New Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0)
         Label2.ForeColor = SystemColors.ActiveCaptionText
         Label2.Location = New Point(14, 179)
         Label2.Name = "Label2"
@@ -95,7 +95,7 @@ Partial Class payments
         ' 
         ' GroupBox1
         ' 
-        GroupBox1.BackColor = Color.FromArgb(CByte(255), CByte(192), CByte(255))
+        GroupBox1.BackColor = Color.FromArgb(255, 192, 255)
         GroupBox1.Controls.Add(Label5)
         GroupBox1.Controls.Add(TextBox3)
         GroupBox1.Controls.Add(TextBox2)
@@ -114,7 +114,7 @@ Partial Class payments
         ' Label5
         ' 
         Label5.AutoSize = True
-        Label5.Font = New Font("Microsoft YaHei", 14.25F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label5.Font = New Font("Microsoft YaHei", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0)
         Label5.Location = New Point(50, 341)
         Label5.Name = "Label5"
         Label5.Size = New Size(338, 31)
@@ -123,7 +123,7 @@ Partial Class payments
         ' 
         ' TextBox3
         ' 
-        TextBox3.Font = New Font("Microsoft YaHei", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        TextBox3.Font = New Font("Microsoft YaHei", 12F, FontStyle.Regular, GraphicsUnit.Point, 0)
         TextBox3.Location = New Point(65, 395)
         TextBox3.Margin = New Padding(3, 4, 3, 4)
         TextBox3.Name = "TextBox3"
@@ -132,7 +132,7 @@ Partial Class payments
         ' 
         ' TextBox2
         ' 
-        TextBox2.Font = New Font("Microsoft YaHei", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        TextBox2.Font = New Font("Microsoft YaHei", 12F, FontStyle.Regular, GraphicsUnit.Point, 0)
         TextBox2.Location = New Point(65, 235)
         TextBox2.Margin = New Padding(3, 4, 3, 4)
         TextBox2.Name = "TextBox2"
@@ -142,7 +142,7 @@ Partial Class payments
         ' Label4
         ' 
         Label4.AutoSize = True
-        Label4.Font = New Font("Microsoft YaHei", 15.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label4.Font = New Font("Microsoft YaHei", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0)
         Label4.Location = New Point(50, 177)
         Label4.Name = "Label4"
         Label4.Size = New Size(127, 36)
@@ -152,7 +152,7 @@ Partial Class payments
         ' addButton
         ' 
         addButton.BackColor = Color.Purple
-        addButton.Font = New Font("Microsoft YaHei", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        addButton.Font = New Font("Microsoft YaHei", 12F, FontStyle.Bold, GraphicsUnit.Point, 0)
         addButton.ForeColor = Color.White
         addButton.Location = New Point(65, 453)
         addButton.Margin = New Padding(3, 4, 3, 4)
@@ -164,7 +164,7 @@ Partial Class payments
         ' 
         ' TextBox1
         ' 
-        TextBox1.Font = New Font("Microsoft YaHei", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        TextBox1.Font = New Font("Microsoft YaHei", 12F, FontStyle.Regular, GraphicsUnit.Point, 0)
         TextBox1.Location = New Point(65, 93)
         TextBox1.Margin = New Padding(3, 4, 3, 4)
         TextBox1.Name = "TextBox1"
@@ -174,7 +174,7 @@ Partial Class payments
         ' Label3
         ' 
         Label3.AutoSize = True
-        Label3.Font = New Font("Microsoft YaHei", 15.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label3.Font = New Font("Microsoft YaHei", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0)
         Label3.Location = New Point(50, 40)
         Label3.Name = "Label3"
         Label3.Size = New Size(101, 36)
@@ -184,7 +184,7 @@ Partial Class payments
         ' payButton
         ' 
         payButton.BackColor = Color.Purple
-        payButton.Font = New Font("Microsoft YaHei", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        payButton.Font = New Font("Microsoft YaHei", 12F, FontStyle.Bold, GraphicsUnit.Point, 0)
         payButton.ForeColor = SystemColors.ButtonHighlight
         payButton.Location = New Point(403, 760)
         payButton.Margin = New Padding(3, 4, 3, 4)
