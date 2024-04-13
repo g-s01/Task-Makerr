@@ -167,11 +167,11 @@ Public Class UserHome
         Dim clickedButton As Button = CType(sender, Button)
         Module_global.serviceType = CType(clickedButton.Tag, String)
         user_template.SplitContainer1.Panel2.Controls.Clear()
-        With view_more_user
+        With ViewAllUser
             .TopLevel = False
             .AutoSize = True
             .Dock = DockStyle.Fill
-            user_template.SplitContainer1.Panel2.Controls.Add(view_more_user)
+            user_template.SplitContainer1.Panel2.Controls.Add(ViewAllUser)
             .BringToFront()
             .Show()
         End With
