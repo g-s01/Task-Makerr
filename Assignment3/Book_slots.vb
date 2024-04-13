@@ -409,7 +409,7 @@ Public Class Book_slots
                     payments.Show()
                     Await WaitForVariableChangeOrTimeoutAsync(900000000)
                     If (Module_global.payment_successful = 1) Then
-                        Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location);"
+                        Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location,deal_amount) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location,@TotalCost);"
                         Dim zeros As String = New String("0"c, 84)
                         Dim charArray() As Char = zeros.ToCharArray()
 
@@ -429,6 +429,7 @@ Public Class Book_slots
                             command.Parameters.AddWithValue("@Status", 1)
                             command.Parameters.AddWithValue("@Dates", DateTime.Now())
                             command.Parameters.AddWithValue("@Location", Address_TxtBox.Text)
+                            command.Parameters.AddWithValue("@TotalCost", Total_cost * 2)
                             rowsAffected = command.ExecuteNonQuery()
                             If rowsAffected = 0 Then
                                 MessageBox.Show("Some unusual error happened.")
