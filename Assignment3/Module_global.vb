@@ -10,4 +10,8 @@
     Public slot_back_choice As Integer = 1
     Public cost_of_booking As Integer
     Public payment_successful As Integer = 0
+    Public serviceType As String = ""
+    Public service_types As List(Of String) = New List(Of String) From {"Cleaning", "Plumbing", "Electrical", "Painting", "Decorating", "Catering", "Photography", "Others"}
+    Public provider_locations As List(Of String) = New List(Of String) From {"Panbazar", "Dispur", "Chandmari", "Zoo Road", "Beltola", "Khanapara", "Hatigaon", "Jalukbari", "Maligaon", "Garchuk"}
 End Module
+

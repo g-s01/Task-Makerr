@@ -1,4 +1,7 @@
-﻿Public Class support_chat
+﻿Imports System.Globalization
+Imports Microsoft.CodeAnalysis.Text
+
+Public Class support_chat
     Dim user_role As String = "user"
     Dim userId As Integer = 1
     Dim dealId As Integer = -1
@@ -19,13 +22,24 @@
         PrintMessages()
     End Sub
 
+    Private WithEvents sendTextBox As TextBox
+
+    Private Sub sendTextBox_KeyDown(sender As Object, e As KeyEventArgs) Handles inputTextBox.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            ' Call the sendButton_Click event handler
+            sendButton_Click(sender, e)
+            ' Prevent the key press from being handled by the TextBox
+            e.SuppressKeyPress = True
+        End If
+    End Sub
+
 
     Private Sub sendButton_Click(sender As Object, e As EventArgs) Handles sendButton.Click
 
 
         ' Get the current timestamp
         Dim timeStamp As String = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-        Dim maxLength As Integer = 30 ' Set the maximum length before inserting a newline
+        Dim maxLength As Integer = 70 ' Set the maximum length before inserting a newline
         Dim inputString As String = inputTextBox.Text
         Dim messageText As String = ""
 
@@ -62,7 +76,7 @@
             Dim room As Integer = msg.Item1
             Dim senderType As String = msg.Item2
             Dim messageText As String = msg.Item3
-            Dim timeStamp As String = msg.Item4
+            Dim timeStamp As String = DateTime.ParseExact(msg.Item4, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
 
             ' Create a label for the message
             Dim messageLabel As New Label()
@@ -73,28 +87,75 @@
             messageLabel.Font = New Font(messageLabel.Font.FontFamily, 10)
             messageLabel.Padding = New Padding(5)
             messageLabel.BackColor = ColorTranslator.FromHtml("#D9D9D9")
-            Dim textHeight As Integer = TextRenderer.MeasureText(messageText, messageLabel.Font).Height
+            messageLabel.MaximumSize = New Size(Chat.Width - 10 * 3, 0)
+            Dim textSize = TextRenderer.MeasureText(messageLabel.Text, messageLabel.Font, messageLabel.MaximumSize, TextFormatFlags.WordBreak)
+
+            Dim textHeight As Integer = textSize.Height
             Dim labelHeight As Integer = messageLabel.Height
 
             messageLabel.Padding = New Padding(0, (labelHeight - textHeight) \ 2, 0, 0)
 
-            ' Assuming label1 is the name of your label control
-            messageLabel.TextAlign = ContentAlignment.MiddleRight
 
-            ' Align labels based on sender
+
+            Dim label2 As New Label()
+
+            label2.AutoSize = True
+            label2.Margin = New Padding(0)
+
+            label2.BackColor = Color.Transparent
+
+            label2.Padding = New Padding(0, 0, 0, 0)
+
+            label2.ForeColor = Color.Brown
+
             If senderType <> user_role Then
-                messageLabel.Location = New Point(10, yPos)
+                messageLabel.Left = 10
+                label2.Left = textSize.Width - 15
+
             Else
-                messageLabel.Anchor = AnchorStyles.Right
-                messageLabel.Location = New Point(Support.Width - messageLabel.PreferredWidth - 10, yPos)
+                messageLabel.Left = Chat.Width - messageLabel.PreferredWidth - 10 - 5
+                label2.Left = messageLabel.Left + messageLabel.PreferredWidth - 35 + messageLabel.Width - 88
             End If
 
+            label2.AutoEllipsis = False ' Allow the label to display all text
+
+            label2.Text = timeStamp
+
+
+            label2.Font = New Font(messageLabel.Font.FontFamily, 7, FontStyle.Italic)
+
+            messageLabel.Height = textSize.Height
+            messageLabel.Top = yPos   ' Set the vertical position
+
+
+
+            label2.Top = yPos + messageLabel.Height
+
+            ' Manually calculate the height of the label based on the text and the maximum width
+
+
+
             ' Set label position
-            yPos += messageLabel.Height + 10
+            yPos += messageLabel.Height + label2.Height
 
             ' Add label to the chat_list panel
             Support.Controls.Add(messageLabel)
+            Support.Controls.Add(label2)
+
         Next
+        ' Ensure the panel scrolls to the bottom to show the latest message
+        Support.AutoScrollPosition = New Point(0, Support.AutoScrollPosition.Y + yPos)
     End Sub
 
+    Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
+
+    End Sub
+
+    Private Sub Support_Paint(sender As Object, e As PaintEventArgs) Handles Support.Paint
+
+    End Sub
+
+    Private Sub inputTextBox_TextChanged(sender As Object, e As EventArgs) Handles inputTextBox.TextChanged
+
+    End Sub
 End Class

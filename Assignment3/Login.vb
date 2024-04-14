@@ -31,7 +31,8 @@ Public Class Login
             Email = email_tb.Text()
             ' check from database for the email and password
             Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
-            Dim query As String = "SELECT Provider_ID FROM provider WHERE Email = @Email AND Password = @Password"
+            Dim query As String = "SELECT Provider_ID FROM provider WHERE Email COLLATE Latin1_General_CS_AS = @Email AND Password COLLATE Latin1_General_CS_AS = @Password"
+
 
             Try
                 Using sqlConnection As New SqlConnection(connectionString)
@@ -73,7 +74,7 @@ Public Class Login
             Email = email_tb.Text()
             ' check from database for the email and password
             Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
-            Dim query As String = "SELECT User_ID FROM customer WHERE Email = @Email AND Password = @Password"
+            Dim query As String = "SELECT User_ID FROM customer WHERE Email COLLATE Latin1_General_CS_AS = @Email AND Password COLLATE Latin1_General_CS_AS = @Password"
 
             Try
                 Using sqlConnection As New SqlConnection(connectionString)
@@ -105,7 +106,7 @@ Public Class Login
     End Sub
 
     Private Sub Admin_ll_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles admin_ll.LinkClicked
-        Me.Close()
+        Close()
         Admin_Login.Show()
     End Sub
 End Class

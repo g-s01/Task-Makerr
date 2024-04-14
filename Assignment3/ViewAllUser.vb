@@ -4,9 +4,7 @@ Imports System.Configuration
 Imports System.Drawing
 Imports System.Text
 Imports System.Windows.Forms.AxHost
-
-Public Class view_more_user
-
+Public Class ViewAllUser
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
 
@@ -211,7 +209,7 @@ Public Class view_more_user
 
 
 
-        SplitContainer1.Panel2.Controls.Add(innerPanel)
+        Me.Controls.Add(innerPanel)
 
 
 
@@ -223,10 +221,6 @@ Public Class view_more_user
         ' Show the index of the clicked tile in a message box
         MessageBox.Show("Index of Clicked Tile: " & e.ToString())
     End Sub
-
-
-
-
 
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
         ' Check if "Option 3" is selected
@@ -254,149 +248,4 @@ Public Class view_more_user
         End Sub
     End Class
 
-
-    ' function to switch panel
-    ' author: sarg19
-    Sub switchPanel(ByVal panel As Form)
-        SplitContainer1.Panel2.Controls.Clear()
-
-        With panel
-            .TopLevel = False
-            .AutoSize = True
-            .Dock = DockStyle.Fill
-            SplitContainer1.Panel2.Controls.Add(panel)
-            .BringToFront()
-            .Show()
-        End With
-    End Sub
-
-
-    Sub Reset_Buttons()
-        Button1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = SystemColors.Control
-    End Sub
-
-    ' Home button
-    ' author: sarg19
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Button1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = SystemColors.Control
-
-        switchPanel(UserHome)
-    End Sub
-
-    ' Search button
-    ' author: sarg19
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Button1.BackColor = SystemColors.Control
-        Button2.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = SystemColors.Control
-
-        switchPanel(user_search)
-
-    End Sub
-
-    ' Appointments button
-    ' author: sarg19
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Button1.BackColor = SystemColors.Control
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = SystemColors.Control
-
-        switchPanel(user_appointments)
-
-    End Sub
-
-    ' Profile button
-    ' author: sarg19
-    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        Button1.BackColor = SystemColors.Control
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = SystemColors.Control
-
-        switchPanel(user_profile)
-
-    End Sub
-
-    ' Chats button
-    ' author: sarg19
-    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
-        Button1.BackColor = SystemColors.Control
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = SystemColors.Control
-
-        'switchPanel(user_chats)
-        user_template.SplitContainer1.Panel2.Controls.Clear()
-        With user_provider_chats
-            .TopLevel = False
-            .AutoSize = True
-            .Dock = DockStyle.Fill
-            user_template.SplitContainer1.Panel2.Controls.Add(user_provider_chats)
-            .BringToFront()
-            .Show()
-        End With
-
-
-    End Sub
-
-    ' Help button
-    ' author: sarg19
-    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        Button1.BackColor = SystemColors.Control
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button7.BackColor = SystemColors.Control
-
-        'switchPanel(user_search)
-
-    End Sub
-
-    ' Feedback button
-    ' author: sarg19
-    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
-        Button1.BackColor = SystemColors.Control
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-
-        switchPanel(user_feedback)
-    End Sub
-
-    ' Logout button
-    Private Sub Logout_btn_Click(sender As Object, e As EventArgs) Handles logout_btn.Click
-        Me.Close()
-        Login.Show()
-    End Sub
 End Class

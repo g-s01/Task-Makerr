@@ -19,69 +19,103 @@ Public Class Book_slots
     Public is_null_image As Integer = 0
     ' Store the user home form
     'Public UserHome As New U'serHome()
-    Public Sub Book_slots_load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Public Async Sub Book_slots_load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Run your function here
         'MessageBox.Show(1)
-        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-        Dim provider_query As String = "SELECT providername,working_hour,cost_per_hour FROM provider WHERE provider_id = @Provider_ID"
-        Dim user_query As String = "SELECT username,profile_image FROM customer WHERE user_id = @User_ID"
-        Using connection As New SqlConnection(connectionString)
-            Using command As New SqlCommand(provider_query, connection)
-                ' Add parameters
-                command.Parameters.AddWithValue("@Provider_ID", provider)
-                connection.Open()
+        ProgressBar1.Visible = True
+        ProgressBar1.Style = ProgressBarStyle.Marquee
+        Try
+            ' Execute the LoadDataAsync method asynchronously
+            Await LoadData()
 
-                ' Execute the select command
-                Dim reader As SqlDataReader = command.ExecuteReader()
-
-                While reader.Read()
-                    ' Retrieve the provider name from the reader
-                    ProviderName = reader.GetString(0)
-                    Avaiability_String = reader.GetString(1)
-                    cost_per_hour = reader.GetInt32(2)
-                    ' Do something with the retrieved values, such as displaying them in a MessageBox
-                End While
-
-            End Using
-        End Using
-        Provider_Name_Loc_Lbl.Text = ProviderName
-        'MessageBox.Show(2)
-        Using connection As New SqlConnection(connectionString)
-            Using command As New SqlCommand(user_query, connection)
-                ' Add parameters
-                connection.Open()
-                command.Parameters.AddWithValue("@User_ID", user)
-
-
-                ' Execute the select command
-                Dim reader As SqlDataReader = command.ExecuteReader()
-
-                While reader.Read()
-                    ' Retrieve the provider name from the reader
-                    user_name = reader.GetString(0)
-                    If (reader.IsDBNull("profile_image")) Then
-                        is_null_image = 1
-                    Else
-                        Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
-                        binaryImageData = imageData
-                    End If
-
-                    ' Convert byte array to image
-
-                    Username.Text = user_name
-                    ' Do something with the retrieved values, such as displaying them in a MessageBox
-                End While
-
-            End Using
-        End Using
-        'MessageBox.Show(3)
-        MakePictureBoxRound(Profile_Pic)
-        'MessageBox.Show(4)
-        Make_Schedule_Table()
+            ' Display the result (optional)
+            'MessageBox.Show($"Data loaded")
+        Catch ex As Exception
+            ' MessageBox.Show($"An error occurred: {ex.Message}")
+        Finally
+            ' Hide the progress bar after the operation completes or fails
+            ProgressBar1.Visible = False
+        End Try
 
     End Sub
 
-    Private Sub Make_Schedule_Table()
+    Private Async Function LoadData() As Task
+        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+        Dim providerQuery As String = "SELECT providername,working_hour,cost_per_hour FROM provider WHERE provider_id = @Provider_ID"
+        Dim userQuery As String = "SELECT username,profile_image FROM customer WHERE user_id = @User_ID"
+        ' Use Task.WhenAll to run both queries in parallel
+        Await Task.WhenAll(
+        Task.Run(Async Function()
+                     ' Execute provider_query
+                     Using connection As New SqlConnection(connectionString)
+                         Using command As New SqlCommand(providerQuery, connection)
+                             ' Add parameters
+                             command.Parameters.AddWithValue("@Provider_ID", provider)
+                             Await connection.OpenAsync()
+
+                             ' Execute the select command
+                             Dim reader As SqlDataReader = Await command.ExecuteReaderAsync()
+
+                             While Await reader.ReadAsync()
+                                 ' Retrieve provider details
+                                 ProviderName = reader.GetString(0)
+                                 Avaiability_String = reader.GetString(1)
+                                 cost_per_hour = reader.GetInt32(2)
+                             End While
+                         End Using
+                     End Using
+                 End Function),
+        Task.Run(Async Function()
+                     ' Execute user_query
+                     Using connection As New SqlConnection(connectionString)
+                         Using command As New SqlCommand(userQuery, connection)
+                             ' Add parameters
+                             command.Parameters.AddWithValue("@User_ID", user)
+                             Await connection.OpenAsync()
+
+                             ' Execute the select command
+                             Dim reader As SqlDataReader = Await command.ExecuteReaderAsync()
+
+                             While Await reader.ReadAsync()
+                                 ' Retrieve user details
+                                 user_name = reader.GetString(0)
+                                 If Not reader.IsDBNull(reader.GetOrdinal("profile_image")) Then
+                                     Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
+                                     binaryImageData = imageData
+                                 Else
+                                     is_null_image = 1
+                                 End If
+                             End While
+                         End Using
+                     End Using
+                 End Function)
+    )
+        'MessageBox.Show(user_name)
+
+        ' Update UI with retrieved data
+        Provider_Name_Loc_Lbl.Text = ProviderName
+        Username.Text = user_name
+
+        Dim task1 As Task = MakePictureBoxRound(Profile_Pic)
+        Dim task2 As Task = Make_Schedule_Table()
+
+        ' Await completion of both tasks concurrently
+        Await Task.WhenAll(task1, task2)
+
+    End Function
+
+    Private Sub ShowLoadingIndicator()
+        ' Display the loading indicator (progress bar)
+        ProgressBar1.Visible = True
+        ProgressBar1.Style = ProgressBarStyle.Marquee ' Use Marquee style for indeterminate progress
+    End Sub
+
+    Private Sub HideLoadingIndicator()
+        ' Hide the loading indicator (progress bar)
+        ProgressBar1.Visible = False
+    End Sub
+
+    Private Async Function Make_Schedule_Table() As Task
         'MessageBox.Show("-2")
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
         Dim currentDayOfWeek As DayOfWeek = DateTime.Today.DayOfWeek
@@ -163,20 +197,22 @@ Public Class Book_slots
             End Using
         End Using
         'MessageBox.Show(7)
-        PopulateScheduleTable()
-    End Sub
-    Private Sub PopulateScheduleTable()
-
-        ' Clear existing controls in the table layout panel
-        'MessageBox.Show("0")
+        Try
+            Await PopulateScheduleTableAsync()
+            MessageBox.Show("Schedule populated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Catch ex As Exception
+            MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            ' Perform cleanup tasks or handle completion/error scenarios (optional)
+        End Try
+    End Function
+    Private Async Function PopulateScheduleTableAsync() As Task
+        Schedule_Table.SuspendLayout()
         Schedule_Table.Controls.Clear()
-        'MessageBox.Show("1")
-        ' Clear any existing column and row styles
         Schedule_Table.ColumnStyles.Clear()
-        Schedule_Table.RowStyles.Clear() '''
-        'MessageBox.Show("2")
+        Schedule_Table.RowStyles.Clear()
 
-        ' Calculate percentage for each column and row
+        ' Add column styles for time slots
         Dim columnPercentage As Single = 100.0F / Schedule_Table.ColumnCount
         Dim rowPercentage As Single = 100.0F / Schedule_Table.RowCount
         'MessageBox.Show(8)
@@ -189,6 +225,7 @@ Public Class Book_slots
             Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Percent, rowPercentage))
         Next
         Schedule_Table.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
+        ' Create and add labels for days of the week asynchronously
         For i As Integer = 0 To 6
             Dim dayLabel As New Label()
             dayLabel.Text = DateTime.Today.AddDays(i).ToString("ddd, dd MMM")
@@ -209,39 +246,31 @@ Public Class Book_slots
             timeLabel.Font = New Font("Arial", 12, FontStyle.Bold)
             Schedule_Table.Controls.Add(timeLabel, i - 8, 0) ' Add to the first column, starting from row index 1
         Next
-        For Each control As Control In Schedule_Table.Controls
-            Dim cellPosition As TableLayoutPanelCellPosition = Schedule_Table.GetPositionFromControl(control)
-            If cellPosition.Column = 0 Or cellPosition.Row = 0 Then
-                control.BackColor = ColorTranslator.FromHtml("#F58CD7")
-            End If
-        Next
-        'MessageBox.Show(10)
-        ' Add buttons for each time slot
-        Schedule_Table.SuspendLayout()
+
+        ' Create and add buttons for time slots asynchronously
         For i As Integer = 0 To 6
             For j As Integer = 0 To 11
                 Dim btn As New Button()
-                btn.Text = ""
                 btn.Dock = DockStyle.Fill
-
-                If availability(i, j) = 1 Then
-                    btn.BackColor = Color.LightGreen ' Available
-                ElseIf availability(i, j) = 2 Then
-                    btn.BackColor = Color.DarkGreen
-                Else
-                    btn.BackColor = Color.Transparent ' Unavailable
-                End If
-
+                btn.FlatStyle = FlatStyle.Flat
                 btn.Margin = New Padding(0)
-                btn.FlatStyle = FlatStyle.Flat ' Set the button to have a flat appearance
-                Schedule_Table.Controls.Add(btn, j + 1, i + 1)
-                AddHandler btn.Click, AddressOf TimeSlot_Click
+                btn.BackColor = If(availability(i, j) = 1, Color.LightGreen, If(availability(i, j) = 2, Color.DarkGreen, Color.Transparent))
+                Await AddControlToScheduleTableAsync(btn, i + 1, j + 1)
             Next
         Next
 
         Schedule_Table.ResumeLayout(True)
-        'MessageBox.Show(11)
-    End Sub
+    End Function
+
+
+    Private Async Function AddControlToScheduleTableAsync(control As Control, column As Integer, row As Integer) As Task
+        ' Use Control.Invoke to update the UI on the main UI thread
+        Schedule_Table.Invoke(Sub()
+                                  Schedule_Table.Controls.Add(control, row, column)
+                              End Sub)
+        AddHandler control.Click, AddressOf TimeSlot_Click
+    End Function
+
 
     Private Sub TimeSlot_Click(sender As Object, e As EventArgs)
         Dim btn As Button = DirectCast(sender, Button)
@@ -289,7 +318,7 @@ Public Class Book_slots
         End If
     End Sub
 
-    Public Sub MakePictureBoxRound(pictureBox As PictureBox)
+    Public Function MakePictureBoxRound(pictureBox As PictureBox) As Task
         ' Create a GraphicsPath to define a circle
         Dim path As New GraphicsPath()
         path.AddEllipse(0, 0, pictureBox.Width, pictureBox.Height)
@@ -309,19 +338,16 @@ Public Class Book_slots
 
         pictureBox.Image = image
         pictureBox.SizeMode = PictureBoxSizeMode.Zoom
-    End Sub
+    End Function
     Function ImageFromBinary(ByVal binaryData As Byte()) As Image
         Using ms As New MemoryStream(binaryData)
             Return Image.FromStream(ms)
         End Using
     End Function
 
-    Private Sub DisplayMessageOnLoad()
-        ' Your function code here
-        MessageBox.Show("This message appears when the form loads.")
-    End Sub
-    Public variableChanged As New ManualResetEvent(False)
 
+
+    Public variableChanged As New ManualResetEvent(False)
     ' Variable to monitor for changes
     Public myVariable As Integer = 0
     Private Async Function WaitForVariableChangeOrTimeoutAsync(timeoutMilliseconds As Integer) As Task
@@ -335,7 +361,7 @@ Public Class Book_slots
 
         Else
             ' Timeout occurred
-            MessageBox.Show("Timeout occurred.")
+            MessageBox.Show("Timeout occurred or some error occured during payment")
             If payments IsNot Nothing AndAlso Not payments.IsDisposed Then
                 payments.Close()
             End If
@@ -345,6 +371,7 @@ Public Class Book_slots
 
         End If
     End Function
+
     Private Async Sub Book_Btn_Click(sender As Object, e As EventArgs) Handles Book_Btn.Click
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
 
@@ -355,97 +382,124 @@ Public Class Book_slots
 
             Dim rowsAffected As Integer = 0
             Dim Total_slots As Integer = 0
-            For Each slot As Integer() In BookedList
-                Total_slots += 1
-                Dim provider_query As String = "INSERT INTO schedule (user_id,provider_id,slots,time) VALUES (@User_ID,@Provider_ID,@Slot,@Time);" ' Add the query here
-                Using command As New SqlCommand(provider_query, connection)
-                    command.Parameters.AddWithValue("@User_ID", user)
-                    command.Parameters.AddWithValue("@Provider_ID", provider)
-                    command.Parameters.AddWithValue("@Slot", slot(1))
-                    command.Parameters.AddWithValue("@Time", DateTime.Today.AddDays(slot(0)))
-                    rowsAffected = command.ExecuteNonQuery()
-                    If rowsAffected = 0 Then
-                        MessageBox.Show("Some unusual error happened.")
-                        Exit For
-                    End If
-                End Using
-            Next
-            If rowsAffected > 0 Then
-                Dim Total_cost As Integer = (cost_per_hour * Total_slots) / 2
-                Module_global.cost_of_booking = Total_cost
-                payments.CostOfService = Total_cost
-                payments.ProviderEmailID = ProviderName
-                MessageBox.Show($"Data inserted successfully, you need to pay a total of {Total_cost}Rs.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                payments.Show()
-                Await WaitForVariableChangeOrTimeoutAsync(900000000)
-                If (Module_global.payment_successful = 1) Then
-                    Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location);"
-                    Dim zeros As String = New String("0"c, 84)
-                    Dim charArray() As Char = zeros.ToCharArray()
-
-                    ' Set specific characters to '1' at desired indices
-
-                    For Each Pair In BookedList
-                        charArray(Pair(0) * 12 + Pair(1)) = "1"c
-                    Next
-
-                    ' Convert the character array back to a string
-                    Dim result As New String(charArray)
-
-                    Using command As New SqlCommand(InsertQuery, connection)
+            Try
+                For Each slot As Integer() In BookedList
+                    Total_slots += 1
+                    Dim provider_query As String = "INSERT INTO schedule (user_id,provider_id,slots,time) VALUES (@User_ID,@Provider_ID,@Slot,@Time);" ' Add the query here
+                    Using command As New SqlCommand(provider_query, connection)
                         command.Parameters.AddWithValue("@User_ID", user)
                         command.Parameters.AddWithValue("@Provider_ID", provider)
-                        command.Parameters.AddWithValue("@Time", result)
-                        command.Parameters.AddWithValue("@Status", 1)
-                        command.Parameters.AddWithValue("@Dates", DateTime.Now())
-                        command.Parameters.AddWithValue("@Location", Address_TxtBox.Text)
+                        command.Parameters.AddWithValue("@Slot", slot(1))
+                        command.Parameters.AddWithValue("@Time", DateTime.Today.AddDays(slot(0)))
                         rowsAffected = command.ExecuteNonQuery()
                         If rowsAffected = 0 Then
                             MessageBox.Show("Some unusual error happened.")
+                            Exit For
                         End If
                     End Using
-                    Module_global.payment_successful = 0
+                Next
+                If rowsAffected > 0 Then
+                    Dim Total_cost As Integer = (cost_per_hour * Total_slots) / 2
+                    Module_global.cost_of_booking = Total_cost
+                    payments.CostOfService = Total_cost
+                    payments.ProviderEmailID = ProviderName
+                    MessageBox.Show($"Data inserted successfully, you need to pay a total of {Total_cost}Rs.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    variableChanged.Reset()
                     myVariable = 0
-                    Make_Schedule_Table()
-                    MessageBox.Show("Successfully Booked the slots.")
+                    payments.Show()
+                    Await WaitForVariableChangeOrTimeoutAsync(900000000)
+                    If (Module_global.payment_successful = 1) Then
+                        Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location,deal_amount) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location,@TotalCost);"
+                        Dim zeros As String = New String("0"c, 84)
+                        Dim charArray() As Char = zeros.ToCharArray()
+
+                        ' Set specific characters to '1' at desired indices
+
+                        For Each Pair In BookedList
+                            charArray(Pair(0) * 12 + Pair(1)) = "1"c
+                        Next
+
+                        ' Convert the character array back to a string
+                        Dim result As New String(charArray)
+
+                        Using command As New SqlCommand(InsertQuery, connection)
+                            command.Parameters.AddWithValue("@User_ID", user)
+                            command.Parameters.AddWithValue("@Provider_ID", provider)
+                            command.Parameters.AddWithValue("@Time", result)
+                            command.Parameters.AddWithValue("@Status", 1)
+                            command.Parameters.AddWithValue("@Dates", DateTime.Now())
+                            command.Parameters.AddWithValue("@Location", Address_TxtBox.Text)
+                            command.Parameters.AddWithValue("@TotalCost", Total_cost * 2)
+                            rowsAffected = command.ExecuteNonQuery()
+                            If rowsAffected = 0 Then
+                                MessageBox.Show("Some unusual error happened.")
+                            End If
+                        End Using
+                        Module_global.payment_successful = 0
+                        myVariable = 0
+                        variableChanged.Reset()
+
+
+                        ' Call the function to clear the list of lists
+                        BookedList.Clear()
+                        Make_Schedule_Table()
+                        'Await (task2)
+                        MessageBox.Show("Successfully Booked the slots.")
+                    Else
+                        MessageBox.Show("Payment was not successful. Please try again.")
+                        Dim deleteSchedule As String = "DELETE FROM schedule WHERE user_id=@user_id AND provider_id=@provider_id AND time=@time AND slots=@slots AND time=@time"
+                        For Each pair In BookedList
+                            Dim deleteCommand As New SqlCommand(deleteSchedule, connection)
+                            deleteCommand.Parameters.AddWithValue("@user_id", Module_global.User_ID)
+                            deleteCommand.Parameters.AddWithValue("@provider_id", Module_global.Provider_ID)
+                            Dim nextDate As DateTime = DateTime.Today.Date.AddDays(pair(0)).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
+                            Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
+                            deleteCommand.Parameters.AddWithValue("@time", formattedDate)
+                            deleteCommand.Parameters.AddWithValue("@slots", pair(1))
+                            Dim rowsAffected1 As Integer = deleteCommand.ExecuteNonQuery()
+                            BookedList.Clear()
+                            If rowsAffected > 0 Then
+                                Console.WriteLine("Deleted")
+                            Else
+                                MessageBox.Show("Error!")
+                            End If
+                            Module_global.payment_successful = 0
+                            myVariable = 0
+                            variableChanged.Reset()
+                            Make_Schedule_Table()
+                            ' Await (task2)
+                            ' Execute the DELETE query to delete the Schedules
+                        Next
+                    End If
+
+
                 Else
-                    MessageBox.Show("Payment was not successful. Please try again.")
-                    Dim deleteSchedule As String = "DELETE FROM schedule WHERE user_id=@user_id AND provider_id=@provider_id AND time=@time AND slots=@slots AND time=@time"
-                    For Each pair In BookedList
-                        Dim deleteCommand As New SqlCommand(deleteSchedule, connection)
-                        deleteCommand.Parameters.AddWithValue("@user_id", Module_global.User_ID)
-                        deleteCommand.Parameters.AddWithValue("@provider_id", Module_global.Provider_ID)
-                        Dim nextDate As DateTime = DateTime.Today.Date.AddDays(pair(0)).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
-                        Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
-                        deleteCommand.Parameters.AddWithValue("@time", formattedDate)
-                        deleteCommand.Parameters.AddWithValue("@slots", pair(1))
-                        Dim rowsAffected1 As Integer = deleteCommand.ExecuteNonQuery()
-
-                        If rowsAffected > 0 Then
-                            Console.WriteLine("Deleted")
-                        Else
-                            MessageBox.Show("Error!")
-                        End If
-                        ' Execute the DELETE query to delete the Schedules
-                    Next
+                    MessageBox.Show("Please select some slots to book!")
                 End If
+            Catch ex As SqlException
+                ' Check for specific error number indicating duplicate key violation
+                If ex.Number = 2601 OrElse ex.Number = 2627 Then
+                    ' Duplicate key violation error (constraint violation)
+                    MessageBox.Show("This slot is already booked.", "Booking Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
 
+                    BookedList.Clear()
+                    myVariable = 0
+                    variableChanged.Reset()
+                    Make_Schedule_Table()
 
-            Else
-                MessageBox.Show("Please select some slots to book!")
-            End If
+                Else
+                    ' Other SQL error occurred, handle accordingly
+                    'MessageBox.Show($"SQL Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
+            Catch ex As Exception
+                ' Generic error handling for other exceptions
+                'MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+
 
         End Using
     End Sub
 
-    Private Async Sub Sleep()
-        ' Perform some actions before sleeping
-
-        ' Pause execution of this form for 1 second (1000 milliseconds)
-        Await Task.Delay(10000)
-
-        ' Continue with other actions after sleeping
-    End Sub
     Private Sub Back_Btn_Click(sender As Object, e As EventArgs) Handles Back_Btn.Click
         user_template.SplitContainer1.Panel2.Controls.Clear()
         If slot_back_choice = 1 Then
@@ -454,6 +508,7 @@ Public Class Book_slots
                 .AutoSize = True
                 .Dock = DockStyle.Fill
                 user_template.SplitContainer1.Panel2.Controls.Add(UserHome)
+                Me.Close()
                 .BringToFront()
                 .Show()
 
@@ -463,6 +518,7 @@ Public Class Book_slots
                 .TopLevel = False
                 .AutoSize = True
                 .Dock = DockStyle.Fill
+                Me.Close()
                 user_template.SplitContainer1.Panel2.Controls.Add(user_search)
                 .BringToFront()
                 .Show()
@@ -471,4 +527,5 @@ Public Class Book_slots
         End If
 
     End Sub
+
 End Class
