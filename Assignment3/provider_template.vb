@@ -22,24 +22,25 @@
         Chats_Navi_btn.BackColor = SystemColors.Control
         Needhelp_btn.BackColor = SystemColors.Control
         Feedback_btn.BackColor = SystemColors.Control
+        history_navi_btn.BackColor = SystemColors.Control
 
         ' Create an instance of the Provider_Profile_page form
         Dim providerProfile As New Provider_Profile_page()
 
         ' Set properties to ensure proper embedding
         providerProfile.TopLevel = False
-        providerprofile.FormBorderStyle = FormBorderStyle.None
-        providerprofile.Dock = DockStyle.Fill
+        providerProfile.FormBorderStyle = FormBorderStyle.None
+        providerProfile.Dock = DockStyle.Fill
 
         ' Subscribe to the EditProfileClicked event
-        AddHandler providerprofile.EditProfileClicked, AddressOf ProviderProfile_EditProfileClicked
+        AddHandler providerProfile.EditProfileClicked, AddressOf ProviderProfile_EditProfileClicked
 
         ' Add the embedded form to the panel
-        SplitContainer1.Panel2.Controls.Add(providerprofile)
-        providerprofile.BringToFront()
+        SplitContainer1.Panel2.Controls.Add(providerProfile)
+        providerProfile.BringToFront()
 
         ' Show the embedded form
-        providerprofile.Show()
+        providerProfile.Show()
 
     End Sub
 
@@ -68,6 +69,7 @@
         Chats_Navi_btn.BackColor = SystemColors.Control
         Needhelp_btn.BackColor = SystemColors.Control
         Feedback_btn.BackColor = SystemColors.Control
+        history_navi_btn.BackColor = SystemColors.Control
         ShowForm(New provider_dashboard())
     End Sub
 
@@ -79,6 +81,7 @@
         Chats_Navi_btn.BackColor = SystemColors.Control
         Needhelp_btn.BackColor = SystemColors.Control
         Feedback_btn.BackColor = SystemColors.Control
+        history_navi_btn.BackColor = SystemColors.Control
         ShowForm(New provider_appointments())
     End Sub
 
@@ -90,6 +93,7 @@
         Chats_Navi_btn.BackColor = SystemColors.Control
         Needhelp_btn.BackColor = SystemColors.Control
         Feedback_btn.BackColor = SystemColors.Control
+        history_navi_btn.BackColor = SystemColors.Control
         ShowForm(New provider_notifications())
     End Sub
 
@@ -101,6 +105,7 @@
         Notifications_Navi_btn.BackColor = SystemColors.Control
         Needhelp_btn.BackColor = SystemColors.Control
         Feedback_btn.BackColor = SystemColors.Control
+        history_navi_btn.BackColor = SystemColors.Control
         SplitContainer1.Panel2.Controls.Clear()
         ShowForm(New user_provider_chats())
     End Sub
@@ -114,6 +119,7 @@
         Notifications_Navi_btn.BackColor = SystemColors.Control
         Chats_Navi_btn.BackColor = SystemColors.Control
         Feedback_btn.BackColor = SystemColors.Control
+        history_navi_btn.BackColor = SystemColors.Control
         SplitContainer1.Panel2.Controls.Clear()
         ShowForm(New support_chat())
     End Sub
@@ -126,7 +132,8 @@
         Notifications_Navi_btn.BackColor = SystemColors.Control
         Chats_Navi_btn.BackColor = SystemColors.Control
         Needhelp_btn.BackColor = SystemColors.Control
-        ShowForm(New FeedbackForm())
+        history_navi_btn.BackColor = SystemColors.Control
+        ShowForm(New provider_feedback_view())
     End Sub
 
     Private Sub Logout_btn_Click(sender As Object, e As EventArgs) Handles logout_btn.Click
@@ -134,7 +141,14 @@
         Login.Show()
     End Sub
 
-    Private Sub SplitContainer1_Panel2_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel2.Paint
-
+    Private Sub history_navi_btn_Click(sender As Object, e As EventArgs) Handles history_navi_btn.Click
+        history_navi_btn.BackColor = Color.FromArgb(220, 189, 232)
+        Dashboard_Navi_btn.BackColor = SystemColors.Control
+        Profile_Navi_btn.BackColor = SystemColors.Control
+        Appointments_Navi_btn.BackColor = SystemColors.Control
+        Notifications_Navi_btn.BackColor = SystemColors.Control
+        Needhelp_btn.BackColor = SystemColors.Control
+        Feedback_btn.BackColor = SystemColors.Control
+        ShowForm(New appointment_history())
     End Sub
 End Class
