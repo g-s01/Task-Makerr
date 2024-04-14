@@ -457,19 +457,20 @@ Public Class Book_slots
                             deleteCommand.Parameters.AddWithValue("@time", formattedDate)
                             deleteCommand.Parameters.AddWithValue("@slots", pair(1))
                             Dim rowsAffected1 As Integer = deleteCommand.ExecuteNonQuery()
-                            BookedList.Clear()
                             If rowsAffected > 0 Then
                                 Console.WriteLine("Deleted")
                             Else
                                 MessageBox.Show("Error!")
                             End If
                             Module_global.payment_successful = 0
-                            myVariable = 0
-                            variableChanged.Reset()
-                            Make_Schedule_Table()
-                            ' Await (task2)
-                            ' Execute the DELETE query to delete the Schedules
                         Next
+                        myVariable = 0
+                        variableChanged.Reset()
+                        Make_Schedule_Table()
+                        BookedList.Clear()
+                        ' Await (task2)
+                        ' Execute the DELETE query to delete the Schedules
+
                     End If
 
 
