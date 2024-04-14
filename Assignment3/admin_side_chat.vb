@@ -11,6 +11,8 @@ Public Class admin_side_chat
     Dim user_role = "admin"
     Dim roomId = -1
     Dim rooms_type = "customer"
+    Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+    Private WithEvents messageTimer As New Timer()
 
     Private Sub PopulateRooms()
         ' Clear existing buttons
@@ -46,12 +48,10 @@ Public Class admin_side_chat
 
 
 
+    Private Sub LoadRoomsFromDatabase()
 
-    Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
-
-        Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
         Dim query As String = "SELECT username, user_type, support_room_id, user_id FROM support_room"
-
+        support_rooms.Clear()
         Using connection As New SqlConnection(connectionString)
             ' Open the connection
             connection.Open()
@@ -74,11 +74,12 @@ Public Class admin_side_chat
                 End Using
             End Using
         End Using
+    End Sub
 
+
+    Private Sub LoadMessagesFromDatabase()
 
         support_msgs.Clear()
-
-
         Dim mess_query As String = "SELECT support_room_id, sender_type, message_content, sent_timestamp FROM support_msgs"
         Using connection As New SqlConnection(connectionString)
             ' Open the connection
@@ -103,11 +104,31 @@ Public Class admin_side_chat
                 End Using
             End Using
         End Using
+    End Sub
 
+    Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
+        messageTimer.Interval = 10000
+
+        LoadRoomsFromDatabase()
+        LoadMessagesFromDatabase()
+        providerButton.BackColor = SystemColors.Control
+        userButton.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         PopulateRooms()
         chat.Visible = False
         Panel2.Visible = False
     End Sub
+
+
+    ' Event handler for the tick event of the timer
+    Private Sub MessageTimer_Tick(sender As Object, e As EventArgs)
+        ' Reload and print messages every 30 seconds
+        LoadRoomsFromDatabase()
+        LoadMessagesFromDatabase()
+        If roomId <> -1 Then
+            PrintMessages(roomId)
+        End If
+    End Sub
+
 
     Private Sub userButton_Click(sender As Object, e As EventArgs) Handles userButton.Click
         rooms_type = "customer"
@@ -157,14 +178,13 @@ Public Class admin_side_chat
         For Each pair As Tuple(Of String, String, Integer, Integer) In support_rooms
             If pair.Item1 = clickedButton.Text Then
 
-                room = pair.Item3
+                roomId = pair.Item3
 
                 Exit For ' Exit loop if the match is found
             End If
         Next
 
-        Support_room_id = room
-        PrintMessages(room)
+        PrintMessages(roomId)
         chat.Visible = True
         Panel2.Visible = True
     End Sub
@@ -318,5 +338,6 @@ Public Class admin_side_chat
         ' Print messages between users
         PrintMessages(room)
     End Sub
+
 
 End Class

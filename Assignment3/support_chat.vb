@@ -8,6 +8,8 @@ Public Class support_chat
     Dim userId As Integer = 1
     Dim dealId As Integer = -1
     Dim roomId As Integer = 1
+    ' Define a Timer control at the form level
+    Private WithEvents messageTimer As New Timer()
     ' room,sender_type,msg_content,sent_timestand
     'Dim messages As New List(Of Tuple(Of Integer, String, String, String))()
     Dim supportmessages As New List(Of Tuple(Of Integer, String, String, String))()
@@ -53,10 +55,26 @@ Public Class support_chat
     End Sub
 
     Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
+        messageTimer.Interval = 10000
+
+        ' Add an event handler for the tick event of the timer
+        AddHandler messageTimer.Tick, AddressOf MessageTimer_Tick
+
+        ' Start the timer
+        messageTimer.Start()
+
+        ' Load and print messages initially
         LoadMessagesFromDatabase()
         PrintMessages()
     End Sub
 
+
+    ' Event handler for the tick event of the timer
+    Private Sub MessageTimer_Tick(sender As Object, e As EventArgs)
+        ' Reload and print messages every 30 seconds
+        LoadMessagesFromDatabase()
+        PrintMessages()
+    End Sub
 
     Private Sub sendTextBox_KeyDown(sender As Object, e As KeyEventArgs) Handles inputTextBox.KeyDown
         If e.KeyCode = Keys.Enter Then
