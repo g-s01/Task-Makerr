@@ -1,8 +1,16 @@
-﻿Imports FastReport.DataVisualization.Charting
+﻿Imports System.Globalization
+Imports FastReport.DataVisualization.Charting
 Imports Microsoft.Data.SqlClient
 
 Public Class provider_dashboard
     Private Sub provider_dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Label11.Text = Date.Today.ToString("dd-MM-yyyy")
+        Label10.Text = Date.Today.AddDays(1).ToString("dd-MM-yyyy")
+        Label9.Text = Date.Today.AddDays(2).ToString("dd-MM-yyyy")
+        Label5.Text = Date.Today.AddDays(3).ToString("dd-MM-yyyy")
+        Label6.Text = Date.Today.AddDays(4).ToString("dd-MM-yyyy")
+        Label7.Text = Date.Today.AddDays(5).ToString("dd-MM-yyyy")
+        Label8.Text = Date.Today.AddDays(6).ToString("dd-MM-yyyy")
         Chart_Init()
         GetTimeTable()
     End Sub
@@ -37,31 +45,68 @@ Public Class provider_dashboard
         Chart1.ChartAreas.Add(chartArea)
 
         ' Create a new series
-        Dim series As New Series("DataSeries")
+        Dim series As New Series("TotalDealAmount")
         series.ChartType = SeriesChartType.Column
         series.ChartArea = "MainChartArea"
         Chart1.Series.Add(series)
+        Dim totalSum As Integer = 0
+        Dim totalRecords As Integer = 0
+        ' Retrieve data from the database
+        Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+        Dim providerId As Integer = Provider_ID ' Replace with the actual provider_id value
 
-        ' Add data points for each day of the week manually
-        Chart1.Series("DataSeries").Points.AddXY("Mon", 150)
-        Chart1.Series("DataSeries").Points.AddXY("Tue", 200)
-        Chart1.Series("DataSeries").Points.AddXY("Wed", 180)
-        Chart1.Series("DataSeries").Points.AddXY("Thu", 220)
-        Chart1.Series("DataSeries").Points.AddXY("Fri", 190)
-        Chart1.Series("DataSeries").Points.AddXY("Sat", 210)
-        Chart1.Series("DataSeries").Points.AddXY("Sun", 170)
+        Using connection As New SqlConnection(connectionString)
+            connection.Open()
+
+            ' Query to get total deal amount for each date (ignoring time) for the past 7 days
+            Dim query As String = "SELECT CONVERT(date, dates) AS [Date], SUM(deal_amount) AS total_amount FROM deals WHERE provider_id = @ProviderId AND dates >= DATEADD(day, -7, GETDATE()) GROUP BY CONVERT(date, dates) ORDER BY [Date]"
+            Using command As New SqlCommand(query, connection)
+                command.Parameters.AddWithValue("@ProviderId", providerId)
+
+                Using reader As SqlDataReader = command.ExecuteReader()
+                    While reader.Read()
+                        Dim dateValue As Date = reader.GetDateTime(0)
+                        Dim totalAmount As Integer = reader.GetInt32(1)
+                        totalSum += totalAmount
+                        ' Add data to the chart series
+                        series.Points.AddXY(dateValue.ToString("dd-MM-yyyy"), totalAmount / 2)
+                    End While
+                End Using
+            End Using
+            Dim queryTotalRecords As String = "SELECT COUNT(*) FROM deals WHERE provider_id = @ProviderId AND dates >= DATEADD(day, -7, GETDATE())"
+            Using commandTotalRecords As New SqlCommand(queryTotalRecords, connection)
+                commandTotalRecords.Parameters.AddWithValue("@ProviderId", providerId)
+
+                totalRecords = Convert.ToInt32(commandTotalRecords.ExecuteScalar())
+            End Using
+        End Using
+        totalSum = totalSum / 2
+        Label25.Text = "Rs" + totalSum.ToString()
+        Label4.Text = totalRecords.ToString()
     End Sub
+
+
+
+
+
+    ' Function to extract hours worked from the 84-bit string
+
+
 
     Private Sub GetTimeTable()
         Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
         Dim providerId As Integer = Provider_ID ' Replace with the actual provider_id value
-        Dim queryString As String = "SELECT time FROM deals WHERE provider_id = @ProviderId"
+        Dim endDate As Date = Date.Today ' Get today's date
+        Dim startDate As Date = endDate.AddDays(-6) ' Subtract 6 days to get the start date
+        Dim queryString As String = "SELECT dates, time FROM deals WHERE provider_id = @ProviderId AND status = 1 AND CONVERT(DATE, dates) BETWEEN @StartDate AND @EndDate"
 
         ' Create a connection to the SQL Server database
         Using connection As New SqlConnection(connectionString)
             ' Create a SqlCommand to execute the query
             Dim command As New SqlCommand(queryString, connection)
             command.Parameters.AddWithValue("@ProviderId", providerId)
+            command.Parameters.AddWithValue("@StartDate", startDate)
+            command.Parameters.AddWithValue("@EndDate", endDate)
 
             ' Open the connection
             connection.Open()
@@ -72,11 +117,12 @@ Public Class provider_dashboard
                 If reader.HasRows Then
                     ' Iterate through the rows
                     While reader.Read()
-                        ' Get the value from the 'time' column
-                        Dim timeValue As String = reader.GetString(0) ' Assuming 'time' column is of type VARCHAR or NVARCHAR
+                        ' Get the values from the 'dates' and 'time' columns
+                        Dim datesValue As Date = reader.GetDateTime(0) ' Assuming 'dates' column is of type DATE or DATETIME
+                        Dim timeValue As String = reader.GetString(1) ' Assuming 'time' column is of type VARCHAR or NVARCHAR
 
-                        ' Call the SetWorkingDayColors function with the processed value
-                        SetWorkingDayColors(timeValue)
+                        ' Call the SetWorkingDayColors function with the processed values
+                        SetWorkingDayColors(datesValue.ToString("yyyy-MM-dd"), timeValue)
                     End While
                 Else
                     Console.WriteLine("No rows found.")
@@ -84,11 +130,16 @@ Public Class provider_dashboard
             End Using
         End Using
     End Sub
-    Private Sub SetWorkingDayColors(workingDays As String)
+
+    Private Sub SetWorkingDayColors(dates As String, workingDays As String)
         ' Check if the workingDays string has the correct length (168 bits)
+        Dim inputDate As Date = Date.ParseExact(dates, "yyyy-MM-dd", CultureInfo.InvariantCulture)
 
-
-        For i As Integer = 0 To 83
+        ' Calculate the difference between the current date and the input date
+        Dim diff As Integer = (Date.Today - inputDate).Days
+        diff = 12 * diff
+        workingDays = workingDays.Substring(diff, 84 - diff)
+        For i As Integer = 0 To workingDays.Length - 1
             ' Check if the bit at position i is '1' in the workingDays string
             If workingDays(i) = "1"c Then
                 Dim rowIndex As Integer = 0

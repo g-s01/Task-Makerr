@@ -52,6 +52,7 @@ Partial Class provider_template
         ' SplitContainer1.Panel1
         ' 
         SplitContainer1.Panel1.Controls.Add(history_navi_btn)
+        SplitContainer1.Panel1.BackColor = Color.White
         SplitContainer1.Panel1.Controls.Add(Chats_Navi_btn)
         SplitContainer1.Panel1.Controls.Add(Label2)
         SplitContainer1.Panel1.Controls.Add(Label1)

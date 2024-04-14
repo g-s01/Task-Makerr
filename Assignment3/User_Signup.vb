@@ -44,14 +44,14 @@ Public Class User_Signup
         Dim smtpServer As String = "smtp-mail.outlook.com"
         Dim port As Integer = 587
 
-        Dim message As New MailMessage("task-makerr-cs346@outlook.com", email_tb.Text) With {
+        Dim message As New MailMessage("group1b-cs346@outlook.com", email_tb.Text) With {
             .Subject = "Registration confirmation",
             .Body = "Welcome to the Taskmakerr! Your OTP is " + randomNumber.ToString
         }
 
         Dim smtpClient As New SmtpClient(smtpServer) With {
             .Port = port,
-            .Credentials = New System.Net.NetworkCredential("task-makerr-cs346@outlook.com", "hC-aw6:wqmfpMs4"),
+            .Credentials = New System.Net.NetworkCredential("group1b-cs346@outlook.com", "chillSreehari"),
             .EnableSsl = True
         }
 
@@ -93,6 +93,17 @@ Public Class User_Signup
         Else
             error_label.Text = ""
 
+            Dim result As String
+            Dim editPassword As Integer
+            ' Validate the password and display the result in a message box
+            result = PasswordStrengthCheck(password_tb.Text)
+            editPassword = MsgBox(result & vbCrLf & "Are you satisfied with your password strength ?", vbYesNo, "Password Strength Checker")
+            ' Check the user's response
+            If editPassword = vbNo Then
+                ' User wants to edit the password, return void.
+                Return
+            End If
+
             If String.IsNullOrWhiteSpace(otp_tb.Text) Then
                 otp_tb.Focus()
             ElseIf Not code.ToString = otp_tb.Text.ToString Then
@@ -100,7 +111,7 @@ Public Class User_Signup
             Else
                 Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
                 Dim query As String = "SELECT COUNT(*) FROM customer WHERE email = @Email"
-                Dim insertQuery As String = "INSERT INTO customer (username, email, password) VALUES (@Username, @Email, @Password)"
+                Dim insertQuery As String = "INSERT INTO customer (username, email, password, balance) VALUES (@Username, @Email, @Password, 0)"
 
                 Using sqlConnection As New SqlConnection(connectionString)
                     sqlConnection.Open()
@@ -111,7 +122,7 @@ Public Class User_Signup
                         Dim count As Integer = Convert.ToInt32(sqlCommand.ExecuteScalar())
                         If count > 0 Then
                             ' If email already exists, display an error message and exit
-                            error_label.Text = "Email already registered!"
+                            error_label.Text = "Email already registered as User!"
                             Return
                         End If
                     End Using

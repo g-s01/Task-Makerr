@@ -22,17 +22,17 @@ Partial Class payments
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(payments))
         PictureBox1 = New PictureBox()
         PictureBox2 = New PictureBox()
         PictureBox3 = New PictureBox()
         Label1 = New Label()
         Label2 = New Label()
         GroupBox1 = New GroupBox()
-        WebView21 = New Microsoft.Web.WebView2.WinForms.WebView2()
+        Label5 = New Label()
+        TextBox3 = New TextBox()
         TextBox2 = New TextBox()
         Label4 = New Label()
-        verifyButton = New Button()
+        addButton = New Button()
         TextBox1 = New TextBox()
         Label3 = New Label()
         payButton = New Button()
@@ -40,7 +40,6 @@ Partial Class payments
         CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox1.SuspendLayout()
-        CType(WebView21, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' PictureBox1
@@ -66,7 +65,7 @@ Partial Class payments
         ' PictureBox3
         ' 
         PictureBox3.Image = My.Resources.Resources.backbtn
-        PictureBox3.Location = New Point(1168, 25)
+        PictureBox3.Location = New Point(394, 39)
         PictureBox3.Margin = New Padding(3, 4, 3, 4)
         PictureBox3.Name = "PictureBox3"
         PictureBox3.Size = New Size(114, 67)
@@ -90,42 +89,51 @@ Partial Class payments
         Label2.ForeColor = SystemColors.ActiveCaptionText
         Label2.Location = New Point(14, 179)
         Label2.Name = "Label2"
-        Label2.Size = New Size(1269, 20)
+        Label2.Size = New Size(495, 20)
         Label2.TabIndex = 4
-        Label2.Text = resources.GetString("Label2.Text")
+        Label2.Text = "_________________________________________________________________________________"
         ' 
         ' GroupBox1
         ' 
         GroupBox1.BackColor = Color.FromArgb(255, 192, 255)
-        GroupBox1.Controls.Add(WebView21)
+        GroupBox1.Controls.Add(Label5)
+        GroupBox1.Controls.Add(TextBox3)
         GroupBox1.Controls.Add(TextBox2)
         GroupBox1.Controls.Add(Label4)
-        GroupBox1.Controls.Add(verifyButton)
+        GroupBox1.Controls.Add(addButton)
         GroupBox1.Controls.Add(TextBox1)
         GroupBox1.Controls.Add(Label3)
         GroupBox1.Location = New Point(26, 220)
         GroupBox1.Margin = New Padding(3, 4, 3, 4)
         GroupBox1.Name = "GroupBox1"
         GroupBox1.Padding = New Padding(3, 4, 3, 4)
-        GroupBox1.Size = New Size(1186, 516)
+        GroupBox1.Size = New Size(482, 516)
         GroupBox1.TabIndex = 5
         GroupBox1.TabStop = False
         ' 
-        ' WebView21
+        ' Label5
         ' 
-        WebView21.CreationProperties = Nothing
-        WebView21.DefaultBackgroundColor = Color.White
-        WebView21.Location = New Point(329, 295)
-        WebView21.Margin = New Padding(3, 4, 3, 4)
-        WebView21.Name = "WebView21"
-        WebView21.Size = New Size(86, 31)
-        WebView21.TabIndex = 5
-        WebView21.ZoomFactor = 1R
+        Label5.AutoSize = True
+        Label5.Font = New Font("Microsoft YaHei", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        Label5.Location = New Point(50, 341)
+        Label5.Name = "Label5"
+        Label5.Size = New Size(338, 31)
+        Label5.TabIndex = 6
+        Label5.Text = "Add money to your wallet!"
+        ' 
+        ' TextBox3
+        ' 
+        TextBox3.Font = New Font("Microsoft YaHei", 12F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        TextBox3.Location = New Point(65, 395)
+        TextBox3.Margin = New Padding(3, 4, 3, 4)
+        TextBox3.Name = "TextBox3"
+        TextBox3.Size = New Size(114, 34)
+        TextBox3.TabIndex = 5
         ' 
         ' TextBox2
         ' 
         TextBox2.Font = New Font("Microsoft YaHei", 12F, FontStyle.Regular, GraphicsUnit.Point, 0)
-        TextBox2.Location = New Point(78, 427)
+        TextBox2.Location = New Point(65, 235)
         TextBox2.Margin = New Padding(3, 4, 3, 4)
         TextBox2.Name = "TextBox2"
         TextBox2.Size = New Size(170, 34)
@@ -135,24 +143,24 @@ Partial Class payments
         ' 
         Label4.AutoSize = True
         Label4.Font = New Font("Microsoft YaHei", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0)
-        Label4.Location = New Point(65, 373)
+        Label4.Location = New Point(50, 177)
         Label4.Name = "Label4"
         Label4.Size = New Size(127, 36)
         Label4.TabIndex = 3
         Label4.Text = "Amount"
         ' 
-        ' verifyButton
+        ' addButton
         ' 
-        verifyButton.BackColor = Color.Purple
-        verifyButton.Font = New Font("Microsoft YaHei", 12F, FontStyle.Bold, GraphicsUnit.Point, 0)
-        verifyButton.ForeColor = Color.White
-        verifyButton.Location = New Point(429, 93)
-        verifyButton.Margin = New Padding(3, 4, 3, 4)
-        verifyButton.Name = "verifyButton"
-        verifyButton.Size = New Size(129, 39)
-        verifyButton.TabIndex = 2
-        verifyButton.Text = "Verify"
-        verifyButton.UseVisualStyleBackColor = False
+        addButton.BackColor = Color.Purple
+        addButton.Font = New Font("Microsoft YaHei", 12F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        addButton.ForeColor = Color.White
+        addButton.Location = New Point(65, 453)
+        addButton.Margin = New Padding(3, 4, 3, 4)
+        addButton.Name = "addButton"
+        addButton.Size = New Size(245, 39)
+        addButton.TabIndex = 2
+        addButton.Text = "Add money to wallet"
+        addButton.UseVisualStyleBackColor = False
         ' 
         ' TextBox1
         ' 
@@ -176,9 +184,9 @@ Partial Class payments
         ' payButton
         ' 
         payButton.BackColor = Color.Purple
-        payButton.Font = New Font("Microsoft YaHei", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        payButton.Font = New Font("Microsoft YaHei", 12F, FontStyle.Bold, GraphicsUnit.Point, 0)
         payButton.ForeColor = SystemColors.ButtonHighlight
-        payButton.Location = New Point(1107, 828)
+        payButton.Location = New Point(403, 760)
         payButton.Margin = New Padding(3, 4, 3, 4)
         payButton.Name = "payButton"
         payButton.Size = New Size(105, 53)
@@ -191,7 +199,7 @@ Partial Class payments
         AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = SystemColors.ButtonHighlight
-        ClientSize = New Size(1296, 897)
+        ClientSize = New Size(541, 845)
         Controls.Add(payButton)
         Controls.Add(GroupBox1)
         Controls.Add(Label2)
@@ -207,7 +215,6 @@ Partial Class payments
         CType(PictureBox3, ComponentModel.ISupportInitialize).EndInit()
         GroupBox1.ResumeLayout(False)
         GroupBox1.PerformLayout()
-        CType(WebView21, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -218,11 +225,12 @@ Partial Class payments
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents GroupBox1 As GroupBox
-    Friend WithEvents verifyButton As Button
+    Friend WithEvents addButton As Button
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Label3 As Label
     Friend WithEvents payButton As Button
     Friend WithEvents Label4 As Label
     Friend WithEvents TextBox2 As TextBox
-    Friend WithEvents WebView21 As Microsoft.Web.WebView2.WinForms.WebView2
+    Friend WithEvents Label5 As Label
+    Friend WithEvents TextBox3 As TextBox
 End Class

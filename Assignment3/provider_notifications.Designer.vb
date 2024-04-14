@@ -28,12 +28,14 @@ Partial Class provider_notifications
         Button3 = New Button()
         Button2 = New Button()
         Button1 = New Button()
+        separatorLine = New Label()
         Panel1.SuspendLayout()
         SuspendLayout()
         ' 
         ' Panel1
         ' 
         Panel1.BackColor = SystemColors.ActiveBorder
+        Panel1.Controls.Add(separatorLine)
         Panel1.Controls.Add(FlowLayoutPanel1)
         Panel1.Controls.Add(Button4)
         Panel1.Controls.Add(Button3)
@@ -107,6 +109,15 @@ Partial Class provider_notifications
         Button1.Text = "Advance Payment"
         Button1.UseVisualStyleBackColor = False
         ' 
+        ' separatorLine
+        ' 
+        separatorLine.BorderStyle = BorderStyle.FixedSingle
+        separatorLine.Location = New Point(100, 104)
+        separatorLine.Margin = New Padding(4, 0, 4, 0)
+        separatorLine.Name = "separatorLine"
+        separatorLine.Size = New Size(680, 2)
+        separatorLine.TabIndex = 4
+        ' 
         ' provider_notifications
         ' 
         AutoScaleMode = AutoScaleMode.Inherit
@@ -125,4 +136,5 @@ Partial Class provider_notifications
     Friend WithEvents Button4 As Button
     Friend WithEvents Button3 As Button
     Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
+    Friend WithEvents separatorLine As Label
 End Class
