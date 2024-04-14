@@ -1,5 +1,6 @@
 ﻿Imports System.Configuration
 Imports System.Globalization
+Imports System.Reflection
 Imports Microsoft.Data.SqlClient
 
 'Imports System.Windows.Forms.VisualStyles.VisualStyleElement
@@ -10,14 +11,16 @@ Public Class user_provider_chats
     Dim messages As New List(Of Tuple(Of Integer, Integer, String, String, String))()
 
     Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-    Dim user_role As String = "provider"
-    Dim userId As Integer = 3
+    Dim user_role As String = Module_global.User_Role
+
+    Dim userId As Integer = 2
     Dim dealId As Integer = -1
     Private WithEvents timer As New Timer()
 
 
     ' for getting sql connection
     Private Function GetSqlConnection() As SqlConnection
+
         Return New SqlConnection(connectionString)
     End Function
 
@@ -192,6 +195,11 @@ Public Class user_provider_chats
 
 
     Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
+        If user_role = "customer" Then
+            userId = Module_global.User_ID
+        ElseIf user_role = "provider" Then
+            userId = Module_global.Provider_ID
+        End If
         timer.Interval = 3000
         LoadRoomsFromDatabase(userId, user_role)
         LoadMessagesFromDatabase(userId, user_role)

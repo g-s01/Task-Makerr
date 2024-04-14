@@ -1,6 +1,8 @@
 ﻿Imports System.IO
 Module Module_global
     ' global variables to encourage information flow between different forms
+    Public User_Name As String = ""
+    Public User_Role As String = ""
     Public User_ID As Integer = 2
     Public Provider_ID As Integer = 3
     Public Email As String = ""
