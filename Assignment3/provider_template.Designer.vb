@@ -50,6 +50,7 @@ Partial Class provider_template
         ' 
         ' SplitContainer1.Panel1
         ' 
+        SplitContainer1.Panel1.BackColor = Color.White
         SplitContainer1.Panel1.Controls.Add(Chats_Navi_btn)
         SplitContainer1.Panel1.Controls.Add(Label2)
         SplitContainer1.Panel1.Controls.Add(Label1)
@@ -96,7 +97,7 @@ Partial Class provider_template
         Label2.ForeColor = Color.DimGray
         Label2.Location = New Point(22, 470)
         Label2.Name = "Label2"
-        Label2.Size = New Size(106, 31)
+        Label2.Size = New Size(92, 28)
         Label2.TabIndex = 10
         Label2.Text = "Support"
         ' 
@@ -107,7 +108,7 @@ Partial Class provider_template
         Label1.ForeColor = Color.DimGray
         Label1.Location = New Point(22, 100)
         Label1.Name = "Label1"
-        Label1.Size = New Size(81, 31)
+        Label1.Size = New Size(71, 28)
         Label1.TabIndex = 9
         Label1.Text = "Menu"
         ' 

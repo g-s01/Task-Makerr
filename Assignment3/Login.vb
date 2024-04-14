@@ -47,7 +47,7 @@ Public Class Login
                             Me.Close()
                             provider_template.Show()
                         Else
-                            error_label.Text = "Invalid email or password. No such account"
+                            error_label.Text = "Invalid email or password. No such provider account"
                             password_tb.Text = ""
                         End If
                     End Using
@@ -88,7 +88,7 @@ Public Class Login
                             Me.Close()
                             user_template.Show()
                         Else
-                            error_label.Text = "Invalid email or password. No such account"
+                            error_label.Text = "Invalid email or password. No such user account"
                             password_tb.Text = ""
                         End If
                     End Using
