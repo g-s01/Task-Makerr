@@ -525,6 +525,16 @@ Public Class Book_slots
                 .Show()
 
             End With
+        ElseIf slot_back_choice = 3 Then
+            With ViewAllUser
+                .TopLevel = False
+                .AutoSize = True
+                .Dock = DockStyle.Fill
+                user_template.SplitContainer1.Panel2.Controls.Add(ViewAllUser)
+                .ReloadData()
+                .BringToFront()
+                .Show()
+            End With
         End If
 
     End Sub

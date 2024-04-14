@@ -167,14 +167,28 @@ Public Class UserHome
         Dim clickedButton As Button = CType(sender, Button)
         Module_global.serviceType = CType(clickedButton.Tag, String)
         user_template.SplitContainer1.Panel2.Controls.Clear()
-        With ViewAllUser
-            .TopLevel = False
-            .AutoSize = True
-            .Dock = DockStyle.Fill
-            user_template.SplitContainer1.Panel2.Controls.Add(ViewAllUser)
-            .BringToFront()
-            .Show()
-        End With
+
+        If ViewAllUser IsNot Nothing Then
+            With ViewAllUser
+                .TopLevel = False
+                .AutoSize = True
+                .Dock = DockStyle.Fill
+                user_template.SplitContainer1.Panel2.Controls.Add(ViewAllUser)
+                .ReloadData()
+                .BringToFront()
+                .Show()
+            End With
+        Else
+            With ViewAllUser
+                .TopLevel = False
+                .AutoSize = True
+                .Dock = DockStyle.Fill
+                user_template.SplitContainer1.Panel2.Controls.Add(ViewAllUser)
+                .BringToFront()
+                .Show()
+            End With
+        End If
+
     End Sub
     Private Sub tileControl_Click(sender As Object, e As EventArgs)
 
