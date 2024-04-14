@@ -20,7 +20,7 @@ Public Class Reschedule_Slots
     Public Avaiability_String As String = "NULL"
     Public Cost_per_hour As Integer = -1
     Public is_null_image As Integer = 0
-    Dim first As Integer = 0
+    Dim first As Integer = 1
     Public Sub Reschedule_slots_load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Run your function here
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
@@ -189,30 +189,7 @@ Public Class Reschedule_Slots
 
 
 
-        '' Now we have stored the previously booked slots in the PreviouslyBookedList
-        Using connection As New SqlConnection(connectionString)
-            ' Open the connection
-            connection.Open()
-            For Each pair In PreviouslyBookedList
-                Dim deleteCommand As New SqlCommand(deleteSchedule, connection)
-                deleteCommand.Parameters.AddWithValue("@user_id", Module_global.User_ID)
-                deleteCommand.Parameters.AddWithValue("@provider_id", Module_global.Provider_ID)
-                Dim nextDate As DateTime = DateTime.Today.Date.AddDays(pair(0)).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
-                Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
-                deleteCommand.Parameters.AddWithValue("@time", formattedDate)
-                deleteCommand.Parameters.AddWithValue("@slots", pair(1))
-                Dim rowsAffected As Integer = deleteCommand.ExecuteNonQuery()
-                MessageBox.Show(formattedDate)
-                MessageBox.Show(pair(1))
 
-                If rowsAffected > 0 Then
-                    Console.WriteLine("Deleted")
-                Else
-                    MessageBox.Show("Error!")
-                End If
-                ' Execute the DELETE query to delete the Schedules
-            Next
-        End Using
         Dim query As String = "SELECT user_id, time, slots FROM schedule WHERE provider_id = @providerId"
 
 
@@ -247,7 +224,11 @@ Public Class Reschedule_Slots
                         End If
                         ' Process the appointment data as needed
                         If userId = Module_global.User_ID Then
-                            availability(daysDifference, slot) = 2
+                            If (availability(daysDifference, slot) <> 3) Then
+                                availability(daysDifference, slot) = 2
+                            End If
+
+
                         Else
                             availability(daysDifference, slot) = 0
                         End If
@@ -411,17 +392,16 @@ Public Class Reschedule_Slots
         ' Your function code here
         MessageBox.Show("This message appears when the form loads.")
     End Sub
-    Public variableChanged As New ManualResetEvent(False)
 
-    ' Variable to monitor for changes
-    Public myVariable As Integer = 0
     Private Async Function WaitForVariableChangeOrTimeoutAsync(timeoutMilliseconds As Integer) As Task
         ' Wait for either the variable to change or the timeout to elapse
-        Await Task.WhenAny(Task.Delay(timeoutMilliseconds), Task.Run(Sub() variableChanged.WaitOne()))
+        MessageBox.Show("I")
+        Await Task.WhenAny(Task.Delay(timeoutMilliseconds), Task.Run(Sub() Book_slots.variableChanged.WaitOne()))
 
         ' After the wait, you can check if the variable changed or timeout happened
-        If myVariable <> 0 Then
+        If Book_slots.myVariable <> 0 Then
             ' The variable changed
+            MessageBox.Show("HI")
             Console.WriteLine("Payment Successful")
 
         Else
@@ -461,7 +441,7 @@ Public Class Reschedule_Slots
                     End If
                     ' No description of booking time...
                     ' So take booking time as current day with starting slot.
-                    reschedule_cost += Math.Abs((sortedCurrBookedList(I)(0) * 13 + sortedCurrBookedList(I)(1))) * 0.7 + Math.Abs((sortedPrevBookedList(I)(0) * 13 + sortedPrevBookedList(I)(1))) * 0.3
+                    reschedule_cost += Math.Abs((84 - ((sortedCurrBookedList(I)(0) * 13 + sortedCurrBookedList(I)(1)) + 1)) * 0.7 + Math.Abs((sortedPrevBookedList(I)(0) * 13 + sortedPrevBookedList(I)(1))) * 0.3)
                     reschedule_cost *= y
                     reschedule_cost /= 84.0
                     y = 1.0
@@ -476,80 +456,156 @@ Public Class Reschedule_Slots
             If response = DialogResult.No Then
                 ' Roll back Schedule insertion
 Rollback:
-                ' Re insert old slots
-                For Each slot As Integer() In PreviouslyBookedList
-                    Dim provider_query As String = "INSERT INTO schedule (user_id,provider_id,slots,time) VALUES (@User_ID,@Provider_ID,@Slot,@Time);" ' Add the query here
-                    Using command As New SqlCommand(provider_query, connection)
-                        command.Parameters.AddWithValue("@User_ID", user)
-                        command.Parameters.AddWithValue("@Provider_ID", provider)
-                        command.Parameters.AddWithValue("@Slot", slot(1))
-                        command.Parameters.AddWithValue("@Time", currentDate.AddDays(slot(0)))
-                        Dim rowsAffected1 As Integer = command.ExecuteNonQuery()
-                        If rowsAffected1 = 0 Then
-                            MessageBox.Show("Some unusual error happened.")
-                            Exit For
-                        End If
-                    End Using
-                Next
-                reschedule_cost = 0.0
-                Me.Refresh()
+                BookedList.Clear()
+                PreviouslyBookedList.Clear()
+                Me.Close()
             Else
+                Dim NewlyBookedList As New List(Of Integer())
+                Try
+                    '' Now we have stored the previously booked slots in the PreviouslyBookedList
+                    Dim deleteSchedule As String = "DELETE FROM schedule WHERE user_id=@user_id AND provider_id=@provider_id AND time=@time AND slots=@slots AND time=@time"
 
-                Dim rowsAffected As Integer = 0
-                Dim Total_slots As Integer = 0
-                For Each slot As Integer() In BookedList
-                    Total_slots += 1
-                    Dim provider_query As String = "INSERT INTO schedule (user_id,provider_id,slots,time) VALUES (@User_ID,@Provider_ID,@Slot,@Time);" ' Add the query here
-                    Using command As New SqlCommand(provider_query, connection)
-                        command.Parameters.AddWithValue("@User_ID", user)
-                        command.Parameters.AddWithValue("@Provider_ID", provider)
-                        command.Parameters.AddWithValue("@Slot", slot(1))
-                        command.Parameters.AddWithValue("@Time", DateTime.Today.AddDays(slot(0)))
-                        rowsAffected = command.ExecuteNonQuery()
-                        If rowsAffected = 0 Then
-                            MessageBox.Show("Some unusual error happened.")
-                            Exit For
-                        End If
-                    End Using
-                Next
-                If rowsAffected > 0 Then
-                    Dim Total_cost As Integer = (Cost_per_hour * Total_slots) / 2
-                    Module_global.cost_of_booking = Total_cost
-                    payments.CostOfService = Total_cost
-                    payments.ProviderEmailID = ProviderName
-                    MessageBox.Show($"Data inserted successfully, you need to pay a total of {Total_cost}Rs.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    payments.Show()
-                    Await WaitForVariableChangeOrTimeoutAsync(900000000)
-                    If (Module_global.payment_successful = 1) Then
-                        'Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location);"
-                        Dim newDealTimeString As String = ""
-                        For I As Integer = 0 To 90
-                            Dim index As Integer = I
-                            If BookedList.Exists(Function(x) x(0) = index \ 13 AndAlso x(1) = index Mod 13) Then
-                                newDealTimeString += "1"
-                            Else
-                                newDealTimeString += "0"
+
+                    Dim rowsAffected As Integer = 0
+                    Dim Total_slots As Integer = 0
+
+                    For Each slot As Integer() In BookedList
+                        Dim found As Integer = -1
+                        Total_slots += 1
+                        For Each slot1 As Integer() In PreviouslyBookedList
+                            If (slot1(0) = slot(0) And slot1(1) = slot(1)) Then
+                                found = 1
+                                Exit For
                             End If
                         Next
-                        Dim dealsUpdate As String = "UPDATE deals SET time = @Time, status = 4 , dates = @Date WHERE deal_id = @Deal_ID;"
-                        Using command As New SqlCommand(dealsUpdate, connection)
-                            command.Parameters.AddWithValue("@Time", newDealTimeString)
-                            command.Parameters.AddWithValue("@Date", currentDate)
-                            command.Parameters.AddWithValue("@Deal_ID", Module_global.DealID_Reschedule)
+                        If (found <> -1) Then
+                            Continue For
+                        End If
+
+                        Dim provider_query As String = "INSERT INTO schedule (user_id,provider_id,slots,time) VALUES (@User_ID,@Provider_ID,@Slot,@Time);" ' Add the query here
+                        Using command As New SqlCommand(provider_query, connection)
+                            command.Parameters.AddWithValue("@User_ID", user)
+                            command.Parameters.AddWithValue("@Provider_ID", provider)
+                            command.Parameters.AddWithValue("@Slot", slot(1))
+                            command.Parameters.AddWithValue("@Time", DateTime.Today.AddDays(slot(0)))
                             rowsAffected = command.ExecuteNonQuery()
+                            NewlyBookedList.Add(slot)
                             If rowsAffected = 0 Then
-                                MessageBox.Show("Some unusual error occured.")
+                                MessageBox.Show("Some unusual error happened.")
+                                Exit For
                             End If
                         End Using
+                    Next
+                    If rowsAffected > 0 Then
+                        Dim Total_cost As Integer = (Cost_per_hour * Total_slots) / 2 + reschedule_cost * (Cost_per_hour * Total_slots) / 2
+                        Module_global.cost_of_booking = Total_cost
+                        payments.CostOfService = Total_cost
+                        payments.ProviderEmailID = ProviderName
+                        Book_slots.variableChanged.Reset()
+                        Book_slots.myVariable = 0
+                        MessageBox.Show($"Data inserted successfully, you need to pay a total of {Total_cost}Rs.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        payments.Show()
+                        Await WaitForVariableChangeOrTimeoutAsync(900000)
 
-                        Module_global.payment_successful = 0
-                        myVariable = 0
-                        Make_Schedule_Table()
-                        MessageBox.Show("Successfully Booked the slots.")
+
+                        If (Module_global.payment_successful = 1) Then
+                            'Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location);"
+                            Dim newDealTimeString As String = ""
+                            For I As Integer = 0 To 90
+                                Dim index As Integer = I
+                                If BookedList.Exists(Function(x) x(0) = index \ 13 AndAlso x(1) = index Mod 13) Then
+                                    newDealTimeString += "1"
+                                Else
+                                    newDealTimeString += "0"
+                                End If
+                            Next
+                            Dim dealsUpdate As String = "UPDATE deals SET time = @Time, status = 4 , dates = @Date WHERE deal_id = @Deal_ID;"
+                            Using command As New SqlCommand(dealsUpdate, connection)
+                                command.Parameters.AddWithValue("@Time", newDealTimeString)
+                                command.Parameters.AddWithValue("@Date", currentDate)
+                                command.Parameters.AddWithValue("@Deal_ID", Module_global.DealID_Reschedule)
+                                rowsAffected = command.ExecuteNonQuery()
+                                If rowsAffected = 0 Then
+                                    MessageBox.Show("Some unusual error occured.")
+                                End If
+                            End Using
+
+                            '' Now we have stored the previously booked slots in the PreviouslyBookedList
+
+                            For Each pair As Integer() In PreviouslyBookedList
+                                Dim found As Integer = -1
+                                For Each slot1 As Integer() In BookedList
+                                    If (slot1(0) = pair(0) And slot1(1) = pair(1)) Then
+                                        found = 1
+                                        Exit For
+                                    End If
+                                Next
+                                If (found <> -1) Then
+                                    Continue For
+                                End If
+
+                                Dim deleteCommand As New SqlCommand(deleteSchedule, connection)
+                                deleteCommand.Parameters.AddWithValue("@user_id", Module_global.User_ID)
+                                deleteCommand.Parameters.AddWithValue("@provider_id", Module_global.Provider_ID)
+                                Dim nextDate As DateTime = DateTime.Today.Date.AddDays(pair(0)).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
+                                Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
+                                deleteCommand.Parameters.AddWithValue("@time", formattedDate)
+                                deleteCommand.Parameters.AddWithValue("@slots", pair(1))
+                                Dim rowsAffected1 As Integer = deleteCommand.ExecuteNonQuery()
+                                MessageBox.Show(formattedDate)
+                                MessageBox.Show(pair(1))
+
+                                If rowsAffected > 0 Then
+                                    Console.WriteLine("Deleted")
+                                Else
+                                    MessageBox.Show("Error!")
+                                End If
+                                ' Execute the DELETE query to delete the Schedules
+                            Next
+
+
+                            Module_global.payment_successful = 0
+                            Book_slots.myVariable = 0
+                            Book_slots.variableChanged.Reset()
+                            MessageBox.Show("Successfully Booked the slots.")
+                            Me.Close()
+                        Else
+                            MessageBox.Show("Payment was not successful. Please try again.")
+                            'Dim deleteSchedule As String = "DELETE FROM schedule WHERE user_id=@user_id AND provider_id=@provider_id AND time=@time AND slots=@slots AND time=@time"
+                            For Each pair In NewlyBookedList
+                                Dim deleteCommand As New SqlCommand(deleteSchedule, connection)
+                                deleteCommand.Parameters.AddWithValue("@user_id", Module_global.User_ID)
+                                deleteCommand.Parameters.AddWithValue("@provider_id", Module_global.Provider_ID)
+                                Dim nextDate As DateTime = DateTime.Today.Date.AddDays(pair(0)).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
+                                Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
+                                deleteCommand.Parameters.AddWithValue("@time", formattedDate)
+                                deleteCommand.Parameters.AddWithValue("@slots", pair(1))
+                                Dim rowsAffected1 As Integer = deleteCommand.ExecuteNonQuery()
+
+                                If rowsAffected > 0 Then
+                                    Console.WriteLine("Deleted")
+                                Else
+                                    MessageBox.Show("Error!")
+                                End If
+                                ' Execute the DELETE query to delete the Schedules
+                            Next
+                            Book_slots.variableChanged.Reset()
+                            Module_global.payment_successful = 0
+                            Book_slots.myVariable = 0
+                            Me.Close()
+                        End If
+
+
                     Else
-                        MessageBox.Show("Payment was not successful. Please try again.")
+                        MessageBox.Show("Please select some slots to book!")
+                    End If
+                Catch ex As SqlException
+                    ' Check for specific error number indicating duplicate key violation
+                    If ex.Number = 2601 OrElse ex.Number = 2627 Then
+                        ' Duplicate key violation error (constraint violation)
+                        MessageBox.Show("This slot is already booked.", "Booking Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         Dim deleteSchedule As String = "DELETE FROM schedule WHERE user_id=@user_id AND provider_id=@provider_id AND time=@time AND slots=@slots AND time=@time"
-                        For Each pair In BookedList
+                        For Each pair In NewlyBookedList
                             Dim deleteCommand As New SqlCommand(deleteSchedule, connection)
                             deleteCommand.Parameters.AddWithValue("@user_id", Module_global.User_ID)
                             deleteCommand.Parameters.AddWithValue("@provider_id", Module_global.Provider_ID)
@@ -558,20 +614,38 @@ Rollback:
                             deleteCommand.Parameters.AddWithValue("@time", formattedDate)
                             deleteCommand.Parameters.AddWithValue("@slots", pair(1))
                             Dim rowsAffected1 As Integer = deleteCommand.ExecuteNonQuery()
-
-                            If rowsAffected > 0 Then
+                            If rowsAffected1 > 0 Then
                                 Console.WriteLine("Deleted")
                             Else
                                 MessageBox.Show("Error!")
                             End If
-                            ' Execute the DELETE query to delete the Schedules
+                            Module_global.payment_successful = 0
                         Next
+                        BookedList.Clear()
+                        Book_slots.myVariable = 0
+                        Book_slots.variableChanged.Reset()
+
+                        For Each slot As Integer() In PreviouslyBookedList
+                            Dim provider_query As String = "INSERT INTO schedule (user_id,provider_id,slots,time) VALUES (@User_ID,@Provider_ID,@Slot,@Time);" ' Add the query here
+                            Using command As New SqlCommand(provider_query, connection)
+                                command.Parameters.AddWithValue("@User_ID", user)
+                                command.Parameters.AddWithValue("@Provider_ID", provider)
+                                command.Parameters.AddWithValue("@Slot", slot(1))
+                                command.Parameters.AddWithValue("@Time", currentDate.AddDays(slot(0)))
+                                Dim rowsAffected1 As Integer = command.ExecuteNonQuery()
+                                If rowsAffected1 = 0 Then
+                                    MessageBox.Show("Some unusual error happened.")
+                                    Exit For
+                                End If
+                            End Using
+                        Next
+                        Me.Close()
+
+                    Else
+                        ' Other SQL error occurred, handle accordingly
+                        'MessageBox.Show($"SQL Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                     End If
-
-
-                Else
-                    MessageBox.Show("Please select some slots to book!")
-                End If
+                End Try
             End If
 
             ' Calculate Reschedule cost and display to the user
