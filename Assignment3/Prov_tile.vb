@@ -225,9 +225,16 @@ Public Class Prov_tile
                         End Using
                     End If
                     If roomId > 0 Then
-                        Dim userProviderChatsForm As New user_provider_chats()
-                        userProviderChatsForm.roomId = roomId
-                        userProviderChatsForm.Show()
+                        Dim userTemplate As user_template = Application.OpenForms("user_template")
+                        If userTemplate IsNot Nothing Then
+                            Dim user_provider_chats As New user_provider_chats()
+                            user_provider_chats.roomId = roomId
+                            userTemplate.switchPanel(user_provider_chats)
+
+                            userTemplate.chats_btn.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+                            userTemplate.home_btn.BackColor = SystemColors.Control
+
+                        End If
                     End If
                 End Using
             Catch ex As Exception
