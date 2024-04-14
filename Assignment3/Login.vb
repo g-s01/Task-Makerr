@@ -52,11 +52,41 @@ Public Class Login
                             password_tb.Text = ""
                         End If
                     End Using
+
+                    Dim supportquery As String = "
+                            DECLARE @SupportRoomId INT;
+
+                            IF NOT EXISTS (SELECT 1 FROM support_room WHERE user_id = @UserId)
+                            BEGIN
+                                INSERT INTO support_room (user_id, username, user_type)
+                                VALUES (@UserId, @Username, @UserType);
+                                SET @SupportRoomId = SCOPE_IDENTITY();
+                            END
+                            ELSE
+                            BEGIN
+                                SELECT @SupportRoomId = support_room_id FROM support_room WHERE user_id = @UserId;
+                            END
+
+                            SELECT @SupportRoomId AS support_room_id;
+                            "
+                    Using command As New SqlCommand(supportquery, sqlConnection)
+                        ' Set parameter values
+                        command.Parameters.AddWithValue("@UserId", Module_global.Provider_ID)
+                        command.Parameters.AddWithValue("@Username", Module_global.User_Name)
+                        command.Parameters.AddWithValue("@UserType", Module_global.User_Role)
+
+                        ' Execute the command and retrieve the generated identity value
+                        Module_global.Support_room_id = Convert.ToInt32(command.ExecuteScalar())
+                        'MessageBox.Show("support id" & Support_room_id)
+                    End Using
                 End Using
             Catch ex As Exception
                 ' Handle any exceptions that occur during database operations
                 MessageBox.Show("An error occurred: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
             End Try
+
+
         End If
     End Sub
 
@@ -94,6 +124,30 @@ Public Class Login
                             error_label.Text = "Invalid email or password. No such user account"
                             password_tb.Text = ""
                         End If
+                    End Using
+                    Dim supportquery As String = "
+                            DECLARE @SupportRoomId INT;
+
+                            IF NOT EXISTS (SELECT 1 FROM support_room WHERE user_id = @UserId)
+                            BEGIN
+                                INSERT INTO support_room (user_id, username, user_type)
+                                VALUES (@UserId, @Username, @UserType);
+                                SET @SupportRoomId = SCOPE_IDENTITY();
+                            END
+                            ELSE
+                            BEGIN
+                                SELECT @SupportRoomId = support_room_id FROM support_room WHERE user_id = @UserId;
+                            END
+
+                            SELECT @SupportRoomId AS support_room_id;
+                            "
+                    Using command As New SqlCommand(supportquery, sqlConnection)
+                        ' Set parameter values
+                        command.Parameters.AddWithValue("@UserId", Module_global.User_ID)
+                        command.Parameters.AddWithValue("@Username", Module_global.User_Name)
+                        command.Parameters.AddWithValue("@UserType", Module_global.User_Role)
+                        ' Execute the command and retrieve the generated identity value
+                        Module_global.Support_room_id = Convert.ToInt32(command.ExecuteScalar())
                     End Using
                 End Using
             Catch ex As Exception
