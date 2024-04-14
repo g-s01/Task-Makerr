@@ -25,6 +25,7 @@ Partial Class ViewAllUser
         ComboBox1 = New ComboBox()
         ComboBox2 = New ComboBox()
         Label3 = New Label()
+        Button1 = New Button()
         SuspendLayout()
         ' 
         ' ComboBox1
@@ -33,7 +34,7 @@ Partial Class ViewAllUser
         ComboBox1.FormattingEnabled = True
         ComboBox1.Location = New Point(97, 48)
         ComboBox1.Name = "ComboBox1"
-        ComboBox1.Size = New Size(151, 31)
+        ComboBox1.Size = New Size(182, 31)
         ComboBox1.TabIndex = 2
         ComboBox1.Text = "    Filter"
         ' 
@@ -43,9 +44,9 @@ Partial Class ViewAllUser
         ComboBox2.FormattingEnabled = True
         ComboBox2.Location = New Point(328, 48)
         ComboBox2.Name = "ComboBox2"
-        ComboBox2.Size = New Size(151, 31)
+        ComboBox2.Size = New Size(182, 31)
         ComboBox2.TabIndex = 3
-        ComboBox2.Text = "    Location"
+        ComboBox2.Text = "  Select Location"
         ' 
         ' Label3
         ' 
@@ -57,11 +58,22 @@ Partial Class ViewAllUser
         Label3.TabIndex = 5
         Label3.Text = "Service Type"
         ' 
+        ' Button1
+        ' 
+        Button1.Font = New Font("Microsoft YaHei", 12.0F)
+        Button1.Location = New Point(676, 38)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(124, 47)
+        Button1.TabIndex = 6
+        Button1.Text = "Back"
+        Button1.UseVisualStyleBackColor = True
+        ' 
         ' ViewAllUser
         ' 
         AutoScaleDimensions = New SizeF(8.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(800, 450)
+        Controls.Add(Button1)
         Controls.Add(Label3)
         Controls.Add(ComboBox2)
         Controls.Add(ComboBox1)
@@ -75,4 +87,5 @@ Partial Class ViewAllUser
     Friend WithEvents ComboBox1 As ComboBox
     Friend WithEvents ComboBox2 As ComboBox
     Friend WithEvents Label3 As Label
+    Friend WithEvents Button1 As Button
 End Class

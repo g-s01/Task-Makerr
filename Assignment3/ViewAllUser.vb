@@ -1,10 +1,19 @@
-﻿Imports Microsoft.Data.SqlClient
+﻿Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.Data.SqlClient
 Imports Org.BouncyCastle.Crypto.Asymmetric.AsymmetricRsaKey
 Imports System.Configuration
 Imports System.Drawing
 Imports System.Text
 Imports System.Windows.Forms.AxHost
 Public Class ViewAllUser
+
+    ' Create an inner panel
+    Dim innerPanel As New Panel()
+    ' Define button size and spacing
+    Dim buttonWidth = 350
+    Dim buttonSpacing = 35
+    Dim buttonHeight = 150
+    Dim providers As New Dictionary(Of Integer, ProviderData)()
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
 
@@ -33,17 +42,17 @@ Public Class ViewAllUser
 
 
 
+
+
         Label3.Text = serviceType
 
 
 
         ComboBox1.Items.Add("Sorted by Rating")
-        ComboBox1.Items.Add("A-Z by Location")
+        ComboBox1.Items.Add("A-Z by Provider")
         Dim filter_by_loc As String = "Filter by Location"
         ComboBox1.Items.Add(filter_by_loc)
 
-        Dim Locations() As String = {"Location A", "Location B", "Location C"}
-        ComboBox2.Items.AddRange(Locations)
 
 
         ' Set the default selected item for comboBox1
@@ -59,7 +68,7 @@ Public Class ViewAllUser
 
 
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-        Dim providers As New Dictionary(Of Integer, ProviderData)()
+
         Using connection As New SqlConnection(connectionString)
             connection.Open()
             Dim query As String = "SELECT " &
@@ -126,13 +135,32 @@ Public Class ViewAllUser
 
 
 
+        ' Create a HashSet to store unique locations
+        Dim uniqueLocations As New HashSet(Of String)
+
+        ' Iterate through each entry in the providers dictionary
+        For Each kvp As KeyValuePair(Of Integer, ProviderData) In providers
+            ' Get the ProviderData object
+            Dim providerData As ProviderData = kvp.Value
+
+            ' Iterate through each location in the ProviderData.Locations list
+            For Each location As String In providerData.Locations
+                ' Add the location to the HashSet (automatically handles duplicates)
+                uniqueLocations.Add(location)
+            Next
+        Next
+
+        ' Convert the HashSet to an array of strings (for ComboBox)
+        Dim locationsArray() As String = uniqueLocations.ToArray()
+
+        ' Add the locationsArray to the ComboBox
+        ComboBox2.Items.AddRange(locationsArray)
 
 
 
 
 
-        ' Create an inner panel
-        Dim innerPanel As New Panel()
+
 
         ' Set inner panel properties
         innerPanel.Location = New Point(27, 140) ' Fixed location
@@ -145,10 +173,7 @@ Public Class ViewAllUser
 
 
 
-        ' Define button size and spacing
-        Dim buttonWidth = 350
-        Dim buttonSpacing = 35
-        Dim buttonHeight = 150
+
 
 
 
@@ -178,11 +203,12 @@ Public Class ViewAllUser
         Dim userTiles(numOfTiles - 1) As viewMore
         Dim tileClickedHandlers(numOfTiles - 1) As Action(Of Object, Integer)
 
+        ' Sort providers dictionary by AverageRating in descending order
+        Dim sortedProviders = providers.OrderByDescending(Function(kvp) kvp.Value.AverageRating)
 
-
-        Dim i As Integer = 0 ' Initialize i outside the loop
-
-        For Each kvp As KeyValuePair(Of Integer, ProviderData) In providers
+        ' Loop through sorted providers and display in tiles
+        Dim i As Integer = 0
+        For Each kvp As KeyValuePair(Of Integer, ProviderData) In sortedProviders
             ' Calculate startX and startY based on the position in the grid
             Dim currentRow As Integer = i \ 2 ' Integer division to determine the row
             Dim currentColumn As Integer = i Mod 2 ' Modulus to determine the column
@@ -206,6 +232,32 @@ Public Class ViewAllUser
             i += 1
         Next
 
+        '   Dim i As Integer = 0 ' Initialize i outside the loop
+        '
+        '   For Each kvp As KeyValuePair(Of Integer, ProviderData) In providers
+        '       ' Calculate startX and startY based on the position in the grid
+        '       Dim currentRow As Integer = i \ 2 ' Integer division to determine the row
+        '       Dim currentColumn As Integer = i Mod 2 ' Modulus to determine the column
+        '       Dim startX As Integer = currentColumn * (buttonWidth + buttonSpacing)
+        '       Dim startY As Integer = currentRow * (buttonHeight + buttonSpacing)
+        '
+        '       ' Create a viewMore instance with data from the ProviderData object
+        '       Dim providerData As ProviderData = kvp.Value
+        '       Dim userTile As New viewMore(providerData.ProviderId, startX, startY, providerData.Locations, providerData.AverageRating)
+        '
+        '       ' Set the username for the viewMore instance
+        '       userTile.Username = providerData.ProviderName
+        '
+        '       ' Add event handler for TileClicked event
+        '       AddHandler userTile.TileClicked, AddressOf viewMore_TileClicked
+        '
+        '       ' Add the viewMore instance to the innerPanel
+        '       innerPanel.Controls.Add(userTile)
+        '
+        '       ' Increment i for the next iteration
+        '       i += 1
+        '   Next
+
 
 
 
@@ -222,16 +274,10 @@ Public Class ViewAllUser
         MessageBox.Show("Index of Clicked Tile: " & e.ToString())
     End Sub
 
-    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
-        ' Check if "Option 3" is selected
-        If ComboBox1.SelectedItem IsNot Nothing AndAlso ComboBox1.SelectedItem.ToString() = "Filter by Location" Then
-            ' Show comboBox2 if "Option 3" is selected
-            ComboBox2.Visible = True
-        Else
-            ' Hide comboBox2 if "Option 3" is unselected
-            ComboBox2.Visible = False
-        End If
-    End Sub
+
+
+
+
     Public Class ProviderData
         Public Property ProviderId As Integer
         Public Property ProviderName As String
@@ -248,4 +294,132 @@ Public Class ViewAllUser
         End Sub
     End Class
 
+    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
+        ' Clear existing controls from the displayPanel
+        ComboBox2.Text = "Select Location"
+        If ComboBox1.SelectedItem IsNot Nothing AndAlso ComboBox1.SelectedItem.ToString() = "Filter by Location" Then
+            ' Show comboBox2 if "Option 3" is selected
+            ComboBox2.Visible = True
+        Else
+            ' Hide comboBox2 if "Option 3" is unselected
+            ComboBox2.Visible = False
+        End If
+
+        ' Get unique locations from the retrieved providers
+        Dim uniqueLocations As New HashSet(Of String)()
+        For Each kvp As KeyValuePair(Of Integer, ProviderData) In providers
+            For Each location As String In kvp.Value.Locations
+                uniqueLocations.Add(location)
+            Next
+        Next
+
+        ' Convert the HashSet to an array of strings (for ComboBox)
+        Dim locationsArray() As String = uniqueLocations.ToArray()
+
+        ' Add the locationsArray to ComboBox2
+        ComboBox2.Items.Clear() ' Clear existing items before adding new ones
+        ComboBox2.Items.AddRange(locationsArray)
+
+        ' Display provider tiles in innerPanel
+        Dim sortedProviders = providers.OrderByDescending(Function(kvp) kvp.Value.AverageRating)
+        Dim i As Integer = 0
+
+        If ComboBox1.SelectedIndex = 0 Then
+            innerPanel.Controls.Clear()
+            For Each kvp As KeyValuePair(Of Integer, ProviderData) In sortedProviders
+                Dim currentRow As Integer = i \ 2 ' Integer division to determine the row
+                Dim currentColumn As Integer = i Mod 2 ' Modulus to determine the column
+                Dim startX As Integer = currentColumn * (buttonWidth + buttonSpacing)
+                Dim startY As Integer = currentRow * (buttonHeight + buttonSpacing)
+
+                Dim providerData As ProviderData = kvp.Value
+                Dim userTile As New viewMore(providerData.ProviderId, startX, startY, providerData.Locations, providerData.AverageRating)
+                userTile.Username = providerData.ProviderName
+                AddHandler userTile.TileClicked, AddressOf viewMore_TileClicked
+                innerPanel.Controls.Add(userTile)
+
+                i += 1
+            Next
+
+        ElseIf ComboBox1.SelectedIndex = 1 Then
+            ' Clear existing controls from the innerPanel
+            innerPanel.Controls.Clear()
+
+            ' Sort providers by username (ProviderName)
+            Dim sortedProviders1 = providers.OrderBy(Function(kvp) kvp.Value.ProviderName)
+
+            ' Display sorted providers in innerPanel
+            Dim i1 As Integer = 0
+
+            For Each kvp As KeyValuePair(Of Integer, ProviderData) In sortedProviders1
+                Dim currentRow As Integer = i1 \ 2 ' Integer division to determine the row
+                Dim currentColumn As Integer = i1 Mod 2 ' Modulus to determine the column
+                Dim startX As Integer = currentColumn * (buttonWidth + buttonSpacing)
+                Dim startY As Integer = currentRow * (buttonHeight + buttonSpacing)
+
+                Dim providerData As ProviderData = kvp.Value
+                Dim userTile As New viewMore(providerData.ProviderId, startX, startY, providerData.Locations, providerData.AverageRating)
+                userTile.Username = providerData.ProviderName
+                AddHandler userTile.TileClicked, AddressOf viewMore_TileClicked
+                innerPanel.Controls.Add(userTile)
+
+                i1 += 1
+            Next
+
+        Else
+
+        End If
+
+
+    End Sub
+
+
+    Private Sub ComboBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox2.SelectedIndexChanged
+        ' Clear existing controls from the innerPanel
+        innerPanel.Controls.Clear()
+
+        ' Get the selected location from ComboBox2
+        If ComboBox2.SelectedIndex <> -1 Then
+            Dim selectedLocation As String = ComboBox2.SelectedItem.ToString()
+
+            ' Filter providers based on the selected location
+            Dim filteredProviders = providers.Where(Function(kvp) kvp.Value.Locations.Contains(selectedLocation)).ToList()
+
+            ' Display filtered providers in innerPanel
+            Dim i As Integer = 0
+
+            For Each kvp As KeyValuePair(Of Integer, ProviderData) In filteredProviders
+                Dim currentRow As Integer = i \ 2 ' Integer division to determine the row
+                Dim currentColumn As Integer = i Mod 2 ' Modulus to determine the column
+                Dim startX As Integer = currentColumn * (buttonWidth + buttonSpacing)
+                Dim startY As Integer = currentRow * (buttonHeight + buttonSpacing)
+
+                Dim providerData As ProviderData = kvp.Value
+                Dim userTile As New viewMore(providerData.ProviderId, startX, startY, providerData.Locations, providerData.AverageRating)
+                userTile.Username = providerData.ProviderName
+                AddHandler userTile.TileClicked, AddressOf viewMore_TileClicked
+                innerPanel.Controls.Add(userTile)
+
+                i += 1
+            Next
+        End If
+    End Sub
+
+
+
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        ' Navigate to another page here
+        Dim clickedButton As Button = CType(sender, Button)
+        Module_global.serviceType = CType(clickedButton.Tag, String)
+        user_template.SplitContainer1.Panel2.Controls.Clear()
+        With UserHome
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(UserHome)
+            .BringToFront()
+            .Show()
+        End With
+    End Sub
 End Class
