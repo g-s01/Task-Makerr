@@ -1,3 +1,7 @@
+
+Imports System.Configuration
+Imports Microsoft.Data.SqlClient
+
 Public Class Prov_tile
     Inherits UserControl
 
@@ -7,6 +11,7 @@ Public Class Prov_tile
     Public Property ItemImage As Image
     Public Property Rating As Double
     Public Property Provider As Int32
+
 
     ' Constructor
     Public Sub New(provider As Int32, providerName As String, loc As String, rating As Double, itemImage As Image)
@@ -167,4 +172,70 @@ Public Class Prov_tile
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
     Friend WithEvents PictureBox2 As PictureBox
+
+    Private Sub Prov_tile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        ' Assuming connectionString is defined elsewhere
+        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+
+        ' Create a SqlConnection object
+        Using connection As New SqlConnection(connectionString)
+            Try
+                ' Open the connection
+                connection.Open()
+
+                ' Create the query to select chat room ID
+                Dim userId As String = Module_global.User_ID
+                Dim providerId As String = Provider
+                Dim query As String = "SELECT chat_room_id FROM dbo.chat_room WHERE user_id=@userId AND provider_id=@providerId;"
+                Dim roomId As Integer = -1
+                ' Create a SqlCommand object with the select query and connection
+                Using selectCommand As New SqlCommand(query, connection)
+                    ' Add parameters for select command
+                    selectCommand.Parameters.AddWithValue("@userId", userId)
+                    selectCommand.Parameters.AddWithValue("@providerId", providerId)
+
+                    ' Execute the select command and get the result
+                    roomId = Convert.ToInt32(selectCommand.ExecuteScalar())
+
+                    ' Check if the result is not null
+                    If roomId > 0 Then
+                        MessageBox.Show("Chat room ID: " & roomId.ToString())
+                    Else
+                        ' If no chat room found, create a new one
+                        Dim insertQuery As String = "INSERT INTO dbo.chat_room (user_id, provider_id, username, providername) VALUES (@userId, @providerId, @username, @providername); SELECT SCOPE_IDENTITY();"
+
+                        ' Create a SqlCommand object with the insert query and connection
+                        Using insertCommand As New SqlCommand(insertQuery, connection)
+                            ' Add parameters for insert command
+                            insertCommand.Parameters.AddWithValue("@userId", userId)
+                            insertCommand.Parameters.AddWithValue("@providerId", providerId)
+                            insertCommand.Parameters.AddWithValue("@username", Module_global.User_Name) ' Assuming "Mokshith" is the username
+                            insertCommand.Parameters.AddWithValue("@providername", ProviderName) ' Assuming "sahil_the_provider" is the provider name
+
+                            ' Execute the insert command and get the inserted chat room ID
+                            roomId = Convert.ToInt32(insertCommand.ExecuteScalar())
+
+                            ' Display the newly created chat room ID
+                            MessageBox.Show("New Chat room ID: " & roomId.ToString())
+
+                        End Using
+                    End If
+                    If roomId > 0 Then
+                        Dim userProviderChatsForm As New user_provider_chats()
+                        userProviderChatsForm.roomId = roomId
+                        userProviderChatsForm.Show()
+                    End If
+                End Using
+            Catch ex As Exception
+                ' Handle any exceptions
+                MessageBox.Show("An error occurred: " & ex.Message)
+            End Try
+        End Using
+    End Sub
+
+
 End Class

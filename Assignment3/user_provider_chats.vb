@@ -15,6 +15,8 @@ Public Class user_provider_chats
 
     Dim userId As Integer = 2
     Dim dealId As Integer = -1
+    Public roomId As Integer = -1
+
     Private WithEvents timer As New Timer()
 
 
@@ -207,6 +209,10 @@ Public Class user_provider_chats
 
         'chat_list.Visible = False
         timer.Start()
+        If roomId <> 0 Then
+            ' Call the function to print messages between users
+            PrintMessagesBetweenUsers(roomId)
+        End If
     End Sub
 
     Private Sub timer_Tick(sender As Object, e As EventArgs) Handles timer.Tick
