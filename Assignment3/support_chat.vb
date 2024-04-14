@@ -12,19 +12,8 @@ Public Class support_chat
     'Dim messages As New List(Of Tuple(Of Integer, String, String, String))()
     Dim supportmessages As New List(Of Tuple(Of Integer, String, String, String))()
 
-
-    Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
-        'messages.Clear()
-        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Hey there!", "2024-03-30 10:00:00"))
-        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "How are you?", "2024-03-30 10:05:00"))
-        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "What's up?", "2024-03-30 10:10:00"))
-        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Good morning!", "2024-03-30 10:15:00"))
-        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "How's it going?", "2024-03-30 10:20:00"))
-        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Want to hang out later?", "2024-03-30 10:25:00"))
-        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "Sounds good!", "2024-03-30 10:35:00"))
-        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
-
-        ' Define your connection string
+    Private Sub LoadMessagesFromDatabase()
+        supportmessages.Clear()
         Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
 
         ' Define your SQL query to select messages for a specific support_room_id
@@ -38,7 +27,7 @@ Public Class support_chat
             ' Create a SqlCommand object
             Using command As New SqlCommand(query, connection)
                 ' Set the parameter for the support_room_id
-                command.Parameters.AddWithValue("@SupportRoomId", Support_room_id)
+                command.Parameters.AddWithValue("@SupportRoomId", Module_global.Support_room_id)
 
                 ' Execute the query and get a SqlDataReader
                 Using reader As SqlDataReader = command.ExecuteReader()
@@ -61,11 +50,13 @@ Public Class support_chat
                 End Using
             End Using
         End Using
+    End Sub
 
+    Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
+        LoadMessagesFromDatabase()
         PrintMessages()
     End Sub
 
-    Private WithEvents sendTextBox As TextBox
 
     Private Sub sendTextBox_KeyDown(sender As Object, e As KeyEventArgs) Handles inputTextBox.KeyDown
         If e.KeyCode = Keys.Enter Then
@@ -99,11 +90,9 @@ Public Class support_chat
         Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
 
         Dim query As String = "
-            INSERT INTO support_msgs (support_room_id, sender_type, message_content, sent_timestamp)
-            VALUES (@SupportRoomId, @SenderType, @MessageContent, @SentTimestamp);
-            SELECT SCOPE_IDENTITY();
-            "
-
+            INSERT INTO support_msgs (support_room_id, sender_type, message_content)
+            VALUES (@SupportRoomId, @SenderType, @MessageContent);
+            SELECT SCOPE_IDENTITY();"
         Using connection As New SqlConnection(connectionString)
             ' Open the connection
             connection.Open()
@@ -114,7 +103,7 @@ Public Class support_chat
                 command.Parameters.AddWithValue("@SupportRoomId", Support_room_id)
                 command.Parameters.AddWithValue("@SenderType", user_role)
                 command.Parameters.AddWithValue("@MessageContent", messageText)
-                command.Parameters.AddWithValue("@SentTimestamp", timeStamp)
+
 
                 ' Execute the INSERT command and retrieve the generated message_id
                 Dim messageId As Integer = Convert.ToInt32(command.ExecuteScalar())
@@ -227,15 +216,4 @@ Public Class support_chat
         Support.AutoScrollPosition = New Point(0, Support.AutoScrollPosition.Y + yPos)
     End Sub
 
-    Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
-
-    End Sub
-
-    Private Sub Support_Paint(sender As Object, e As PaintEventArgs) Handles Support.Paint
-
-    End Sub
-
-    Private Sub inputTextBox_TextChanged(sender As Object, e As EventArgs) Handles inputTextBox.TextChanged
-
-    End Sub
 End Class
