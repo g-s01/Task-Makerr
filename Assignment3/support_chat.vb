@@ -1,5 +1,7 @@
 ﻿Imports System.Globalization
+Imports Azure.Messaging
 Imports Microsoft.CodeAnalysis.Text
+Imports Microsoft.Data.SqlClient
 
 Public Class support_chat
     Dim user_role As String = "user"
@@ -7,18 +9,59 @@ Public Class support_chat
     Dim dealId As Integer = -1
     Dim roomId As Integer = 1
     ' room,sender_type,msg_content,sent_timestand
-    Dim messages As New List(Of Tuple(Of Integer, String, String, String))()
+    'Dim messages As New List(Of Tuple(Of Integer, String, String, String))()
+    Dim supportmessages As New List(Of Tuple(Of Integer, String, String, String))()
+
 
     Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
-        messages.Clear()
-        messages.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Hey there!", "2024-03-30 10:00:00"))
-        messages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "How are you?", "2024-03-30 10:05:00"))
-        messages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "What's up?", "2024-03-30 10:10:00"))
-        messages.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Good morning!", "2024-03-30 10:15:00"))
-        messages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "How's it going?", "2024-03-30 10:20:00"))
-        messages.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Want to hang out later?", "2024-03-30 10:25:00"))
-        messages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "Sounds good!", "2024-03-30 10:35:00"))
-        messages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
+        'messages.Clear()
+        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Hey there!", "2024-03-30 10:00:00"))
+        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "How are you?", "2024-03-30 10:05:00"))
+        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "What's up?", "2024-03-30 10:10:00"))
+        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Good morning!", "2024-03-30 10:15:00"))
+        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "How's it going?", "2024-03-30 10:20:00"))
+        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Want to hang out later?", "2024-03-30 10:25:00"))
+        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "Sounds good!", "2024-03-30 10:35:00"))
+        supportmessages.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
+
+        ' Define your connection string
+        Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+
+        ' Define your SQL query to select messages for a specific support_room_id
+        Dim query As String = "SELECT message_id, sender_type, message_content, sent_timestamp FROM support_msgs WHERE support_room_id = @SupportRoomId"
+
+        ' Create a SqlConnection object
+        Using connection As New SqlConnection(connectionString)
+            ' Open the connection
+            connection.Open()
+
+            ' Create a SqlCommand object
+            Using command As New SqlCommand(query, connection)
+                ' Set the parameter for the support_room_id
+                command.Parameters.AddWithValue("@SupportRoomId", Support_room_id)
+
+                ' Execute the query and get a SqlDataReader
+                Using reader As SqlDataReader = command.ExecuteReader()
+                    ' Loop through the results and populate the supportmessages list
+                    While reader.Read()
+                        ' Read the values from the current row
+                        Dim messageId As Integer = reader.GetInt32(0)
+                        Dim senderType As String = reader.GetString(1)
+                        Dim messageContent As String = reader.GetString(2)
+                        'Dim sentTimestamp As String = reader.GetDateTime(3).ToString() ' Adjust as per your DateTime format
+                        Dim formattedTimestamp As DateTime = reader.GetDateTime(3)
+
+                        ' Convert the DateTime to the desired string format "yyyy-MM-dd HH:mm:ss"
+                        Dim sentTimestamp As String = formattedTimestamp.ToString("yyyy-MM-dd HH:mm:ss")
+                        'MessageBox.Show("sent time" & sentTimestamp)
+
+                        ' Add the values to the supportmessages list as a Tuple
+                        supportmessages.Add(New Tuple(Of Integer, String, String, String)(messageId, senderType, messageContent, sentTimestamp))
+                    End While
+                End Using
+            End Using
+        End Using
+
         PrintMessages()
     End Sub
 
@@ -52,8 +95,39 @@ Public Class support_chat
         Next
 
         Dim newMessage As New Tuple(Of Integer, String, String, String)(roomId, user_role, messageText, timeStamp)
+
+        Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+
+        Dim query As String = "
+            INSERT INTO support_msgs (support_room_id, sender_type, message_content, sent_timestamp)
+            VALUES (@SupportRoomId, @SenderType, @MessageContent, @SentTimestamp);
+            SELECT SCOPE_IDENTITY();
+            "
+
+        Using connection As New SqlConnection(connectionString)
+            ' Open the connection
+            connection.Open()
+
+            ' Create a SqlCommand object
+            Using command As New SqlCommand(query, connection)
+                ' Set the parameters for the new message
+                command.Parameters.AddWithValue("@SupportRoomId", Support_room_id)
+                command.Parameters.AddWithValue("@SenderType", user_role)
+                command.Parameters.AddWithValue("@MessageContent", messageText)
+                command.Parameters.AddWithValue("@SentTimestamp", timeStamp)
+
+                ' Execute the INSERT command and retrieve the generated message_id
+                Dim messageId As Integer = Convert.ToInt32(command.ExecuteScalar())
+
+                ' Now you can use the messageId as needed
+                'Console.WriteLine("Generated Message ID: " & messageId)
+            End Using
+        End Using
+
         ' Add the new message to the messages list
-        messages.Add(newMessage)
+        supportmessages.Add(newMessage)
+
+
         ' Optionally, you can clear the TextBox after sending the message
         inputTextBox.Text = ""
         ' Print messages between users
@@ -66,7 +140,7 @@ Public Class support_chat
             Support.Controls.RemoveAt(i)
         Next
         ' Sort messages by timestamp
-        Dim sortedMessages = messages.OrderBy(Function(msg) DateTime.Parse(msg.Item4))
+        Dim sortedMessages = supportmessages.OrderBy(Function(msg) DateTime.Parse(msg.Item4))
 
         ' Y position for labels
         Dim yPos As Integer = 55
@@ -76,7 +150,13 @@ Public Class support_chat
             Dim room As Integer = msg.Item1
             Dim senderType As String = msg.Item2
             Dim messageText As String = msg.Item3
-            Dim timeStamp As String = DateTime.ParseExact(msg.Item4, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
+            'Dim timeStamp As String = DateTime.ParseExact(msg.Item4, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
+            ' Convert the sentTimestamp string to DateTime using ParseExact
+            Dim sentTimestampDateTime As DateTime = DateTime.ParseExact(msg.Item4, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+
+            ' Convert the DateTime to the desired string format "hh:mm"
+            Dim timeStamp As String = sentTimestampDateTime.ToString("hh:mm")
+
 
             ' Create a label for the message
             Dim messageLabel As New Label()
