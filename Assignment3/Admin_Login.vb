@@ -29,19 +29,24 @@ Public Class Admin_Login
             Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
             Dim query As String = "SELECT password FROM admin"
 
-            Using sqlConnection As New SqlConnection(connectionString)
-                sqlConnection.Open()
-                Using sqlCommand As New SqlCommand(query, sqlConnection)
-                    Dim pass As Object = sqlCommand.ExecuteScalar()
-                    If pass = password_tb.Text Then
-                        Me.Close()
-                        admin_template.Show()
-                    Else
-                        error_label.Text = "Invalid password!!"
-                        password_tb.Text = ""
-                    End If
+            Try
+                Using sqlConnection As New SqlConnection(connectionString)
+                    sqlConnection.Open()
+                    Using sqlCommand As New SqlCommand(query, sqlConnection)
+                        Dim pass As Object = sqlCommand.ExecuteScalar()
+                        If pass IsNot Nothing AndAlso pass.ToString() = password_tb.Text Then
+                            Me.Close()
+                            admin_template.Show()
+                        Else
+                            error_label.Text = "Invalid password!!"
+                            password_tb.Text = ""
+                        End If
+                    End Using
                 End Using
-            End Using
+            Catch ex As Exception
+                ' Handle any exceptions that occur during database operations
+                MessageBox.Show("An error occurred: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
         End If
     End Sub
 End Class

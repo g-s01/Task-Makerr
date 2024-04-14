@@ -51,39 +51,39 @@ Public Class user_template
     End Sub
 
     Sub Reset_Buttons()
-        Button1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = SystemColors.Control
+        home_btn.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        search_btn.BackColor = SystemColors.Control
+        appointments_btn.BackColor = SystemColors.Control
+        profile_btn.BackColor = SystemColors.Control
+        chats_btn.BackColor = SystemColors.Control
+        help_btn.BackColor = SystemColors.Control
+        feedback_btn.BackColor = SystemColors.Control
     End Sub
 
     ' Home button
     ' author: sarg19
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Button1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = SystemColors.Control
+    Private Sub Home_btn_Click(sender As Object, e As EventArgs) Handles home_btn.Click
+        home_btn.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        search_btn.BackColor = SystemColors.Control
+        appointments_btn.BackColor = SystemColors.Control
+        profile_btn.BackColor = SystemColors.Control
+        chats_btn.BackColor = SystemColors.Control
+        help_btn.BackColor = SystemColors.Control
+        feedback_btn.BackColor = SystemColors.Control
 
         switchPanel(UserHome)
     End Sub
 
     ' Search button
     ' author: sarg19
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Button1.BackColor = SystemColors.Control
-        Button2.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = SystemColors.Control
+    Private Sub Search_btn_Click(sender As Object, e As EventArgs) Handles search_btn.Click
+        home_btn.BackColor = SystemColors.Control
+        search_btn.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        appointments_btn.BackColor = SystemColors.Control
+        profile_btn.BackColor = SystemColors.Control
+        chats_btn.BackColor = SystemColors.Control
+        help_btn.BackColor = SystemColors.Control
+        feedback_btn.BackColor = SystemColors.Control
 
         switchPanel(user_search)
 
@@ -91,14 +91,14 @@ Public Class user_template
 
     ' Appointments button
     ' author: sarg19
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Button1.BackColor = SystemColors.Control
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = SystemColors.Control
+    Private Sub Appointments_btn_Click(sender As Object, e As EventArgs) Handles appointments_btn.Click
+        home_btn.BackColor = SystemColors.Control
+        search_btn.BackColor = SystemColors.Control
+        appointments_btn.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        profile_btn.BackColor = SystemColors.Control
+        chats_btn.BackColor = SystemColors.Control
+        help_btn.BackColor = SystemColors.Control
+        feedback_btn.BackColor = SystemColors.Control
 
         switchPanel(user_appointments)
 
@@ -106,14 +106,14 @@ Public Class user_template
 
     ' Profile button
     ' author: sarg19
-    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        Button1.BackColor = SystemColors.Control
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = SystemColors.Control
+    Private Sub Profile_btn_Click(sender As Object, e As EventArgs) Handles profile_btn.Click
+        home_btn.BackColor = SystemColors.Control
+        search_btn.BackColor = SystemColors.Control
+        appointments_btn.BackColor = SystemColors.Control
+        profile_btn.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        chats_btn.BackColor = SystemColors.Control
+        help_btn.BackColor = SystemColors.Control
+        feedback_btn.BackColor = SystemColors.Control
 
         switchPanel(user_profile)
 
@@ -121,42 +121,42 @@ Public Class user_template
 
     ' Chats button
     ' author: sarg19
-    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
-        Button1.BackColor = SystemColors.Control
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = SystemColors.Control
+    Private Sub Chats_btn_Click(sender As Object, e As EventArgs) Handles chats_btn.Click
+        home_btn.BackColor = SystemColors.Control
+        search_btn.BackColor = SystemColors.Control
+        appointments_btn.BackColor = SystemColors.Control
+        profile_btn.BackColor = SystemColors.Control
+        chats_btn.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        help_btn.BackColor = SystemColors.Control
+        feedback_btn.BackColor = SystemColors.Control
         switchPanel(user_provider_chats)
     End Sub
 
 
     ' Help button
     ' author: sarg19
-    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        Button1.BackColor = SystemColors.Control
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button7.BackColor = SystemColors.Control
+    Private Sub Help_btn_Click(sender As Object, e As EventArgs) Handles help_btn.Click
+        home_btn.BackColor = SystemColors.Control
+        search_btn.BackColor = SystemColors.Control
+        appointments_btn.BackColor = SystemColors.Control
+        profile_btn.BackColor = SystemColors.Control
+        chats_btn.BackColor = SystemColors.Control
+        help_btn.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        feedback_btn.BackColor = SystemColors.Control
 
         switchPanel(support_chat)
     End Sub
 
     ' Feedback button
     ' author: sarg19
-    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
-        Button1.BackColor = SystemColors.Control
-        Button2.BackColor = SystemColors.Control
-        Button3.BackColor = SystemColors.Control
-        Button4.BackColor = SystemColors.Control
-        Button5.BackColor = SystemColors.Control
-        Button6.BackColor = SystemColors.Control
-        Button7.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+    Private Sub Feedback_btn_Click(sender As Object, e As EventArgs) Handles feedback_btn.Click
+        home_btn.BackColor = SystemColors.Control
+        search_btn.BackColor = SystemColors.Control
+        appointments_btn.BackColor = SystemColors.Control
+        profile_btn.BackColor = SystemColors.Control
+        chats_btn.BackColor = SystemColors.Control
+        help_btn.BackColor = SystemColors.Control
+        feedback_btn.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
 
         switchPanel(FeedbackForm)
     End Sub
