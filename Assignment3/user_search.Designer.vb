@@ -44,6 +44,8 @@ Partial Class user_search
         PictureBox2 = New PictureBox()
         Label1 = New Label()
         Button2 = New Button()
+        Label7 = New Label()
+        Panel7 = New Panel()
         Panel1.SuspendLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         TableLayoutPanel1.SuspendLayout()
@@ -53,6 +55,7 @@ Partial Class user_search
         Panel5.SuspendLayout()
         Panel6.SuspendLayout()
         CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
+        Panel7.SuspendLayout()
         SuspendLayout()
         ' 
         ' Panel1
@@ -96,6 +99,7 @@ Partial Class user_search
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 150F))
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle())
+        TableLayoutPanel1.Controls.Add(Panel7, 5, 0)
         TableLayoutPanel1.Controls.Add(Panel2, 0, 0)
         TableLayoutPanel1.Controls.Add(Panel3, 1, 0)
         TableLayoutPanel1.Controls.Add(Panel4, 2, 0)
@@ -236,26 +240,27 @@ Partial Class user_search
         ' ComboBox1
         ' 
         ComboBox1.Anchor = AnchorStyles.None
+        ComboBox1.DropDownStyle = ComboBoxStyle.DropDownList
         ComboBox1.Font = New Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         ComboBox1.FormattingEnabled = True
         ComboBox1.Location = New Point(36, 81)
         ComboBox1.Name = "ComboBox1"
         ComboBox1.Size = New Size(151, 31)
         ComboBox1.TabIndex = 3
-        ComboBox1.Text = "Service"
         ' 
         ' ComboBox2
         ' 
+        ComboBox2.DropDownStyle = ComboBoxStyle.DropDownList
         ComboBox2.Font = New Font("Segoe UI", 10.2F)
         ComboBox2.FormattingEnabled = True
         ComboBox2.Location = New Point(217, 81)
         ComboBox2.Name = "ComboBox2"
         ComboBox2.Size = New Size(151, 31)
         ComboBox2.TabIndex = 4
-        ComboBox2.Text = "Location"
         ' 
         ' ComboBox3
         ' 
+        ComboBox3.DropDownStyle = ComboBoxStyle.DropDownList
         ComboBox3.Font = New Font("Segoe UI", 10.2F)
         ComboBox3.FormattingEnabled = True
         ComboBox3.Items.AddRange(New Object() {"Cost (Increasing)", "Cost (Decreasing)", "Ratings"})
@@ -263,7 +268,6 @@ Partial Class user_search
         ComboBox3.Name = "ComboBox3"
         ComboBox3.Size = New Size(151, 31)
         ComboBox3.TabIndex = 5
-        ComboBox3.Text = "Sort by"
         ' 
         ' Button1
         ' 
@@ -309,6 +313,27 @@ Partial Class user_search
         Button2.Text = "Book a Slot"
         Button2.UseVisualStyleBackColor = False
         ' 
+        ' Label7
+        ' 
+        Label7.Anchor = AnchorStyles.None
+        Label7.AutoSize = True
+        Label7.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label7.Location = New Point(9, 7)
+        Label7.Margin = New Padding(0)
+        Label7.Name = "Label7"
+        Label7.Size = New Size(64, 28)
+        Label7.TabIndex = 3
+        Label7.Text = "Select"
+        ' 
+        ' Panel7
+        ' 
+        Panel7.Controls.Add(Label7)
+        Panel7.Location = New Point(686, 1)
+        Panel7.Margin = New Padding(0)
+        Panel7.Name = "Panel7"
+        Panel7.Size = New Size(82, 42)
+        Panel7.TabIndex = 10
+        ' 
         ' user_search
         ' 
         AutoScaleMode = AutoScaleMode.None
@@ -342,6 +367,8 @@ Partial Class user_search
         Panel6.ResumeLayout(False)
         Panel6.PerformLayout()
         CType(PictureBox2, ComponentModel.ISupportInitialize).EndInit()
+        Panel7.ResumeLayout(False)
+        Panel7.PerformLayout()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -368,4 +395,6 @@ Partial Class user_search
     Friend WithEvents PictureBox2 As PictureBox
     Friend WithEvents Label1 As Label
     Friend WithEvents Button2 As Button
+    Friend WithEvents Panel7 As Panel
+    Friend WithEvents Label7 As Label
 End Class

@@ -357,16 +357,16 @@ Partial Class provider_dashboard
         ' 
         ' Chart1
         ' 
-        Chart1.Location = New Point(52, 72)
+        Chart1.Location = New Point(31, 72)
         Chart1.Name = "Chart1"
-        Chart1.Size = New Size(600, 233)
+        Chart1.Size = New Size(621, 233)
         Chart1.TabIndex = 2
         Chart1.Text = "Chart1"
         ' 
         ' Label2
         ' 
         Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 13F, FontStyle.Bold)
+        Label2.Font = New Font("Segoe UI", 13.0F, FontStyle.Bold)
         Label2.Location = New Point(31, 11)
         Label2.Name = "Label2"
         Label2.Size = New Size(154, 30)
@@ -399,7 +399,7 @@ Partial Class provider_dashboard
         ' 
         ' Label25
         ' 
-        Label25.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
+        Label25.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold)
         Label25.Location = New Point(8, 73)
         Label25.Name = "Label25"
         Label25.Size = New Size(132, 25)
@@ -442,7 +442,7 @@ Partial Class provider_dashboard
         ' 
         ' Label4
         ' 
-        Label4.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
+        Label4.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold)
         Label4.Location = New Point(8, 73)
         Label4.Name = "Label4"
         Label4.Size = New Size(132, 25)
