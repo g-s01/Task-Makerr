@@ -10,58 +10,101 @@ Public Class user_provider_chats
     Dim messages As New List(Of Tuple(Of Integer, Integer, String, String, String))()
 
     Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-    Dim user_role As String = "customer"
-    Dim userId As Integer = 1
+    Dim user_role As String = "provider"
+    Dim userId As Integer = 3
     Dim dealId As Integer = -1
+    Private WithEvents timer As New Timer()
+
 
     ' for getting sql connection
     Private Function GetSqlConnection() As SqlConnection
         Return New SqlConnection(connectionString)
     End Function
 
-    Private Sub LoadRoomsFromDatabase(userId As Integer)
-        Dim query As String = "SELECT chat_room_id, providername, provider_id FROM chat_room WHERE user_id = @UserId"
-        Using connection As SqlConnection = GetSqlConnection()
-            Using command As New SqlCommand(query, connection)
-                ' Add parameters to the SQL query to prevent SQL injection
-                command.Parameters.AddWithValue("@UserId", userId)
+    Private Sub LoadRoomsFromDatabase(userId As Integer, user_role As String)
+        roomchat.Clear()
+        If user_role = "provider" Then
+            Dim query As String = "SELECT chat_room_id, username, provider_id FROM chat_room WHERE provider_id = @UserId"
+            Using connection As SqlConnection = GetSqlConnection()
+                Using command As New SqlCommand(query, connection)
+                    ' Add parameters to the SQL query to prevent SQL injection
+                    command.Parameters.AddWithValue("@UserId", userId)
 
-                Dim provider_id As Integer
-                Dim providername As String
-                Dim chat_room_id As Integer
+                    Dim provider_id As Integer
+                    Dim username As String
+                    Dim chat_room_id As Integer
 
-                Try
-                    connection.Open()
-                    Dim reader As SqlDataReader = command.ExecuteReader()
+                    Try
+                        connection.Open()
+                        Dim reader As SqlDataReader = command.ExecuteReader()
 
-                    If reader.HasRows Then
-                        ' Loop through the rows
-                        While reader.Read()
-                            ' Access columns by name or index
-                            provider_id = reader.GetInt32(reader.GetOrdinal("provider_id"))
-                            chat_room_id = reader.GetInt32(reader.GetOrdinal("chat_room_id"))
-                            providername = reader.GetString(reader.GetOrdinal("providername"))
-                            roomchat.Add(New Tuple(Of String, Integer, Integer)(providername, chat_room_id, provider_id))
-                        End While
-                    End If
+                        If reader.HasRows Then
+                            ' Loop through the rows
+                            While reader.Read()
+                                ' Access columns by name or index
+                                provider_id = reader.GetInt32(reader.GetOrdinal("provider_id"))
+                                chat_room_id = reader.GetInt32(reader.GetOrdinal("chat_room_id"))
+                                username = reader.GetString(reader.GetOrdinal("username"))
+                                roomchat.Add(New Tuple(Of String, Integer, Integer)(username, chat_room_id, provider_id))
+                            End While
+                        End If
 
-                    reader.Close()
-                Catch ex As Exception
-                    Console.WriteLine("Error: " & ex.Message)
-                End Try
+                        reader.Close()
+                    Catch ex As Exception
+                        Console.WriteLine("Error: " & ex.Message)
+                    End Try
+                End Using
             End Using
-        End Using
+        ElseIf user_role = "customer" Then
+            Dim query As String = "SELECT chat_room_id, providername, provider_id FROM chat_room WHERE user_id = @UserId"
+            Using connection As SqlConnection = GetSqlConnection()
+                Using command As New SqlCommand(query, connection)
+                    ' Add parameters to the SQL query to prevent SQL injection
+                    command.Parameters.AddWithValue("@UserId", userId)
+
+                    Dim provider_id As Integer
+                    Dim providername As String
+                    Dim chat_room_id As Integer
+
+                    Try
+                        connection.Open()
+                        Dim reader As SqlDataReader = command.ExecuteReader()
+
+                        If reader.HasRows Then
+                            ' Loop through the rows
+                            While reader.Read()
+                                ' Access columns by name or index
+                                provider_id = reader.GetInt32(reader.GetOrdinal("provider_id"))
+                                chat_room_id = reader.GetInt32(reader.GetOrdinal("chat_room_id"))
+                                providername = reader.GetString(reader.GetOrdinal("providername"))
+                                roomchat.Add(New Tuple(Of String, Integer, Integer)(providername, chat_room_id, provider_id))
+                            End While
+                        End If
+
+                        reader.Close()
+                    Catch ex As Exception
+                        Console.WriteLine("Error: " & ex.Message)
+                    End Try
+                End Using
+            End Using
+        End If
+
     End Sub
 
-    Private Sub LoadMessagesFromDatabase(userId As Integer, dealId As Integer)
-        Dim query As String = "SELECT m.* FROM chat_room cr JOIN messages m ON cr.chat_room_id = m.chat_room_id WHERE cr.user_id = @UserId and m.deal_id = @DealId"
+    Private Sub LoadMessagesFromDatabase(userId As Integer, user_role As String)
+
+        Dim query As String = "SELECT m.* FROM chat_room cr JOIN messages m ON cr.chat_room_id = m.chat_room_id WHERE cr.provider_id = @UserId;"
+
+        messages.Clear()
+        If user_role = "customer" Then
+            query = "SELECT m.* FROM chat_room cr JOIN messages m ON cr.chat_room_id = m.chat_room_id WHERE cr.user_id = @UserId;"
+        End If
+
 
         Using connection As SqlConnection = GetSqlConnection()
             Using command As New SqlCommand(query, connection)
                 ' Add parameters to the SQL query to prevent SQL injection
                 command.Parameters.AddWithValue("@UserId", userId)
-                command.Parameters.AddWithValue("@DealId", dealId)
-
                 Try
                     connection.Open()
                     Dim reader As SqlDataReader = command.ExecuteReader()
@@ -89,8 +132,9 @@ Public Class user_provider_chats
     End Sub
 
 
-    Private Function InsertMessageIntoDatabase(room As Integer, dealId As Integer, user_role As String, messageText As String, timeStamp As DateTime) As Boolean
-        Dim query As String = "INSERT INTO messages (chat_room_id, deal_id, sender_type, message_content, sent_timestamp) VALUES (@ChatRoomId, @DealId, @SenderType, @MessageContent, @SentTimestamp)"
+
+    Private Function InsertMessageIntoDatabase(room As Integer, dealId As Integer, user_role As String, messageText As String) As Boolean
+        Dim query As String = "INSERT INTO messages (chat_room_id, deal_id, sender_type, message_content) VALUES (@ChatRoomId, @DealId, @SenderType, @MessageContent)"
         Using connection As New SqlConnection(connectionString)
             Using command As New SqlCommand(query, connection)
                 ' Add parameters to the SQL query to prevent SQL injection
@@ -98,7 +142,6 @@ Public Class user_provider_chats
                 command.Parameters.AddWithValue("@DealId", dealId)
                 command.Parameters.AddWithValue("@SenderType", user_role)
                 command.Parameters.AddWithValue("@MessageContent", messageText)
-                command.Parameters.AddWithValue("@SentTimestamp", timeStamp)
 
                 Try
                     connection.Open()
@@ -147,49 +190,26 @@ Public Class user_provider_chats
     End Sub
 
 
-    Private Sub HandleTitle()
-        ' Create and configure the Label
-        Dim newLabel As New Label()
-        newLabel.Name = "lblHeader"
-        newLabel.Text = "Receiver Name"
-        newLabel.TextAlign = ContentAlignment.MiddleCenter
-        newLabel.Width = chat.Width - 30
-        newLabel.Height = 40 ' Set label height
-        newLabel.BackColor = Color.FromArgb(214, 179, 227) ' Set background color
-        newLabel.Font = New Font("Microsoft YaHei", 12, FontStyle.Bold)
-        newLabel.Location = New Point(10, 10) ' Set label position at the top of the panel
-        newLabel.ImageAlign = ContentAlignment.MiddleLeft ' Set image alignment
-        newLabel.TextAlign = ContentAlignment.MiddleCenter
-
-        ' Resize the image to match the button height
-        Dim scaledImage As Image = New Bitmap(My.Resources.prov, New Size(35, 35))
-        newLabel.Image = scaledImage
-        newLabel.Region = New Drawing.Region(New Drawing.Rectangle(0, 0, newLabel.Width, newLabel.Height)) ' Make corners rounded
-
-        ' Add controls to the panel
-        chat.Controls.Add(newLabel)
-    End Sub
 
     Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
-        roomchat.Add(New Tuple(Of String, Integer, Integer)("Apple", 1, 0))
-        roomchat.Add(New Tuple(Of String, Integer, Integer)("Banana", 2, 0))
-        roomchat.Add(New Tuple(Of String, Integer, Integer)("Orange", 3, 0))
-        roomchat.Add(New Tuple(Of String, Integer, Integer)("Grapes", 4, 0))
-        ' messages.Clear()
-        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "customer", "Hey there!", "2024-03-30 10:00:00"))
-        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "How are you?", "2024-03-30 10:05:00"))
-        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "provider", "What's up?", "2024-03-30 10:10:00"))
-        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "customer", "Good morning!", "2024-03-30 10:15:00"))
-        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "provider", "How's it going?", "2024-03-30 10:20:00"))
-        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "Want to hang out later?", "2024-03-30 10:25:00"))
-        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "customer", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
-        ' messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "provider", "Sounds good!", "2024-03-30 10:35:00"))
-
+        timer.Interval = 3000
+        LoadRoomsFromDatabase(userId, user_role)
+        LoadMessagesFromDatabase(userId, user_role)
         PopulateRooms()
-        HandleTitle()
 
         'chat_list.Visible = False
+        timer.Start()
     End Sub
+
+    Private Sub timer_Tick(sender As Object, e As EventArgs) Handles timer.Tick
+        ' Reload rooms and messages every 30 seconds
+        LoadRoomsFromDatabase(userId, user_role)
+        LoadMessagesFromDatabase(userId, user_role)
+        PopulateRooms()
+    End Sub
+
+
+
 
 
     Private Sub Button_Click(sender As Object, e As EventArgs)
@@ -204,7 +224,7 @@ Public Class user_provider_chats
         clickedButton.BackColor = Color.FromArgb(190, 159, 192) ' Set background color
 
         ' Update the label text with the name of the clicked button
-        labelHeader.Text = clickedButton.Text
+        senderName.Text = clickedButton.Text
         For Each ctrl As Control In chat_list.Controls
             If TypeOf ctrl Is Button AndAlso ctrl IsNot clickedButton Then
                 Dim otherButton As Button = CType(ctrl, Button)
@@ -240,10 +260,7 @@ Public Class user_provider_chats
         'Dim messageText As String = chat_list.Controls("textBox1").Text ' Assuming TextBox1 is the name of the TextBox
 
         ' Get the receiver name from the label text within the chat_list panel
-        Dim receiverName As String = chat.Controls("lblHeader").Text ' Assuming Label1 contains the receiver name
-
-        ' Get the current timestamp
-        Dim timeStamp As String = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+        Dim receiverName As String = senderName.Text ' Assuming Label1 contains the receiver name
 
         Dim room As Integer
 
@@ -269,16 +286,22 @@ Public Class user_provider_chats
             End If
         Next
 
-        Dim newMessage As New Tuple(Of Integer, Integer, String, String, String)(room, dealId, user_role, messageText, timeStamp)
+
         ' Add the new message to the messages list
-        messages.Add(newMessage)
+
         ' Optionally, you can clear the TextBox after sending the message
         sendTextBox.Text = ""
+
+        InsertMessageIntoDatabase(room, dealId, user_role, messageText)
         ' Print messages between users
+        Dim timeStamp As String = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")
+        Dim newMessage As New Tuple(Of Integer, Integer, String, String, String)(room, dealId, user_role, messageText, timeStamp)
+        messages.Add(newMessage)
         PrintMessagesBetweenUsers(room)
     End Sub
 
     Private Sub PrintMessagesBetweenUsers(roomId As Integer)
+
         ' Clear existing messages on the chat_list panel
         For i As Integer = chat.Controls.Count - 1 To 0 Step -1
             Dim ctrl As Control = chat.Controls(i)
@@ -298,7 +321,7 @@ Public Class user_provider_chats
         ' Y position for labels
 
 
-        Dim yPos As Integer = 60
+        Dim yPos As Integer = 20
 
 
 
@@ -308,7 +331,8 @@ Public Class user_provider_chats
             Dim deal As Integer = msg.Item2
             Dim senderType As String = msg.Item3
             Dim messageText As String = msg.Item4
-            Dim timeStamp As String = DateTime.ParseExact(msg.Item5, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
+            Dim timeStamp As String = DateTime.ParseExact(msg.Item5, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
+
 
 
 
@@ -344,10 +368,10 @@ Public Class user_provider_chats
 
             label2.ForeColor = Color.Brown
 
-            If senderType = "customer" Then
+            If senderType = user_role Then
                 messageLabel.Left = chat.Width - messageLabel.PreferredWidth - 10 - 20
                 label2.Left = messageLabel.Left + messageLabel.PreferredWidth - 35 + messageLabel.Width - 88
-            ElseIf senderType = "provider" Then
+            ElseIf senderType <> user_role Then
                 messageLabel.Left = 10
                 label2.Left = textSize.Width - 15
             End If
@@ -384,7 +408,7 @@ Public Class user_provider_chats
         chat.AutoScrollPosition = New Point(0, chat.AutoScrollPosition.Y + yPos)
     End Sub
 
-    Private Sub sendTextBox_TextChanged(sender As Object, e As EventArgs) Handles sendTextBox.TextChanged
+    Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
 
     End Sub
 End Class
