@@ -21,68 +21,108 @@ Public Class Reschedule_Slots
     Public Cost_per_hour As Integer = -1
     Public is_null_image As Integer = 0
     Dim first As Integer = 1
-    Public Sub Reschedule_slots_load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    Public ResvariableChanged As New ManualResetEvent(False)
+    ' Variable to monitor for changes
+    Public ResmyVariable As Integer = 0
+    ' Store the user home form
+    'Public UserHome As New U'serHome()
+    Public Async Sub Reschedule_load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Run your function here
-        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-        Dim provider_query As String = "SELECT providername,working_hour,cost_per_hour FROM provider WHERE provider_id = @Provider_ID"
-        Dim user_query As String = "SELECT username,profile_image FROM customer WHERE user_id = @User_ID"
-        Using connection As New SqlConnection(connectionString)
-            Using command As New SqlCommand(provider_query, connection)
-                ' Add parameters
-                command.Parameters.AddWithValue("@Provider_ID", provider)
-                connection.Open()
+        'MessageBox.Show(1)
+        ProgressBar1.Visible = True
+        ProgressBar1.Style = ProgressBarStyle.Marquee
+        Try
+            ' Execute the LoadDataAsync method asynchronously
+            Await LoadData()
 
-                ' Execute the select command
-                Dim reader As SqlDataReader = command.ExecuteReader()
-
-                While reader.Read()
-                    ' Retrieve the provider name from the reader
-                    ProviderName = reader.GetString(0)
-                    Avaiability_String = reader.GetString(1)
-                    Cost_per_hour = reader.GetInt32(2)
-                    ' MessageBox.Show(Avaiability_String)
-                    ' Do something with the retrieved values, such as displaying them in a MessageBox
-                End While
-
-            End Using
-        End Using
-        Provider_Name_Loc_Lbl.Text = ProviderName + " > " + " Reschedule Slots"
-        Using connection As New SqlConnection(connectionString)
-            Using command As New SqlCommand(user_query, connection)
-                ' Add parameters
-                connection.Open()
-                command.Parameters.AddWithValue("@User_ID", user)
-
-
-                ' Execute the select command
-                Dim reader As SqlDataReader = command.ExecuteReader()
-
-                While reader.Read()
-                    ' Retrieve the provider name from the reader
-                    user_name = reader.GetString(0)
-                    Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
-                    binaryImageData = imageData
-                    If (reader.IsDBNull("profile_image")) Then
-                        is_null_image = 1
-                    Else
-                        Dim imageData1 As Byte() = DirectCast(reader("profile_image"), Byte())
-                        binaryImageData = imageData1
-                    End If
-                    ' Convert byte array to image
-
-                    Username.Text = user_name
-                    ' Do something with the retrieved values, such as displaying them in a MessageBox
-                End While
-
-            End Using
-        End Using
-
-        MakePictureBoxRound(Profile_Pic)
-        Make_Schedule_Table()
+            ' Display the result (optional)
+            'MessageBox.Show($"Data loaded")
+        Catch ex As Exception
+            ' MessageBox.Show($"An error occurred: {ex.Message}")
+        Finally
+            ' Hide the progress bar after the operation completes or fails
+            ProgressBar1.Visible = False
+        End Try
 
     End Sub
 
-    Private Sub Make_Schedule_Table()
+    Private Async Function LoadData() As Task
+        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+        Dim providerQuery As String = "SELECT providername,working_hour,cost_per_hour FROM provider WHERE provider_id = @Provider_ID"
+        Dim userQuery As String = "SELECT username,profile_image FROM customer WHERE user_id = @User_ID"
+        ' Use Task.WhenAll to run both queries in parallel
+        Await Task.WhenAll(
+        Task.Run(Async Function()
+                     ' Execute provider_query
+                     Using connection As New SqlConnection(connectionString)
+                         Using command As New SqlCommand(providerQuery, connection)
+                             ' Add parameters
+                             command.Parameters.AddWithValue("@Provider_ID", provider)
+                             Await connection.OpenAsync()
+
+                             ' Execute the select command
+                             Dim reader As SqlDataReader = Await command.ExecuteReaderAsync()
+
+                             While Await reader.ReadAsync()
+                                 ' Retrieve provider details
+                                 ProviderName = reader.GetString(0)
+                                 Avaiability_String = reader.GetString(1)
+                                 Cost_per_hour = reader.GetInt32(2)
+                             End While
+                         End Using
+                     End Using
+                 End Function),
+        Task.Run(Async Function()
+                     ' Execute user_query
+                     Using connection As New SqlConnection(connectionString)
+                         Using command As New SqlCommand(userQuery, connection)
+                             ' Add parameters
+                             command.Parameters.AddWithValue("@User_ID", user)
+                             Await connection.OpenAsync()
+
+                             ' Execute the select command
+                             Dim reader As SqlDataReader = Await command.ExecuteReaderAsync()
+
+                             While Await reader.ReadAsync()
+                                 ' Retrieve user details
+                                 user_name = reader.GetString(0)
+                                 If Not reader.IsDBNull(reader.GetOrdinal("profile_image")) Then
+                                     Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
+                                     binaryImageData = imageData
+                                 Else
+                                     is_null_image = 1
+                                 End If
+                             End While
+                         End Using
+                     End Using
+                 End Function)
+    )
+        'MessageBox.Show(user_name)
+
+        ' Update UI with retrieved data
+        Provider_Name_Loc_Lbl.Text = ProviderName
+        Username.Text = user_name
+
+        Dim task1 As Task = MakePictureBoxRound(Profile_Pic)
+        Dim task2 As Task = Make_Schedule_Table()
+
+        ' Await completion of both tasks concurrently
+        Await Task.WhenAll(task1, task2)
+
+    End Function
+
+    Private Sub ShowLoadingIndicator()
+        ' Display the loading indicator (progress bar)
+        ProgressBar1.Visible = True
+        ProgressBar1.Style = ProgressBarStyle.Marquee ' Use Marquee style for indeterminate progress
+    End Sub
+
+    Private Sub HideLoadingIndicator()
+        ' Hide the loading indicator (progress bar)
+        ProgressBar1.Visible = False
+    End Sub
+    Private Async Function Make_Schedule_Table() As Task
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
         Dim currentDayOfWeek As DayOfWeek = DateTime.Today.DayOfWeek
 
@@ -237,12 +277,17 @@ Public Class Reschedule_Slots
                 End Using
             End Using
         End Using
-
-        ' MessageBox.Show("-1")'
-        ' Populate the schedule table
+        Try
+            Await PopulateScheduleTableAsync()
+            MessageBox.Show("Schedule populated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Catch ex As Exception
+            MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            ' Perform cleanup tasks or handle completion/error scenarios (optional)
+        End Try
         PopulateScheduleTable()
-    End Sub
-    Private Sub PopulateScheduleTable()
+    End Function
+    Private Async Function PopulateScheduleTableAsync() As Task
         ' Clear existing controls in the table layout panel
         ' MessageBox.Show("0")
         Schedule_Table.Controls.Clear()
@@ -293,30 +338,45 @@ Public Class Reschedule_Slots
         Next
         ' Add buttons for each time slot
         Schedule_Table.SuspendLayout()
+        ' Iterate over the grid (7 rows, 13 columns)
         For i As Integer = 0 To 6
             For j As Integer = 0 To 12
+                ' Create a new button
                 Dim btn As New Button()
-                btn.Text = ""
                 btn.Dock = DockStyle.Fill
-
-                If availability(i, j) = 1 Then
-                    btn.BackColor = Color.LightGreen ' Available
-                ElseIf availability(i, j) = 2 Then
-                    btn.BackColor = Color.DarkGreen ' Unavailable
-                ElseIf availability(i, j) = 3 Then
-                    btn.BackColor = Color.Gray
-                End If
+                btn.FlatStyle = FlatStyle.Flat
                 btn.Margin = New Padding(0)
-                btn.FlatStyle = FlatStyle.Flat ' Set the button to have a flat appearance
-                Schedule_Table.Controls.Add(btn, j + 1, i + 1)
-                AddHandler btn.Click, AddressOf TimeSlot_Click
+
+                ' Set button color based on availability
+                Select Case availability(i, j)
+                    Case 1
+                        btn.BackColor = Color.LightGreen ' Available
+                    Case 2
+                        btn.BackColor = Color.DarkGreen ' Unavailable
+                    Case 3
+                        btn.BackColor = Color.Gray ' Special case
+                    Case Else
+                        btn.BackColor = Color.Transparent ' Default (shouldn't happen)
+                End Select
+
+                ' Add the button to Schedule_Table asynchronously
+                Await AddControlToScheduleTableAsync(btn, i + 1, j + 1)
             Next
         Next
         For Each pair In PreviouslyBookedList
             BookedList.Add(pair)
         Next
         Schedule_Table.ResumeLayout(True)
-    End Sub
+    End Function
+    Private Async Function AddControlToScheduleTableAsync(control As Control, row As Integer, column As Integer) As Task
+        ' Use Control.Invoke to update the UI on the main UI thread
+        Schedule_Table.Invoke(Sub()
+                                  Schedule_Table.Controls.Add(control, row, column)
+                              End Sub)
+        AddHandler control.Click, AddressOf TimeSlot_Click
+
+
+    End Function
 
     Private Sub TimeSlot_Click(sender As Object, e As EventArgs)
         Dim btn As Button = DirectCast(sender, Button)
@@ -396,10 +456,17 @@ Public Class Reschedule_Slots
     Private Async Function WaitForVariableChangeOrTimeoutAsync(timeoutMilliseconds As Integer) As Task
         ' Wait for either the variable to change or the timeout to elapse
         MessageBox.Show("I")
-        Await Task.WhenAny(Task.Delay(timeoutMilliseconds), Task.Run(Sub() Book_slots.variableChanged.WaitOne()))
+        Dim delayTask = Task.Delay(timeoutMilliseconds)
+
+        ' Create a task that waits for the variableChanged signal
+        Dim waitForSignalTask = Task.Run(Sub() ResvariableChanged.WaitOne())
+
+        ' Wait asynchronously for either of the tasks to complete
+        Dim completedTask = Await Task.WhenAny(delayTask, waitForSignalTask)
+
 
         ' After the wait, you can check if the variable changed or timeout happened
-        If Book_slots.myVariable <> 0 Then
+        If ResmyVariable <> 0 Then
             ' The variable changed
             MessageBox.Show("HI")
             Console.WriteLine("Payment Successful")
@@ -501,8 +568,8 @@ Rollback:
                         Module_global.cost_of_booking = Total_cost
                         payments.CostOfService = Total_cost
                         payments.ProviderEmailID = ProviderName
-                        Book_slots.variableChanged.Reset()
-                        Book_slots.myVariable = 0
+                        ResvariableChanged.Reset()
+                        ResmyVariable = 0
                         MessageBox.Show($"Data inserted successfully, you need to pay a total of {Total_cost}Rs.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
                         payments.Show()
                         Await WaitForVariableChangeOrTimeoutAsync(900000)
