@@ -75,6 +75,8 @@ Public Class Prov_tile
         ' Change the BackColor of the UserControl back to the default color
         Me.BackColor = Color.White ' Replace 'Color.White' with your default color
     End Sub
+
+    Friend WithEvents Button1 As Button
     Friend WithEvents PictureBox1 As PictureBox
 
     Private Sub InitializeComponent()
@@ -83,6 +85,7 @@ Public Class Prov_tile
         Label2 = New Label()
         Label3 = New Label()
         PictureBox2 = New PictureBox()
+        Button1 = New Button()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
@@ -131,16 +134,29 @@ Public Class Prov_tile
         PictureBox2.TabIndex = 4
         PictureBox2.TabStop = False
         ' 
+        ' Button1
+        ' 
+        Button1.BackColor = SystemColors.HotTrack
+        Button1.FlatStyle = FlatStyle.Flat
+        Button1.ForeColor = Color.White
+        Button1.Location = New Point(-9, 195)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(191, 40)
+        Button1.TabIndex = 5
+        Button1.Text = "Chat"
+        Button1.UseVisualStyleBackColor = False
+        ' 
         ' Prov_tile
         ' 
         BorderStyle = BorderStyle.FixedSingle
+        Controls.Add(Button1)
         Controls.Add(PictureBox2)
         Controls.Add(Label3)
         Controls.Add(Label2)
         Controls.Add(Label1)
         Controls.Add(PictureBox1)
         Name = "Prov_tile"
-        Size = New Size(173, 195)
+        Size = New Size(173, 225)
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
         CType(PictureBox2, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)

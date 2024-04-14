@@ -3,12 +3,16 @@ Imports System.Configuration
 Imports System.Data.SqlClient
 Imports FxResources.System
 Imports Microsoft.Data.SqlClient
+Imports System.Collections.Concurrent
+Imports System.Threading.Tasks
 Imports Microsoft.Identity.Client.Cache
+Imports Microsoft.VisualBasic.ApplicationServices
+Imports System.Configuration.Provider
 Public Class UserHome
 
     Dim map As New Dictionary(Of String, List(Of Prov_tile))()
     Dim reviews As New Dictionary(Of Int32, Tuple(Of Integer, Integer))()
-    Dim rating_prov As New Dictionary(Of Int32, Double)()      'provider id,rating
+    'Dim rating_prov As New Dictionary(Of Int32, Double)()      'provider id,rating
     ' Dictionary to store provider locations
     Dim provider_locations As New Dictionary(Of Integer, List(Of String))
     ' Dictionary to store provider keys
@@ -17,8 +21,9 @@ Public Class UserHome
     Dim provider_service As New Dictionary(Of Integer, String)
     Dim buttonLoc As Integer
     Dim user_name As String
+    Dim rating_prov As New ConcurrentDictionary(Of Int32, Double)()
 
-    Private Sub UserHome_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Async Sub UserHome_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Set the FlowLayoutPanel's properties
         Dim image As Image = My.Resources.Ellipse_6
 
@@ -32,87 +37,100 @@ Public Class UserHome
         'map("electric").Add(newItem)
         'map("electric").Add(newItem)
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-        Using connection As New SqlConnection(connectionString)
-            connection.Open()
-            Dim command_rev As New SqlCommand("SELECT review.*, deals.* FROM review INNER JOIN deals ON review.deal_id = deals.deal_id", connection)
-            Using reader As SqlDataReader = command_rev.ExecuteReader()
-                While reader.Read()
-                    Dim provider As Int32 = reader.GetInt32(reader.GetOrdinal("provider_id"))
-                    Dim rate As String = reader.GetInt32(reader.GetOrdinal("rating"))
-                    If reviews.ContainsKey(provider) Then
-                        Dim currentValue As Tuple(Of Integer, Integer) = reviews(provider)
-                        Dim newValue As New Tuple(Of Integer, Integer)(currentValue.Item1 + rate, currentValue.Item2 + 1)
-                        reviews(provider) = newValue
-                    Else
-                        reviews.Add(provider, New Tuple(Of Integer, Integer)(rate, 1))
-                    End If
-                End While
-            End Using
-            Dim command_user As New SqlCommand("SELECT customer.* FROM customer ", connection)
-            Using reader As SqlDataReader = command_user.ExecuteReader()
-                While reader.Read()
-                    Dim user As Int32 = reader.GetInt32(reader.GetOrdinal("user_id"))
-                    Dim username As String = reader.GetString(reader.GetOrdinal("username"))
-                    If user = Module_global.User_ID Then
-                        user_name = username
-                    End If
-                End While
-            End Using
-            Dim command As New SqlCommand("SELECT provider.*, location.* FROM provider INNER JOIN location ON provider.provider_id = location.provider_id", connection)
-            For Each pair As KeyValuePair(Of Int32, Tuple(Of Integer, Integer)) In reviews
-                Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
-                Dim rating As Double
-                rating = Math.Round(currentValue.Item1 / CType(currentValue.Item2, Double), 1)
-                rating_prov.Add(pair.Key, rating)
-            Next
-            ' Execute the SqlCommand and get a SqlDataReader
-            Using reader As SqlDataReader = command.ExecuteReader()
-                ' Loop through the SqlDataReader
-                While reader.Read()
-                    ' Get the values of the current row
-                    Dim service As String = reader.GetString(reader.GetOrdinal("service"))
-                    Dim loc As String = reader.GetString(reader.GetOrdinal("location"))
-                    Dim name As String = reader.GetString(reader.GetOrdinal("providername"))
-                    Dim provider As Int32 = reader.GetInt32(reader.GetOrdinal("provider_id"))
-                    Dim rating As Double = 6.0
 
-                    If reviews.ContainsKey(provider) Then
-                        Dim currentValue As Tuple(Of Integer, Integer) = reviews(provider)
-                        rating = rating_prov(provider)
-                    End If
-                    If provider_locations.ContainsKey(provider) Then
-                        provider_locations(provider).Add(loc)
-                    Else
-                        provider_locations.Add(provider, New List(Of String) From {loc})
-                    End If
-                    If Not provider_service.ContainsKey(provider) Then
-                        provider_service(provider) = service
-                    End If
-                    If Not provider_keys.ContainsKey(provider) Then
-                        provider_keys(provider) = name
-                    End If
-                End While
-            End Using
-            For Each kvp As KeyValuePair(Of Integer, List(Of String)) In provider_locations
-                Dim provider As Integer = kvp.Key
-                Dim locations As String = String.Join(", ", kvp.Value)
-                Dim name As String = provider_keys(provider)
-                Dim service As String = provider_service(provider)
-                Dim rating As Double = 6.0
+        Await Task.WhenAll(
+        Task.Run(Async Function()
+                     ' Execute provider_query
+                     Using connection As New SqlConnection(connectionString)
+                         Await connection.OpenAsync()
+                         Dim command_rev As New SqlCommand("SELECT review.rating, deals.provider_id FROM review INNER JOIN deals ON review.deal_id = deals.deal_id", connection)
+                         Using reader As SqlDataReader = command_rev.ExecuteReader()
+                             While reader.Read()
+                                 Dim provider As Int32 = reader.GetInt32(reader.GetOrdinal("provider_id"))
+                                 Dim rate As String = reader.GetInt32(reader.GetOrdinal("rating"))
+                                 If reviews.ContainsKey(provider) Then
+                                     Dim currentValue As Tuple(Of Integer, Integer) = reviews(provider)
+                                     Dim newValue As New Tuple(Of Integer, Integer)(currentValue.Item1 + rate, currentValue.Item2 + 1)
+                                     reviews(provider) = newValue
+                                 Else
+                                     reviews.Add(provider, New Tuple(Of Integer, Integer)(rate, 1))
+                                 End If
+                             End While
+                         End Using
+                         Parallel.ForEach(reviews, Sub(pair)
+                                                       Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
+                                                       Dim rating As Double
+                                                       rating = Math.Round(currentValue.Item1 / CType(currentValue.Item2, Double), 1)
+                                                       rating_prov.TryAdd(pair.Key, rating)
+                                                   End Sub)
+                     End Using
+                 End Function),
+        Task.Run(Async Function()
+                     ' Execute user_query
+                     Using connection As New SqlConnection(connectionString)
+                         ' Put the code for the second query here
+                         Await connection.OpenAsync()
+                         Dim command_user As New SqlCommand("SELECT customer.user_id,customer.username FROM customer ", connection)
+                         Using reader As SqlDataReader = command_user.ExecuteReader()
+                             While reader.Read()
+                                 Dim user As Int32 = reader.GetInt32(reader.GetOrdinal("user_id"))
+                                 Dim username As String = reader.GetString(reader.GetOrdinal("username"))
+                                 If user = Module_global.User_ID Then
+                                     user_name = username
+                                 End If
+                             End While
+                         End Using
+                     End Using
+                 End Function),
+        Task.Run(Async Function()
+                     ' Execute user_query
+                     Using connection As New SqlConnection(connectionString)
+                         Await connection.OpenAsync()
+                         Dim command As New SqlCommand("SELECT provider.provider_id, provider.providername, provider.service ,location.location FROM provider INNER JOIN location ON provider.provider_id = location.provider_id", connection)
+                         Using reader As SqlDataReader = command.ExecuteReader()
+                             ' Loop through the SqlDataReader
+                             While reader.Read()
+                                 ' Get the values of the current row
+                                 Dim service As String = reader.GetString(reader.GetOrdinal("service"))
+                                 Dim loc As String = reader.GetString(reader.GetOrdinal("location"))
+                                 Dim name As String = reader.GetString(reader.GetOrdinal("providername"))
+                                 Dim provider As Int32 = reader.GetInt32(reader.GetOrdinal("provider_id"))
 
-                ' Get rating if available
-                If rating_prov.ContainsKey(provider) Then
-                    rating = rating_prov(provider)
-                End If
+                                 If provider_locations.ContainsKey(provider) Then
+                                     provider_locations(provider).Add(loc)
+                                 Else
+                                     provider_locations.Add(provider, New List(Of String) From {loc})
+                                 End If
+                                 If Not provider_service.ContainsKey(provider) Then
+                                     provider_service(provider) = service
+                                 End If
+                                 If Not provider_keys.ContainsKey(provider) Then
+                                     provider_keys(provider) = name
+                                 End If
+                             End While
+                         End Using
+                     End Using
+                 End Function)
+)
+        For Each kvp As KeyValuePair(Of Integer, List(Of String)) In provider_locations
+            Dim provider As Integer = kvp.Key
+            Dim locations As String = String.Join(", ", kvp.Value)
+            Dim name As String = provider_keys(provider)
+            Dim service As String = provider_service(provider)
+            Dim rating As Double = 6.0
 
-                ' Add tile to map
-                If map.ContainsKey(service) Then
-                    map(service).Add(New Prov_tile(provider, name, locations, rating, image))
-                Else
-                    map.Add(service, New List(Of Prov_tile) From {New Prov_tile(provider, name, locations, rating, image)})
-                End If
-            Next
-        End Using
+            ' Get rating if available
+            If rating_prov.ContainsKey(provider) Then
+                rating = rating_prov(provider)
+            End If
+
+            ' Add tile to map
+            If map.ContainsKey(service) Then
+                map(service).Add(New Prov_tile(provider, name, locations, rating, image))
+            Else
+                map.Add(service, New List(Of Prov_tile) From {New Prov_tile(provider, name, locations, rating, image)})
+            End If
+        Next
         Username.Text = user_name
         For Each pair As KeyValuePair(Of String, List(Of Prov_tile)) In map
             ' Sort the list based on the values in the 'rating_prov' dictionary
@@ -146,7 +164,7 @@ Public Class UserHome
             flowLayoutPanel.AutoScroll = True
             flowLayoutPanel.FlowDirection = FlowDirection.LeftToRight
             flowLayoutPanel.WrapContents = False
-            flowLayoutPanel.Size = New Size(Me.Size.Width, 220) ' Set the size of the FlowLayoutPanel
+            flowLayoutPanel.Size = New Size(Me.Size.Width, 250) ' Set the size of the FlowLayoutPanel
             flowLayoutPanel.Location = New Point(10, yPos) ' Set the position of the FlowLayoutPanel
 
             For Each tile As Prov_tile In pair.Value
