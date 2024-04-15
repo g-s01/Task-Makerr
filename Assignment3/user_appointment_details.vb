@@ -176,6 +176,33 @@ Public Class user_appointment_details
 
         ' Check the user's response
         If result = DialogResult.Yes Then
+            Dim query As String = "UPDATE deals SET status = 4 WHERE deal_id = @DealID"
+
+            Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+
+
+            ' Create connection and command objects
+            Using connection As New SqlConnection(connectionString)
+                Using command As New SqlCommand(query, connection)
+                    ' Add parameters to prevent SQL injection
+                    command.Parameters.AddWithValue("@DealID", dealID)
+
+                    Try
+                        ' Open connection
+                        connection.Open()
+
+                        ' Execute the update query
+                        command.ExecuteNonQuery()
+
+                        MessageBox.Show("Deal cancelled successfully.")
+                    Catch ex As Exception
+                        MessageBox.Show("An error occurred: " & ex.Message)
+                    End Try
+                End Using
+            End Using
+
+            Me.Hide()
+            user_appointments.Show()
 
         Else
 
