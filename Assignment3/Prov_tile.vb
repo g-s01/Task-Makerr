@@ -230,9 +230,8 @@ Public Class Prov_tile
                                 ' Add parameters for insert command
                                 insertCommand.Parameters.AddWithValue("@userId", userId)
                                 insertCommand.Parameters.AddWithValue("@providerId", providerId)
-                                insertCommand.Parameters.AddWithValue("@username", Module_global.User_Name) ' Assuming "Mokshith" is the username
+                                insertCommand.Parameters.AddWithValue("@username", Module_global.user_name)
                                 insertCommand.Parameters.AddWithValue("@providername", ProviderName) ' Assuming "sahil_the_provider" is the provider name
-
                                 ' Execute the insert command and get the inserted chat room ID
                                 roomId = Convert.ToInt32(insertCommand.ExecuteScalar())
 
