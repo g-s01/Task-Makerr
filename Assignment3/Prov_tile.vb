@@ -173,9 +173,6 @@ Public Class Prov_tile
     Friend WithEvents Label3 As Label
     Friend WithEvents PictureBox2 As PictureBox
 
-    Private Sub Prov_tile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         ' Assuming connectionString is defined elsewhere
