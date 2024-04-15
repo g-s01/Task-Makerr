@@ -15,6 +15,7 @@ Public Class user_provider_chats
     Dim userId As Integer = 2
     Dim dealId As Integer = -1
     Public roomId As Integer = -1
+    Dim header As String = ""
 
     Private WithEvents timer As New Timer()
 
@@ -207,8 +208,18 @@ Public Class user_provider_chats
 
         'chat_list.Visible = False
         timer.Start()
-        If roomId <> 0 Then
+        If roomId <> 0 Or roomId <> -1 Then
             ' Call the function to print messages between users
+            For Each pair As Tuple(Of String, Integer, Integer) In Module_global.roomchat
+                ' Check if the receiver matches the first item in the tuple
+                If pair.Item2 = roomId Then
+                    ' Fetch the second item (number) in the tuple
+                    header = pair.Item1
+                    ' Do something with the number...
+                    Exit For ' Exit loop if the match is found
+                End If
+            Next
+            senderName.Text = header
             PrintMessagesBetweenUsers(roomId)
         End If
     End Sub
@@ -219,6 +230,9 @@ Public Class user_provider_chats
         LoadRoomsFromDatabase(userId, user_role)
         LoadMessagesFromDatabase(userId, user_role)
         PopulateRooms()
+        If roomId <> -1 Then
+            PrintMessagesBetweenUsers(roomId)
+        End If
     End Sub
 
 
@@ -245,7 +259,7 @@ Public Class user_provider_chats
 
         Dim room As Integer
 
-        For Each pair As Tuple(Of String, Integer, Integer) In roomchat
+        For Each pair As Tuple(Of String, Integer, Integer) In Module_global.roomchat
             ' Check if the receiver matches the first item in the tuple
             If pair.Item1 = clickedButton.Text Then
                 ' Fetch the second item (number) in the tuple
@@ -316,6 +330,7 @@ Public Class user_provider_chats
     End Sub
 
     Private Sub PrintMessagesBetweenUsers(roomId As Integer)
+
 
         ' Clear existing messages on the chat_list panel
         For i As Integer = chat.Controls.Count - 1 To 0 Step -1
