@@ -201,7 +201,7 @@ Public Class user_provider_chats
         ElseIf user_role = "provider" Then
             userId = Module_global.Provider_ID
         End If
-        timer.Interval = 3000
+        timer.Interval = 10000
         LoadRoomsFromDatabase(userId, user_role)
         LoadMessagesFromDatabase(userId, user_role)
         PopulateRooms()
@@ -257,19 +257,16 @@ Public Class user_provider_chats
             End If
         Next
 
-        Dim room As Integer
-
         For Each pair As Tuple(Of String, Integer, Integer) In Module_global.roomchat
             ' Check if the receiver matches the first item in the tuple
             If pair.Item1 = clickedButton.Text Then
                 ' Fetch the second item (number) in the tuple
-                room = pair.Item2
+                roomId = pair.Item2
                 ' Do something with the number...
                 Exit For ' Exit loop if the match is found
             End If
         Next
-
-        PrintMessagesBetweenUsers(room)
+        PrintMessagesBetweenUsers(roomId)
     End Sub
 
     Private Sub sendTextBox_KeyDown(sender As Object, e As KeyEventArgs) Handles sendTextBox.KeyDown
@@ -285,19 +282,19 @@ Public Class user_provider_chats
         'Dim messageText As String = chat_list.Controls("textBox1").Text ' Assuming TextBox1 is the name of the TextBox
 
         ' Get the receiver name from the label text within the chat_list panel
-        Dim receiverName As String = senderName.Text ' Assuming Label1 contains the receiver name
+        'Dim receiverName As String = senderName.Text ' Assuming Label1 contains the receiver name
 
-        Dim room As Integer
+        'Dim room As Integer
 
-        For Each pair As Tuple(Of String, Integer, Integer) In roomchat
-            ' Check if the receiver matches the first item in the tuple
-            If pair.Item1 = receiverName Then
-                ' Fetch the second item (number) in the tuple
-                room = pair.Item2
-                ' Do something with the number...
-                Exit For ' Exit loop if the match is found
-            End If
-        Next
+        'For Each pair As Tuple(Of String, Integer, Integer) In roomchat
+        '    ' Check if the receiver matches the first item in the tuple
+        '    If pair.Item1 = receiverName Then
+        '        ' Fetch the second item (number) in the tuple
+        '        room = pair.Item2
+        '        ' Do something with the number...
+        '        Exit For ' Exit loop if the match is found
+        '    End If
+        'Next
 
         Dim maxLength As Integer = 50 ' Set the maximum length before inserting a newline
         Dim inputString As String = sendTextBox.Text
@@ -317,12 +314,12 @@ Public Class user_provider_chats
         ' Optionally, you can clear the TextBox after sending the message
         sendTextBox.Text = ""
 
-        InsertMessageIntoDatabase(room, dealId, user_role, messageText)
+        InsertMessageIntoDatabase(roomId, dealId, user_role, messageText)
         ' Print messages between users
         Dim timeStamp As String = DateTime.Now.ToString("yyy-MM-dd HH:mm:ss")
-        Dim newMessage As New Tuple(Of Integer, Integer, String, String, String)(room, dealId, user_role, messageText, timeStamp)
+        Dim newMessage As New Tuple(Of Integer, Integer, String, String, String)(roomId, dealId, user_role, messageText, timeStamp)
         messages.Add(newMessage)
-        PrintMessagesBetweenUsers(room)
+        PrintMessagesBetweenUsers(roomId)
     End Sub
     Private Sub MainForm_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
         ' Stop the timer when the form is closed
