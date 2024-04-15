@@ -18,74 +18,34 @@ Public Class provider_notifications
         Button3.BackColor = Color.FromKnownColor(KnownColor.Control)
         Button1.BackColor = Color.FromKnownColor(KnownColor.Control)
 
+        ' Clear existing controls from FlowLayoutPanel
+        If FlowLayoutPanel1.Controls.Count > 0 Then
+            FlowLayoutPanel1.Controls.Clear()
+        End If
 
+        ' Create a Label to display the filter prompt
+        Dim filterLabel As New Label()
+        filterLabel.Text = "Filter by rating:"
+        filterLabel.Font = New Font("Microsoft YaHei", 10, FontStyle.Regular)
+        filterLabel.AutoSize = True
+        filterLabel.Location = New Point(10, 10) ' Adjust the location as needed
+        FlowLayoutPanel1.Controls.Add(filterLabel)
 
-        Using connection As New SqlConnection(connectionString)
-            Dim command As New SqlCommand(query, connection)
-            command.Parameters.AddWithValue("@ProviderID", providerId)
+        ' Create and add ComboBox dynamically to the FlowLayoutPanel with custom styling
+        Dim comboBox As New ComboBox()
+        comboBox.DropDownStyle = ComboBoxStyle.DropDownList
+        comboBox.Name = "RatingComboBox"
+        ' Add the rating options to the ComboBox
+        comboBox.Items.AddRange(New Object() {"All Reviews", "0-1", "1-2", "2-3", "3-4", "4-5"})
+        comboBox.Location = New Point(filterLabel.Right + 5, 10) ' Adjust the location as needed
+        comboBox.Size = New Size(150, 25)
+        ' Apply custom styling to the ComboBox
+        ApplyComboBoxStyling(comboBox)
+        FlowLayoutPanel1.Controls.Add(comboBox)
+        AddHandler comboBox.SelectedIndexChanged, AddressOf RatingComboBox_SelectedIndexChanged
 
-            Try
-                connection.Open()
-                Dim reader As SqlDataReader = command.ExecuteReader()
-                FlowLayoutPanel1.Controls.Clear()
-                'FlowLayoutPanel1.BackColor = Color.Black'
-
-                If Not reader.HasRows Then
-                    Dim noEntriesLabel As New Label()
-                    noEntriesLabel.Text = "No entries found."
-                    noEntriesLabel.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
-                    noEntriesLabel.AutoSize = True
-                    noEntriesLabel.Location = New Point(100, 10) ' Adjust location as needed
-                    FlowLayoutPanel1.Controls.Add(noEntriesLabel)
-                Else
-                    While reader.Read()
-                        Dim customerName As String = reader("username").ToString()
-                        Dim review_text As String = reader("review_text").ToString()
-                        Dim rating As Integer = Convert.ToInt32(reader("rating"))
-
-                        ' Create a Panel control for each customer
-                        Dim panel As New Panel()
-                        panel.BorderStyle = BorderStyle.FixedSingle
-                        panel.BackColor = Color.FromArgb(255, 220, 189, 232)
-                        panel.Location = New Point(40)
-                        panel.Size = New Size(750, 100) ' Set the size of the panel (width: 300, height: 100)
-                        panel.Margin = New Padding(5)
-                        panel.AutoScroll = True
-
-                        ' Create labels for customer details
-                        Dim nameLabel As New Label()
-                        nameLabel.Text = $"{customerName}"
-                        nameLabel.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
-                        nameLabel.AutoSize = True
-                        nameLabel.Location = New Point(30, 30) ' Set the location of the label within the panel
-
-                        Dim review As New Label()
-                        review.Text = $"{review_text}"
-                        review.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
-                        review.AutoSize = True
-                        review.Location = New Point(30, 50)
-
-                        Dim customer_rating As New Label()
-                        customer_rating.Text = $"Rating : {rating}"
-                        customer_rating.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
-                        customer_rating.AutoSize = True
-                        customer_rating.Location = New Point(600, 30)
-
-                        ' Add labels to the panel
-                        panel.Controls.Add(nameLabel)
-                        panel.Controls.Add(review)
-                        panel.Controls.Add(customer_rating)
-
-                        ' Add the panel to the FlowLayoutPanel
-                        FlowLayoutPanel1.Controls.Add(panel)
-                    End While
-                End If
-
-
-            Catch ex As Exception
-                MessageBox.Show("Error: " & ex.Message)
-            End Try
-        End Using
+        ' Show all reviews initially
+        ShowAllReviews()
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
