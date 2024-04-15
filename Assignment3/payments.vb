@@ -25,8 +25,10 @@ Public Class payments
 
     Public Sub Payment_load(sender As Object, e As EventArgs) Handles MyBase.Load
         Module_global.payment_successful = 0
-        ''  Book_slots.variableChanged.Reset()
+        'Book_slots'.variableChanged.Set()
         Book_slots.myVariable = 0
+        Reschedule_Slots.ResmyVariable = 0
+        pending_payment.myVariable = 0
     End Sub
     Private Sub payButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles payButton.Click
         If captcha.ShowDialog = DialogResult.OK Then
@@ -38,7 +40,7 @@ Public Class payments
             sendEmail(randomNumber, subject, body)
             Dim code As Integer
             If otp_auth.ShowDialog = DialogResult.OK Then
-                If Integer.TryParse(otp_auth.InputValue, code) Then
+                If Integer.TryParse(otp_auth.input, code) Then
                     If code = randomNumber Then
                         ' checks if the user has enough money in his account or not
                         Dim bal As Decimal = 0
@@ -62,6 +64,11 @@ Public Class payments
                             Module_global.payment_successful = 1
                             Book_slots.myVariable = 1
                             Book_slots.variableChanged.Set()
+                            Reschedule_Slots.ResmyVariable = 1
+                            Reschedule_Slots.ResvariableChanged.Set()
+                            pending_payment.myVariable = 1
+                            pending_payment.variableChanged.Set()
+                            MessageBox.Show(Module_global.payment_successful)
                             ' updating balance of both the users
                             Dim sqlQuery As String = "UPDATE customer SET balance = CASE WHEN email = @AccountNumber1 THEN balance - @AmountToUpdate WHEN email = @AccountNumber2 THEN balance + @AmountToUpdate END WHERE email IN (@AccountNumber1, @AccountNumber2);"
 
@@ -148,10 +155,12 @@ Public Class payments
             Module_global.payment_successful = 0
             Book_slots.variableChanged.Set()
             Book_slots.myVariable = 0
-            MessageBox.Show("hi")
+            Reschedule_Slots.ResmyVariable = 0
+            Reschedule_Slots.ResvariableChanged.Set()
+            pending_payment.variableChanged.Set()
+            pending_payment.myVariable = 0
         Else
             Module_global.payment_successful = 1
-            MessageBox.Show(Book_slots.myVariable)
             'Book_slots.variableChanged.Set()
 
             'receipt generation
@@ -281,7 +290,6 @@ Public Class payments
     End Sub
 
     Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
-        '' Implement Closing Logic
+        Close()
     End Sub
-
 End Class
