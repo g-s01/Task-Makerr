@@ -108,6 +108,7 @@ Public Class admin_side_chat
 
     Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
         messageTimer.Interval = 10000
+        AddHandler messageTimer.Tick, AddressOf MessageTimer_Tick
 
         LoadRoomsFromDatabase()
         LoadMessagesFromDatabase()
@@ -116,18 +117,27 @@ Public Class admin_side_chat
         PopulateRooms()
         chat.Visible = False
         Panel2.Visible = False
+        messageTimer.Start()
     End Sub
 
-
+    Private Sub MainForm_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
+        ' Stop the timer when the form is closed
+        messageTimer.Stop()
+    End Sub
     ' Event handler for the tick event of the timer
     Private Sub MessageTimer_Tick(sender As Object, e As EventArgs)
-        ' Reload and print messages every 30 seconds
-        LoadRoomsFromDatabase()
-        LoadMessagesFromDatabase()
-        If roomId <> -1 Then
-            PrintMessages(roomId)
+        ' Check if the form is visible
+        If Me.Visible Then
+            ' Reload and print messages every 30 seconds
+            LoadRoomsFromDatabase()
+            LoadMessagesFromDatabase()
+            PopulateRooms()
+            If roomId <> -1 Then
+                PrintMessages(roomId)
+            End If
         End If
     End Sub
+
 
 
     Private Sub userButton_Click(sender As Object, e As EventArgs) Handles userButton.Click
@@ -153,6 +163,7 @@ Public Class admin_side_chat
         userButton.BackColor = SystemColors.Control
         providerButton.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         PopulateRooms()
+
         chat.Visible = False
         Panel2.Visible = False
     End Sub
@@ -173,7 +184,7 @@ Public Class admin_side_chat
             End If
         Next
 
-        Dim room As Integer
+
 
         For Each pair As Tuple(Of String, String, Integer, Integer) In support_rooms
             If pair.Item1 = clickedButton.Text Then
@@ -281,14 +292,6 @@ Public Class admin_side_chat
 
 
         Dim timeStamp As String = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-        Dim room As Integer
-        For Each pair As Tuple(Of String, String, Integer, Integer) In support_rooms
-            If pair.Item1 = senderName.Text Then
-                room = pair.Item3
-                Exit For ' Exit loop if the match is found
-            End If
-        Next
-
 
         Dim maxLength As Integer = 30 ' Set the maximum length before inserting a newline
         Dim inputString As String = sendTextBox.Text
@@ -302,13 +305,13 @@ Public Class admin_side_chat
             End If
         Next
 
-        Dim newMessage As New Tuple(Of Integer, String, String, String)(room, user_role, messageText, timeStamp)
+        Dim newMessage As New Tuple(Of Integer, String, String, String)(roomId, user_role, messageText, timeStamp)
         ' Add the new message to the messages list
         support_msgs.Add(newMessage)
 
         Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
         Dim query As String = "
-            INSERT INTO support_msgs (support_room_id, sender_type, message_content)
+            INSERT INTO support_msgs (support_msgs.support_room_id, sender_type, message_content)
             VALUES (@SupportRoomId, @SenderType, @MessageContent);
             SELECT SCOPE_IDENTITY();
             "
@@ -321,7 +324,7 @@ Public Class admin_side_chat
             ' Create a SqlCommand object
             Using command As New SqlCommand(query, connection)
                 ' Set the parameters for the new message
-                command.Parameters.AddWithValue("@SupportRoomId", Support_room_id)
+                command.Parameters.AddWithValue("@SupportRoomId", roomId)
                 command.Parameters.AddWithValue("@SenderType", user_role)
                 command.Parameters.AddWithValue("@MessageContent", messageText)
 
@@ -335,7 +338,7 @@ Public Class admin_side_chat
         ' Optionally, you can clear the TextBox after sending the message
         sendTextBox.Text = ""
         ' Print messages between users
-        PrintMessages(room)
+        PrintMessages(roomId)
     End Sub
 
 
