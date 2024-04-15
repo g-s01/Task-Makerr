@@ -4,7 +4,7 @@
         ShowForm(New provider_dashboard)
     End Sub
 
-    Private Sub ShowForm(form As Form)
+    Public Sub ShowForm(form As Form)
         ' Clear the panel and add the new form
         SplitContainer1.Panel2.Controls.Clear()
         form.TopLevel = False

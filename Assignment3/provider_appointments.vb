@@ -49,8 +49,9 @@ Public Class provider_appointments
         'relatedForm.Show()
     End Sub
     Private Sub Button_Click(sender As Object, e As EventArgs)
-        MessageBox.Show("Button Clicked in Lower Panel")
+        'MessageBox.Show("Button Clicked in Lower Panel")
 
+        provider_template.ShowForm(New provider_appointment_details())
         ' Show related form for button click
         'Dim relatedForm As New RelatedForm2() ' Replace RelatedForm2 with the actual name of your related form class
         'relatedForm.Show()
