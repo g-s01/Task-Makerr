@@ -3,6 +3,7 @@ Imports Microsoft.Data.SqlClient
 Imports Org.BouncyCastle.Crypto.Asymmetric.AsymmetricRsaKey
 Imports System.Configuration
 Imports System.Drawing
+Imports System.IO
 Imports System.Text
 Imports System.Windows.Forms.AxHost
 Public Class ViewAllUser
@@ -91,16 +92,11 @@ Public Class ViewAllUser
 
         Label3.Text = Module_global.serviceType
 
-        Me.Controls.Add(Profile_Pic)
         Me.Controls.Add(Username)
 
 
 
 
-        Username.Text = Module_global.user_name
-        '  If Module_global.user_profilepic IsNot Nothing Then
-        '      Profile_Pic.Image = Module_global.user_profilepic
-        '  End If
 
         ComboBox1.Items.Clear()
         ComboBox1.Items.Add("Sorted by Rating")
@@ -171,6 +167,14 @@ Public Class ViewAllUser
 
 
 
+
+
+
+        Username.Text = Module_global.user_name
+        PictureBox1.Image = Module_global.user_profilepic
+        '   If Module_global.user_profilepic IsNot Nothing Then
+        '       PictureBox1.Image = Module_global.user_profilepic
+        '   End If
 
 
         ' Create a HashSet to store unique locations
@@ -420,5 +424,7 @@ Public Class ViewAllUser
         End With
     End Sub
 
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
 
+    End Sub
 End Class
