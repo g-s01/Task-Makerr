@@ -42,9 +42,10 @@ Partial Class UserHome
         ' Profile_Pic
         ' 
         Profile_Pic.Image = My.Resources.Resources.Ellipse_6
-        Profile_Pic.Location = New Point(736, 12)
+        Profile_Pic.Location = New Point(756, 12)
         Profile_Pic.Name = "Profile_Pic"
-        Profile_Pic.Size = New Size(125, 62)
+        Profile_Pic.Size = New Size(104, 62)
+        Profile_Pic.SizeMode = PictureBoxSizeMode.StretchImage
         Profile_Pic.TabIndex = 2
         Profile_Pic.TabStop = False
         ' 
@@ -52,18 +53,18 @@ Partial Class UserHome
         ' 
         Username.AutoSize = True
         Username.Font = New Font("Microsoft Sans Serif", 10.2F)
-        Username.Location = New Point(736, 77)
+        Username.Location = New Point(775, 77)
         Username.Name = "Username"
         Username.Size = New Size(0, 20)
         Username.TabIndex = 3
         ' 
         ' UserHome
         ' 
-        AutoScaleDimensions = New SizeF(8F, 20F)
+        AutoScaleDimensions = New SizeF(8.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
         BackColor = Color.White
-        ClientSize = New Size(932, 920)
+        ClientSize = New Size(929, 920)
         Controls.Add(Username)
         Controls.Add(Profile_Pic)
         Controls.Add(Label1)
