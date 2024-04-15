@@ -25,7 +25,6 @@ Public Class payments
 
     Public Sub Payment_load(sender As Object, e As EventArgs) Handles MyBase.Load
         Module_global.payment_successful = 0
-        Reschedule_Slots.ResvariableChanged.Set()
         Book_slots.myVariable = 0
         Reschedule_Slots.ResmyVariable = 0
     End Sub

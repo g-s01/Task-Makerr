@@ -14,7 +14,7 @@ Public Class Reschedule_Slots
     Public ProviderName As String = "NULL"
     Public user_name As String = "NULL"
     Public binaryImageData As Byte()
-    Public availability(7, 13) As Integer ' 7 days, 24 hours , Load it from database
+    Public availability(7, 12) As Integer ' 7 days, 24 hours , Load it from database
     Public BookedList As New List(Of Integer())
     Public PreviouslyBookedList As New List(Of Integer())
     Public Avaiability_String As String = "NULL"
@@ -141,7 +141,7 @@ Public Class Reschedule_Slots
         For i As Integer = 0 To 6
             Dim nextDate As DateTime = startDate.AddDays(i).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
             Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
-            For j As Integer = 0 To 12
+            For j As Integer = 0 To 11
                 If (Avaiability_String.ElementAt(((i + indexFromMonday) * 12 + j) Mod 84) = "1") Then
                     availability(i, j) = 1
                 End If
@@ -180,18 +180,19 @@ Public Class Reschedule_Slots
                                 'Dim location As String = reader.GetString(5) ' Assuming location is a string
                                 ' Find the difference by subtracting one date from the other
                                 Dim differenceInDays As Integer = (DateTime.Today - startDate.Date).Days
-                                For I As Integer = differenceInDays * 13 To slots.Length - 1
+                                For I As Integer = differenceInDays * 12 To slots.Length - 1
                                     Dim bit As Char = slots(I)
 
                                     ' Check if the bit is '1' (indicating working day)
                                     If bit = "1"c Then
                                         ' Calculate the day index based on the current day index and the index i
-                                        MessageBox.Show(Math.Floor(I / 13))
-                                        Dim dayIndex As Integer = Math.Floor(I / 13) - differenceInDays
-                                        Dim slot As Integer = I Mod 13
+                                        MessageBox.Show(Math.Floor(I / 12))
+                                        Dim dayIndex As Integer = Math.Floor(I / 12) - differenceInDays
+                                        Dim slot As Integer = I Mod 12
 
                                         availability(dayIndex, slot) = 3
                                         PreviouslyBookedList.Add({dayIndex, slot})
+                                        BookedList.Add({dayIndex, slot})
 
                                     End If
                                 Next
@@ -206,26 +207,6 @@ Public Class Reschedule_Slots
                 End Using
             End If
         End Using
-
-
-
-        ' Execute the DELETE query to delete the deal
-        ' Using deleteCommand As New SqlCommand(deleteQuery, connection)
-        ' Add parameters to the DELETE command
-        'deleteCommand.Parameters.AddWithValue("@deal_id", Module_global.DealID_Reschedule)
-
-        ' Execute the DELETE command
-        'Dim rowsAffected As Integer = deleteCommand.ExecuteNonQuery()
-
-        ' Check if any rows were deleted
-        'If rowsAffected > 0 Then
-        'MessageBox.Show("Deleted Successfully!")
-        'Else
-        'MessageBox.Show("Error!")
-        'End If
-        'End Using
-
-
 
 
 
@@ -285,22 +266,18 @@ Public Class Reschedule_Slots
         Finally
             ' Perform cleanup tasks or handle completion/error scenarios (optional)
         End Try
-        PopulateScheduleTable()
+
     End Function
     Private Async Function PopulateScheduleTableAsync() As Task
-        ' Clear existing controls in the table layout panel
-        ' MessageBox.Show("0")
-        Schedule_Table.Controls.Clear()
-        'MessageBox.Show("1")
-        ' Clear any existing column and row styles
-        Schedule_Table.ColumnStyles.Clear()
-        Schedule_Table.RowStyles.Clear() '''
-        ' MessageBox.Show("2")
 
-        ' Calculate percentage for each column and row
+        Schedule_Table.Controls.Clear()
+        Schedule_Table.ColumnStyles.Clear()
+        Schedule_Table.RowStyles.Clear()
+
+        ' Add column styles for time slots
         Dim columnPercentage As Single = 100.0F / Schedule_Table.ColumnCount
         Dim rowPercentage As Single = 100.0F / Schedule_Table.RowCount
-
+        'MessageBox.Show(8)
         ' Set equal column and row styles
         For i As Integer = 0 To Schedule_Table.ColumnCount + 1
             Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, columnPercentage))
@@ -310,6 +287,7 @@ Public Class Reschedule_Slots
             Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Percent, rowPercentage))
         Next
         Schedule_Table.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
+        ' Create and add labels for days of the week asynchronously
         For i As Integer = 0 To 6
             Dim dayLabel As New Label()
             dayLabel.Text = DateTime.Today.AddDays(i).ToString("ddd, dd MMM")
@@ -318,9 +296,9 @@ Public Class Reschedule_Slots
             dayLabel.Font = New Font("Arial", 12, FontStyle.Bold)
             Schedule_Table.Controls.Add(dayLabel, 0, i + 1) ' Add to the first row, starting from column index 1
         Next
-
+        'MessageBox.Show(9)
         ' Add labels for 12-hour format time from 9:00 AM to 9:00 PM
-        For i As Integer = 9 To 21
+        For i As Integer = 9 To 20
             Dim timeLabel As New Label()
             Dim hour As Integer = If(i > 12, i Mod 12, i) ' Convert to 12-hour format
             Dim suffix As String = If(i >= 12, "PM", "AM") ' Determine AM/PM suffix
@@ -330,52 +308,29 @@ Public Class Reschedule_Slots
             timeLabel.Font = New Font("Arial", 12, FontStyle.Bold)
             Schedule_Table.Controls.Add(timeLabel, i - 8, 0) ' Add to the first column, starting from row index 1
         Next
-        For Each control As Control In Schedule_Table.Controls
-            Dim cellPosition As TableLayoutPanelCellPosition = Schedule_Table.GetPositionFromControl(control)
-            If cellPosition.Column = 0 Or cellPosition.Row = 0 Then
-                control.BackColor = ColorTranslator.FromHtml("#F58CD7")
-            End If
-        Next
-        ' Add buttons for each time slot
         Schedule_Table.SuspendLayout()
-        ' Iterate over the grid (7 rows, 13 columns)
+        ' Create and add buttons for time slots asynchronously
         For i As Integer = 0 To 6
-            For j As Integer = 0 To 12
-                ' Create a new button
+            For j As Integer = 0 To 11
                 Dim btn As New Button()
                 btn.Dock = DockStyle.Fill
                 btn.FlatStyle = FlatStyle.Flat
                 btn.Margin = New Padding(0)
-
-                ' Set button color based on availability
-                Select Case availability(i, j)
-                    Case 1
-                        btn.BackColor = Color.LightGreen ' Available
-                    Case 2
-                        btn.BackColor = Color.DarkGreen ' Unavailable
-                    Case 3
-                        btn.BackColor = Color.Gray ' Special case
-                    Case Else
-                        btn.BackColor = Color.Transparent ' Default (shouldn't happen)
-                End Select
-
-                ' Add the button to Schedule_Table asynchronously
+                btn.BackColor = If(availability(i, j) = 1, Color.LightGreen, If(availability(i, j) = 2, Color.DarkGreen, If(availability(i, j) = 3, Color.Gray, Color.Transparent)))
                 Await AddControlToScheduleTableAsync(btn, i + 1, j + 1)
             Next
         Next
-        For Each pair In PreviouslyBookedList
-            BookedList.Add(pair)
-        Next
+
         Schedule_Table.ResumeLayout(True)
     End Function
-    Private Async Function AddControlToScheduleTableAsync(control As Control, row As Integer, column As Integer) As Task
+
+
+    Private Async Function AddControlToScheduleTableAsync(control As Control, column As Integer, row As Integer) As Task
         ' Use Control.Invoke to update the UI on the main UI thread
         Schedule_Table.Invoke(Sub()
                                   Schedule_Table.Controls.Add(control, row, column)
                               End Sub)
         AddHandler control.Click, AddressOf TimeSlot_Click
-
-
     End Function
 
     Private Sub TimeSlot_Click(sender As Object, e As EventArgs)
@@ -426,7 +381,7 @@ Public Class Reschedule_Slots
         End If
     End Sub
 
-    Public Sub MakePictureBoxRound(pictureBox As PictureBox)
+    Public Function MakePictureBoxRound(pictureBox As PictureBox) As Task
         ' Create a GraphicsPath to define a circle
         Dim path As New GraphicsPath()
         path.AddEllipse(0, 0, pictureBox.Width, pictureBox.Height)
@@ -434,14 +389,19 @@ Public Class Reschedule_Slots
         ' Set the PictureBox's region to the circle defined by the GraphicsPath
         pictureBox.Region = New Region(path)
         'Change according to the user after fetching from the database
+        Dim image As Image
+        If (is_null_image = 1) Then
+            image = My.Resources.male
 
+            ' Convert binary data back to an image
+        Else
 
-        ' Convert binary data back to an image
-        Dim image As Image = ImageFromBinary(binaryImageData)
+            image = ImageFromBinary(binaryImageData)
+        End If
 
         pictureBox.Image = image
         pictureBox.SizeMode = PictureBoxSizeMode.Zoom
-    End Sub
+    End Function
     Function ImageFromBinary(ByVal binaryData As Byte()) As Image
         Using ms As New MemoryStream(binaryData)
             Return Image.FromStream(ms)
@@ -526,6 +486,14 @@ Rollback:
                 BookedList.Clear()
                 PreviouslyBookedList.Clear()
                 Me.Close()
+                With user_appointment_details
+                    .TopLevel = False
+                    .AutoSize = True
+                    .Dock = DockStyle.Fill
+                    user_template.SplitContainer1.Panel2.Controls.Add(user_appointment_details)
+                    .BringToFront()
+                    .Show()
+                End With
             Else
                 Dim NewlyBookedList As New List(Of Integer())
                 Try
@@ -572,21 +540,21 @@ Rollback:
                         ResmyVariable = 0
                         MessageBox.Show($"Data inserted successfully, you need to pay a total of {Total_cost}Rs.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
                         payments.Show()
-                        Await WaitForVariableChangeOrTimeoutAsync(900000)
+                        Await WaitForVariableChangeOrTimeoutAsync(9000000)
 
 
                         If (Module_global.payment_successful = 1) Then
                             'Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location);"
                             Dim newDealTimeString As String = ""
-                            For I As Integer = 0 To 90
+                            For I As Integer = 0 To 84
                                 Dim index As Integer = I
-                                If BookedList.Exists(Function(x) x(0) = index \ 13 AndAlso x(1) = index Mod 13) Then
+                                If BookedList.Exists(Function(x) x(0) = index \ 12 AndAlso x(1) = index Mod 12) Then
                                     newDealTimeString += "1"
                                 Else
                                     newDealTimeString += "0"
                                 End If
                             Next
-                            Dim dealsUpdate As String = "UPDATE deals SET time = @Time, status = 4 , dates = @Date WHERE deal_id = @Deal_ID;"
+                            Dim dealsUpdate As String = "UPDATE deals SET time = @Time, status = 1 , dates = @Date WHERE deal_id = @Deal_ID;"
                             Using command As New SqlCommand(dealsUpdate, connection)
                                 command.Parameters.AddWithValue("@Time", newDealTimeString)
                                 command.Parameters.AddWithValue("@Date", currentDate)
@@ -634,7 +602,7 @@ Rollback:
                             Module_global.payment_successful = 0
                             Book_slots.myVariable = 0
                             Book_slots.variableChanged.Reset()
-                            MessageBox.Show("Successfully Booked the slots.")
+                            MessageBox.Show("Successfully Booked the slots!!.")
                             Me.Close()
                         Else
                             MessageBox.Show("Payment was not successful. Please try again.")
@@ -660,6 +628,14 @@ Rollback:
                             Module_global.payment_successful = 0
                             Book_slots.myVariable = 0
                             Me.Close()
+                            With user_appointment_details
+                                .TopLevel = False
+                                .AutoSize = True
+                                .Dock = DockStyle.Fill
+                                user_template.SplitContainer1.Panel2.Controls.Add(user_appointment_details)
+                                .BringToFront()
+                                .Show()
+                            End With
                         End If
 
 
@@ -692,21 +668,29 @@ Rollback:
                         Book_slots.myVariable = 0
                         Book_slots.variableChanged.Reset()
 
-                        For Each slot As Integer() In PreviouslyBookedList
-                            Dim provider_query As String = "INSERT INTO schedule (user_id,provider_id,slots,time) VALUES (@User_ID,@Provider_ID,@Slot,@Time);" ' Add the query here
-                            Using command As New SqlCommand(provider_query, connection)
-                                command.Parameters.AddWithValue("@User_ID", user)
-                                command.Parameters.AddWithValue("@Provider_ID", provider)
-                                command.Parameters.AddWithValue("@Slot", slot(1))
-                                command.Parameters.AddWithValue("@Time", currentDate.AddDays(slot(0)))
-                                Dim rowsAffected1 As Integer = command.ExecuteNonQuery()
-                                If rowsAffected1 = 0 Then
-                                    MessageBox.Show("Some unusual error happened.")
-                                    Exit For
-                                End If
-                            End Using
-                        Next
+                        'For Each slot As Integer() In PreviouslyBookedList
+                        '    Dim provider_query As String = "INSERT INTO schedule (user_id,provider_id,slots,time) VALUES (@User_ID,@Provider_ID,@Slot,@Time);" ' Add the query here
+                        '    Using command As New SqlCommand(provider_query, connection)
+                        '        command.Parameters.AddWithValue("@User_ID", user)
+                        '        command.Parameters.AddWithValue("@Provider_ID", provider)
+                        '        command.Parameters.AddWithValue("@Slot", slot(1))
+                        '        command.Parameters.AddWithValue("@Time", currentDate.AddDays(slot(0)))
+                        '        Dim rowsAffected1 As Integer = command.ExecuteNonQuery()
+                        '        If rowsAffected1 = 0 Then
+                        '            MessageBox.Show("Some unusual error happened.")
+                        '            Exit For
+                        '        End If
+                        '    End Using
+                        'Next
                         Me.Close()
+                        With user_appointment_details
+                            .TopLevel = False
+                            .AutoSize = True
+                            .Dock = DockStyle.Fill
+                            user_template.SplitContainer1.Panel2.Controls.Add(user_appointment_details)
+                            .BringToFront()
+                            .Show()
+                        End With
 
                     Else
                         ' Other SQL error occurred, handle accordingly
