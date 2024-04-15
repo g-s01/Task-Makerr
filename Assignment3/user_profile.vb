@@ -148,6 +148,13 @@ Public Class user_profile
 
             edit_enable = True
         Else
+
+            Dim phoneNumber As String = phone_tb.Text
+            ' Validate phone number
+            If phoneNumber.Length <> 10 OrElse Not IsNumeric(phoneNumber) Then
+                MessageBox.Show("Please enter a valid 10-digit phone number.", "Invalid Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
             Try
                 ' Connect to the database
                 Using connection As New SqlConnection(connectionString)

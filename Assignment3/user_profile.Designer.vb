@@ -152,6 +152,7 @@ Partial Class user_profile
         ' 
         ' Label1
         ' 
+        Label1.Anchor = AnchorStyles.None
         Label1.Font = New Font("Arial Rounded MT Bold", 16F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label1.ForeColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
         Label1.Location = New Point(257, 9)

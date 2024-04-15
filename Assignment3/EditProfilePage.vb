@@ -135,6 +135,7 @@ Public Class EditProfilePage
     End Sub
 
     Private Sub Back_btn_Click(sender As Object, e As EventArgs) Handles back_btn.Click
+        provider_template.ShowForm(New Provider_Profile_page())
         Me.Close()
     End Sub
 
@@ -259,6 +260,7 @@ Public Class EditProfilePage
         End Using
 
         MessageBox.Show("Your information updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        provider_template.ShowForm(New Provider_Profile_page())
         Me.Close()
     End Sub
 
