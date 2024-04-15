@@ -121,8 +121,7 @@ Public Class user_provider_chats
                             Dim deal_id As Integer = reader.GetInt32(reader.GetOrdinal("deal_id"))
                             Dim message_content As String = reader.GetString(reader.GetOrdinal("message_content"))
                             Dim sender_type As String = reader.GetString(reader.GetOrdinal("sender_type"))
-                            Dim timestamp As String = reader.GetDateTime(reader.GetOrdinal("sent_timestamp")).ToString()
-
+                            Dim timestamp As String = reader.GetDateTime(reader.GetOrdinal("sent_timestamp")).ToString("yyyy-MM-dd HH:mm:ss")
                             ' Add the message to the messages list
                             messages.Add(New Tuple(Of Integer, Integer, String, String, String)(chat_room_id, deal_id, sender_type, message_content, timestamp))
                         End While
@@ -221,8 +220,6 @@ Public Class user_provider_chats
         LoadMessagesFromDatabase(userId, user_role)
         PopulateRooms()
     End Sub
-
-
 
 
 
@@ -330,6 +327,7 @@ Public Class user_provider_chats
         Dim messagesInRoom = messages.Where(Function(msg) msg.Item1 = roomId)
 
         ' Sort messages by timestamp
+
         Dim sortedMessages = messagesInRoom.OrderBy(Function(msg) DateTime.Parse(msg.Item5))
 
         ' Y position for labels
@@ -346,16 +344,9 @@ Public Class user_provider_chats
             Dim senderType As String = msg.Item3
             Dim messageText As String = msg.Item4
 
-            Dim timeStamp As String = msg.Item5
+            Dim timeStamp As String = DateTime.ParseExact(msg.Item5, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
 
-            ' Check if the timestamp is in the format dd-mm-yyyy
-            If timeStamp.Contains("-") Then
-                ' Parse with "dd-MM-yyyy" format
-                timeStamp = DateTime.ParseExact(timeStamp, "dd-MM-yyyy hh:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
-            ElseIf timeStamp.Contains("/") Then
-                ' Parse with "M/d/yyyy" format
-                timeStamp = DateTime.ParseExact(timeStamp, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture).ToString("hh:mm tt")
-            End If
+
             ' Create a label for the message
             Dim messageLabel As New Label()
             messageLabel.AutoSize = True
