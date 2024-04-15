@@ -1,26 +1,242 @@
 ﻿Imports System.Globalization
 Imports Microsoft.CodeAnalysis.Text
+Imports Microsoft.Data.SqlClient
+Imports System.Configuration
+Imports System.Configuration.Provider
+Imports Microsoft.CodeAnalysis.CSharp.Syntax
 
 Public Class appointmentChat
-    Dim roomId As Integer = 1
-    Dim dealId As Integer = 1
-    Dim user_role As String = "customer"
+    Dim roomId As Integer = -1
+    Public dealId As Integer = -1
+    Dim user_role As String = Module_global.User_Role
+    Public userId As Integer = -1
+    Public providerId As Integer = -1
+    Dim providerName As String = ""
+    Dim customerName As String = ""
+    Private WithEvents messageTimer As New Timer()
 
-    Dim room As Tuple(Of String, Integer, Integer) ' providername, chat_room_id, provider_id
     Dim messages As New List(Of Tuple(Of Integer, Integer, String, String, String))()
+    ' check whether a room exists or not 
+
+
+    Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+
+    Private Function GetSqlConnection() As SqlConnection
+        Return New SqlConnection(connectionString)
+    End Function
+
+
+    Private Sub GetSenderName()
+
+        ' Assuming connectionString is defined elsewhere
+        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+
+        ' Create a SqlConnection object
+        If user_role = "customer" Then
+            Using connection As New SqlConnection(connectionString)
+                Try
+                    ' Open the connection
+                    connection.Open()
+
+                    ' Create the query
+                    Dim query As String = "SELECT providername FROM dbo.provider WHERE provider_id = @providerId;"
+
+                    ' Create a SqlCommand object with the query and connection
+                    Using command As New SqlCommand(query, connection)
+                        ' Add parameter for provider ID
+                        command.Parameters.AddWithValue("@providerId", providerId)
+
+                        ' Execute the command and get the result
+                        Dim result As Object = command.ExecuteScalar()
+
+                        ' Check if the result is not null
+                        If result IsNot Nothing Then
+                            providerName = result.ToString()
+                        Else
+                            ' Handle if provider name is not found
+                            MessageBox.Show("Provider name not found for the given provider ID.")
+                        End If
+                    End Using
+                Catch ex As Exception
+                    ' Handle any exceptions
+                    MessageBox.Show("An error occurred: " & ex.Message)
+                End Try
+            End Using
+        ElseIf user_role = "provider" Then
+            Using connection As New SqlConnection(connectionString)
+                Try
+                    ' Open the connection
+                    connection.Open()
+
+                    ' Create the query
+                    Dim query As String = "SELECT username FROM dbo.customer WHERE user_id = @userId;"
+
+                    ' Create a SqlCommand object with the query and connection
+                    Using command As New SqlCommand(query, connection)
+                        ' Add parameter for provider ID
+                        command.Parameters.AddWithValue("@userId", userId)
+
+                        ' Execute the command and get the result
+                        Dim result As Object = command.ExecuteScalar()
+
+                        ' Check if the result is not null
+                        If result IsNot Nothing Then
+                            customerName = result.ToString()
+                        Else
+                            ' Handle if provider name is not found
+                            MessageBox.Show("UserName name not found for the given user ID.")
+                        End If
+                    End Using
+                Catch ex As Exception
+                    ' Handle any exceptions
+                    MessageBox.Show("An error occurred: " & ex.Message)
+                End Try
+            End Using
+        End If
+    End Sub
+
+
+
+
+
+    Private Function GetRoom()
+        Using connection As New SqlConnection(connectionString)
+            Try
+                ' Open the connection
+                connection.Open()
+
+
+                Dim query As String = "SELECT chat_room_id FROM dbo.chat_room WHERE user_id=@userId AND provider_id=@providerId;"
+
+                ' Create a SqlCommand object with the select query and connection
+                Using selectCommand As New SqlCommand(query, connection)
+                    ' Add parameters for select command
+                    selectCommand.Parameters.AddWithValue("@userId", userId)
+                    selectCommand.Parameters.AddWithValue("@providerId", providerId)
+
+                    ' Execute the select command and get the result
+                    roomId = Convert.ToInt32(selectCommand.ExecuteScalar())
+
+                    ' Check if the result is not null
+                    If roomId > 0 Then
+                        MessageBox.Show("Chat room ID: " & roomId.ToString())
+                    Else
+                        ' If no chat room found, create a new one
+                        Dim insertQuery As String = "INSERT INTO dbo.chat_room (user_id, provider_id, username, providername) VALUES (@userId, @providerId, @username, @providername); SELECT SCOPE_IDENTITY();"
+
+                        ' Create a SqlCommand object with the insert query and connection
+                        Using insertCommand As New SqlCommand(insertQuery, connection)
+                            ' Add parameters for insert command
+                            insertCommand.Parameters.AddWithValue("@userId", userId)
+                            insertCommand.Parameters.AddWithValue("@providerId", providerId)
+                            insertCommand.Parameters.AddWithValue("@username", customerName) ' Assuming "Mokshith" is the username
+                            insertCommand.Parameters.AddWithValue("@providername", providerName) ' Assuming "sahil_the_provider" is the provider name
+
+                            ' Execute the insert command and get the inserted chat room ID
+                            roomId = Convert.ToInt32(insertCommand.ExecuteScalar())
+
+                            ' Display the newly created chat room ID
+                            MessageBox.Show("New Chat room ID: " & roomId.ToString())
+
+                        End Using
+                    End If
+                End Using
+            Catch ex As Exception
+                ' Handle any exceptions
+                MessageBox.Show("An error occurred: " & ex.Message)
+            End Try
+        End Using
+    End Function
+
+
+    Private Function InsertMessageIntoDatabase(room As Integer, dealId As Integer, user_role As String, messageText As String) As Boolean
+        Dim query As String = "INSERT INTO messages (chat_room_id, deal_id, sender_type, message_content) VALUES (@ChatRoomId, @DealId, @SenderType, @MessageContent)"
+        Using connection As New SqlConnection(connectionString)
+            Using command As New SqlCommand(query, connection)
+                ' Add parameters to the SQL query to prevent SQL injection
+                command.Parameters.AddWithValue("@ChatRoomId", room)
+                command.Parameters.AddWithValue("@DealId", dealId)
+                command.Parameters.AddWithValue("@SenderType", user_role)
+                command.Parameters.AddWithValue("@MessageContent", messageText)
+
+                Try
+                    connection.Open()
+                    ' Execute the insert query
+                    Dim rowsAffected As Integer = command.ExecuteNonQuery()
+
+                    If rowsAffected <= 0 Then
+                        MessageBox.Show("Error: No rows were inserted")
+                        Return False
+                    Else
+                        Return True
+                    End If
+                Catch ex As Exception
+                    MessageBox.Show("Error: " & ex.Message)
+                    Return False
+                End Try
+            End Using
+        End Using
+    End Function
+
+    Private Sub LoadMessagesFromDatabase(userId As Integer, user_role As String, dealId As Integer)
+
+        Dim query As String = "SELECT * FROM messages WHERE chat_room_id = @chatRoomId AND deal_id = @dealId;"
+
+        messages.Clear()
+        Using connection As SqlConnection = GetSqlConnection()
+            Using command As New SqlCommand(query, connection)
+                ' Add parameters to the SQL query to prevent SQL injection
+                command.Parameters.AddWithValue("@chatRoomId", roomId)
+                command.Parameters.AddWithValue("@dealId", dealId)
+                Try
+                    connection.Open()
+                    Dim reader As SqlDataReader = command.ExecuteReader()
+
+                    If reader.HasRows Then
+                        ' Loop through the rows
+                        While reader.Read()
+                            ' Access columns by name or index
+                            Dim chat_room_id As Integer = reader.GetInt32(reader.GetOrdinal("chat_room_id"))
+                            Dim deal_id As Integer = reader.GetInt32(reader.GetOrdinal("deal_id"))
+                            Dim message_content As String = reader.GetString(reader.GetOrdinal("message_content"))
+                            Dim sender_type As String = reader.GetString(reader.GetOrdinal("sender_type"))
+                            Dim timestamp As String = reader.GetDateTime(reader.GetOrdinal("sent_timestamp")).ToString()
+
+                            ' Add the message to the messages list
+                            messages.Add(New Tuple(Of Integer, Integer, String, String, String)(chat_room_id, deal_id, sender_type, message_content, timestamp))
+                        End While
+                    End If
+                    reader.Close()
+                Catch ex As Exception
+                    MessageBox.Show("Error: " & ex.Message)
+                End Try
+            End Using
+        End Using
+    End Sub
+
+    Private Sub MessageTimer_Tick(sender As Object, e As EventArgs)
+        ' Call the PrintMessages function
+        PrintMessages()
+    End Sub
+
+    Private Sub MainForm_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
+        ' Stop the timer when the form is closed
+        messageTimer.Stop()
+    End Sub
 
     Private Sub appointmentChat_Load(sender As Object, e As EventArgs) Handles Me.Load
-        room = New Tuple(Of String, Integer, Integer)("Apple", 1, 0)
-        messages.Clear()
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "customer", "Hey there!", "2024-03-30 10:00:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "How are you?", "2024-03-30 10:05:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "provider", "What's up?", "2024-03-30 10:10:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "customer", "Good morning!", "2024-03-30 10:15:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(1, -1, "provider", "How's it going?", "2024-03-30 10:20:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(2, -1, "provider", "Want to hang out later?", "2024-03-30 10:25:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(3, -1, "customer", "Sure, let's meet at 4!", "2024-01-30 10:00:00"))
-        messages.Add(New Tuple(Of Integer, Integer, String, String, String)(4, -1, "provider", "Sounds good!", "2024-03-30 10:35:00"))
+
+        messageTimer.Interval = 10000
+        If user_role = "customer" Then
+            userId = Module_global.User_ID
+        ElseIf user_role = "provider" Then
+            userId = Module_global.Provider_ID
+        End If
+        GetSenderName()
+        GetRoom()
+        LoadMessagesFromDatabase(userId, user_role, dealId)
         PrintMessages()
+        messageTimer.Start()
     End Sub
 
 
@@ -33,7 +249,13 @@ Public Class appointmentChat
         End If
     End Sub
     Private Sub PrintMessages()
+
         Chat.Controls.Clear()
+        If user_role = "customer" Then
+            Label2.Text = providerName
+        ElseIf user_role = "provider" Then
+            Label2.Text = customerName
+        End If
         Dim sortedMessages = messages.OrderBy(Function(msg) DateTime.Parse(msg.Item5))
 
         ' Y position for labels
@@ -45,7 +267,7 @@ Public Class appointmentChat
             Dim deal As Integer = msg.Item2
             Dim senderType As String = msg.Item3
             Dim messageText As String = msg.Item4
-            Dim timeStamp As String = DateTime.ParseExact(msg.Item5, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
+            Dim timeStamp As String = DateTime.ParseExact(msg.Item5, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
 
 
             ' Create a label for the message
@@ -119,7 +341,7 @@ Public Class appointmentChat
     End Sub
     Private Sub sendButton_Click(sender As Object, e As EventArgs) Handles sendButton.Click
         ' Get the current timestamp
-        Dim timeStamp = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
+        Dim timeStamp = Date.Now.ToString("dd-MM-yyyy HH:mm:ss")
         Dim maxLength = 30 ' Set the maximum length before inserting a newline
         Dim inputString As String = inputTextBox.Text
         Dim messageText = ""
@@ -134,11 +356,13 @@ Public Class appointmentChat
 
         Dim newMessage As New Tuple(Of Integer, Integer, String, String, String)(roomId, dealId, user_role, messageText, timeStamp)
         ' Add the new message to the messages list
+        InsertMessageIntoDatabase(roomId, dealId, user_role, messageText)
         messages.Add(newMessage)
         ' Optionally, you can clear the TextBox after sending the message
         inputTextBox.Text = ""
         ' Print messages between users
         PrintMessages()
+
     End Sub
 
 End Class

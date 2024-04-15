@@ -18,7 +18,9 @@ Module Module_global
     Public serviceType As String = ""
     Public service_types As List(Of String) = New List(Of String) From {"Cleaning", "Plumbing", "Electrical", "Painting", "Decorating", "Catering", "Photography", "Others"}
     Public provider_locations As List(Of String) = New List(Of String) From {"Panbazar", "Dispur", "Chandmari", "Zoo Road", "Beltola", "Khanapara", "Hatigaon", "Jalukbari", "Maligaon", "Garchuk"}
-
+    Public roomchat As New List(Of Tuple(Of String, Integer, Integer))()
+    Public Support_room_id As Integer = -1
+    Public User_Role As String = "admin"
 
     ' Function to check if the password is in the common passwords file
     Function IsCommonPassword(ByVal password As String) As Boolean
@@ -111,4 +113,3 @@ Module Module_global
         PasswordStrengthCheck = scorelabel & vbCrLf & strengthlabel & vbCrLf & suggestions
     End Function
 End Module
-

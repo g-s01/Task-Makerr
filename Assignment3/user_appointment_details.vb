@@ -5,6 +5,7 @@ Public Class user_appointment_details
     Public startTime As TimeSpan
     Public firstDate As DateTime
     Public bookDate As DateTime
+    Dim provider As Integer = 0
 
     Protected Overrides Sub OnVisibleChanged(e As EventArgs)
         MyBase.OnVisibleChanged(e)
@@ -19,7 +20,9 @@ Public Class user_appointment_details
 
         ' Set TopLevel property to False to allow embedding in another container
         chatForm.TopLevel = False
-
+        chatForm.dealId = dealID
+        chatForm.providerId = provider
+        chatForm.userId = Module_global.User_ID
         ' Set the form's Dock property to fill the panel
         chatForm.Dock = DockStyle.Fill
 
@@ -32,7 +35,7 @@ Public Class user_appointment_details
         ' Show the form
         chatForm.Show()
     End Sub
-    Dim provider As Integer = 0
+
 
     Private Sub ReloadData()
         dealID = Module_global.Appointment_Det_DealId
@@ -212,4 +215,6 @@ Public Class user_appointment_details
 
 
     End Sub
+
+
 End Class

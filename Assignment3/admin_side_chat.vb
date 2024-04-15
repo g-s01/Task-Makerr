@@ -1,5 +1,7 @@
 ﻿Imports System.Globalization
+Imports Azure.Messaging
 Imports Microsoft.CodeAnalysis.Text
+Imports Microsoft.Data.SqlClient
 
 Public Class admin_side_chat
     ' user name, user type , support room, user id 
@@ -9,6 +11,8 @@ Public Class admin_side_chat
     Dim user_role = "admin"
     Dim roomId = -1
     Dim rooms_type = "customer"
+    Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+    Private WithEvents messageTimer As New Timer()
 
     Private Sub PopulateRooms()
         ' Clear existing buttons
@@ -44,27 +48,101 @@ Public Class admin_side_chat
 
 
 
+    Private Function LoadRoomsFromDatabase() As Boolean
+        Dim prevLength As Integer = support_rooms.Count
+        Dim query As String = "SELECT username, user_type, support_room_id, user_id FROM support_room"
+        support_rooms.Clear()
+        Using connection As New SqlConnection(connectionString)
+            ' Open the connection
+            connection.Open()
+
+            ' Create a SqlCommand object
+            Using command As New SqlCommand(query, connection)
+                ' Execute the query and get a SqlDataReader
+                Using reader As SqlDataReader = command.ExecuteReader()
+                    ' Loop through the results and populate the support_rooms list
+                    While reader.Read()
+                        ' Read the values from the current row
+                        Dim username As String = reader.GetString(0)
+                        Dim user_type As String = reader.GetString(1)
+                        Dim support_room_id As Integer = reader.GetInt32(2)
+                        Dim user_id As Integer = reader.GetInt32(3)
+
+                        ' Add the values to the support_rooms list as a Tuple
+                        support_rooms.Add(New Tuple(Of String, String, Integer, Integer)(username, user_type, support_room_id, user_id))
+                    End While
+                End Using
+            End Using
+        End Using
+        Return (prevLength <> support_rooms.Count)
+    End Function
+
+
+    Private Function LoadMessagesFromDatabase() As Boolean
+        Dim prevLength As Integer = support_msgs.Count
+        support_msgs.Clear()
+        Dim mess_query As String = "SELECT support_room_id, sender_type, message_content, sent_timestamp FROM support_msgs"
+        Using connection As New SqlConnection(connectionString)
+            ' Open the connection
+            connection.Open()
+
+            ' Create a SqlCommand object
+            Using command As New SqlCommand(mess_query, connection)
+                ' Execute the query and get a SqlDataReader
+                Using reader As SqlDataReader = command.ExecuteReader()
+                    ' Loop through the results and populate the support_msgs list
+                    While reader.Read()
+                        ' Read the values from the current row
+                        Dim support_room_id As Integer = reader.GetInt32(0)
+                        Dim sender_type As String = reader.GetString(1)
+                        Dim message_content As String = reader.GetString(2)
+                        Dim sent_timestamp As DateTime = reader.GetDateTime(3)
+                        Dim sent_timestamp_str As String = sent_timestamp.ToString("yyyy-MM-dd HH:mm:ss") ' Convert sent_timestamp to the desired format
+
+                        ' Add the values to the support_msgs list as a Tuple
+                        support_msgs.Add(New Tuple(Of Integer, String, String, String)(support_room_id, sender_type, message_content, sent_timestamp_str))
+                    End While
+                End Using
+            End Using
+        End Using
+        Return (prevLength <> support_msgs.Count)
+    End Function
 
     Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
-        support_rooms.Add(New Tuple(Of String, String, Integer, Integer)("Apple", "provider", 1, 1))
-        support_rooms.Add(New Tuple(Of String, String, Integer, Integer)("Banana", "customer", 2, 1))
-        support_rooms.Add(New Tuple(Of String, String, Integer, Integer)("Orange", "provider", 3, 3))
-        support_rooms.Add(New Tuple(Of String, String, Integer, Integer)("Grapes", "customer", 4, 4))
+        messageTimer.Interval = 10000
+        AddHandler messageTimer.Tick, AddressOf MessageTimer_Tick
 
-        support_msgs.Clear()
-        support_msgs.Add(New Tuple(Of Integer, String, String, String)(1, "user", "Hey  akjd  ln afb a fbak fa fkba fafk af akf ka fa fk afadfkb afjv bafdj adfsj adsf af as dfa hfaf jhfaf  there!", "2024-03-30 10:00:00"))
-        support_msgs.Add(New Tuple(Of Integer, String, String, String)(2, "admin", "How are you?", "2024-03-30 10:05:00"))
-        support_msgs.Add(New Tuple(Of Integer, String, String, String)(3, "user", "What's up?", "2024-03-30 10:10:00"))
-        support_msgs.Add(New Tuple(Of Integer, String, String, String)(4, "admin", "Good morning!", "2024-03-30 10:15:00"))
-        support_msgs.Add(New Tuple(Of Integer, String, String, String)(1, "admin", "How's it going?", "2024-03-30 10:20:00"))
-        support_msgs.Add(New Tuple(Of Integer, String, String, String)(2, "user", "Want to hang out later?", "2024-03-30 10:25:00"))
-        support_msgs.Add(New Tuple(Of Integer, String, String, String)(3, "admin", "Sure, let's meet at 4!", "2024-03-30 10:30:00"))
-        support_msgs.Add(New Tuple(Of Integer, String, String, String)(4, "user", "Sounds good!", "2024-03-30 10:35:00"))
-
+        LoadRoomsFromDatabase()
         PopulateRooms()
+        LoadMessagesFromDatabase()
+        providerButton.BackColor = SystemColors.Control
+        userButton.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         chat.Visible = False
         Panel2.Visible = False
+        messageTimer.Start()
     End Sub
+
+    Private Sub MainForm_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
+        ' Stop the timer when the form is closed
+        messageTimer.Stop()
+    End Sub
+    ' Event handler for the tick event of the timer
+    Private Sub MessageTimer_Tick(sender As Object, e As EventArgs)
+        ' Check if the form is visible
+        If Me.Visible Then
+            ' Reload and print messages every 30 seconds
+            If (LoadRoomsFromDatabase()) Then
+                PopulateRooms()
+            End If
+            If roomId <> -1 Then
+                    If (LoadMessagesFromDatabase()) Then
+                        PrintMessages(roomId)
+                    End If
+                End If
+            End If
+    End Sub
+
+
 
     Private Sub userButton_Click(sender As Object, e As EventArgs) Handles userButton.Click
         rooms_type = "customer"
@@ -89,6 +167,7 @@ Public Class admin_side_chat
         userButton.BackColor = SystemColors.Control
         providerButton.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         PopulateRooms()
+
         chat.Visible = False
         Panel2.Visible = False
     End Sub
@@ -109,18 +188,18 @@ Public Class admin_side_chat
             End If
         Next
 
-        Dim room As Integer
+
 
         For Each pair As Tuple(Of String, String, Integer, Integer) In support_rooms
             If pair.Item1 = clickedButton.Text Then
 
-                room = pair.Item3
+                roomId = pair.Item3
 
                 Exit For ' Exit loop if the match is found
             End If
         Next
 
-        PrintMessages(room)
+        PrintMessages(roomId)
         chat.Visible = True
         Panel2.Visible = True
     End Sub
@@ -217,14 +296,6 @@ Public Class admin_side_chat
 
 
         Dim timeStamp As String = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-        Dim room As Integer
-        For Each pair As Tuple(Of String, String, Integer, Integer) In support_rooms
-            If pair.Item1 = senderName.Text Then
-                room = pair.Item3
-                Exit For ' Exit loop if the match is found
-            End If
-        Next
-
 
         Dim maxLength As Integer = 30 ' Set the maximum length before inserting a newline
         Dim inputString As String = sendTextBox.Text
@@ -238,13 +309,41 @@ Public Class admin_side_chat
             End If
         Next
 
-        Dim newMessage As New Tuple(Of Integer, String, String, String)(room, user_role, messageText, timeStamp)
+        Dim newMessage As New Tuple(Of Integer, String, String, String)(roomId, user_role, messageText, timeStamp)
         ' Add the new message to the messages list
         support_msgs.Add(newMessage)
+
+        Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+        Dim query As String = "
+            INSERT INTO support_msgs (support_msgs.support_room_id, sender_type, message_content)
+            VALUES (@SupportRoomId, @SenderType, @MessageContent);
+            SELECT SCOPE_IDENTITY();
+            "
+
+        ' Create a SqlConnection object
+        Using connection As New SqlConnection(connectionString)
+            ' Open the connection
+            connection.Open()
+
+            ' Create a SqlCommand object
+            Using command As New SqlCommand(query, connection)
+                ' Set the parameters for the new message
+                command.Parameters.AddWithValue("@SupportRoomId", roomId)
+                command.Parameters.AddWithValue("@SenderType", user_role)
+                command.Parameters.AddWithValue("@MessageContent", messageText)
+
+                ' Execute the INSERT command and retrieve the generated message_id
+                Dim messageId As Integer = Convert.ToInt32(command.ExecuteScalar())
+
+                ' Now you can use messageId as needed
+                'Console.WriteLine("Generated Message ID: " & messageId)
+            End Using
+        End Using
         ' Optionally, you can clear the TextBox after sending the message
         sendTextBox.Text = ""
         ' Print messages between users
-        PrintMessages(room)
+        PrintMessages(roomId)
     End Sub
+
 
 End Class

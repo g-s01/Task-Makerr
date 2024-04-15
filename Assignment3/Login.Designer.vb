@@ -105,7 +105,7 @@ Partial Class Login
         LinkLabel1.LinkColor = Color.DimGray
         LinkLabel1.Location = New Point(374, 340)
         LinkLabel1.Name = "LinkLabel1"
-        LinkLabel1.Size = New Size(135, 23)
+        LinkLabel1.Size = New Size(112, 19)
         LinkLabel1.TabIndex = 46
         LinkLabel1.TabStop = True
         LinkLabel1.Text = "Forgot Password"
@@ -117,7 +117,7 @@ Partial Class Login
         showpassword_cb.Font = New Font("Segoe UI", 8F)
         showpassword_cb.Location = New Point(481, 315)
         showpassword_cb.Name = "showpassword_cb"
-        showpassword_cb.Size = New Size(64, 23)
+        showpassword_cb.Size = New Size(55, 17)
         showpassword_cb.TabIndex = 45
         showpassword_cb.Text = "Show"
         showpassword_cb.UseVisualStyleBackColor = True
@@ -129,7 +129,7 @@ Partial Class Login
         error_label.ForeColor = Color.Red
         error_label.Location = New Point(57, 335)
         error_label.Name = "error_label"
-        error_label.Size = New Size(39, 19)
+        error_label.Size = New Size(32, 13)
         error_label.TabIndex = 24
         error_label.Text = "error"
         ' 
@@ -140,7 +140,7 @@ Partial Class Login
         email_tb.Location = New Point(57, 260)
         email_tb.Name = "email_tb"
         email_tb.PlaceholderText = "Email"
-        email_tb.Size = New Size(418, 30)
+        email_tb.Size = New Size(418, 25)
         email_tb.TabIndex = 19
         ' 
         ' password_tb
@@ -151,7 +151,7 @@ Partial Class Login
         password_tb.Name = "password_tb"
         password_tb.PasswordChar = "*"c
         password_tb.PlaceholderText = "Password"
-        password_tb.Size = New Size(418, 30)
+        password_tb.Size = New Size(418, 25)
         password_tb.TabIndex = 20
         ' 
         ' admin_ll
@@ -162,7 +162,7 @@ Partial Class Login
         admin_ll.LinkColor = Color.DimGray
         admin_ll.Location = New Point(211, 418)
         admin_ll.Name = "admin_ll"
-        admin_ll.Size = New Size(126, 23)
+        admin_ll.Size = New Size(102, 19)
         admin_ll.TabIndex = 23
         admin_ll.TabStop = True
         admin_ll.Text = "Login as admin"

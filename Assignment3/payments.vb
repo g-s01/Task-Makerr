@@ -25,6 +25,7 @@ Public Class payments
 
     Public Sub Payment_load(sender As Object, e As EventArgs) Handles MyBase.Load
         Module_global.payment_successful = 0
+        'Book_slots'.variableChanged.Set()
         Book_slots.myVariable = 0
         Reschedule_Slots.ResmyVariable = 0
     End Sub
@@ -38,7 +39,7 @@ Public Class payments
             sendEmail(randomNumber, subject, body)
             Dim code As Integer
             If otp_auth.ShowDialog = DialogResult.OK Then
-                If Integer.TryParse(otp_auth.InputValue, code) Then
+                If Integer.TryParse(otp_auth.input, code) Then
                     If code = randomNumber Then
                         ' checks if the user has enough money in his account or not
                         Dim bal As Decimal = 0
@@ -284,7 +285,6 @@ Public Class payments
     End Sub
 
     Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
-        '' Implement Closing Logic
+        Close()
     End Sub
-
 End Class
