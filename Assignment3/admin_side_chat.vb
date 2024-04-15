@@ -48,8 +48,8 @@ Public Class admin_side_chat
 
 
 
-    Private Sub LoadRoomsFromDatabase()
-
+    Private Function LoadRoomsFromDatabase() As Boolean
+        Dim prevLength As Integer = support_rooms.Count
         Dim query As String = "SELECT username, user_type, support_room_id, user_id FROM support_room"
         support_rooms.Clear()
         Using connection As New SqlConnection(connectionString)
@@ -74,11 +74,12 @@ Public Class admin_side_chat
                 End Using
             End Using
         End Using
-    End Sub
+        Return (prevLength <> support_rooms.Count)
+    End Function
 
 
-    Private Sub LoadMessagesFromDatabase()
-
+    Private Function LoadMessagesFromDatabase() As Boolean
+        Dim prevLength As Integer = support_msgs.Count
         support_msgs.Clear()
         Dim mess_query As String = "SELECT support_room_id, sender_type, message_content, sent_timestamp FROM support_msgs"
         Using connection As New SqlConnection(connectionString)
@@ -104,17 +105,18 @@ Public Class admin_side_chat
                 End Using
             End Using
         End Using
-    End Sub
+        Return (prevLength <> support_msgs.Count)
+    End Function
 
     Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
         messageTimer.Interval = 10000
         AddHandler messageTimer.Tick, AddressOf MessageTimer_Tick
 
         LoadRoomsFromDatabase()
+        PopulateRooms()
         LoadMessagesFromDatabase()
         providerButton.BackColor = SystemColors.Control
         userButton.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        PopulateRooms()
         chat.Visible = False
         Panel2.Visible = False
         messageTimer.Start()
@@ -129,13 +131,15 @@ Public Class admin_side_chat
         ' Check if the form is visible
         If Me.Visible Then
             ' Reload and print messages every 30 seconds
-            LoadRoomsFromDatabase()
-            LoadMessagesFromDatabase()
-            PopulateRooms()
-            If roomId <> -1 Then
-                PrintMessages(roomId)
+            If (LoadRoomsFromDatabase()) Then
+                PopulateRooms()
             End If
-        End If
+            If roomId <> -1 Then
+                    If (LoadMessagesFromDatabase()) Then
+                        PrintMessages(roomId)
+                    End If
+                End If
+            End If
     End Sub
 
 

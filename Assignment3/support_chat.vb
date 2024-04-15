@@ -14,7 +14,8 @@ Public Class support_chat
     'Dim messages As New List(Of Tuple(Of Integer, String, String, String))()
     Dim supportmessages As New List(Of Tuple(Of Integer, String, String, String))()
 
-    Private Sub LoadMessagesFromDatabase()
+    Private Function LoadMessagesFromDatabase() As Boolean
+        Dim prevLength As Integer = supportmessages.Count
         supportmessages.Clear()
         Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
 
@@ -55,7 +56,8 @@ Public Class support_chat
             ' Handle any exceptions that occur during database operations
             MessageBox.Show("An error occurred while loading messages: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-    End Sub
+        Return (prevLength <> supportmessages.Count)
+    End Function
 
 
     Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -73,8 +75,9 @@ Public Class support_chat
         End If
 
         ' Load and print messages initially
-        LoadMessagesFromDatabase()
-        PrintMessages()
+        If (LoadMessagesFromDatabase()) Then
+            PrintMessages()
+        End If
 
         ' Initialize and start the timer with 10-second interval
         messageTimer.Interval = 10000
@@ -92,8 +95,9 @@ Public Class support_chat
     Private Sub MessageTimer_Tick(sender As Object, e As EventArgs)
         ' Reload and print messages every 30 seconds
         If Me.Visible Then
-            LoadMessagesFromDatabase()
-            PrintMessages()
+            If (LoadMessagesFromDatabase()) Then
+                PrintMessages()
+            End If
         End If
     End Sub
 
