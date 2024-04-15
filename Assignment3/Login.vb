@@ -45,12 +45,11 @@ Public Class Login
                             Module_global.Provider_ID = reader.GetInt32(0)
                             Module_global.User_Name = reader.GetString(1)
                             Module_global.User_Role = "provider"
-                            Me.Close()
-                            user_template.Show()
                         Else
                             error_label.Text = "Invalid email or password. No such user account"
                             password_tb.Text = ""
                         End If
+                        reader.Close()
                     End Using
 
                     Dim supportquery As String = "
@@ -78,6 +77,8 @@ Public Class Login
                         ' Execute the command and retrieve the generated identity value
                         Module_global.Support_room_id = Convert.ToInt32(command.ExecuteScalar())
                         'MessageBox.Show("support id" & Support_room_id)
+                        Me.Close()
+                        provider_template.Show()
                     End Using
                 End Using
             Catch ex As Exception
@@ -118,12 +119,12 @@ Public Class Login
                             Module_global.User_ID = reader.GetInt32(0)
                             Module_global.User_Name = reader.GetString(1)
                             Module_global.User_Role = "customer"
-                            Me.Close()
-                            user_template.Show()
+
                         Else
                             error_label.Text = "Invalid email or password. No such user account"
                             password_tb.Text = ""
                         End If
+                        reader.Close()
                     End Using
                     Dim supportquery As String = "
                             DECLARE @SupportRoomId INT;
@@ -148,6 +149,8 @@ Public Class Login
                         command.Parameters.AddWithValue("@UserType", Module_global.User_Role)
                         ' Execute the command and retrieve the generated identity value
                         Module_global.Support_room_id = Convert.ToInt32(command.ExecuteScalar())
+                        Me.Close()
+                        user_template.Show()
                     End Using
                 End Using
             Catch ex As Exception
