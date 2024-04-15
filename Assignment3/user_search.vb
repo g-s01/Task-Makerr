@@ -32,6 +32,9 @@ Public Class user_search
     End Structure
 
     Private Async Sub user_search_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Label1.Text = user_name
+        PictureBox2.Image = user_profilepic
+
         ComboBox1.Items.Clear()
         ComboBox1.Items.Add("Service")
         For i As Integer = 0 To service_types.Count - 1
@@ -75,12 +78,6 @@ Public Class user_search
                                      End If
                                  End While
                              End Using
-                             'For Each pair As KeyValuePair(Of Int32, Tuple(Of Integer, Integer)) In reviews
-                             '    Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
-                             '    Dim rating As Double
-                             '    rating = Math.Round(currentValue.Item1 / CType(currentValue.Item2, Double), 1)
-                             '    rating_prov.Add(pair.Key, rating)
-                             'Next
                              Parallel.ForEach(reviews, Sub(pair)
                                                            Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
                                                            Dim rating As Double
@@ -89,30 +86,6 @@ Public Class user_search
                                                        End Sub)
                          Catch ex As Exception
                              MessageBox.Show("Error connecting to database: " & ex.Message)
-                         End Try
-                     End Using
-                 End Function),
-        Task.Run(Async Function()
-                     ' Execute user_query
-                     Using connection As New SqlConnection(connectionString)
-                         Try
-                             Await connection.OpenAsync()
-                             Dim command_rev As New SqlCommand("SELECT username,profile_image FROM customer WHERE user_id = " + User_ID.ToString(), connection)
-                             Using reader As SqlDataReader = command_rev.ExecuteReader()
-                                 While reader.Read()
-                                     ' Retrieve user details
-                                     Label1.Text = reader.GetString("username")
-                                     If Not reader.IsDBNull(reader.GetOrdinal("profile_image")) Then
-                                         Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
-                                         binaryImageData = imageData
-                                     Else
-                                         is_null_image = 1
-                                     End If
-                                 End While
-                             End Using
-
-                         Catch ex As Exception
-
                          End Try
                      End Using
                  End Function),
@@ -131,13 +104,6 @@ Public Class user_search
                                      Dim name As String = reader.GetString(reader.GetOrdinal("providername"))
                                      Dim provider As Int32 = reader.GetInt32(reader.GetOrdinal("provider_id"))
                                      Dim cost As Double = reader.GetInt32(reader.GetOrdinal("cost_per_hour"))
-                                     'Dim rating As String
-                                     'If reviews.ContainsKey(provider) Then
-                                     'Dim currentValue As Tuple(Of Integer, Integer) = reviews(provider)
-                                     'rating = rating_prov(provider).ToString()
-                                     'Else
-                                     'rating = "N/A"
-                                     'End If
                                      temp_providers.Add(New Entry With {.providerID = provider, .providerName = name, .service = service, .location = loc, .cost = cost})
                                  End While
                              End Using
@@ -148,16 +114,6 @@ Public Class user_search
                      End Using
                  End Function)
                  )
-        'For Each entry As Entry In providers
-        '    Dim rating As String
-        '    If reviews.ContainsKey(entry.providerID) Then
-        '        Dim currentValue As Tuple(Of Integer, Integer) = reviews(entry.providerID)
-        '        rating = rating_prov(entry.providerID).ToString()
-        '    Else
-        '        rating = "N/A"
-        '    End If
-        '    entry.rating = rating
-        'Next
         For i As Integer = 0 To temp_providers.Count() - 1
             Dim rating As String
             If reviews.ContainsKey(temp_providers(i).providerID) Then
@@ -179,9 +135,6 @@ Public Class user_search
         Dim path As New GraphicsPath()
         path.AddEllipse(0, 0, pictureBox.Width, pictureBox.Height)
 
-        ' Set the PictureBox's region to the circle defined by the GraphicsPath
-        'pictureBox.Region = New Region(path)
-        'Change according to the user after fetching from the database
         Dim image As Image
         If (is_null_image = 1) Then
             image = My.Resources.male
@@ -189,16 +142,11 @@ Public Class user_search
             ' Convert binary data back to an image
         Else
 
-            image = ImageFromBinary(binaryImageData)
+            image = user_profilepic
         End If
 
         pictureBox.Image = image
         pictureBox.SizeMode = PictureBoxSizeMode.Zoom
-    End Function
-    Function ImageFromBinary(ByVal binaryData As Byte()) As Image
-        Using ms As New MemoryStream(binaryData)
-            Return Image.FromStream(ms)
-        End Using
     End Function
 
     ' author: sarg19

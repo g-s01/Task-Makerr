@@ -30,6 +30,31 @@ Public Class provider_appointment_details
     Dim connectionString As String
     Dim provider As Integer = 0
     Dim ID As String = "task-makerr-cs346@outlook.in" ' For debugging
+
+
+    Private Sub MakeChatVisible()
+        SplitContainer1.Panel2.Controls.Clear()
+        Dim chatForm As New appointmentChat()
+
+        ' Set TopLevel property to False to allow embedding in another container
+        chatForm.TopLevel = False
+        chatForm.dealId = dealID
+        chatForm.providerId = Module_global.Provider_ID
+        chatForm.userId = user
+
+        ' Set the form's Dock property to fill the panel
+        chatForm.Dock = DockStyle.Fill
+
+        ' Set the form's border style to None
+        chatForm.FormBorderStyle = FormBorderStyle.None
+
+        ' Add the form to the SplitContainer.Panel2
+        SplitContainer1.Panel2.Controls.Add(chatForm)
+
+        ' Show the form
+        chatForm.Show()
+    End Sub
+
     Private Sub provider_appointment_details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         connectionString = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
 
@@ -140,6 +165,8 @@ Public Class provider_appointment_details
         length = " Charges for the Appointment".Length
         rtb2.Select(startIndex, length)
         ' rtb2.SelectionFont = New Font(rtb2.Font, FontStyle.Bold)
+
+        MakeChatVisible()
     End Sub
 
     Private Sub btn_cancel_Click(sender As Object, e As EventArgs) Handles btn_cancel.Click
@@ -340,15 +367,5 @@ Public Class provider_appointment_details
         End Try
     End Sub
 
-    Private Sub SplitContainer1_SplitterMoved(sender As Object, e As SplitterEventArgs) Handles SplitContainer1.SplitterMoved
 
-    End Sub
-
-    Private Sub SplitContainer1_Panel2_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel2.Paint
-
-    End Sub
-
-    Private Sub SplitContainer1_Panel1_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel1.Paint
-
-    End Sub
 End Class
