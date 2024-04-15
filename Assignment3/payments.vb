@@ -64,6 +64,7 @@ Public Class payments
                             Book_slots.variableChanged.Set()
                             Reschedule_Slots.ResmyVariable = 1
                             Reschedule_Slots.ResvariableChanged.Set()
+                            MessageBox.Show(Module_global.payment_successful)
                             ' updating balance of both the users
                             Dim sqlQuery As String = "UPDATE customer SET balance = CASE WHEN email = @AccountNumber1 THEN balance - @AmountToUpdate WHEN email = @AccountNumber2 THEN balance + @AmountToUpdate END WHERE email IN (@AccountNumber1, @AccountNumber2);"
 
