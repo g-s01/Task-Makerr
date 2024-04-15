@@ -313,6 +313,10 @@ Public Class user_provider_chats
         messages.Add(newMessage)
         PrintMessagesBetweenUsers(room)
     End Sub
+    Private Sub MainForm_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
+        ' Stop the timer when the form is closed
+        timer.Stop()
+    End Sub
 
     Private Sub PrintMessagesBetweenUsers(roomId As Integer)
 
