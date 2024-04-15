@@ -345,7 +345,7 @@ Public Class user_provider_chats
             Dim deal As Integer = msg.Item2
             Dim senderType As String = msg.Item3
             Dim messageText As String = msg.Item4
-            Dim timeStamp As String = DateTime.ParseExact(msg.Item5, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
+            Dim timeStamp As String = DateTime.ParseExact(msg.Item5, "M/d/yyyy HH:mm:ss tt", CultureInfo.InvariantCulture).ToString("hh:mm tt")
 
 
 
