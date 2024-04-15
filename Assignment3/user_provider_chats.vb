@@ -346,9 +346,16 @@ Public Class user_provider_chats
             Dim senderType As String = msg.Item3
             Dim messageText As String = msg.Item4
 
-            Dim timeStamp As String = DateTime.ParseExact(msg.Item5, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
+            Dim timeStamp As String = msg.Item5
 
-
+            ' Check if the timestamp is in the format dd-mm-yyyy
+            If timeStamp.Contains("-") Then
+                ' Parse with "dd-MM-yyyy" format
+                timeStamp = DateTime.ParseExact(timeStamp, "dd-MM-yyyy hh:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
+            ElseIf timeStamp.Contains("/") Then
+                ' Parse with "M/d/yyyy" format
+                timeStamp = DateTime.ParseExact(timeStamp, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture).ToString("hh:mm tt")
+            End If
             ' Create a label for the message
             Dim messageLabel As New Label()
             messageLabel.AutoSize = True
