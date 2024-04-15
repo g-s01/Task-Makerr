@@ -262,7 +262,7 @@ Public Class appointmentChat
             Dim deal As Integer = msg.Item2
             Dim senderType As String = msg.Item3
             Dim messageText As String = msg.Item4
-            Dim timeStamp As String = DateTime.ParseExact(msg.Item5, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
+            Dim timeStamp As String = DateTime.ParseExact(msg.Item5, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
 
 
             ' Create a label for the message
@@ -336,7 +336,7 @@ Public Class appointmentChat
     End Sub
     Private Sub sendButton_Click(sender As Object, e As EventArgs) Handles sendButton.Click
         ' Get the current timestamp
-        Dim timeStamp = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
+        Dim timeStamp = Date.Now.ToString("dd-MM-yyyy HH:mm:ss")
         Dim maxLength = 30 ' Set the maximum length before inserting a newline
         Dim inputString As String = inputTextBox.Text
         Dim messageText = ""
