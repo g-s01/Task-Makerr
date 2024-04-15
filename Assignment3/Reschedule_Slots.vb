@@ -22,6 +22,7 @@ Public Class Reschedule_Slots
     Public is_null_image As Integer = 0
     Dim first As Integer = 1
 
+
     Public ResvariableChanged As New ManualResetEvent(False)
     ' Variable to monitor for changes
     Public ResmyVariable As Integer = 0
@@ -30,6 +31,7 @@ Public Class Reschedule_Slots
     Public Async Sub Reschedule_load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Run your function here
         'MessageBox.Show(1)
+        Module_global.DealID_Reschedule = Module_global.Appointment_Det_DealId
         ProgressBar1.Visible = True
         ProgressBar1.Style = ProgressBarStyle.Marquee
         Try
@@ -415,7 +417,7 @@ Public Class Reschedule_Slots
 
     Private Async Function WaitForVariableChangeOrTimeoutAsync(timeoutMilliseconds As Integer) As Task
         ' Wait for either the variable to change or the timeout to elapse
-        MessageBox.Show("I")
+        'MessageBox.Show("I")
         Dim delayTask = Task.Delay(timeoutMilliseconds)
 
         ' Create a task that waits for the variableChanged signal
@@ -428,8 +430,7 @@ Public Class Reschedule_Slots
         ' After the wait, you can check if the variable changed or timeout happened
         If ResmyVariable <> 0 Then
             ' The variable changed
-            MessageBox.Show("HI")
-            Console.WriteLine("Payment Successful")
+            MessageBox.Show("Paymeny Successful!")
 
         Else
             ' Timeout occurred
@@ -555,6 +556,7 @@ Rollback:
                                     newDealTimeString += "0"
                                 End If
                             Next
+
                             'MessageBox.Show(newDealTimeString)
 
                             Dim dealsupdate As String = "update deals set time = @time, deal_amount = @Deal_amt , dates = @date where deal_id = @deal_id;"
@@ -649,6 +651,9 @@ Rollback:
                             ResvariableChanged.Reset()
                             Module_global.payment_successful = 0
                             ResmyVariable = 0
+                            BookedList.Clear()
+                            PreviouslyBookedList.Clear()
+                            NewlyBookedList.Clear()
                             Me.Close()
                             With user_appointment_details
                                 .TopLevel = False
