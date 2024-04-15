@@ -28,6 +28,7 @@ Public Class payments
         'Book_slots'.variableChanged.Set()
         Book_slots.myVariable = 0
         Reschedule_Slots.ResmyVariable = 0
+        pending_payment.myVariable = 0
     End Sub
     Private Sub payButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles payButton.Click
         If captcha.ShowDialog = DialogResult.OK Then
@@ -65,6 +66,8 @@ Public Class payments
                             Book_slots.variableChanged.Set()
                             Reschedule_Slots.ResmyVariable = 1
                             Reschedule_Slots.ResvariableChanged.Set()
+                            pending_payment.myVariable = 1
+                            pending_payment.variableChanged.Set()
                             MessageBox.Show(Module_global.payment_successful)
                             ' updating balance of both the users
                             Dim sqlQuery As String = "UPDATE customer SET balance = CASE WHEN email = @AccountNumber1 THEN balance - @AmountToUpdate WHEN email = @AccountNumber2 THEN balance + @AmountToUpdate END WHERE email IN (@AccountNumber1, @AccountNumber2);"
@@ -154,6 +157,8 @@ Public Class payments
             Book_slots.myVariable = 0
             Reschedule_Slots.ResmyVariable = 0
             Reschedule_Slots.ResvariableChanged.Set()
+            pending_payment.variableChanged.Set()
+            pending_payment.myVariable = 0
         Else
             Module_global.payment_successful = 1
             'Book_slots.variableChanged.Set()
