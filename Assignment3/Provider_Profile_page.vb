@@ -3,13 +3,12 @@ Imports Microsoft.Data.SqlClient
 Imports System.IO
 
 Public Class Provider_Profile_page
-    ' Define an event to be raised when the edit profile button is clicked
-    Public Event EditProfileClicked As EventHandler
 
     ' Handle the click event of the "Edit_profile_btn" button
     Private Sub Edit_profile_btn_Click(sender As Object, e As EventArgs) Handles Edit_profile_btn.Click
         ' Raise the EditProfileClicked event
-        RaiseEvent EditProfileClicked(Me, EventArgs.Empty)
+        provider_template.ShowForm(New EditProfilePage())
+        Me.Close()
     End Sub
 
     Public editprovprof As Boolean = False
