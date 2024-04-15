@@ -141,8 +141,8 @@ Partial Class Provider_Profile_page
         ' 
         ' rate_label
         ' 
-        rate_label.Font = New Font("Segoe UI", 11.0F)
-        rate_label.Location = New Point(33, 474)
+        rate_label.Font = New Font("Segoe UI", 11F)
+        rate_label.Location = New Point(33, 478)
         rate_label.Name = "rate_label"
         rate_label.Size = New Size(394, 34)
         rate_label.TabIndex = 4
@@ -150,8 +150,8 @@ Partial Class Provider_Profile_page
         ' 
         ' location_label
         ' 
-        location_label.Font = New Font("Segoe UI", 11.0F)
-        location_label.Location = New Point(33, 440)
+        location_label.Font = New Font("Segoe UI", 11F)
+        location_label.Location = New Point(33, 444)
         location_label.Name = "location_label"
         location_label.Size = New Size(391, 34)
         location_label.TabIndex = 3
@@ -159,7 +159,7 @@ Partial Class Provider_Profile_page
         ' 
         ' email_label
         ' 
-        email_label.Font = New Font("Segoe UI", 11.0F)
+        email_label.Font = New Font("Segoe UI", 11F)
         email_label.Location = New Point(33, 343)
         email_label.Name = "email_label"
         email_label.Size = New Size(391, 34)
@@ -168,8 +168,8 @@ Partial Class Provider_Profile_page
         ' 
         ' Service_label
         ' 
-        Service_label.Font = New Font("Segoe UI", 11.0F)
-        Service_label.Location = New Point(33, 406)
+        Service_label.Font = New Font("Segoe UI", 11F)
+        Service_label.Location = New Point(33, 411)
         Service_label.Name = "Service_label"
         Service_label.Size = New Size(427, 34)
         Service_label.TabIndex = 1
@@ -177,7 +177,7 @@ Partial Class Provider_Profile_page
         ' 
         ' Name_label
         ' 
-        Name_label.Font = New Font("Segoe UI", 13.0F, FontStyle.Bold)
+        Name_label.Font = New Font("Segoe UI", 13F, FontStyle.Bold)
         Name_label.Location = New Point(33, 309)
         Name_label.Name = "Name_label"
         Name_label.Size = New Size(427, 34)
@@ -189,13 +189,13 @@ Partial Class Provider_Profile_page
         Edit_profile_btn.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
         Edit_profile_btn.BackgroundImageLayout = ImageLayout.Stretch
         Edit_profile_btn.FlatStyle = FlatStyle.Flat
-        Edit_profile_btn.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Edit_profile_btn.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Edit_profile_btn.ForeColor = Color.White
         Edit_profile_btn.Location = New Point(661, 258)
         Edit_profile_btn.Name = "Edit_profile_btn"
         Edit_profile_btn.Size = New Size(114, 36)
         Edit_profile_btn.TabIndex = 5
-        Edit_profile_btn.Text = "Edit Button"
+        Edit_profile_btn.Text = "Edit Profile"
         Edit_profile_btn.UseVisualStyleBackColor = False
         ' 
         ' Label21
@@ -319,7 +319,7 @@ Partial Class Provider_Profile_page
         ' 
         slot_matrix_tablelayout.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         slot_matrix_tablelayout.ColumnCount = 13
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 50.0F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 50F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
@@ -424,7 +424,7 @@ Partial Class Provider_Profile_page
         ' 
         ' slot_label
         ' 
-        slot_label.Font = New Font("Segoe UI", 10.0F)
+        slot_label.Font = New Font("Segoe UI", 10F)
         slot_label.Location = New Point(33, 581)
         slot_label.Name = "slot_label"
         slot_label.Size = New Size(167, 22)
@@ -433,8 +433,8 @@ Partial Class Provider_Profile_page
         ' 
         ' contact_label
         ' 
-        contact_label.Font = New Font("Segoe UI", 10.0F)
-        contact_label.Location = New Point(33, 377)
+        contact_label.Font = New Font("Segoe UI", 10F)
+        contact_label.Location = New Point(33, 375)
         contact_label.Name = "contact_label"
         contact_label.Size = New Size(276, 36)
         contact_label.TabIndex = 106
