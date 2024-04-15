@@ -35,6 +35,31 @@ Public Class provider_appointment_details
     Dim provider As String
     Dim time As String = ""
     Dim ID As String = "task-makerr-cs346@outlook.in" ' For debugging
+
+
+    Private Sub MakeChatVisible()
+        SplitContainer1.Panel2.Controls.Clear()
+        Dim chatForm As New appointmentChat()
+
+        ' Set TopLevel property to False to allow embedding in another container
+        chatForm.TopLevel = False
+        chatForm.dealId = dealID
+        chatForm.providerId = Module_global.Provider_ID
+        chatForm.userId = user
+
+        ' Set the form's Dock property to fill the panel
+        chatForm.Dock = DockStyle.Fill
+
+        ' Set the form's border style to None
+        chatForm.FormBorderStyle = FormBorderStyle.None
+
+        ' Add the form to the SplitContainer.Panel2
+        SplitContainer1.Panel2.Controls.Add(chatForm)
+
+        ' Show the form
+        chatForm.Show()
+    End Sub
+
     Private Sub provider_appointment_details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'connectionString = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
         connectionString = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
@@ -202,6 +227,8 @@ Public Class provider_appointment_details
             End Using
         End Using
         ' rtb2.SelectionFont = New Font(rtb2.Font, FontStyle.Bold)
+
+        MakeChatVisible()
     End Sub
 
     Private Sub btn_appointment_completed_Click(sender As Object, e As EventArgs) Handles btn_appointment_completed.Click
@@ -464,10 +491,7 @@ Public Class provider_appointment_details
     End Sub
 
     Private Sub SplitContainer1_Panel2_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel2.Paint
-
+    
     End Sub
 
-    Private Sub SplitContainer1_Panel1_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel1.Paint
-
-    End Sub
 End Class

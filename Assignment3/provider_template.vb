@@ -133,7 +133,7 @@
         Chats_Navi_btn.BackColor = SystemColors.Control
         Needhelp_btn.BackColor = SystemColors.Control
         history_navi_btn.BackColor = SystemColors.Control
-        ShowForm(New provider_feedback_view())
+        ShowForm(New FeedbackForm())
     End Sub
 
     Private Sub Logout_btn_Click(sender As Object, e As EventArgs) Handles logout_btn.Click

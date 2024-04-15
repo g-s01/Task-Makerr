@@ -207,7 +207,7 @@ Public Class Book_slots
         End Try
     End Function
     Private Async Function PopulateScheduleTableAsync() As Task
-        Schedule_Table.SuspendLayout()
+
         Schedule_Table.Controls.Clear()
         Schedule_Table.ColumnStyles.Clear()
         Schedule_Table.RowStyles.Clear()
@@ -246,7 +246,7 @@ Public Class Book_slots
             timeLabel.Font = New Font("Arial", 12, FontStyle.Bold)
             Schedule_Table.Controls.Add(timeLabel, i - 8, 0) ' Add to the first column, starting from row index 1
         Next
-
+        Schedule_Table.SuspendLayout()
         ' Create and add buttons for time slots asynchronously
         For i As Integer = 0 To 6
             For j As Integer = 0 To 11
@@ -273,49 +273,68 @@ Public Class Book_slots
 
 
     Private Sub TimeSlot_Click(sender As Object, e As EventArgs)
+
         Dim btn As Button = DirectCast(sender, Button)
         Dim cellPosition As TableLayoutPanelCellPosition = Schedule_Table.GetPositionFromControl(btn)
 
         Dim dayIndex As Integer = cellPosition.Row - 1
         Dim hourIndex As Integer = cellPosition.Column - 1
+        Dim currentDate As DateTime = DateTime.Now
+
+        ' Example: Attempt to book for 3 days after current day and 3 hours from 9 am
+        Dim daysAfterToday As Integer = dayIndex
+        Dim hoursFromNineAm As Integer = hourIndex
+
+        ' Calculate target date and time
+        Dim targetDate As DateTime = currentDate.AddDays(daysAfterToday).Date.AddHours(9 + hoursFromNineAm)
+
+        ' Check if the target date and time is in the future
+        If targetDate <= currentDate Then
+            MessageBox.Show("Please select a future time slot!")
+            Exit Sub
+        End If
+
+
+
 
         If availability(dayIndex, hourIndex) = 1 Then
-            ' MessageBox.Show("Hi")
-            Dim targetPair As Integer() = {dayIndex, hourIndex}
+                ' MessageBox.Show("Hi")
+                Dim targetPair As Integer() = {dayIndex, hourIndex}
 
-            ' Perform linear search
-            Dim foundIndex As Integer = -1
-            For i As Integer = 0 To BookedList.Count - 1
-                If BookedList(i)(0) = targetPair(0) AndAlso BookedList(i)(1) = targetPair(1) Then
-                    foundIndex = i
-                    Exit For ' Found the target pair, exit the loop
-                End If
-            Next
+                ' Perform linear search
+                Dim foundIndex As Integer = -1
+                For i As Integer = 0 To BookedList.Count - 1
+                    If BookedList(i)(0) = targetPair(0) AndAlso BookedList(i)(1) = targetPair(1) Then
+                        foundIndex = i
+                        Exit For ' Found the target pair, exit the loop
+                    End If
+                Next
 
-            If (foundIndex = -1) Then
-                Dim result As DialogResult = MessageBox.Show("Do you want to continue?", "Confirmation", MessageBoxButtons.YesNo)
+                If (foundIndex = -1) Then
+                    Dim result As DialogResult = MessageBox.Show("Do you want to continue?", "Confirmation", MessageBoxButtons.YesNo)
 
-                If result = DialogResult.Yes Then
-                    ' User clicked Yes button
-                    btn.BackColor = Color.Gray
-                    BookedList.Add(targetPair)
+                    If result = DialogResult.Yes Then
+                        ' User clicked Yes button
+                        btn.BackColor = Color.Gray
+                        BookedList.Add(targetPair)
+                    Else
+                        ' User clicked No button or closed the dialog
+                        Console.WriteLine("User clicked No.")
+                    End If
+                    ' Schedule available, allow booking or do something else
                 Else
-                    ' User clicked No button or closed the dialog
-                    Console.WriteLine("User clicked No.")
+                    BookedList.RemoveAt(foundIndex)
+                    MessageBox.Show("Slot removed")
+                    btn.BackColor = Color.LightGreen
                 End If
-                ' Schedule available, allow booking or do something else
+            ElseIf availability(dayIndex, hourIndex) = 2 Then
+                MessageBox.Show($"You have already booked this slot({DateTime.Today.AddDays(dayIndex).ToString("ddd, dd MMM")} at {(hourIndex + 9).ToString("00")}:00.")
             Else
-                BookedList.RemoveAt(foundIndex)
-                MessageBox.Show("Slot removed")
-                btn.BackColor = Color.LightGreen
-            End If
-        ElseIf availability(dayIndex, hourIndex) = 2 Then
-            MessageBox.Show($"You have already booked this slot({DateTime.Today.AddDays(dayIndex).ToString("ddd, dd MMM")} at {(hourIndex + 9).ToString("00")}:00.")
-        Else
-            ' Schedule unavailable
-            MessageBox.Show($"This time slot is already booked for {DateTime.Today.AddDays(dayIndex).ToString("ddd, dd MMM")} at {(hourIndex + 9).ToString("00")}:00.")
+                ' Schedule unavailable
+                MessageBox.Show($"This time slot is already booked for {DateTime.Today.AddDays(dayIndex).ToString("ddd, dd MMM")} at {(hourIndex + 9).ToString("00")}:00.")
 
-        End If
+            End If
+
     End Sub
 
     Public Function MakePictureBoxRound(pictureBox As PictureBox) As Task
@@ -411,6 +430,7 @@ Public Class Book_slots
                     payments.Show()
                     Await WaitForVariableChangeOrTimeoutAsync(900000000)
                     If (Module_global.payment_successful = 1) Then
+                        MessageBox.Show("ASFN")
                         Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location,deal_amount) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location,@TotalCost);"
                         Dim zeros As String = New String("0"c, 84)
                         Dim charArray() As Char = zeros.ToCharArray()

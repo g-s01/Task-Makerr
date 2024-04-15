@@ -39,7 +39,11 @@ Public Class viewMore
             label3.Text = "Rating: " & "Not rated"
         Else
 
-            label3.Text = "Rating: " & rating.ToString() & "/5"
+            ' Format the rating to one decimal place
+            Dim formattedRating As String = rating.ToString("0.0")
+
+            ' Display the formatted rating (e.g., assign it to a Label)
+            label3.Text = "Rating: " & formattedRating
         End If
 
     End Sub

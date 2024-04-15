@@ -28,9 +28,9 @@ Partial Class ViewAllUser
         ComboBox2 = New ComboBox()
         Label3 = New Label()
         Button1 = New Button()
-        Profile_Pic = New PictureBox()
         Username = New Label()
-        CType(Profile_Pic, ComponentModel.ISupportInitialize).BeginInit()
+        PictureBox1 = New PictureBox()
+        CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' ComboBox1
@@ -65,22 +65,16 @@ Partial Class ViewAllUser
         ' 
         ' Button1
         ' 
-        Button1.BackgroundImage = My.Resources.Resources.back
-        Button1.BackgroundImageLayout = ImageLayout.Zoom
+        Button1.BackColor = Color.Transparent
+        Button1.BackgroundImage = My.Resources.Resources.backbtn
+        Button1.BackgroundImageLayout = ImageLayout.Stretch
+        Button1.FlatAppearance.BorderSize = 0
+        Button1.FlatStyle = FlatStyle.Flat
         Button1.Location = New Point(27, 39)
         Button1.Name = "Button1"
         Button1.Size = New Size(93, 37)
         Button1.TabIndex = 7
-        Button1.UseVisualStyleBackColor = True
-        ' 
-        ' Profile_Pic
-        ' 
-        Profile_Pic.Image = My.Resources.Resources.Ellipse_6
-        Profile_Pic.Location = New Point(736, 12)
-        Profile_Pic.Name = "Profile_Pic"
-        Profile_Pic.Size = New Size(125, 62)
-        Profile_Pic.TabIndex = 2
-        Profile_Pic.TabStop = False
+        Button1.UseVisualStyleBackColor = False
         ' 
         ' Username
         ' 
@@ -91,11 +85,21 @@ Partial Class ViewAllUser
         Username.Size = New Size(0, 20)
         Username.TabIndex = 3
         ' 
+        ' PictureBox1
+        ' 
+        PictureBox1.Location = New Point(813, 29)
+        PictureBox1.Name = "PictureBox1"
+        PictureBox1.Size = New Size(100, 62)
+        PictureBox1.SizeMode = PictureBoxSizeMode.StretchImage
+        PictureBox1.TabIndex = 8
+        PictureBox1.TabStop = False
+        ' 
         ' ViewAllUser
         ' 
         AutoScaleDimensions = New SizeF(8.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(870, 450)
+        ClientSize = New Size(952, 450)
+        Controls.Add(PictureBox1)
         Controls.Add(Button1)
         Controls.Add(Label3)
         Controls.Add(ComboBox2)
@@ -103,7 +107,7 @@ Partial Class ViewAllUser
         FormBorderStyle = FormBorderStyle.None
         Name = "ViewAllUser"
         Text = "ViewAllUser"
-        CType(Profile_Pic, ComponentModel.ISupportInitialize).EndInit()
+        CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -112,7 +116,7 @@ Partial Class ViewAllUser
     Friend WithEvents ComboBox2 As ComboBox
     Friend WithEvents Label3 As Label
     Friend WithEvents Button1 As Button
-    Friend WithEvents Profile_Pic As PictureBox
     Friend WithEvents Username As Label
+    Friend WithEvents PictureBox1 As PictureBox
 
 End Class
