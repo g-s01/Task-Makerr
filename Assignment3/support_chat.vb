@@ -4,12 +4,12 @@ Imports Microsoft.CodeAnalysis.Text
 Imports Microsoft.Data.SqlClient
 
 Public Class support_chat
-    Dim user_role As String = "user"
-    Dim userId As Integer = 1
-    Dim dealId As Integer = -1
-    Dim roomId As Integer = 1
+    Dim user_role As String = Module_global.User_Role
+    Dim userId As Integer = -1
+    Dim roomId As Integer = Module_global.Support_room_id
     ' Define a Timer control at the form level
     Private WithEvents messageTimer As New Timer()
+    Dim user_type As String = ""
     ' room,sender_type,msg_content,sent_timestand
     'Dim messages As New List(Of Tuple(Of Integer, String, String, String))()
     Dim supportmessages As New List(Of Tuple(Of Integer, String, String, String))()
@@ -21,59 +21,80 @@ Public Class support_chat
         ' Define your SQL query to select messages for a specific support_room_id
         Dim query As String = "SELECT message_id, sender_type, message_content, sent_timestamp FROM support_msgs WHERE support_room_id = @SupportRoomId"
 
-        ' Create a SqlConnection object
-        Using connection As New SqlConnection(connectionString)
-            ' Open the connection
-            connection.Open()
+        Try
+            ' Create a SqlConnection object
+            Using connection As New SqlConnection(connectionString)
+                ' Open the connection
+                connection.Open()
 
-            ' Create a SqlCommand object
-            Using command As New SqlCommand(query, connection)
-                ' Set the parameter for the support_room_id
-                command.Parameters.AddWithValue("@SupportRoomId", Module_global.Support_room_id)
+                ' Create a SqlCommand object
+                Using command As New SqlCommand(query, connection)
+                    ' Set the parameter for the support_room_id
+                    command.Parameters.AddWithValue("@SupportRoomId", Module_global.Support_room_id)
 
-                ' Execute the query and get a SqlDataReader
-                Using reader As SqlDataReader = command.ExecuteReader()
-                    ' Loop through the results and populate the supportmessages list
-                    While reader.Read()
-                        ' Read the values from the current row
-                        Dim messageId As Integer = reader.GetInt32(0)
-                        Dim senderType As String = reader.GetString(1)
-                        Dim messageContent As String = reader.GetString(2)
-                        'Dim sentTimestamp As String = reader.GetDateTime(3).ToString() ' Adjust as per your DateTime format
-                        Dim formattedTimestamp As DateTime = reader.GetDateTime(3)
+                    ' Execute the query and get a SqlDataReader
+                    Using reader As SqlDataReader = command.ExecuteReader()
+                        ' Loop through the results and populate the supportmessages list
+                        While reader.Read()
+                            ' Read the values from the current row
+                            Dim messageId As Integer = reader.GetInt32(0)
+                            Dim senderType As String = reader.GetString(1)
+                            Dim messageContent As String = reader.GetString(2)
+                            Dim formattedTimestamp As DateTime = reader.GetDateTime(3)
 
-                        ' Convert the DateTime to the desired string format "yyyy-MM-dd HH:mm:ss"
-                        Dim sentTimestamp As String = formattedTimestamp.ToString("yyyy-MM-dd HH:mm:ss")
-                        'MessageBox.Show("sent time" & sentTimestamp)
+                            ' Convert the DateTime to the desired string format "yyyy-MM-dd HH:mm:ss"
+                            Dim sentTimestamp As String = formattedTimestamp.ToString("yyyy-MM-dd HH:mm:ss")
 
-                        ' Add the values to the supportmessages list as a Tuple
-                        supportmessages.Add(New Tuple(Of Integer, String, String, String)(messageId, senderType, messageContent, sentTimestamp))
-                    End While
+                            ' Add the values to the supportmessages list as a Tuple
+                            supportmessages.Add(New Tuple(Of Integer, String, String, String)(messageId, senderType, messageContent, sentTimestamp))
+                        End While
+                    End Using
                 End Using
             End Using
-        End Using
+        Catch ex As Exception
+            ' Handle any exceptions that occur during database operations
+            MessageBox.Show("An error occurred while loading messages: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
+
     Private Sub user_chats_Load(sender As Object, e As EventArgs) Handles Me.Load
-        messageTimer.Interval = 10000
 
-        ' Add an event handler for the tick event of the timer
-        AddHandler messageTimer.Tick, AddressOf MessageTimer_Tick
+        If user_role = "customer" Then
+            userId = Module_global.User_ID
+        ElseIf user_role = "provider" Then
+            userId = Module_global.Provider_ID
+        End If
 
-        ' Start the timer
-        messageTimer.Start()
+        ' Corrected the condition to use Or operator separately for each comparison
+        user_type = "admin"
+        If user_role = "customer" Or user_role = "provider" Then
+            user_type = "user"
+        End If
 
         ' Load and print messages initially
         LoadMessagesFromDatabase()
         PrintMessages()
+
+        ' Initialize and start the timer with 10-second interval
+        messageTimer.Interval = 10000
+        AddHandler messageTimer.Tick, AddressOf MessageTimer_Tick
+        messageTimer.Start()
+
     End Sub
 
+    Private Sub MainForm_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
+        ' Stop the timer when the form is closed
+        messageTimer.Stop()
+    End Sub
 
     ' Event handler for the tick event of the timer
     Private Sub MessageTimer_Tick(sender As Object, e As EventArgs)
         ' Reload and print messages every 30 seconds
-        LoadMessagesFromDatabase()
-        PrintMessages()
+        If Me.Visible Then
+            LoadMessagesFromDatabase()
+            PrintMessages()
+        End If
     End Sub
 
     Private Sub sendTextBox_KeyDown(sender As Object, e As KeyEventArgs) Handles inputTextBox.KeyDown
@@ -103,7 +124,7 @@ Public Class support_chat
             End If
         Next
 
-        Dim newMessage As New Tuple(Of Integer, String, String, String)(roomId, user_role, messageText, timeStamp)
+        Dim newMessage As New Tuple(Of Integer, String, String, String)(roomId, user_type, messageText, timeStamp)
 
         Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
 
@@ -119,7 +140,7 @@ Public Class support_chat
             Using command As New SqlCommand(query, connection)
                 ' Set the parameters for the new message
                 command.Parameters.AddWithValue("@SupportRoomId", Support_room_id)
-                command.Parameters.AddWithValue("@SenderType", user_role)
+                command.Parameters.AddWithValue("@SenderType", user_type)
                 command.Parameters.AddWithValue("@MessageContent", messageText)
 
 
@@ -142,6 +163,7 @@ Public Class support_chat
     End Sub
 
     Private Sub PrintMessages()
+
         ' Clear existing messages on the chat_list panel
         For i As Integer = Support.Controls.Count - 1 To 0 Step -1
             Support.Controls.RemoveAt(i)
@@ -195,10 +217,9 @@ Public Class support_chat
 
             label2.ForeColor = Color.Brown
 
-            If senderType <> user_role Then
+            If senderType <> user_type Then
                 messageLabel.Left = 10
                 label2.Left = textSize.Width - 15
-
             Else
                 messageLabel.Left = Chat.Width - messageLabel.PreferredWidth - 10 - 5
                 label2.Left = messageLabel.Left + messageLabel.PreferredWidth - 35 + messageLabel.Width - 88
