@@ -232,48 +232,56 @@ Public Class provider_appointment_details
     End Sub
 
     Private Sub btn_appointment_completed_Click(sender As Object, e As EventArgs) Handles btn_appointment_completed.Click
-        Dim random As New Random()
-        Dim randomNumber As Integer = random.Next(100000, 999999)
-        Dim subject As String = "Canceling Appointment"
-        Dim body As String = "You are going to Cancel Appointment " & vbCrLf & "With : " + user & vbCrLf & "Time : " + time + "Date : " + bookDate & vbCrLf & "Pay Per Hour : " + costPerHour.ToString
-        sendEmail(randomNumber, subject, body)
-
-        Dim code As Integer
-        If otp_auth.ShowDialog = DialogResult.OK Then
-            If Integer.TryParse(otp_auth.InputValue, code) Then
-                If code = randomNumber Then
-                    Dim provider_exists As Boolean = False
-                    Dim user_exists As Boolean = False
-                    Dim provider_balance_sufficients As Boolean = False
+        Dim result As DialogResult = MessageBox.Show("Mark Appointment as completed?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
 
+        ' Check the user's response
+        If result = DialogResult.Yes Then
+            Dim random As New Random()
+            Dim randomNumber As Integer = random.Next(100000, 999999)
+            Dim subject As String = "Canceling Appointment"
+            Dim body As String = "You are going to Cancel Appointment " & vbCrLf & "With : " + user & vbCrLf & "Time : " + time + "Date : " + bookDate & vbCrLf & "Pay Per Hour : " + costPerHour.ToString
+            sendEmail(randomNumber, subject, body)
 
-                    Dim sqlQuery = "UPDATE deals SET status = @completed_status WHERE deal_id = @DealID;"
+            Dim code As Integer
+            If otp_auth.ShowDialog = DialogResult.OK Then
+                If Integer.TryParse(otp_auth.InputValue, code) Then
+                    If code = randomNumber Then
+                        Dim provider_exists As Boolean = False
+                        Dim user_exists As Boolean = False
+                        Dim provider_balance_sufficients As Boolean = False
 
-                    ' Add parameters to the SQL query to prevent SQL injection
-                    Using connection As New SqlConnection(connectionString)
-                        Using command As New SqlCommand(sqlQuery, connection)
-                            command.Parameters.AddWithValue("@DealID", dealID)
-                            command.Parameters.AddWithValue("@completed_status", COMPLETED)
-                            connection.Open()
-                            command.ExecuteNonQuery()
+
+
+                        Dim sqlQuery = "UPDATE deals SET status = @completed_status WHERE deal_id = @DealID;"
+
+                        ' Add parameters to the SQL query to prevent SQL injection
+                        Using connection As New SqlConnection(connectionString)
+                            Using command As New SqlCommand(sqlQuery, connection)
+                                command.Parameters.AddWithValue("@DealID", dealID)
+                                command.Parameters.AddWithValue("@completed_status", COMPLETED)
+                                connection.Open()
+                                command.ExecuteNonQuery()
+                            End Using
                         End Using
-                    End Using
-                    btn_cancel.Visible = False
-                    btn_cancel.Enabled = False
-                    btn_appointment_completed.Visible = False
-                    btn_appointment_completed.Enabled = False
+                        btn_cancel.Visible = False
+                        btn_cancel.Enabled = False
+                        btn_appointment_completed.Visible = False
+                        btn_appointment_completed.Enabled = False
 
-                End If
-
+                    End If
 
 
-            Else
+
+                Else
                     MessageBox.Show("Write correct OTP please.")
                 End If
             Else
                 MessageBox.Show("The OTP is a 6 digit number, please adhere to the convention.")
             End If
+        Else
+
+        End If
 
 
     End Sub
@@ -288,23 +296,25 @@ Public Class provider_appointment_details
 
         Dim diff2 As Integer = CInt((storedDateTime - bookDate).TotalHours)
 
-        Dim refundPercentage As Double = 0
+        Dim refundPercentage As Double = 100
 
         ' Cancellation Policy
         If diff1 <= diff2 / 24 Then
-            refundPercentage = 100 ' Full refund if canceled more than 24 hours before the appointment
+            refundPercentage = 100
         ElseIf diff1 <= diff2 / 6 Then
-            refundPercentage = 75 ' 75% refund if canceled between 24 and 6 hours before the appointment
+            refundPercentage = 105
         ElseIf diff1 <= diff2 / 3 Then
-            refundPercentage = 50 ' 50% refund if canceled between 6 and 3 hours before the appointment
+            refundPercentage = 110
+        ElseIf diff1 >= 0 Then
+            refundPercentage = 115
         Else
-            refundPercentage = 0 ' No refund if canceled within 3 hours of the appointment
+            refundPercentage = 125
         End If
 
         'refundPercentage = 50 ' for debugging
         advance = slots * costPerHour * (advancePercentage / 100)
         Dim refundAmount As Double = advance * (refundPercentage / 100)
-        Dim result As DialogResult = MessageBox.Show("Cancellation will result in deduction of " & (100 - refundPercentage) & "% of the advance payment (" & advancePercentage & "% of the total amount). Refund amount: " & refundAmount & ". Do you want to continue?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        Dim result As DialogResult = MessageBox.Show("Cancellation will result in deduction of " & refundPercentage & "% of the advance payment (" & advancePercentage & "% of the total amount). Refund amount: " & refundAmount & ". Do you want to continue?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
 
         ' Check the user's response
@@ -483,7 +493,7 @@ Public Class provider_appointment_details
     End Sub
 
     Private Sub SplitContainer1_Panel2_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel2.Paint
-    
+
     End Sub
 
 End Class
