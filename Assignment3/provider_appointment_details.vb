@@ -298,19 +298,6 @@ Public Class provider_appointment_details
 
         Dim refundPercentage As Double = 100
 
-        ' Cancellation Policy
-        'If diff1 <= diff2 / 24 Then
-        '   refundPercentage = 100
-        'ElseIf diff1 <= diff2 / 6 Then
-        '   refundPercentage = 112
-        'ElseIf diff1 <= diff2 / 3 Then
-        '   refundPercentage = 125
-        'ElseIf diff1 >= 0 Then
-        '   refundPercentage = 150
-        'Else
-        '   refundPercentage = 100
-        'End If"
-
         'refundPercentage = 50 ' for debugging
         advance = slots * costPerHour * (advancePercentage / 100)
         Dim refundAmount As Double = advance * (refundPercentage / 100)
