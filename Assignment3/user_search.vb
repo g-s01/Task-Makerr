@@ -17,6 +17,7 @@ Public Class user_search
 
     ' Define a global array to store providers
     Dim providers As New List(Of Entry)
+    Dim temp_providers As New List(Of Entry)
 
     ' Define a structure to hold provider details
     ' author: sarg19
@@ -30,58 +31,7 @@ Public Class user_search
         Public RadioButton As RadioButton ' Added RadioButton field
     End Structure
 
-    Private Sub user_search_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-        Using connection As New SqlConnection(connectionString)
-            Try
-                connection.Open()
-                Dim command_rev As New SqlCommand("SELECT review.*, deals.* FROM review INNER JOIN deals ON review.deal_id = deals.deal_id", connection)
-                Using reader As SqlDataReader = command_rev.ExecuteReader()
-                    While reader.Read()
-                        Dim provider As Int32 = reader.GetInt32(reader.GetOrdinal("provider_id"))
-                        Dim rate As String = reader.GetInt32(reader.GetOrdinal("rating"))
-                        If reviews.ContainsKey(provider) Then
-                            Dim currentValue As Tuple(Of Integer, Integer) = reviews(provider)
-                            Dim newValue As New Tuple(Of Integer, Integer)(currentValue.Item1 + rate, currentValue.Item2 + 1)
-                            reviews(provider) = newValue
-                        Else
-                            reviews.Add(provider, New Tuple(Of Integer, Integer)(rate, 1))
-                        End If
-                    End While
-                End Using
-                For Each pair As KeyValuePair(Of Int32, Tuple(Of Integer, Integer)) In reviews
-                    Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
-                    Dim rating As Double
-                    rating = Math.Round(currentValue.Item1 / CType(currentValue.Item2, Double), 1)
-                    rating_prov.Add(pair.Key, rating)
-                Next
-            Catch ex As Exception
-                MessageBox.Show("Error connecting to database: " & ex.Message)
-            End Try
-        End Using
-        ' Execute user_query
-        Using connection As New SqlConnection(connectionString)
-            Try
-                connection.Open()
-                Dim command_rev As New SqlCommand("SELECT username,profile_image FROM customer WHERE user_id = " + User_ID.ToString(), connection)
-                Using reader As SqlDataReader = command_rev.ExecuteReader()
-                    While reader.Read()
-                        ' Retrieve user details
-                        Label1.Text = reader.GetString("username")
-                        If Not reader.IsDBNull(reader.GetOrdinal("profile_image")) Then
-                            Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
-                            binaryImageData = imageData
-                        Else
-                            is_null_image = 1
-                        End If
-                    End While
-                End Using
-
-            Catch ex As Exception
-
-            End Try
-        End Using
-        MakePictureBoxRound(PictureBox2)
+    Private Async Sub user_search_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ComboBox1.Items.Clear()
         ComboBox1.Items.Add("Service")
         For i As Integer = 0 To service_types.Count - 1
@@ -105,7 +55,122 @@ Public Class user_search
         ComboBox1.SelectedIndex = 0
         ComboBox2.SelectedIndex = 0
         ComboBox3.SelectedIndex = 0
-        LoadProviders()
+        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+        Await Task.WhenAll(
+        Task.Run(Async Function()
+                     Using connection As New SqlConnection(connectionString)
+                         Try
+                             Await connection.OpenAsync()
+                             Dim command_rev As New SqlCommand("SELECT review.*, deals.* FROM review INNER JOIN deals ON review.deal_id = deals.deal_id", connection)
+                             Using reader As SqlDataReader = command_rev.ExecuteReader()
+                                 While reader.Read()
+                                     Dim provider As Int32 = reader.GetInt32(reader.GetOrdinal("provider_id"))
+                                     Dim rate As String = reader.GetInt32(reader.GetOrdinal("rating"))
+                                     If reviews.ContainsKey(provider) Then
+                                         Dim currentValue As Tuple(Of Integer, Integer) = reviews(provider)
+                                         Dim newValue As New Tuple(Of Integer, Integer)(currentValue.Item1 + rate, currentValue.Item2 + 1)
+                                         reviews(provider) = newValue
+                                     Else
+                                         reviews.Add(provider, New Tuple(Of Integer, Integer)(rate, 1))
+                                     End If
+                                 End While
+                             End Using
+                             'For Each pair As KeyValuePair(Of Int32, Tuple(Of Integer, Integer)) In reviews
+                             '    Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
+                             '    Dim rating As Double
+                             '    rating = Math.Round(currentValue.Item1 / CType(currentValue.Item2, Double), 1)
+                             '    rating_prov.Add(pair.Key, rating)
+                             'Next
+                             Parallel.ForEach(reviews, Sub(pair)
+                                                           Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
+                                                           Dim rating As Double
+                                                           rating = Math.Round(currentValue.Item1 / CType(currentValue.Item2, Double), 1)
+                                                           rating_prov.TryAdd(pair.Key, rating)
+                                                       End Sub)
+                         Catch ex As Exception
+                             MessageBox.Show("Error connecting to database: " & ex.Message)
+                         End Try
+                     End Using
+                 End Function),
+        Task.Run(Async Function()
+                     ' Execute user_query
+                     Using connection As New SqlConnection(connectionString)
+                         Try
+                             Await connection.OpenAsync()
+                             Dim command_rev As New SqlCommand("SELECT username,profile_image FROM customer WHERE user_id = " + User_ID.ToString(), connection)
+                             Using reader As SqlDataReader = command_rev.ExecuteReader()
+                                 While reader.Read()
+                                     ' Retrieve user details
+                                     Label1.Text = reader.GetString("username")
+                                     If Not reader.IsDBNull(reader.GetOrdinal("profile_image")) Then
+                                         Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
+                                         binaryImageData = imageData
+                                     Else
+                                         is_null_image = 1
+                                     End If
+                                 End While
+                             End Using
+
+                         Catch ex As Exception
+
+                         End Try
+                     End Using
+                 End Function),
+        Task.Run(Async Function()
+                     providers.Clear()
+                     Using connection As New SqlConnection(connectionString)
+                         Try
+                             Await connection.OpenAsync()
+                             Dim command As New SqlCommand("SELECT provider.*, location.* FROM provider INNER JOIN location ON provider.provider_id = location.provider_id", connection)
+                             Using reader As SqlDataReader = command.ExecuteReader()
+                                 ' Loop through the SqlDataReader
+                                 While reader.Read()
+                                     ' Get the values of the current row
+                                     Dim service As String = reader.GetString(reader.GetOrdinal("service"))
+                                     Dim loc As String = reader.GetString(reader.GetOrdinal("location"))
+                                     Dim name As String = reader.GetString(reader.GetOrdinal("providername"))
+                                     Dim provider As Int32 = reader.GetInt32(reader.GetOrdinal("provider_id"))
+                                     Dim cost As Double = reader.GetInt32(reader.GetOrdinal("cost_per_hour"))
+                                     'Dim rating As String
+                                     'If reviews.ContainsKey(provider) Then
+                                     'Dim currentValue As Tuple(Of Integer, Integer) = reviews(provider)
+                                     'rating = rating_prov(provider).ToString()
+                                     'Else
+                                     'rating = "N/A"
+                                     'End If
+                                     temp_providers.Add(New Entry With {.providerID = provider, .providerName = name, .service = service, .location = loc, .cost = cost})
+                                 End While
+                             End Using
+
+                         Catch ex As Exception
+                             MessageBox.Show("Error connecting to database: " & ex.Message)
+                         End Try
+                     End Using
+                 End Function)
+                 )
+        'For Each entry As Entry In providers
+        '    Dim rating As String
+        '    If reviews.ContainsKey(entry.providerID) Then
+        '        Dim currentValue As Tuple(Of Integer, Integer) = reviews(entry.providerID)
+        '        rating = rating_prov(entry.providerID).ToString()
+        '    Else
+        '        rating = "N/A"
+        '    End If
+        '    entry.rating = rating
+        'Next
+        For i As Integer = 0 To temp_providers.Count() - 1
+            Dim rating As String
+            If reviews.ContainsKey(temp_providers(i).providerID) Then
+                Dim currentValue As Tuple(Of Integer, Integer) = reviews(temp_providers(i).providerID)
+                rating = rating_prov(temp_providers(i).providerID).ToString()
+            Else
+                rating = "N/A"
+            End If
+            'providers(i).rating = rating
+            providers.Add(New Entry With {.providerID = temp_providers(i).providerID, .providerName = temp_providers(i).providerName, .service = temp_providers(i).service, .location = temp_providers(i).location, .cost = temp_providers(i).cost, .rating = rating, .RadioButton = New RadioButton()})
+        Next
+        MakePictureBoxRound(PictureBox2)
+        'LoadProviders()
         PopulateTable()
     End Sub
 
@@ -218,15 +283,6 @@ Public Class user_search
     ' To load the initial providers list
     ' author: sarg19
     Private Sub LoadProviders()
-        'providers.Clear()
-        'providers.Add(New Entry With {.providerID = 123, .providerName = "testProvider", .service = "testService", .location = "testLocation", .cost = 100, .rating = 4.4, .RadioButton = New RadioButton()})
-        'providers.Add(New Entry With {.providerID = 123, .providerName = "testProvider", .service = "testService", .location = "testLocation", .cost = 100, .rating = 4.4, .RadioButton = New RadioButton()})
-        'providers.Add(New Entry With {.providerID = 123, .providerName = "testProvider", .service = "testService", .location = "testLocation", .cost = 100, .rating = 4.4, .RadioButton = New RadioButton()})
-        'providers.Add(New Entry With {.providerID = 123, .providerName = "testProvider", .service = "testService", .location = "testLocation", .cost = 100, .rating = 4.4, .RadioButton = New RadioButton()})
-        'providers.Add(New Entry With {.providerID = 123, .providerName = "testProvider", .service = "testService", .location = "testLocation", .cost = 100, .rating = 4.4, .RadioButton = New RadioButton()})
-        'providers.Add(New Entry With {.providerID = 123, .providerName = "testProvider", .service = "testService", .location = "testLocation", .cost = 100, .rating = 4.4, .RadioButton = New RadioButton()})
-        'providers.Add(New Entry With {.providerID = 123, .providerName = "testProvider", .service = "testService", .location = "testLocation", .cost = 100, .rating = 4.4, .RadioButton = New RadioButton()})
-        'providers.Add(New Entry With {.providerID = 123, .providerName = "testProvider", .service = "testService", .location = "testLocation", .cost = 100, .rating = 4.4, .RadioButton = New RadioButton()})
         providers.Clear()
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
         Using connection As New SqlConnection(connectionString)

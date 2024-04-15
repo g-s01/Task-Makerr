@@ -32,13 +32,13 @@ Public Class user_appointment_details
         ' Show the form
         chatForm.Show()
     End Sub
+    Dim provider As Integer = 0
 
     Private Sub ReloadData()
         dealID = Module_global.Appointment_Det_DealId
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
 
         Dim query As String = "SELECT * FROM deals WHERE deal_id = @DealID"
-        Dim provider As Integer = 0
 
         Dim time As String = ""
 
@@ -192,7 +192,24 @@ Public Class user_appointment_details
 
     Private Sub btn_reschedule_Click(sender As Object, e As EventArgs) Handles btn_reschedule.Click
         'TODO: @Sreehari
-        Me.Hide()
+
+
+        user_template.SplitContainer1.Panel2.Controls.Clear()
+
+        Module_global.Provider_ID = provider
+        'MessageBox.Show(provider)
+        Module_global.DealID_Reschedule = dealID
+        slot_back_choice = 1
+        With Reschedule_Slots
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(Reschedule_Slots)
+            .BringToFront()
+            .Show()
+        End With
+
+
 
     End Sub
 End Class

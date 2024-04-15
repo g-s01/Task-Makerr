@@ -207,7 +207,7 @@ Public Class Book_slots
         End Try
     End Function
     Private Async Function PopulateScheduleTableAsync() As Task
-        Schedule_Table.SuspendLayout()
+
         Schedule_Table.Controls.Clear()
         Schedule_Table.ColumnStyles.Clear()
         Schedule_Table.RowStyles.Clear()
@@ -246,7 +246,7 @@ Public Class Book_slots
             timeLabel.Font = New Font("Arial", 12, FontStyle.Bold)
             Schedule_Table.Controls.Add(timeLabel, i - 8, 0) ' Add to the first column, starting from row index 1
         Next
-
+        Schedule_Table.SuspendLayout()
         ' Create and add buttons for time slots asynchronously
         For i As Integer = 0 To 6
             For j As Integer = 0 To 11
@@ -382,6 +382,7 @@ Public Class Book_slots
 
             Dim rowsAffected As Integer = 0
             Dim Total_slots As Integer = 0
+            Dim NewlyBookedList As New List(Of Integer())
             Try
                 For Each slot As Integer() In BookedList
                     Total_slots += 1
@@ -392,6 +393,7 @@ Public Class Book_slots
                         command.Parameters.AddWithValue("@Slot", slot(1))
                         command.Parameters.AddWithValue("@Time", DateTime.Today.AddDays(slot(0)))
                         rowsAffected = command.ExecuteNonQuery()
+                        NewlyBookedList.Add(slot)
                         If rowsAffected = 0 Then
                             MessageBox.Show("Some unusual error happened.")
                             Exit For
@@ -482,7 +484,23 @@ Public Class Book_slots
                 If ex.Number = 2601 OrElse ex.Number = 2627 Then
                     ' Duplicate key violation error (constraint violation)
                     MessageBox.Show("This slot is already booked.", "Booking Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
+                    Dim deleteSchedule As String = "DELETE FROM schedule WHERE user_id=@user_id AND provider_id=@provider_id AND time=@time AND slots=@slots AND time=@time"
+                    For Each pair In NewlyBookedList
+                        Dim deleteCommand As New SqlCommand(deleteSchedule, connection)
+                        deleteCommand.Parameters.AddWithValue("@user_id", Module_global.User_ID)
+                        deleteCommand.Parameters.AddWithValue("@provider_id", Module_global.Provider_ID)
+                        Dim nextDate As DateTime = DateTime.Today.Date.AddDays(pair(0)).Date.AddHours(0).AddMinutes(0).AddSeconds(0) ' Set time to 12:00 AM
+                        Dim formattedDate As String = nextDate.ToString("yyyy-MM-dd HH:mm:ss.fff")
+                        deleteCommand.Parameters.AddWithValue("@time", formattedDate)
+                        deleteCommand.Parameters.AddWithValue("@slots", pair(1))
+                        Dim rowsAffected1 As Integer = deleteCommand.ExecuteNonQuery()
+                        If rowsAffected > 0 Then
+                            Console.WriteLine("Deleted")
+                        Else
+                            MessageBox.Show("Error!")
+                        End If
+                        Module_global.payment_successful = 0
+                    Next
                     BookedList.Clear()
                     myVariable = 0
                     variableChanged.Reset()
