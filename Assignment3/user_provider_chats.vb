@@ -305,7 +305,7 @@ Public Class user_provider_chats
 
         InsertMessageIntoDatabase(room, dealId, user_role, messageText)
         ' Print messages between users
-        Dim timeStamp As String = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")
+        Dim timeStamp As String = DateTime.Now.ToString("yyy-MM-dd HH:mm:ss")
         Dim newMessage As New Tuple(Of Integer, Integer, String, String, String)(room, dealId, user_role, messageText, timeStamp)
         messages.Add(newMessage)
         PrintMessagesBetweenUsers(room)
@@ -328,7 +328,8 @@ Public Class user_provider_chats
 
         ' Sort messages by timestamp
 
-        Dim sortedMessages = messagesInRoom.OrderBy(Function(msg) DateTime.Parse(msg.Item5))
+        Dim sortedMessages = messagesInRoom.OrderBy(Function(msg) DateTime.ParseExact(msg.Item5, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture))
+
 
         ' Y position for labels
 
