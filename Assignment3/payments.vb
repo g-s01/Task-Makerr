@@ -25,8 +25,8 @@ Public Class payments
 
     Public Sub Payment_load(sender As Object, e As EventArgs) Handles MyBase.Load
         Module_global.payment_successful = 0
-        ''  Book_slots.variableChanged.Reset()
         Book_slots.myVariable = 0
+        Reschedule_Slots.ResmyVariable = 0
     End Sub
     Private Sub payButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles payButton.Click
         If captcha.ShowDialog = DialogResult.OK Then
@@ -62,6 +62,9 @@ Public Class payments
                             Module_global.payment_successful = 1
                             Book_slots.myVariable = 1
                             Book_slots.variableChanged.Set()
+                            Reschedule_Slots.ResmyVariable = 1
+                            Reschedule_Slots.ResvariableChanged.Set()
+                            MessageBox.Show(Module_global.payment_successful)
                             ' updating balance of both the users
                             Dim sqlQuery As String = "UPDATE customer SET balance = CASE WHEN email = @AccountNumber1 THEN balance - @AmountToUpdate WHEN email = @AccountNumber2 THEN balance + @AmountToUpdate END WHERE email IN (@AccountNumber1, @AccountNumber2);"
 
@@ -148,10 +151,10 @@ Public Class payments
             Module_global.payment_successful = 0
             Book_slots.variableChanged.Set()
             Book_slots.myVariable = 0
-            MessageBox.Show("hi")
+            Reschedule_Slots.ResmyVariable = 0
+            Reschedule_Slots.ResvariableChanged.Set()
         Else
             Module_global.payment_successful = 1
-            MessageBox.Show(Book_slots.myVariable)
             'Book_slots.variableChanged.Set()
 
             'receipt generation

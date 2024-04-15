@@ -207,7 +207,7 @@ Public Class Book_slots
         End Try
     End Function
     Private Async Function PopulateScheduleTableAsync() As Task
-        Schedule_Table.SuspendLayout()
+
         Schedule_Table.Controls.Clear()
         Schedule_Table.ColumnStyles.Clear()
         Schedule_Table.RowStyles.Clear()
@@ -246,7 +246,7 @@ Public Class Book_slots
             timeLabel.Font = New Font("Arial", 12, FontStyle.Bold)
             Schedule_Table.Controls.Add(timeLabel, i - 8, 0) ' Add to the first column, starting from row index 1
         Next
-
+        Schedule_Table.SuspendLayout()
         ' Create and add buttons for time slots asynchronously
         For i As Integer = 0 To 6
             For j As Integer = 0 To 11
@@ -411,6 +411,7 @@ Public Class Book_slots
                     payments.Show()
                     Await WaitForVariableChangeOrTimeoutAsync(900000000)
                     If (Module_global.payment_successful = 1) Then
+                        MessageBox.Show("ASFN")
                         Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location,deal_amount) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location,@TotalCost);"
                         Dim zeros As String = New String("0"c, 84)
                         Dim charArray() As Char = zeros.ToCharArray()

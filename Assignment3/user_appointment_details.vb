@@ -195,6 +195,10 @@ Public Class user_appointment_details
 
 
         user_template.SplitContainer1.Panel2.Controls.Clear()
+
+        Module_global.Provider_ID = provider
+        'MessageBox.Show(provider)
+        Module_global.DealID_Reschedule = dealID
         slot_back_choice = 1
         With Reschedule_Slots
             .TopLevel = False
