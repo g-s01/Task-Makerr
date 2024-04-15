@@ -38,12 +38,12 @@ Partial Class support_chat
         ' 
         inputTextBox.BorderStyle = BorderStyle.None
         inputTextBox.Font = New Font("Microsoft YaHei", 10.2F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        inputTextBox.Location = New Point(24, 568)
+        inputTextBox.Location = New Point(30, 509)
         inputTextBox.Margin = New Padding(2)
         inputTextBox.Multiline = True
         inputTextBox.Name = "inputTextBox"
         inputTextBox.PlaceholderText = "   write .."
-        inputTextBox.Size = New Size(717, 37)
+        inputTextBox.Size = New Size(627, 46)
         inputTextBox.TabIndex = 0
         ' 
         ' sendButton
@@ -52,10 +52,10 @@ Partial Class support_chat
         sendButton.FlatAppearance.BorderSize = 0
         sendButton.FlatStyle = FlatStyle.Flat
         sendButton.Font = New Font("Microsoft YaHei", 9F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        sendButton.Location = New Point(740, 568)
+        sendButton.Location = New Point(661, 509)
         sendButton.Margin = New Padding(2)
         sendButton.Name = "sendButton"
-        sendButton.Size = New Size(76, 37)
+        sendButton.Size = New Size(124, 46)
         sendButton.TabIndex = 1
         sendButton.Text = "send"
         sendButton.UseVisualStyleBackColor = False
@@ -63,10 +63,11 @@ Partial Class support_chat
         ' Support
         ' 
         Support.AutoScroll = True
-        Support.Location = New Point(24, 112)
+        Support.BackColor = Color.WhiteSmoke
+        Support.Location = New Point(30, 140)
         Support.Margin = New Padding(2)
         Support.Name = "Support"
-        Support.Size = New Size(792, 454)
+        Support.Size = New Size(755, 365)
         Support.TabIndex = 2
         ' 
         ' Panel1
@@ -79,35 +80,38 @@ Partial Class support_chat
         Panel1.Controls.Add(inputTextBox)
         Panel1.Dock = DockStyle.Fill
         Panel1.Location = New Point(0, 0)
+        Panel1.Margin = New Padding(4)
         Panel1.Name = "Panel1"
-        Panel1.Size = New Size(847, 671)
+        Panel1.Size = New Size(822, 610)
         Panel1.TabIndex = 3
         ' 
         ' separatorLine
         ' 
         separatorLine.BorderStyle = BorderStyle.FixedSingle
-        separatorLine.Location = New Point(24, 50)
-        separatorLine.Margin = New Padding(4, 0, 4, 0)
+        separatorLine.Location = New Point(30, 62)
+        separatorLine.Margin = New Padding(5, 0, 5, 0)
         separatorLine.Name = "separatorLine"
-        separatorLine.Size = New Size(680, 2)
+        separatorLine.Size = New Size(600, 2)
         separatorLine.TabIndex = 6
         ' 
         ' Panel2
         ' 
         Panel2.BackColor = Color.FromArgb(CByte(214), CByte(179), CByte(227))
         Panel2.Controls.Add(Label2)
-        Panel2.Location = New Point(23, 61)
+        Panel2.Location = New Point(29, 76)
+        Panel2.Margin = New Padding(4)
         Panel2.Name = "Panel2"
-        Panel2.Size = New Size(793, 46)
+        Panel2.Size = New Size(756, 58)
         Panel2.TabIndex = 4
         ' 
         ' Label2
         ' 
         Label2.AutoSize = True
         Label2.Font = New Font("Microsoft YaHei", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        Label2.Location = New Point(27, 10)
+        Label2.Location = New Point(34, 12)
+        Label2.Margin = New Padding(4, 0, 4, 0)
         Label2.Name = "Label2"
-        Label2.Size = New Size(79, 27)
+        Label2.Size = New Size(95, 31)
         Label2.TabIndex = 0
         Label2.Text = "Admin"
         ' 
@@ -116,17 +120,17 @@ Partial Class support_chat
         Label1.AutoSize = True
         Label1.Font = New Font("Microsoft YaHei", 16.2F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label1.ForeColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
-        Label1.Location = New Point(20, 15)
+        Label1.Location = New Point(25, 19)
+        Label1.Margin = New Padding(4, 0, 4, 0)
         Label1.Name = "Label1"
-        Label1.Size = New Size(222, 37)
+        Label1.Size = New Size(261, 44)
         Label1.TabIndex = 3
         Label1.Text = "Chat to Admin"
         ' 
         ' support_chat
         ' 
-        AutoScaleDimensions = New SizeF(8F, 20F)
-        AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(847, 671)
+        AutoScaleMode = AutoScaleMode.None
+        ClientSize = New Size(822, 610)
         Controls.Add(Panel1)
         FormBorderStyle = FormBorderStyle.FixedSingle
         Margin = New Padding(2)

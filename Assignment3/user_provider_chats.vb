@@ -174,7 +174,7 @@ Public Class user_provider_chats
             newButton.Name = "btn" & item.Item1 ' Set button name
             newButton.Text = item.Item1 ' Set button text
             newButton.TextAlign = ContentAlignment.MiddleCenter
-            newButton.Width = chat_list.Width
+            newButton.Width = chat_list.Width - 25
             newButton.Height = 35 ' Set button height
             newButton.FlatStyle = FlatStyle.Flat ' Use flat style for rounded corners
             newButton.BackColor = Color.FromArgb(220, 189, 232) ' Set background color to pink
@@ -186,7 +186,7 @@ Public Class user_provider_chats
             Dim scaledImagenew As Image = New Bitmap(My.Resources.prov, New Size(35, 35))
             newButton.Image = scaledImagenew
             newButton.Region = New Drawing.Region(New Drawing.Rectangle(0, 0, newButton.Width, newButton.Height)) ' Make corners rounded
-            newButton.Location = New Point(10, yPos) ' Set button position
+            newButton.Location = New Point(5, yPos) ' Set button position
             AddHandler newButton.Click, AddressOf Button_Click ' Add click event handler
             chat_list.Controls.Add(newButton) ' Add button to panel
             yPos += 37 ' Increment y position for next button
@@ -221,6 +221,8 @@ Public Class user_provider_chats
             Next
             senderName.Text = header
             PrintMessagesBetweenUsers(roomId)
+            sendBtn.Visible = False
+            sendTextBox.Visible = False
         End If
     End Sub
 
@@ -240,6 +242,8 @@ Public Class user_provider_chats
     Private Sub Button_Click(sender As Object, e As EventArgs)
         ' Handle button click event
         chat.Visible = True
+        sendBtn.Visible = True
+        sendTextBox.Visible = True
 
         Dim clickedButton As Button = CType(sender, Button)
 
@@ -437,6 +441,10 @@ Public Class user_provider_chats
     End Sub
 
     Private Sub chat_list_Paint(sender As Object, e As PaintEventArgs) Handles chat_list.Paint
+
+    End Sub
+
+    Private Sub senderName_Click(sender As Object, e As EventArgs) Handles senderName.Click
 
     End Sub
 End Class
