@@ -329,7 +329,6 @@ Public Class user_appointments
             End Using
             sqlConnection.Close()
         End Using
-        y -= 30
         Using sqlConnection As New SqlConnection(connectionString)
             sqlConnection.Open()
             Using sqlCommand As New SqlCommand(query3, sqlConnection)

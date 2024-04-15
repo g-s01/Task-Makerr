@@ -1,7 +1,5 @@
 ﻿Imports System.Diagnostics.Eventing
 Imports System.IO
-Imports System.Reflection
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel
 Imports Microsoft.Data.SqlClient
 Imports Microsoft.VisualBasic.ApplicationServices
 
@@ -45,13 +43,9 @@ Public Class Login
                         sqlCommand.Parameters.AddWithValue("@Password", pass) ' Use the password entered by the user
                         Dim reader As SqlDataReader = sqlCommand.ExecuteReader()
                         If reader.Read() Then
-                            'Module_global.Provider_ID = Convert.ToInt32(reader("Provider_ID"))
-                            'Module_global.provider_name = reader("providername").ToString()
-                            'Module_global.User_Role = "customer"
-
-                            Provider_ID = Convert.ToInt32(reader("Provider_ID"))
-                            provider_name = reader("providername").ToString()
-
+                            Module_global.Provider_ID = Convert.ToInt32(reader("Provider_ID"))
+                            Module_global.provider_name = reader("providername").ToString()
+                            Module_global.User_Role = "customer"
                             ' Check if the profile_image field is not DBNull
                             If Not reader.IsDBNull(reader.GetOrdinal("profile_image")) Then
                                 Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
@@ -65,8 +59,6 @@ Public Class Login
                             'MessageBox.Show($"User ID: {Provider_ID}{Environment.NewLine}Username: {provider_name}", "User Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
                             'taskmakerrbtn.BackgroundImage = provider_profilepic
 
-                            Me.Close()
-                            provider_template.Show()
                         Else
                             error_label.Text = "Invalid email or password. No such provider account"
                             password_tb.Text = ""
@@ -134,12 +126,9 @@ Public Class Login
 
                         Dim reader As SqlDataReader = sqlCommand.ExecuteReader()
                         If reader.Read() Then
-                            'Module_global.User_ID = Convert.ToInt32(reader("User_ID"))
-                            'Module_global.user_name = reader("username").ToString()
-                            'Module_global.User_Role = "customer"
-                            User_ID = Convert.ToInt32(reader("User_ID"))
-                            user_name = reader("username").ToString()
-
+                            Module_global.User_ID = Convert.ToInt32(reader("User_ID"))
+                            Module_global.user_name = reader("username").ToString()
+                            Module_global.User_Role = "customer"
                             ' Check if the profile_image field is not DBNull
                             If Not reader.IsDBNull(reader.GetOrdinal("profile_image")) Then
                                 Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
@@ -151,9 +140,6 @@ Public Class Login
                                 ' Set default image using resource
                                 user_profilepic = My.Resources.male ' Replace with your resource name
                             End If
-                            'taskmakerrbtn.BackgroundImage = user_profilepic
-                            Me.Close()
-                            user_template.Show()
                         Else
                             error_label.Text = "Invalid email or password. No such user account"
                             password_tb.Text = ""
