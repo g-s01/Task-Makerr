@@ -259,5 +259,8 @@ Public Class Login
         End If
     End Sub
 
-
+    Private Sub LinkLabel1_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked
+        Close()
+        Forgot_password.Show()
+    End Sub
 End Class
