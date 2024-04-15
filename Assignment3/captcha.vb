@@ -55,6 +55,8 @@ Public Class captcha
         If TextBox1.Text.ToLower() = captchaText.ToLower() Then
             MessageBox.Show("CAPTCHA passed!")
             DialogResult = DialogResult.OK
+            captchaText = GenerateRandomText()
+            TextBox1.Clear()
             Close()
         Else
             MessageBox.Show("CAPTCHA failed! Please try again.")

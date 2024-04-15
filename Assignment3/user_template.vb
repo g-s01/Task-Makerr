@@ -166,6 +166,4 @@ Public Class user_template
         Me.Close()
         Login.Show()
     End Sub
-
-
 End Class
