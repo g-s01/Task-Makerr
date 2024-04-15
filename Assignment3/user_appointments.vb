@@ -68,6 +68,7 @@ Public Class user_appointments
     End Sub
 
     Private Function spawnDivs(i As Integer, providerName As String, location As String, CostNum As Integer, Schedule As String, y As Integer, DealId As Integer)
+
         ReDim panelArray(i)
 
         Dim x As Integer = 20
@@ -184,59 +185,92 @@ Public Class user_appointments
     Private Function upcoming()
         Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
         Dim query As String = "SELECT * FROM deals WHERE user_id = @UserId AND status = 1"
-        Dim query2 As String = "SELECT * FROM provider where provider_id =@ProviderID"
+        Dim query2 As String = "SELECT * FROM provider where provider_id = @ProviderID"
+
+        Panel1.SuspendLayout()
         Panel1.Controls.Clear()
+
         Dim i As Integer = 0
         Dim y As Integer = 50
-        Dim result As SqlDataReader
+
         Using sqlConnection As New SqlConnection(connectionString)
             sqlConnection.Open()
             Using sqlCommand As New SqlCommand(query, sqlConnection)
-                sqlCommand.Parameters.AddWithValue("@UserId", User_ID) ' Use the password entered by the user
-                result = sqlCommand.ExecuteReader()
-                Do While result.Read()
-                    Dim time As String = result.GetString(3)
-                    Dim dateof As Date = result.GetValue(5)
-                    Dim ProviderId As Integer = result.GetValue(2)
+                sqlCommand.Parameters.AddWithValue("@UserId", User_ID)
+
+                ' Execute the first query asynchronously
+                Dim resultTask = sqlCommand.ExecuteReaderAsync()
+
+                ' Process the results asynchronously
+                Dim results = resultTask.Result ' Wait for the task to complete
+
+                Do While results.Read()
+                    Dim time As String = results.GetString(3)
+                    Dim dateof As Date = results.GetDateTime(5)
+                    Dim ProviderId As Integer = results.GetInt32(2)
                     Dim ProviderName As String = ""
                     Dim Location As String = ""
                     Dim Cost As Integer = 0
+
+                    ' Execute the second query asynchronously
                     Using sqlConnection2 As New SqlConnection(connectionString)
                         sqlConnection2.Open()
                         Using sqlCommand2 As New SqlCommand(query2, sqlConnection2)
                             sqlCommand2.Parameters.AddWithValue("@ProviderID", ProviderId)
-                            Dim providerDb As SqlDataReader = sqlCommand2.ExecuteReader()
-                            Do While providerDb.Read()
-                                ProviderName = providerDb.GetValue(1)
-                                Cost = providerDb.GetValue(6)
-                            Loop
+
+                            ' Execute the second query asynchronously
+                            Dim providerTask = sqlCommand2.ExecuteReaderAsync()
+
+                            ' Process the results of the second query asynchronously
+                            Dim providerDb As SqlDataReader = providerTask.Result ' Wait for the task to complete
+
+                            If providerDb.Read() Then
+                                ProviderName = providerDb.GetString(1)
+                                Cost = providerDb.GetInt32(6)
+                            End If
+
+                            providerDb.Close() ' Close the SqlDataReader
                         End Using
                     End Using
 
-                    dateof = dateof.AddMinutes(-dateof.Minute)
-                    dateof = dateof.AddSeconds(-dateof.Second)
-                    Dim datefinal As Date = Now
+                    ' Process time string in parallel
+                    Dim datefinal As Date = dateof
                     Dim count As Integer = 0
-                    For Each c As Char In time
-                        If c = "1" Then
-                            Dim slotTime = count Mod 12 + 9
-                            dateof = dateof.AddHours(slotTime - dateof.Hour)
-                            datefinal = dateof
-                            If dateof.CompareTo(Now) > 0 Then
-                                Exit For
-                            End If
-                        End If
-                        count = count + 1
-                        If (count Mod 12 = 0) Then
-                            dateof = dateof.AddDays(1)
-                        End If
-                    Next
-                    spawnDivs(i, ProviderName, Location, Cost, datefinal, y, result.GetValue(0))
+
+                    Parallel.ForEach(time, Sub(c)
+                                               If c = "1" Then
+                                                   Dim slotTime = count Mod 12 + 9
+                                                   Dim tempDateof = dateof.AddHours(slotTime - dateof.Hour)
+                                                   If tempDateof.CompareTo(Now) > 0 Then
+                                                       datefinal = tempDateof
+                                                   End If
+                                               End If
+                                               count += 1
+                                               If (count Mod 12 = 0) Then
+                                                   dateof = dateof.AddDays(1)
+                                               End If
+                                           End Sub)
+
+                    ' Call spawnDivs asynchronously to add controls
+                    Dim finalProviderName As String = ProviderName
+                    Dim finalLocation As String = Location
+                    Dim finalCost As Integer = Cost
+                    Dim finalDateFinal As Date = datefinal
+                    Dim finalY As Integer = y
+
+                    ' Use Control.Invoke to add controls on the main UI thread
+                    Panel1.Invoke(Sub()
+                                      spawnDivs(i, finalProviderName, finalLocation, finalCost, finalDateFinal, finalY, results.GetInt32(0))
+                                  End Sub)
+
                     i += 1
                     y += 100
                 Loop
             End Using
         End Using
+
+        Panel1.ResumeLayout()
+
     End Function
 
     Private Function completed()

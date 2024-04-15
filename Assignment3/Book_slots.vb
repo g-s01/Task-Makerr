@@ -207,7 +207,7 @@ Public Class Book_slots
         End Try
     End Function
     Private Async Function PopulateScheduleTableAsync() As Task
-        Schedule_Table.SuspendLayout()
+
         Schedule_Table.Controls.Clear()
         Schedule_Table.ColumnStyles.Clear()
         Schedule_Table.RowStyles.Clear()
@@ -246,7 +246,7 @@ Public Class Book_slots
             timeLabel.Font = New Font("Arial", 12, FontStyle.Bold)
             Schedule_Table.Controls.Add(timeLabel, i - 8, 0) ' Add to the first column, starting from row index 1
         Next
-
+        Schedule_Table.SuspendLayout()
         ' Create and add buttons for time slots asynchronously
         For i As Integer = 0 To 6
             For j As Integer = 0 To 11
