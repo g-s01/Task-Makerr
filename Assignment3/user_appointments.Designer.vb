@@ -25,6 +25,7 @@ Partial Class user_appointments
         Button1 = New Button()
         Button2 = New Button()
         Panel1 = New Panel()
+        Button3 = New Button()
         SuspendLayout()
         ' 
         ' Button1
@@ -36,10 +37,10 @@ Partial Class user_appointments
         Button1.FlatStyle = FlatStyle.Flat
         Button1.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
         Button1.ForeColor = SystemColors.ControlText
-        Button1.Location = New Point(10, 26)
-        Button1.Margin = New Padding(3, 2, 3, 2)
+        Button1.Location = New Point(13, 40)
+        Button1.Margin = New Padding(4, 3, 4, 3)
         Button1.Name = "Button1"
-        Button1.Size = New Size(105, 31)
+        Button1.Size = New Size(136, 48)
         Button1.TabIndex = 0
         Button1.Text = "Upcoming"
         Button1.UseVisualStyleBackColor = False
@@ -52,12 +53,12 @@ Partial Class user_appointments
         Button2.FlatStyle = FlatStyle.Flat
         Button2.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
         Button2.ForeColor = SystemColors.GrayText
-        Button2.Location = New Point(113, 26)
-        Button2.Margin = New Padding(3, 2, 3, 2)
+        Button2.Location = New Point(171, 40)
+        Button2.Margin = New Padding(4, 3, 4, 3)
         Button2.Name = "Button2"
-        Button2.Size = New Size(128, 31)
+        Button2.Size = New Size(165, 48)
         Button2.TabIndex = 1
-        Button2.Text = "Completed"
+        Button2.Text = "Payment"
         Button2.UseVisualStyleBackColor = False
         ' 
         ' Panel1
@@ -66,23 +67,40 @@ Partial Class user_appointments
         Panel1.AutoScroll = True
         Panel1.BackColor = SystemColors.Control
         Panel1.CausesValidation = False
-        Panel1.Location = New Point(3, 61)
-        Panel1.Margin = New Padding(3, 2, 3, 2)
+        Panel1.Location = New Point(4, 94)
+        Panel1.Margin = New Padding(4, 3, 4, 3)
         Panel1.Name = "Panel1"
-        Panel1.Size = New Size(845, 589)
+        Panel1.Size = New Size(1086, 903)
         Panel1.TabIndex = 2
+        ' 
+        ' Button3
+        ' 
+        Button3.AutoSize = True
+        Button3.FlatAppearance.BorderColor = Color.Black
+        Button3.FlatAppearance.BorderSize = 0
+        Button3.FlatStyle = FlatStyle.Flat
+        Button3.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
+        Button3.ForeColor = SystemColors.GrayText
+        Button3.Location = New Point(332, 40)
+        Button3.Margin = New Padding(4, 3, 4, 3)
+        Button3.Name = "Button3"
+        Button3.Size = New Size(165, 48)
+        Button3.TabIndex = 2
+        Button3.Text = "Completed"
+        Button3.UseVisualStyleBackColor = False
         ' 
         ' user_appointments
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(9F, 23F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
-        ClientSize = New Size(850, 650)
+        ClientSize = New Size(1093, 997)
+        Controls.Add(Button3)
         Controls.Add(Panel1)
         Controls.Add(Button2)
         Controls.Add(Button1)
         FormBorderStyle = FormBorderStyle.None
-        Margin = New Padding(3, 2, 3, 2)
+        Margin = New Padding(4, 3, 4, 3)
         Name = "user_appointments"
         Text = "user_appointments"
         ResumeLayout(False)
@@ -92,4 +110,5 @@ Partial Class user_appointments
     Friend WithEvents Button1 As Button
     Friend WithEvents Button2 As Button
     Friend WithEvents Panel1 As Panel
+    Friend WithEvents Button3 As Button
 End Class
