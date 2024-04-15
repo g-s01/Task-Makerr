@@ -3,6 +3,7 @@ Imports Microsoft.Data.SqlClient
 Imports Org.BouncyCastle.Crypto.Asymmetric.AsymmetricRsaKey
 Imports System.Configuration
 Imports System.Drawing
+Imports System.IO
 Imports System.Text
 Imports System.Windows.Forms.AxHost
 Public Class ViewAllUser
@@ -91,28 +92,11 @@ Public Class ViewAllUser
 
         Label3.Text = Module_global.serviceType
 
-        Me.Controls.Add(Profile_Pic)
         Me.Controls.Add(Username)
-        Dim user_name As String
-        user_name = "Vamos"
 
-        'map("electric").Add(newItem)
-        'Dim connectionString1 As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-        'Using connection As New SqlConnection(connectionString1)
-        '    connection.Open()
-        '    Dim command_user As New SqlCommand("SELECT customer.* FROM customer ", connection)
-        '    Using reader As SqlDataReader = command_user.ExecuteReader()
-        '        While reader.Read()
-        '            Dim user As Int32 = reader.GetInt32(reader.GetOrdinal("user_id"))
-        '            Dim username As String = reader.GetString(reader.GetOrdinal("username"))
-        '            If user = Module_global.User_ID Then
-        '                user_name = username
-        '            End If
-        '        End While
-        '    End Using
-        'End Using
 
-        Username.Text = user_name
+
+
 
         ComboBox1.Items.Clear()
         ComboBox1.Items.Add("Sorted by Rating")
@@ -183,6 +167,14 @@ Public Class ViewAllUser
 
 
 
+
+
+
+        Username.Text = Module_global.user_name
+        PictureBox1.Image = Module_global.user_profilepic
+        '   If Module_global.user_profilepic IsNot Nothing Then
+        '       PictureBox1.Image = Module_global.user_profilepic
+        '   End If
 
 
         ' Create a HashSet to store unique locations
@@ -432,5 +424,7 @@ Public Class ViewAllUser
         End With
     End Sub
 
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
 
+    End Sub
 End Class

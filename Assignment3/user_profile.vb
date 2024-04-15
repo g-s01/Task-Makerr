@@ -107,6 +107,7 @@ Public Class user_profile
                         Dim rowsAffected As Integer = command.ExecuteNonQuery()
                         If rowsAffected > 0 Then
                             MessageBox.Show("User profile updated successfully.")
+                            Module_global.user_profilepic = profilepic_pb.Image
                         Else
                             MessageBox.Show("No user found with the specified ID.")
                         End If

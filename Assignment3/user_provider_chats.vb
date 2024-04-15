@@ -435,4 +435,8 @@ Public Class user_provider_chats
     Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
 
     End Sub
+
+    Private Sub chat_list_Paint(sender As Object, e As PaintEventArgs) Handles chat_list.Paint
+
+    End Sub
 End Class

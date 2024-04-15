@@ -36,6 +36,8 @@ Public Class user_template
     ' function to switch panel
     ' author: sarg19
     Sub switchPanel(ByVal panel As Form)
+
+
         SplitContainer1.Panel2.Controls.Clear()
 
         With panel
@@ -166,6 +168,4 @@ Public Class user_template
         Me.Close()
         Login.Show()
     End Sub
-
-
 End Class
