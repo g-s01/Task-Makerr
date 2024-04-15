@@ -65,7 +65,7 @@ Partial Class EditProfilePage
         ' 
         ' contactnumber_tb
         ' 
-        contactnumber_tb.Font = New Font("Segoe UI", 10.0F)
+        contactnumber_tb.Font = New Font("Segoe UI", 10F)
         contactnumber_tb.ForeColor = SystemColors.WindowText
         contactnumber_tb.Location = New Point(222, 320)
         contactnumber_tb.Name = "contactnumber_tb"
@@ -89,14 +89,14 @@ Partial Class EditProfilePage
         profilepic_pb.Dock = DockStyle.Top
         profilepic_pb.Location = New Point(0, 0)
         profilepic_pb.Name = "profilepic_pb"
-        profilepic_pb.Size = New Size(810, 246)
+        profilepic_pb.Size = New Size(801, 246)
         profilepic_pb.SizeMode = PictureBoxSizeMode.StretchImage
         profilepic_pb.TabIndex = 97
         profilepic_pb.TabStop = False
         ' 
         ' contact_label
         ' 
-        contact_label.Font = New Font("Segoe UI", 10.0F)
+        contact_label.Font = New Font("Segoe UI", 10F)
         contact_label.Location = New Point(49, 323)
         contact_label.Name = "contact_label"
         contact_label.Size = New Size(167, 22)
@@ -119,7 +119,7 @@ Partial Class EditProfilePage
         ' 
         ' cos_tb
         ' 
-        cos_tb.Font = New Font("Segoe UI", 10.0F)
+        cos_tb.Font = New Font("Segoe UI", 10F)
         cos_tb.ForeColor = SystemColors.WindowText
         cos_tb.Location = New Point(222, 633)
         cos_tb.Name = "cos_tb"
@@ -128,7 +128,7 @@ Partial Class EditProfilePage
         ' 
         ' cps_label
         ' 
-        cps_label.Font = New Font("Segoe UI", 10.0F)
+        cps_label.Font = New Font("Segoe UI", 10F)
         cps_label.Location = New Point(49, 636)
         cps_label.Name = "cps_label"
         cps_label.Size = New Size(167, 22)
@@ -137,7 +137,7 @@ Partial Class EditProfilePage
         ' 
         ' type_label
         ' 
-        type_label.Font = New Font("Segoe UI", 10.0F)
+        type_label.Font = New Font("Segoe UI", 10F)
         type_label.Location = New Point(49, 369)
         type_label.Name = "type_label"
         type_label.Size = New Size(167, 22)
@@ -147,7 +147,7 @@ Partial Class EditProfilePage
         ' servicetype_combox
         ' 
         servicetype_combox.FormattingEnabled = True
-        servicetype_combox.Items.AddRange(New Object() {"Painter", "Designer", "Kuchh", "Kuchh", "Kuchh"})
+        servicetype_combox.Items.AddRange(New Object() {"Cleaning", "Plumbing", "Electrical", "Painting", "Decorating", "Catering", "Photography", "Others"})
         servicetype_combox.Location = New Point(222, 368)
         servicetype_combox.Name = "servicetype_combox"
         servicetype_combox.Size = New Size(298, 28)
@@ -274,7 +274,7 @@ Partial Class EditProfilePage
         ' 
         slot_matrix_tablelayout.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         slot_matrix_tablelayout.ColumnCount = 13
-        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 50.0F))
+        slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 50F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
         slot_matrix_tablelayout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 8.333335F))
@@ -379,7 +379,7 @@ Partial Class EditProfilePage
         ' 
         ' slot_label
         ' 
-        slot_label.Font = New Font("Segoe UI", 10.0F)
+        slot_label.Font = New Font("Segoe UI", 10F)
         slot_label.Location = New Point(49, 694)
         slot_label.Name = "slot_label"
         slot_label.Size = New Size(167, 22)
@@ -396,7 +396,7 @@ Partial Class EditProfilePage
         ' 
         ' location_label
         ' 
-        location_label.Font = New Font("Segoe UI", 10.0F)
+        location_label.Font = New Font("Segoe UI", 10F)
         location_label.Location = New Point(49, 420)
         location_label.Name = "location_label"
         location_label.Size = New Size(167, 22)
@@ -405,17 +405,17 @@ Partial Class EditProfilePage
         ' 
         ' name_label
         ' 
-        name_label.Font = New Font("Segoe UI", 10.0F)
+        name_label.Font = New Font("Segoe UI", 10F)
         name_label.Location = New Point(606, 257)
         name_label.Name = "name_label"
         name_label.Size = New Size(167, 22)
         name_label.TabIndex = 100
-        name_label.Text = "Sahil Jaiswal"
+        name_label.Text = "Pratham Goyal"
         name_label.TextAlign = ContentAlignment.MiddleRight
         ' 
         ' email_label
         ' 
-        email_label.Font = New Font("Segoe UI", 10.0F)
+        email_label.Font = New Font("Segoe UI", 10F)
         email_label.Location = New Point(606, 282)
         email_label.Name = "email_label"
         email_label.Size = New Size(167, 22)
