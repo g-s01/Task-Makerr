@@ -27,7 +27,9 @@ Public Class UserHome
         'Set the FlowLayoutPanel's properties
         Dim image As Image = My.Resources.Ellipse_6
 
-        buttonLoc = Me.Width - 110
+        Profile_Pic.Image = Module_global.user_profilepic
+
+        buttonLoc = Me.Width - 140
         'Dim newItem As New Prov_tile(1, "Item 5", "Description 5", 4.5, image)
         'map.Add("electric", New List(Of Prov_tile))
         'map("electric").Add(newItem)
@@ -141,7 +143,7 @@ Public Class UserHome
                             End Function)
         Next
         ' Add more items as needed
-        Dim yPos As Integer = 70 ' Initial vertical position for the first FlowLayoutPanel
+        Dim yPos As Integer = 80 ' Initial vertical position for the first FlowLayoutPanel
 
         ' Iterate through the dictionary
         For Each pair As KeyValuePair(Of String, List(Of Prov_tile)) In map
@@ -152,8 +154,11 @@ Public Class UserHome
             Me.Controls.Add(label)
             Dim btnViewMore As New Button()
             btnViewMore.Text = "View All"
+            btnViewMore.Font = new Font("Microsoft YaHei", 10.2F)
             btnViewMore.Size = New Size(100, 30)
             btnViewMore.Location = New Point(buttonLoc, yPos)
+            'btnViewMore.FlatStyle = FlatStyle.Flat
+            '  btnViewMore.FlatAppearance.BorderSize = 0
             btnViewMore.Tag = pair.Key
             ' Inside the UserHome_Load method, after creating the btnViewMore button
             AddHandler btnViewMore.Click, AddressOf btnViewMore_Click
@@ -170,6 +175,12 @@ Public Class UserHome
             For Each tile As Prov_tile In pair.Value
                 Dim tileControl As New Prov_tile(tile.Provider, tile.ProviderName, tile.Loc, tile.Rating, tile.ItemImage)
                 AddHandler tileControl.Click, AddressOf tileControl_Click
+                AddHandler tileControl.PictureBox1.Click, AddressOf tileControl_Click
+                AddHandler tileControl.PictureBox2.Click, AddressOf tileControl_Click
+                AddHandler tileControl.Label1.Click, AddressOf tileControl_Click
+                AddHandler tileControl.Label2.Click, AddressOf tileControl_Click
+                AddHandler tileControl.Label3.Click, AddressOf tileControl_Click
+
                 flowLayoutPanel.Controls.Add(tileControl)
             Next
             Me.Controls.Add(flowLayoutPanel)
@@ -210,21 +221,40 @@ Public Class UserHome
     End Sub
 
     Private Sub tileControl_Click(sender As Object, e As EventArgs)
+        Dim clickedControl As Control = TryCast(sender, Control)
 
-        Dim clickedTile As Prov_tile = CType(sender, Prov_tile)
-        ' Get the provider id
-        Module_global.Provider_ID = clickedTile.Provider
-        user_template.SplitContainer1.Panel2.Controls.Clear()
-        slot_back_choice = 1
-        With Book_slots
-            .TopLevel = False
-            .AutoSize = True
-            .Dock = DockStyle.Fill
-            user_template.SplitContainer1.Panel2.Controls.Add(Book_slots)
-            .BringToFront()
-            .Show()
-        End With
+        If clickedControl IsNot Nothing Then
+            ' Find the parent Prov_tile control
+            Dim parentTile As Prov_tile = FindParentProvTile(clickedControl)
 
+            If parentTile IsNot Nothing Then
+                ' Set the Provider_ID to the Provider value of the parent Prov_tile
+                Module_global.Provider_ID = parentTile.Provider
+            End If
+
+            ' Clear existing controls and show Book_slots
+            user_template.SplitContainer1.Panel2.Controls.Clear()
+            slot_back_choice = 1
+            With Book_slots
+                .TopLevel = False
+                .AutoSize = True
+                .Dock = DockStyle.Fill
+                user_template.SplitContainer1.Panel2.Controls.Add(Book_slots)
+                .BringToFront()
+                .Show()
+            End With
+        End If
     End Sub
+
+    Private Function FindParentProvTile(control As Control) As Prov_tile
+        ' Recursively find the parent Prov_tile control
+        Dim parent As Control = control.Parent
+
+        While parent IsNot Nothing AndAlso Not TypeOf parent Is Prov_tile
+            parent = parent.Parent
+        End While
+
+        Return TryCast(parent, Prov_tile)
+    End Function
 
 End Class
