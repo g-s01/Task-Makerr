@@ -45,6 +45,10 @@ Public Class Login
                         sqlCommand.Parameters.AddWithValue("@Password", pass) ' Use the password entered by the user
                         Dim reader As SqlDataReader = sqlCommand.ExecuteReader()
                         If reader.Read() Then
+                            'Module_global.Provider_ID = Convert.ToInt32(reader("Provider_ID"))
+                            'Module_global.provider_name = reader("providername").ToString()
+                            'Module_global.User_Role = "customer"
+
                             Provider_ID = Convert.ToInt32(reader("Provider_ID"))
                             provider_name = reader("providername").ToString()
 
@@ -68,6 +72,33 @@ Public Class Login
                             password_tb.Text = ""
                         End If
                         reader.Close()
+                    End Using
+                    Dim supportquery As String = "
+                        DECLARE @SupportRoomId INT;
+
+                        IF NOT EXISTS (SELECT 1 FROM support_room WHERE user_id = @UserId AND user_type=@UserType)
+                        BEGIN
+                            INSERT INTO support_room (user_id, username, user_type)
+                            VALUES (@UserId, @Username, @UserType);
+                            SET @SupportRoomId = SCOPE_IDENTITY();
+                        END
+                        ELSE
+                        BEGIN
+                            SELECT @SupportRoomId = support_room_id FROM support_room WHERE user_id = @UserId AND user_type=@UserType;
+                        END
+                        SELECT @SupportRoomId AS support_room_id;
+                        "
+                    Using command As New SqlCommand(supportquery, sqlConnection)
+                        ' Set parameter values
+                        command.Parameters.AddWithValue("@UserId", Module_global.Provider_ID)
+                        command.Parameters.AddWithValue("@Username", Module_global.provider_name)
+                        command.Parameters.AddWithValue("@UserType", Module_global.User_Role)
+                        ' Execute the command and retrieve the generated identity value
+                        Module_global.Support_room_id = Convert.ToInt32(command.ExecuteScalar())
+                        LoadRoomsFromDatabase(Module_global.Provider_ID, Module_global.User_Role)
+                        'MessageBox.Show("support id" & Support_room_id)
+                        Me.Close()
+                        provider_template.Show()
                     End Using
                 End Using
             Catch ex As Exception
@@ -103,6 +134,9 @@ Public Class Login
 
                         Dim reader As SqlDataReader = sqlCommand.ExecuteReader()
                         If reader.Read() Then
+                            'Module_global.User_ID = Convert.ToInt32(reader("User_ID"))
+                            'Module_global.user_name = reader("username").ToString()
+                            'Module_global.User_Role = "customer"
                             User_ID = Convert.ToInt32(reader("User_ID"))
                             user_name = reader("username").ToString()
 
@@ -117,7 +151,6 @@ Public Class Login
                                 ' Set default image using resource
                                 user_profilepic = My.Resources.male ' Replace with your resource name
                             End If
-
                             'taskmakerrbtn.BackgroundImage = user_profilepic
                             Me.Close()
                             user_template.Show()
@@ -126,6 +159,33 @@ Public Class Login
                             password_tb.Text = ""
                         End If
                         reader.Close()
+                    End Using
+                    Dim supportquery As String = "
+                          DECLARE @SupportRoomId INT;
+
+                          IF NOT EXISTS (SELECT 1 FROM support_room WHERE user_id = @UserId)
+                          BEGIN
+                              INSERT INTO support_room (user_id, username, user_type)
+                              VALUES (@UserId, @Username, @UserType);
+                              SET @SupportRoomId = SCOPE_IDENTITY();
+                          END
+                          ELSE
+                          BEGIN
+                              SELECT @SupportRoomId = support_room_id FROM support_room WHERE user_id = @UserId;
+                          END
+
+                          SELECT @SupportRoomId AS support_room_id;
+                          "
+                    Using command As New SqlCommand(supportquery, sqlConnection)
+                        ' Set parameter values
+                        command.Parameters.AddWithValue("@UserId", Module_global.User_ID)
+                        command.Parameters.AddWithValue("@Username", Module_global.user_name)
+                        command.Parameters.AddWithValue("@UserType", Module_global.User_Role)
+                        ' Execute the command and retrieve the generated identity value
+                        Module_global.Support_room_id = Convert.ToInt32(command.ExecuteScalar())
+                        LoadRoomsFromDatabase(Module_global.User_ID, Module_global.User_Role)
+                        Me.Close()
+                        user_template.Show()
                     End Using
                 End Using
             Catch ex As Exception
@@ -144,4 +204,76 @@ Public Class Login
         Close()
         Admin_Login.Show()
     End Sub
+    Private Sub LoadRoomsFromDatabase(userId As Integer, user_role As String)
+        Module_global.roomchat.Clear()
+        Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+
+        If Module_global.User_Role = "provider" Then
+            Dim query As String = "SELECT chat_room_id, username, provider_id FROM chat_room WHERE provider_id = @ProviderId"
+            Using connection As New SqlConnection(connectionString)
+                Using command As New SqlCommand(query, connection)
+                    ' Add parameters to the SQL query to prevent SQL injection
+                    command.Parameters.AddWithValue("@ProviderId", Module_global.Provider_ID)
+
+                    Dim provider_id As Integer
+                    Dim username As String
+                    Dim chat_room_id As Integer
+
+                    Try
+                        connection.Open()
+                        Dim reader As SqlDataReader = command.ExecuteReader()
+
+                        If reader.HasRows Then
+                            ' Loop through the rows
+                            While reader.Read()
+                                ' Access columns by name or index
+                                provider_id = reader.GetInt32(reader.GetOrdinal("provider_id"))
+                                chat_room_id = reader.GetInt32(reader.GetOrdinal("chat_room_id"))
+                                username = reader.GetString(reader.GetOrdinal("username"))
+                                Module_global.roomchat.Add(New Tuple(Of String, Integer, Integer)(username, chat_room_id, provider_id))
+                            End While
+                        End If
+
+                        reader.Close()
+                    Catch ex As Exception
+                        Console.WriteLine("Error: " & ex.Message)
+                    End Try
+                End Using
+            End Using
+        ElseIf Module_global.User_Role = "customer" Then
+            Dim query As String = "SELECT chat_room_id, providername, provider_id FROM chat_room WHERE user_id = @UserId"
+            Using connection As New SqlConnection(connectionString)
+                Using command As New SqlCommand(query, connection)
+                    ' Add parameters to the SQL query to prevent SQL injection
+                    command.Parameters.AddWithValue("@UserId", Module_global.User_ID)
+
+                    Dim provider_id As Integer
+                    Dim providername As String
+                    Dim chat_room_id As Integer
+
+                    Try
+                        connection.Open()
+                        Dim reader As SqlDataReader = command.ExecuteReader()
+
+                        If reader.HasRows Then
+                            ' Loop through the rows
+                            While reader.Read()
+                                ' Access columns by name or index
+                                provider_id = reader.GetInt32(reader.GetOrdinal("provider_id"))
+                                chat_room_id = reader.GetInt32(reader.GetOrdinal("chat_room_id"))
+                                providername = reader.GetString(reader.GetOrdinal("providername"))
+                                Module_global.roomchat.Add(New Tuple(Of String, Integer, Integer)(providername, chat_room_id, provider_id))
+                            End While
+                        End If
+
+                        reader.Close()
+                    Catch ex As Exception
+                        Console.WriteLine("Error: " & ex.Message)
+                    End Try
+                End Using
+            End Using
+        End If
+    End Sub
+
+
 End Class

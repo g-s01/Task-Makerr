@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class AdminFeedbackView
     Inherits System.Windows.Forms.Form
 
@@ -26,7 +26,9 @@ Partial Class AdminFeedbackView
         providerButton = New Button()
         separatorLine = New Label()
         Panel1 = New Panel()
+        ComboBox1 = New ComboBox()
         Panel2 = New Panel()
+        applyButton = New Button()
         Panel1.SuspendLayout()
         SuspendLayout()
         ' 
@@ -69,6 +71,8 @@ Partial Class AdminFeedbackView
         ' 
         ' Panel1
         ' 
+        Panel1.Controls.Add(applyButton)
+        Panel1.Controls.Add(ComboBox1)
         Panel1.Controls.Add(Panel2)
         Panel1.Dock = DockStyle.Fill
         Panel1.Location = New Point(0, 0)
@@ -76,13 +80,36 @@ Partial Class AdminFeedbackView
         Panel1.Size = New Size(846, 667)
         Panel1.TabIndex = 7
         ' 
+        ' ComboBox1
+        ' 
+        ComboBox1.AccessibleDescription = ""
+        ComboBox1.AccessibleName = ""
+        ComboBox1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        ComboBox1.FormattingEnabled = True
+        ComboBox1.Items.AddRange(New Object() {"1", "2", "3", "4", "5"})
+        ComboBox1.Location = New Point(581, 60)
+        ComboBox1.Name = "ComboBox1"
+        ComboBox1.Size = New Size(151, 28)
+        ComboBox1.TabIndex = 1
+        ComboBox1.Tag = ""
+        ComboBox1.Text = "Rating Filter"
+        ' 
         ' Panel2
         ' 
         Panel2.AutoScroll = True
-        Panel2.Location = New Point(31, 105)
+        Panel2.Location = New Point(22, 105)
         Panel2.Name = "Panel2"
-        Panel2.Size = New Size(787, 539)
+        Panel2.Size = New Size(812, 550)
         Panel2.TabIndex = 0
+        ' 
+        ' applyButton
+        ' 
+        applyButton.Location = New Point(740, 60)
+        applyButton.Name = "applyButton"
+        applyButton.Size = New Size(75, 29)
+        applyButton.TabIndex = 2
+        applyButton.Text = "Apply"
+        applyButton.UseVisualStyleBackColor = True
         ' 
         ' AdminFeedbackView
         ' 
@@ -106,6 +133,7 @@ Partial Class AdminFeedbackView
     Friend WithEvents separatorLine As Label
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Panel2 As Panel
+    Friend WithEvents ComboBox1 As ComboBox
+    Friend WithEvents applyButton As Button
 
 End Class
-

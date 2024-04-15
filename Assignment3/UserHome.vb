@@ -208,6 +208,7 @@ Public Class UserHome
         End If
 
     End Sub
+
     Private Sub tileControl_Click(sender As Object, e As EventArgs)
 
         Dim clickedTile As Prov_tile = CType(sender, Prov_tile)
