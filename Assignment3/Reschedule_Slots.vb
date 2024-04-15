@@ -533,20 +533,21 @@ Rollback:
                     Next
                     If rowsAffected > 0 Then
                         Dim Total_cost As Integer = (Cost_per_hour * Total_slots) / 2 + reschedule_cost * (Cost_per_hour * Total_slots) / 2
+
                         Module_global.cost_of_booking = Total_cost
                         payments.CostOfService = Total_cost
                         payments.ProviderEmailID = ProviderName
                         ResvariableChanged.Reset()
                         ResmyVariable = 0
+                        Dim Total_cost1 As Integer = Total_cost + (Cost_per_hour * Total_slots) / 2
                         MessageBox.Show($"Data inserted successfully, you need to pay a total of {Total_cost}Rs.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
                         payments.Show()
-                        Await WaitForVariableChangeOrTimeoutAsync(9000000)
-
+                        Await WaitForVariableChangeOrTimeoutAsync(90000000)
 
                         If (Module_global.payment_successful = 1) Then
                             'Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location);"
                             Dim newDealTimeString As String = ""
-                            For I As Integer = 0 To 84
+                            For I As Integer = 0 To 83
                                 Dim index As Integer = I
                                 If BookedList.Exists(Function(x) x(0) = index \ 12 AndAlso x(1) = index Mod 12) Then
                                     newDealTimeString += "1"
@@ -554,20 +555,36 @@ Rollback:
                                     newDealTimeString += "0"
                                 End If
                             Next
-                            Dim dealsUpdate As String = "UPDATE deals SET time = @Time, status = 1 , dates = @Date WHERE deal_id = @Deal_ID;"
-                            Using command As New SqlCommand(dealsUpdate, connection)
-                                command.Parameters.AddWithValue("@Time", newDealTimeString)
-                                command.Parameters.AddWithValue("@Date", currentDate)
-                                command.Parameters.AddWithValue("@Deal_ID", Module_global.DealID_Reschedule)
-                                rowsAffected = command.ExecuteNonQuery()
-                                If rowsAffected = 0 Then
-                                    MessageBox.Show("Some unusual error occured.")
-                                End If
-                            End Using
+                            'MessageBox.Show(newDealTimeString)
+
+                            Dim dealsupdate As String = "update deals set time = @time, deal_amount = @Deal_amt , dates = @date where deal_id = @deal_id;"
+                            Try
+                                Using command As New SqlCommand(dealsupdate, connection)
+                                    ' Add parameters to the SqlCommand
+                                    command.Parameters.AddWithValue("@time", newDealTimeString)
+                                    command.Parameters.AddWithValue("@date", currentDate)
+                                    command.Parameters.AddWithValue("@deal_id", Module_global.DealID_Reschedule)
+                                    command.Parameters.AddWithValue("@Deal_amt", Total_cost1)
+
+                                    ' Execute the command
+                                    rowsAffected = command.ExecuteNonQuery()
+
+                                    ' Check the rows affected
+                                    If rowsAffected = 0 Then
+                                        MessageBox.Show("No rows were updated.")
+                                    Else
+                                        MessageBox.Show("Update successful.")
+                                    End If
+                                End Using
+                            Catch ex As Exception
+                                MessageBox.Show("An error occurred: " & ex.Message)
+                            End Try
+
 
                             '' Now we have stored the previously booked slots in the PreviouslyBookedList
-
+                            MessageBox.Show("LEN  " + PreviouslyBookedList.Count.ToString())
                             For Each pair As Integer() In PreviouslyBookedList
+
                                 Dim found As Integer = -1
                                 For Each slot1 As Integer() In BookedList
                                     If (slot1(0) = pair(0) And slot1(1) = pair(1)) Then
@@ -598,10 +615,15 @@ Rollback:
                                 ' Execute the DELETE query to delete the Schedules
                             Next
 
+                            BookedList.Clear()
+                            PreviouslyBookedList.Clear()
+                            NewlyBookedList.Clear()
+                            'Module_global.payment_successful = 0
 
+                            ResmyVariable = 0
+                            ResvariableChanged.Reset()
                             Module_global.payment_successful = 0
-                            Book_slots.myVariable = 0
-                            Book_slots.variableChanged.Reset()
+                            ResmyVariable = 0
                             MessageBox.Show("Successfully Booked the slots!!.")
                             Me.Close()
                         Else
@@ -624,9 +646,9 @@ Rollback:
                                 End If
                                 ' Execute the DELETE query to delete the Schedules
                             Next
-                            Book_slots.variableChanged.Reset()
+                            ResvariableChanged.Reset()
                             Module_global.payment_successful = 0
-                            Book_slots.myVariable = 0
+                            ResmyVariable = 0
                             Me.Close()
                             With user_appointment_details
                                 .TopLevel = False
