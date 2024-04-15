@@ -168,16 +168,11 @@ Public Class user_search
             ' Convert binary data back to an image
         Else
 
-            image = ImageFromBinary(binaryImageData)
+            image = user_profilepic
         End If
 
         pictureBox.Image = image
         pictureBox.SizeMode = PictureBoxSizeMode.Zoom
-    End Function
-    Function ImageFromBinary(ByVal binaryData As Byte()) As Image
-        Using ms As New MemoryStream(binaryData)
-            Return Image.FromStream(ms)
-        End Using
     End Function
 
     ' author: sarg19
