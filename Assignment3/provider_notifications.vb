@@ -315,12 +315,11 @@ Public Class provider_notifications
         Button4.BackColor = Color.FromKnownColor(KnownColor.Control)
 
         ' Query to retrieve user name, slot, and cost per hour for the given provider ID with 50% paid booking
-        Dim query As String = "SELECT c.username as username, d.time as time, p.cost_per_hour " &
+        Dim query As String = "SELECT c.username as username, d.time as time, d.deal_amount,d.user_id,d.deal_id,d.location " &
                               "FROM Deals d " &
                               "INNER JOIN customer c ON d.user_id = c.user_id " &
-                              "INNER JOIN Provider p ON d.provider_id = p.provider_id " &
                               "WHERE d.provider_id = @ProviderId AND d.status = 4" ' Assuming 0 represents 50% paid booking status
-
+        ' "INNER JOIN Provider p ON d.provider_id = p.provider_id " &
 
         Using connection As New SqlConnection(connectionString)
             Dim command As New SqlCommand(query, connection)
@@ -343,6 +342,10 @@ Public Class provider_notifications
 
                     While reader.Read()
                         Dim customerName As String = reader("username").ToString()
+                        Dim dealamount As Integer = Convert.ToInt32(reader("deal_amount"))
+                        Dim userId As Integer = Convert.ToInt32(reader("user_id"))
+                        Dim dealid As Integer = Convert.ToInt32(reader("deal_id"))
+                        Dim location As String = reader("location").ToString()
 
                         ' Create a Panel control for each customer
                         Dim panel As New Panel()
@@ -358,7 +361,14 @@ Public Class provider_notifications
                         nameLabel.Text = $"{customerName}"
                         nameLabel.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
                         nameLabel.AutoSize = True
-                        nameLabel.Location = New Point(30, 20) ' Set the location of the label within the panel
+                        nameLabel.Location = New Point(30, 10) ' Set the location of the label within the panel
+
+                        ' Create labels for Customer Location
+                        Dim loc As New Label()
+                        loc.Text = location
+                        loc.Font = New Font("Microsoft YaHei", 10)
+                        loc.AutoSize = True
+                        loc.Location = New Point(30, 40)
 
                         ' Create labels for customer details
                         Dim amount As New Label()
@@ -366,6 +376,12 @@ Public Class provider_notifications
                         amount.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
                         amount.AutoSize = True
                         amount.Location = New Point(570, 20) ' Set the location of the label within the panel
+
+                        Dim paid_label As New Label()
+                        paid_label.Text = "Status : Paid"
+                        paid_label.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
+                        paid_label.AutoSize = True
+                        paid_label.Location = New Point(570, 50)
 
                         ' Create Pay Refund button dynamically
                         Dim payRefundButton As New Button()
@@ -379,14 +395,75 @@ Public Class provider_notifications
                                                               ' Handle the Pay Refund button click event here
                                                               ' You can implement the logic to process the refund
                                                               ' For example, you can display a message box or call a refund function
-                                                              MessageBox.Show("Refund processed for " & customerName)
+
+                                                              ' Retrieve provider balance
+                                                              Dim providerBalance As Integer = 0
+                                                              'Dim provPassword As String=""
+                                                              Using providerConnection As New SqlConnection(connectionString)
+                                                                  Dim providerCommand As New SqlCommand("SELECT balance FROM Provider WHERE provider_id = @ProviderId", providerConnection)
+                                                                  providerCommand.Parameters.AddWithValue("@ProviderId", providerId)
+                                                                  providerConnection.Open()
+                                                                  providerBalance = Convert.ToInt32(providerCommand.ExecuteScalar())
+                                                              End Using
+
+                                                              ' Check if the provider has sufficient balance
+                                                              If providerBalance >= dealamount Then
+                                                                  ' Update provider balance
+                                                                  Using providerConnection As New SqlConnection(connectionString)
+                                                                      Dim providerCommand As New SqlCommand("UPDATE Provider SET balance = balance - @RefundAmount WHERE provider_id = @ProviderId", providerConnection)
+                                                                      providerCommand.Parameters.AddWithValue("@RefundAmount", dealamount / 2)
+                                                                      providerCommand.Parameters.AddWithValue("@ProviderId", providerId)
+                                                                      providerConnection.Open()
+                                                                      providerCommand.ExecuteNonQuery()
+                                                                  End Using
+
+                                                                  ' Update customer balance
+                                                                  Using customerConnection As New SqlConnection(connectionString)
+                                                                      Dim customerCommand As New SqlCommand("UPDATE customer SET balance = balance + @RefundAmount WHERE user_id = @UserId", customerConnection)
+                                                                      customerCommand.Parameters.AddWithValue("@RefundAmount", dealamount / 2)
+                                                                      customerCommand.Parameters.AddWithValue("@UserId", userId)
+                                                                      customerConnection.Open()
+                                                                      customerCommand.ExecuteNonQuery()
+                                                                  End Using
+
+                                                                  ' Insert deal_id into refunded_deals table
+                                                                  Using refundedDealsConnection As New SqlConnection(connectionString)
+                                                                      Dim insertCommand As New SqlCommand("INSERT INTO refunded_deals (deal_id) VALUES (@DealId)", refundedDealsConnection)
+                                                                      insertCommand.Parameters.AddWithValue("@DealId", dealid)
+                                                                      refundedDealsConnection.Open()
+                                                                      insertCommand.ExecuteNonQuery()
+                                                                  End Using
+
+                                                                  ' Inform user about successful refund
+                                                                  MessageBox.Show("Refund processed for " & customerName & ". Amount: $" & (dealamount / 2).ToString())
+                                                                  panel.Controls.Add(paid_label)
+                                                                  panel.Controls.Remove(payRefundButton)
+                                                              Else
+                                                                  ' Inform user about insufficient balance
+                                                                  MessageBox.Show("Insufficient balance to process refund.")
+                                                              End If
                                                           End Sub
 
                         ' Add labels to the panel
                         panel.Controls.Add(nameLabel)
                         panel.Controls.Add(amount)
-                        panel.Controls.Add(payRefundButton)
+                        panel.Controls.Add(loc)
 
+                        Dim isRefunded As Boolean = False
+                        Using checkConnection As New SqlConnection(connectionString)
+                            Dim checkCommand As New SqlCommand("SELECT COUNT(*) FROM refunded_deals WHERE deal_id = @DealId", checkConnection)
+                            checkCommand.Parameters.AddWithValue("@DealId", dealid)
+                            checkConnection.Open()
+                            Dim count As Integer = Convert.ToInt32(checkCommand.ExecuteScalar())
+                            isRefunded = (count > 0)
+                        End Using
+
+                        ' If the deal_id is present in the refunded_deals table
+                        If isRefunded Then
+                            panel.Controls.Add(paid_label)
+                        Else
+                            panel.Controls.Add(payRefundButton)
+                        End If
 
                         ' Add the panel to the FlowLayoutPanel
                         FlowLayoutPanel1.Controls.Add(panel)

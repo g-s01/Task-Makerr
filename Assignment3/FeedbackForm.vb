@@ -68,6 +68,8 @@ Public Class FeedbackForm
 
             lblTitle.Text = "Thank you for your Feedback"
             lblRateUs.Text = "Want to update it?"
+            lblTitle.Location = New Point(185, 30)
+            lblRateUs.Location = New Point(250, 70)
             btnSend.Text = "Update"
             txtFeedback.Text = feedbackText
         End If
