@@ -205,48 +205,56 @@ Public Class provider_appointment_details
     End Sub
 
     Private Sub btn_appointment_completed_Click(sender As Object, e As EventArgs) Handles btn_appointment_completed.Click
-        Dim random As New Random()
+        Dim result As DialogResult = MessageBox.Show("Mark Appointment as completed?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+
+        ' Check the user's response
+        If result = DialogResult.Yes Then
+            Dim random As New Random()
         Dim randomNumber As Integer = random.Next(100000, 999999)
         Dim subject As String = "Canceling Appointment"
         Dim body As String = "You are going to Cancel Appointment " & vbCrLf & "With : " + user & vbCrLf & "Time : " + time + "Date : " + bookDate & vbCrLf & "Pay Per Hour : " + costPerHour.ToString
         sendEmail(randomNumber, subject, body)
 
         Dim code As Integer
-        If otp_auth.ShowDialog = DialogResult.OK Then
-            If Integer.TryParse(otp_auth.InputValue, code) Then
-                If code = randomNumber Then
-                    Dim provider_exists As Boolean = False
-                    Dim user_exists As Boolean = False
-                    Dim provider_balance_sufficients As Boolean = False
+            If otp_auth.ShowDialog = DialogResult.OK Then
+                If Integer.TryParse(otp_auth.InputValue, code) Then
+                    If code = randomNumber Then
+                        Dim provider_exists As Boolean = False
+                        Dim user_exists As Boolean = False
+                        Dim provider_balance_sufficients As Boolean = False
 
 
 
-                    Dim sqlQuery = "UPDATE deals SET status = @completed_status WHERE deal_id = @DealID;"
+                        Dim sqlQuery = "UPDATE deals SET status = @completed_status WHERE deal_id = @DealID;"
 
-                    ' Add parameters to the SQL query to prevent SQL injection
-                    Using connection As New SqlConnection(connectionString)
-                        Using command As New SqlCommand(sqlQuery, connection)
-                            command.Parameters.AddWithValue("@DealID", dealID)
-                            command.Parameters.AddWithValue("@completed_status", COMPLETED)
-                            connection.Open()
-                            command.ExecuteNonQuery()
+                        ' Add parameters to the SQL query to prevent SQL injection
+                        Using connection As New SqlConnection(connectionString)
+                            Using command As New SqlCommand(sqlQuery, connection)
+                                command.Parameters.AddWithValue("@DealID", dealID)
+                                command.Parameters.AddWithValue("@completed_status", COMPLETED)
+                                connection.Open()
+                                command.ExecuteNonQuery()
+                            End Using
                         End Using
-                    End Using
-                    btn_cancel.Visible = False
-                    btn_cancel.Enabled = False
-                    btn_appointment_completed.Visible = False
-                    btn_appointment_completed.Enabled = False
+                        btn_cancel.Visible = False
+                        btn_cancel.Enabled = False
+                        btn_appointment_completed.Visible = False
+                        btn_appointment_completed.Enabled = False
 
-                End If
-
+                    End If
 
 
-            Else
+
+                Else
                     MessageBox.Show("Write correct OTP please.")
                 End If
             Else
                 MessageBox.Show("The OTP is a 6 digit number, please adhere to the convention.")
             End If
+        Else
+
+        End If
 
 
     End Sub
