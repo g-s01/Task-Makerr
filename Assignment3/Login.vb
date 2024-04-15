@@ -76,6 +76,7 @@ Public Class Login
 
                         ' Execute the command and retrieve the generated identity value
                         Module_global.Support_room_id = Convert.ToInt32(command.ExecuteScalar())
+                        LoadRoomsFromDatabase(Module_global.Provider_ID, Module_global.User_Role)
                         'MessageBox.Show("support id" & Support_room_id)
                         Me.Close()
                         provider_template.Show()
@@ -149,6 +150,7 @@ Public Class Login
                         command.Parameters.AddWithValue("@UserType", Module_global.User_Role)
                         ' Execute the command and retrieve the generated identity value
                         Module_global.Support_room_id = Convert.ToInt32(command.ExecuteScalar())
+                        LoadRoomsFromDatabase(Module_global.User_ID, Module_global.User_Role)
                         Me.Close()
                         user_template.Show()
                     End Using
@@ -170,5 +172,78 @@ Public Class Login
         Admin_Login.Show()
     End Sub
 
+
+
+    Private Sub LoadRoomsFromDatabase(userId As Integer, user_role As String)
+        Module_global.roomchat.Clear()
+        Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+
+        If Module_global.User_Role = "provider" Then
+            Dim query As String = "SELECT chat_room_id, username, provider_id FROM chat_room WHERE provider_id = @ProviderId"
+            Using connection As New SqlConnection(connectionString)
+                Using command As New SqlCommand(query, connection)
+                    ' Add parameters to the SQL query to prevent SQL injection
+                    command.Parameters.AddWithValue("@ProviderId", Module_global.Provider_ID)
+
+                    Dim provider_id As Integer
+                    Dim username As String
+                    Dim chat_room_id As Integer
+
+                    Try
+                        connection.Open()
+                        Dim reader As SqlDataReader = command.ExecuteReader()
+
+                        If reader.HasRows Then
+                            ' Loop through the rows
+                            While reader.Read()
+                                ' Access columns by name or index
+                                provider_id = reader.GetInt32(reader.GetOrdinal("provider_id"))
+                                chat_room_id = reader.GetInt32(reader.GetOrdinal("chat_room_id"))
+                                username = reader.GetString(reader.GetOrdinal("username"))
+                                Module_global.roomchat.Add(New Tuple(Of String, Integer, Integer)(username, chat_room_id, provider_id))
+                            End While
+                        End If
+
+                        reader.Close()
+                    Catch ex As Exception
+                        Console.WriteLine("Error: " & ex.Message)
+                    End Try
+                End Using
+            End Using
+        ElseIf Module_global.User_Role = "customer" Then
+            Dim query As String = "SELECT chat_room_id, providername, provider_id FROM chat_room WHERE user_id = @UserId"
+            Using connection As New SqlConnection(connectionString)
+                Using command As New SqlCommand(query, connection)
+                    ' Add parameters to the SQL query to prevent SQL injection
+                    command.Parameters.AddWithValue("@UserId", Module_global.User_ID)
+
+                    Dim provider_id As Integer
+                    Dim providername As String
+                    Dim chat_room_id As Integer
+
+                    Try
+                        connection.Open()
+                        Dim reader As SqlDataReader = command.ExecuteReader()
+
+                        If reader.HasRows Then
+                            ' Loop through the rows
+                            While reader.Read()
+                                ' Access columns by name or index
+                                provider_id = reader.GetInt32(reader.GetOrdinal("provider_id"))
+                                chat_room_id = reader.GetInt32(reader.GetOrdinal("chat_room_id"))
+                                providername = reader.GetString(reader.GetOrdinal("providername"))
+                                Module_global.roomchat.Add(New Tuple(Of String, Integer, Integer)(providername, chat_room_id, provider_id))
+                            End While
+                        End If
+
+                        reader.Close()
+                    Catch ex As Exception
+                        Console.WriteLine("Error: " & ex.Message)
+                    End Try
+                End Using
+            End Using
+        End If
+
+    End Sub
 
 End Class

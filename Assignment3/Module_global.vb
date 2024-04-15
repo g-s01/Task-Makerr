@@ -17,7 +17,7 @@ Module Module_global
     Public serviceType As String = ""
     Public service_types As List(Of String) = New List(Of String) From {"Cleaning", "Plumbing", "Electrical", "Painting", "Decorating", "Catering", "Photography", "Others"}
     Public provider_locations As List(Of String) = New List(Of String) From {"Panbazar", "Dispur", "Chandmari", "Zoo Road", "Beltola", "Khanapara", "Hatigaon", "Jalukbari", "Maligaon", "Garchuk"}
-
+    Public roomchat As New List(Of Tuple(Of String, Integer, Integer))()
 
     ' Function to check if the password is in the common passwords file
     Function IsCommonPassword(ByVal password As String) As Boolean
