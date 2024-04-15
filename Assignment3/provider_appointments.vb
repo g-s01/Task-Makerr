@@ -23,8 +23,6 @@ Public Class provider_appointments
         Dim clickedPanel As Panel = DirectCast(sender, Panel)
         Dim panelIndex As Integer = Array.IndexOf(panelArray, clickedPanel)
 
-        MessageBox.Show("Upper Panel Clicked - Index: " & panelIndex.ToString())
-
         ' Show related form for upper panel click
         'Dim relatedForm As New RelatedForm() ' Replace RelatedForm with the actual name of your related form class
         'relatedForm.Show()
