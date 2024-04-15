@@ -103,6 +103,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property bg_star() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("bg_star", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property cancellationsicon() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("cancellationsicon", resourceCulture)
@@ -117,6 +127,71 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("chats", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to 123456
+        '''123456789
+        '''qwerty
+        '''password
+        '''111111
+        '''12345678
+        '''abc123
+        '''1234567
+        '''password1
+        '''12345
+        '''1234567890
+        '''123123
+        '''000000
+        '''iloveyou
+        '''1234
+        '''1q2w3e4r5t
+        '''qwertyuiop
+        '''monkey
+        '''dragon
+        '''123456a
+        '''654321
+        '''123321
+        '''666666
+        '''1qaz2wsx
+        '''myspace1
+        '''121212
+        '''homelesspa
+        '''123qwe
+        '''a123456
+        '''123abc
+        '''1q2w3e4r
+        '''qwe123
+        '''7777777
+        '''qwerty123
+        '''target123
+        '''tinkle
+        '''987654321
+        '''qwerty1
+        '''222222
+        '''zxcvbnm
+        '''1g2w3e4r
+        '''gwerty
+        '''zag12wsx
+        '''gwerty123
+        '''555555
+        '''fuckyou
+        '''112233
+        '''asdfghjkl
+        '''1q2w3e
+        '''123123123
+        '''qazwsx
+        '''computer
+        '''princess
+        '''12345a
+        '''ashley
+        '''159753
+        ''' [rest of string was truncated]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property common_passwords() As String
+            Get
+                Return ResourceManager.GetString("common_passwords", resourceCulture)
             End Get
         End Property
         
@@ -136,6 +211,36 @@ Namespace My.Resources
         Friend ReadOnly Property Ellipse_6() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Ellipse 6", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property gold_star() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("gold_star", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property grey_star() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("grey_star", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property half_star() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("half_star", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -399,55 +504,25 @@ Namespace My.Resources
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property Vector() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Vector", resourceCulture)
-                Return CType(obj, System.Drawing.Bitmap)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
-
-        Friend ReadOnly Property half_star() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("half_star", resourceCulture)
-                Return CType(obj, System.Drawing.Bitmap)
-            End Get
-        End Property
-        Friend ReadOnly Property grey_star() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("grey_star", resourceCulture)
-                Return CType(obj, System.Drawing.Bitmap)
-            End Get
-        End Property
-        Friend ReadOnly Property gold_star() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("gold_star", resourceCulture)
-                Return CType(obj, System.Drawing.Bitmap)
-            End Get
-        End Property
-        Friend ReadOnly Property bg_star() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("bg_star", resourceCulture)
-                Return CType(obj, System.Drawing.Bitmap)
-            End Get
-        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property yellow_star() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("yellow_star", resourceCulture)
-                Return CType(obj, System.Drawing.Bitmap)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
-
-	Friend ReadOnly Property common_passwords() As String
-            Get
-        	Dim obj As Object = ResourceManager.GetObject("common_passwords", resourceCulture)
-        	Return CType(obj, String)
-    	    End Get
-	End Property
-
     End Module
-
 End Namespace
