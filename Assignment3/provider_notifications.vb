@@ -2,6 +2,9 @@
 Imports System.Configuration
 Imports Microsoft.Data.SqlClient
 Imports System.Drawing.Drawing2D
+Imports iText.StyledXmlParser.Jsoup.Select.Evaluator
+Imports System.Net.Mail
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Tab
 Public Class provider_notifications
 
     Dim providerId As Integer = Module_global.Provider_ID
@@ -311,10 +314,11 @@ Public Class provider_notifications
         Button4.BackColor = Color.FromKnownColor(KnownColor.Control)
 
         ' Query to retrieve user name, slot, and cost per hour for the given provider ID with 50% paid booking
-        Dim query As String = "SELECT c.username as username, d.time as time, d.deal_amount,d.user_id,d.deal_id,d.location " &
-                              "FROM Deals d " &
-                              "INNER JOIN customer c ON d.user_id = c.user_id " &
-                              "WHERE d.provider_id = @ProviderId AND d.status = 4" ' Assuming 0 represents 50% paid booking status
+        Dim query As String = "SELECT c.username as username, d.time as time, d.deal_amount,d.user_id,d.deal_id,d.location,c.email,p.providername " &
+                      "FROM Deals d " &
+                      "INNER JOIN customer c ON d.user_id = c.user_id " &
+                      "INNER JOIN Provider p ON d.provider_id = p.provider_id " &
+                      "WHERE d.provider_id = @ProviderId AND d.status = 4" ' Assuming 0 represents 50% paid booking status
         ' "INNER JOIN Provider p ON d.provider_id = p.provider_id " &
 
         Using connection As New SqlConnection(connectionString)
@@ -342,6 +346,8 @@ Public Class provider_notifications
                         Dim userId As Integer = Convert.ToInt32(reader("user_id"))
                         Dim dealid As Integer = Convert.ToInt32(reader("deal_id"))
                         Dim location As String = reader("location").ToString()
+                        Dim email As String = reader("email").ToString()
+                        Dim providername As String = reader("providername").ToString()
 
                         ' Create a Panel control for each customer
                         Dim panel As New Panel()
@@ -434,6 +440,25 @@ Public Class provider_notifications
                                                                   MessageBox.Show("Refund processed for " & customerName & ". Amount: $" & (dealamount / 2).ToString())
                                                                   panel.Controls.Add(paid_label)
                                                                   panel.Controls.Remove(payRefundButton)
+
+                                                                  'mail notification to user
+                                                                  Try
+                                                                      Dim mail As New MailMessage
+                                                                      Dim smtpserver As New SmtpClient("smtp-mail.outlook.com")
+                                                                      smtpserver.Port = 587
+
+                                                                      mail.From = New MailAddress("group1b-cs346@outlook.com")
+                                                                      mail.To.Add(Email)
+                                                                      mail.Subject = "CANCELLATION REFUND SUCCESSFUL"
+                                                                      mail.Body = "Refund succcesful for appointment with provider : " + providername + " of  Amount : $" + (dealamount / 2).ToString()
+
+                                                                      smtpserver.Credentials = New System.Net.NetworkCredential("group1b-cs346@outlook.com", "chillSreehari")
+                                                                      smtpserver.EnableSsl = True
+                                                                      smtpserver.Send(mail)
+
+                                                                  Catch ex As Exception
+                                                                      MessageBox.Show("SMTP error: " & ex.Message)
+                                                                  End Try
                                                               Else
                                                                   ' Inform user about insufficient balance
                                                                   MessageBox.Show("Insufficient balance to process refund.")
