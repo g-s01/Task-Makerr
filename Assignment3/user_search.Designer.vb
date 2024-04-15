@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class user_search
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class user_search
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Panel1 = New Panel()
         TextBox1 = New TextBox()
@@ -93,11 +93,11 @@ Partial Class user_search
         TableLayoutPanel1.BackColor = Color.FromArgb(CByte(240), CByte(218), CByte(248))
         TableLayoutPanel1.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         TableLayoutPanel1.ColumnCount = 6
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 230F))
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 150F))
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 230.0F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 150.0F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle())
         TableLayoutPanel1.Controls.Add(Panel7, 5, 0)
         TableLayoutPanel1.Controls.Add(Panel2, 0, 0)
@@ -109,7 +109,7 @@ Partial Class user_search
         TableLayoutPanel1.Margin = New Padding(0)
         TableLayoutPanel1.Name = "TableLayoutPanel1"
         TableLayoutPanel1.RowCount = 1
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0F))
         TableLayoutPanel1.Size = New Size(768, 44)
         TableLayoutPanel1.TabIndex = 1
         ' 
@@ -126,7 +126,7 @@ Partial Class user_search
         ' 
         Label7.Anchor = AnchorStyles.None
         Label7.AutoSize = True
-        Label7.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label7.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label7.Location = New Point(9, 7)
         Label7.Margin = New Padding(0)
         Label7.Name = "Label7"
@@ -147,7 +147,7 @@ Partial Class user_search
         ' 
         Label2.Anchor = AnchorStyles.None
         Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label2.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label2.Location = New Point(42, 7)
         Label2.Margin = New Padding(0)
         Label2.Name = "Label2"
@@ -168,7 +168,7 @@ Partial Class user_search
         ' 
         Label3.Anchor = AnchorStyles.None
         Label3.AutoSize = True
-        Label3.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label3.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label3.Location = New Point(13, 7)
         Label3.Margin = New Padding(0)
         Label3.Name = "Label3"
@@ -189,7 +189,7 @@ Partial Class user_search
         ' 
         Label4.Anchor = AnchorStyles.None
         Label4.AutoSize = True
-        Label4.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label4.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label4.Location = New Point(7, 7)
         Label4.Margin = New Padding(0)
         Label4.Name = "Label4"
@@ -210,7 +210,7 @@ Partial Class user_search
         ' 
         Label5.Anchor = AnchorStyles.None
         Label5.AutoSize = True
-        Label5.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label5.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label5.Location = New Point(15, 7)
         Label5.Margin = New Padding(0)
         Label5.Name = "Label5"
@@ -231,7 +231,7 @@ Partial Class user_search
         ' 
         Label6.Anchor = AnchorStyles.None
         Label6.AutoSize = True
-        Label6.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label6.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label6.Location = New Point(11, 7)
         Label6.Margin = New Padding(0)
         Label6.Name = "Label6"
@@ -243,18 +243,18 @@ Partial Class user_search
         ' 
         providersTablePanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         providersTablePanel.ColumnCount = 6
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 230F))
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 150F))
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 230.0F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 150.0F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
         providersTablePanel.ColumnStyles.Add(New ColumnStyle())
         providersTablePanel.Location = New Point(37, 192)
         providersTablePanel.Margin = New Padding(0)
         providersTablePanel.Name = "providersTablePanel"
         providersTablePanel.RowCount = 1
         providersTablePanel.RowStyles.Add(New RowStyle())
-        providersTablePanel.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
+        providersTablePanel.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
         providersTablePanel.Size = New Size(767, 372)
         providersTablePanel.TabIndex = 2
         ' 

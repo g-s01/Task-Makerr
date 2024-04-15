@@ -78,12 +78,6 @@ Public Class user_search
                                      End If
                                  End While
                              End Using
-                             'For Each pair As KeyValuePair(Of Int32, Tuple(Of Integer, Integer)) In reviews
-                             '    Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
-                             '    Dim rating As Double
-                             '    rating = Math.Round(currentValue.Item1 / CType(currentValue.Item2, Double), 1)
-                             '    rating_prov.Add(pair.Key, rating)
-                             'Next
                              Parallel.ForEach(reviews, Sub(pair)
                                                            Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
                                                            Dim rating As Double
@@ -110,13 +104,6 @@ Public Class user_search
                                      Dim name As String = reader.GetString(reader.GetOrdinal("providername"))
                                      Dim provider As Int32 = reader.GetInt32(reader.GetOrdinal("provider_id"))
                                      Dim cost As Double = reader.GetInt32(reader.GetOrdinal("cost_per_hour"))
-                                     'Dim rating As String
-                                     'If reviews.ContainsKey(provider) Then
-                                     'Dim currentValue As Tuple(Of Integer, Integer) = reviews(provider)
-                                     'rating = rating_prov(provider).ToString()
-                                     'Else
-                                     'rating = "N/A"
-                                     'End If
                                      temp_providers.Add(New Entry With {.providerID = provider, .providerName = name, .service = service, .location = loc, .cost = cost})
                                  End While
                              End Using
@@ -127,16 +114,6 @@ Public Class user_search
                      End Using
                  End Function)
                  )
-        'For Each entry As Entry In providers
-        '    Dim rating As String
-        '    If reviews.ContainsKey(entry.providerID) Then
-        '        Dim currentValue As Tuple(Of Integer, Integer) = reviews(entry.providerID)
-        '        rating = rating_prov(entry.providerID).ToString()
-        '    Else
-        '        rating = "N/A"
-        '    End If
-        '    entry.rating = rating
-        'Next
         For i As Integer = 0 To temp_providers.Count() - 1
             Dim rating As String
             If reviews.ContainsKey(temp_providers(i).providerID) Then
@@ -158,9 +135,6 @@ Public Class user_search
         Dim path As New GraphicsPath()
         path.AddEllipse(0, 0, pictureBox.Width, pictureBox.Height)
 
-        ' Set the PictureBox's region to the circle defined by the GraphicsPath
-        'pictureBox.Region = New Region(path)
-        'Change according to the user after fetching from the database
         Dim image As Image
         If (is_null_image = 1) Then
             image = My.Resources.male
