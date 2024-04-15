@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Data.SqlClient
+﻿Imports System.Configuration.Provider
+Imports Microsoft.Data.SqlClient
 
 Public Class provider_appointments
     Dim panelArray(2) As System.Windows.Forms.Panel
@@ -50,8 +51,6 @@ Public Class provider_appointments
     End Sub
     Private Sub Button_Click(sender As Object, e As EventArgs)
         'MessageBox.Show("Button Clicked in Lower Panel")
-
-        provider_template.ShowForm(New provider_appointment_details())
         ' Show related form for button click
         'Dim relatedForm As New RelatedForm2() ' Replace RelatedForm2 with the actual name of your related form class
         'relatedForm.Show()
@@ -231,7 +230,14 @@ Public Class provider_appointments
         button_cancel.Font = New Font("Microsoft YaHei", 10.2F)
         button_cancel.BackColor = System.Drawing.Color.FromArgb(CByte(245), CByte(140), CByte(215))
 
-        AddHandler button_cancel.Click, AddressOf Button_Click
+        'AddHandler button_cancel.Click, AddressOf Button_Click
+
+        AddHandler button_cancel.Click, Sub(sender As Object, e As EventArgs)
+
+                                            Module_global.Appointment_Det_DealId = DealId
+                                            provider_template.ShowForm(New provider_appointment_details())
+                                        End Sub
+
 
         splitContainerArray(i).Panel2.Controls.Add(button_cancel)
 

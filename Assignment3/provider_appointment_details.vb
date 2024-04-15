@@ -25,14 +25,14 @@ Public Class provider_appointment_details
     Private costPerHour As Decimal
     Private status As Integer = 0
 
-    Private CANCELLED As Integer = 2
+    Private CANCELLED As Integer = 4
 
     Dim connectionString As String
     Dim provider As Integer = 0
     Dim ID As String = "task-makerr-cs346@outlook.in" ' For debugging
     Private Sub provider_appointment_details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        connectionString = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-
+        'connectionString = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+        connectionString = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
         Dim query As String = "SELECT * FROM deals WHERE deal_id = @DealID"
         provider = 0
 
@@ -62,12 +62,33 @@ Public Class provider_appointment_details
                             'Dim location As String = reader.GetString(reader.GetOrdinal("location"))
                             ' Access other columns in a similar manner
                             ' Do something with the retrieved data
+                            If status = 1 Then
+
+                                btn_cancel.Visible = True
+                                btn_cancel.Enabled = True
+                                btn_appointment_completed.Visible = True
+                                btn_appointment_completed.Enabled = True
+                            End If
                             If status = CANCELLED Then
                                 btn_cancel.Visible = False
                                 btn_cancel.Enabled = False
                                 btn_appointment_completed.Visible = False
                                 btn_appointment_completed.Enabled = False
                             End If
+                            If status = 2 Then
+                                btn_cancel.Visible = False
+                                btn_cancel.Enabled = False
+                                btn_appointment_completed.Visible = True
+                                btn_appointment_completed.Enabled = True
+                            End If
+
+                            If status = 3 Then
+                                btn_appointment_completed.Visible = False
+                                btn_appointment_completed.Enabled = False
+                                btn_cancel.Visible = False
+                                btn_cancel.Enabled = False
+                            End If
+
 
 
                             ' Find the position of the first '1' in the bit string
@@ -166,7 +187,7 @@ Public Class provider_appointment_details
             refundPercentage = 0 ' No refund if canceled within 3 hours of the appointment
         End If
 
-        refundPercentage = 50 ' for debugging
+        'refundPercentage = 50 ' for debugging
         advance = slots * costPerHour * (advancePercentage / 100)
         Dim refundAmount As Double = advance * (refundPercentage / 100)
         Dim result As DialogResult = MessageBox.Show("Cancellation will result in deduction of " & (100 - refundPercentage) & "% of the advance payment (" & advancePercentage & "% of the total amount). Refund amount: " & refundAmount & ". Do you want to continue?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
