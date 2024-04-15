@@ -4,7 +4,7 @@ Imports Microsoft.Data.SqlClient
 Imports Microsoft.VisualBasic.ApplicationServices
 
 Public Class Login
-
+    Dim login_status As Boolean = False
     Private Sub Login_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         error_label.Text = ""
     End Sub
@@ -45,7 +45,7 @@ Public Class Login
                         If reader.Read() Then
                             Module_global.Provider_ID = Convert.ToInt32(reader("Provider_ID"))
                             Module_global.provider_name = reader("providername").ToString()
-                            Module_global.User_Role = "customer"
+                            Module_global.User_Role = "provider"
                             ' Check if the profile_image field is not DBNull
                             If Not reader.IsDBNull(reader.GetOrdinal("profile_image")) Then
                                 Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
@@ -56,8 +56,7 @@ Public Class Login
                             Else
                                 Module_global.provider_profilepic = My.Resources.male  ' Or set a default image if needed
                             End If
-                            'MessageBox.Show($"User ID: {Provider_ID}{Environment.NewLine}Username: {provider_name}", "User Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            'taskmakerrbtn.BackgroundImage = provider_profilepic
+                            login_status = True
 
                         Else
                             error_label.Text = "Invalid email or password. No such provider account"
@@ -65,7 +64,9 @@ Public Class Login
                         End If
                         reader.Close()
                     End Using
-                    Dim supportquery As String = "
+
+                    If login_status Then
+                        Dim supportquery As String = "
                         DECLARE @SupportRoomId INT;
 
                         IF NOT EXISTS (SELECT 1 FROM support_room WHERE user_id = @UserId AND user_type=@UserType)
@@ -80,18 +81,20 @@ Public Class Login
                         END
                         SELECT @SupportRoomId AS support_room_id;
                         "
-                    Using command As New SqlCommand(supportquery, sqlConnection)
-                        ' Set parameter values
-                        command.Parameters.AddWithValue("@UserId", Module_global.Provider_ID)
-                        command.Parameters.AddWithValue("@Username", Module_global.provider_name)
-                        command.Parameters.AddWithValue("@UserType", Module_global.User_Role)
-                        ' Execute the command and retrieve the generated identity value
-                        Module_global.Support_room_id = Convert.ToInt32(command.ExecuteScalar())
-                        LoadRoomsFromDatabase(Module_global.Provider_ID, Module_global.User_Role)
-                        'MessageBox.Show("support id" & Support_room_id)
-                        Me.Close()
-                        provider_template.Show()
-                    End Using
+                        Using command As New SqlCommand(supportquery, sqlConnection)
+                            ' Set parameter values
+                            command.Parameters.AddWithValue("@UserId", Module_global.Provider_ID)
+                            command.Parameters.AddWithValue("@Username", Module_global.provider_name)
+                            command.Parameters.AddWithValue("@UserType", Module_global.User_Role)
+                            ' Execute the command and retrieve the generated identity value
+                            Module_global.Support_room_id = Convert.ToInt32(command.ExecuteScalar())
+                            LoadRoomsFromDatabase(Module_global.Provider_ID, Module_global.User_Role)
+                            'MessageBox.Show("support id" & Support_room_id)
+                            Me.Close()
+                            provider_template.Show()
+                        End Using
+                    End If
+
                 End Using
             Catch ex As Exception
                 ' Handle any exceptions that occur during database operations
@@ -140,16 +143,18 @@ Public Class Login
                                 ' Set default image using resource
                                 user_profilepic = My.Resources.male ' Replace with your resource name
                             End If
+                            login_status = True
                         Else
                             error_label.Text = "Invalid email or password. No such user account"
                             password_tb.Text = ""
                         End If
                         reader.Close()
                     End Using
-                    Dim supportquery As String = "
-                          DECLARE @SupportRoomId INT;
 
-                          IF NOT EXISTS (SELECT 1 FROM support_room WHERE user_id = @UserId)
+                    If login_status Then
+                        Dim supportquery As String = "
+                          DECLARE @SupportRoomId INT;
+                         IF NOT EXISTS (SELECT 1 FROM support_room WHERE user_id = @UserId and user_type=@UserType)
                           BEGIN
                               INSERT INTO support_room (user_id, username, user_type)
                               VALUES (@UserId, @Username, @UserType);
@@ -157,22 +162,23 @@ Public Class Login
                           END
                           ELSE
                           BEGIN
-                              SELECT @SupportRoomId = support_room_id FROM support_room WHERE user_id = @UserId;
+                              SELECT @SupportRoomId = support_room_id FROM support_room WHERE user_id = @UserId and user_type=@UserType;
                           END
-
                           SELECT @SupportRoomId AS support_room_id;
                           "
-                    Using command As New SqlCommand(supportquery, sqlConnection)
-                        ' Set parameter values
-                        command.Parameters.AddWithValue("@UserId", Module_global.User_ID)
-                        command.Parameters.AddWithValue("@Username", Module_global.user_name)
-                        command.Parameters.AddWithValue("@UserType", Module_global.User_Role)
-                        ' Execute the command and retrieve the generated identity value
-                        Module_global.Support_room_id = Convert.ToInt32(command.ExecuteScalar())
-                        LoadRoomsFromDatabase(Module_global.User_ID, Module_global.User_Role)
-                        Me.Close()
-                        user_template.Show()
-                    End Using
+                        Using command As New SqlCommand(supportquery, sqlConnection)
+                            ' Set parameter values
+                            command.Parameters.AddWithValue("@UserId", Module_global.User_ID)
+                            command.Parameters.AddWithValue("@Username", Module_global.user_name)
+                            command.Parameters.AddWithValue("@UserType", Module_global.User_Role)
+                            ' Execute the command and retrieve the generated identity value
+                            Module_global.Support_room_id = Convert.ToInt32(command.ExecuteScalar())
+                            LoadRoomsFromDatabase(Module_global.User_ID, Module_global.User_Role)
+                            Me.Close()
+                            user_template.Show()
+                        End Using
+                    End If
+
                 End Using
             Catch ex As Exception
                 ' Handle any exceptions that occur during database operations
@@ -261,5 +267,8 @@ Public Class Login
         End If
     End Sub
 
-
+    Private Sub LinkLabel1_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked
+        Close()
+        Forgot_password.Show()
+    End Sub
 End Class
