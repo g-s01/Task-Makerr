@@ -154,7 +154,7 @@ Public Class admin_side_chat
     End Sub
 
     Private Sub sendTextBox_KeyDown(sender As Object, e As KeyEventArgs) Handles sendTextBox.KeyDown
-        If e.KeyCode = Keys.Enter Then
+        If e.KeyCode = Keys.Enter And sendTextBox.Text <> "" Then
             ' Call the sendButton_Click event handler
             sendButton_Click(sender, e)
             ' Prevent the key press from being handled by the TextBox
@@ -217,11 +217,41 @@ Public Class admin_side_chat
         ' Y position for labels
         Dim yPos As Integer = 55
 
+        Dim lastDisplayedDate As Date = DateTime.MinValue
+
+        Dim dateLabelPrinted As Boolean = False
+
+
         ' Iterate through support_msgs
         For Each msg In sortedMessages
             Dim senderType As String = msg.Item2
             Dim messageText As String = msg.Item3
             Dim timeStamp As String = DateTime.ParseExact(msg.Item4, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
+            Dim timeStamp1 As Date = DateTime.ParseExact(msg.Item4, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+            Dim messageDate As Date = timeStamp1.Date
+
+            If Not dateLabelPrinted OrElse messageDate <> lastDisplayedDate Then
+                ' Create a label for the date
+                Dim dateLabel As New Label()
+                dateLabel.AutoSize = True
+                dateLabel.Text = messageDate.ToString("MMMM dd, yyyy") ' Format the date to display only date without time
+                dateLabel.Font = New Font(dateLabel.Font.FontFamily, 10, FontStyle.Bold)
+                dateLabel.Padding = New Padding(5)
+                dateLabel.BackColor = SystemColors.Control ' Use system color for background
+                dateLabel.TextAlign = ContentAlignment.MiddleCenter ' Center-align the text
+                dateLabel.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right ' Allow resizing with the panel width
+                dateLabel.Top = yPos ' Center the label vertically
+                dateLabel.Left = (chat.Width - dateLabel.Width) \ 2 ' Center the label horizontally
+
+                ' Add the date label to the chat_list panel
+                chat.Controls.Add(dateLabel)
+
+                dateLabelPrinted = True
+
+                ' Update the last displayed date
+                lastDisplayedDate = messageDate
+                yPos += dateLabel.Height
+            End If
 
             ' Create a label for the message
             Dim messageLabel As New Label()
@@ -301,48 +331,54 @@ Public Class admin_side_chat
         Dim inputString As String = sendTextBox.Text
         Dim messageText As String = ""
 
-        For i As Integer = 0 To inputString.Length - 1 Step maxLength
-            Dim substringLength As Integer = Math.Min(maxLength, inputString.Length - i)
-            messageText += inputString.Substring(i, substringLength)
-            If i + substringLength < inputString.Length Then
-                messageText += vbCrLf ' Insert a newline character if there are more characters remaining
-            End If
-        Next
+        If inputString <> "" Then
+            For i As Integer = 0 To inputString.Length - 1 Step maxLength
+                Dim substringLength As Integer = Math.Min(maxLength, inputString.Length - i)
+                messageText += inputString.Substring(i, substringLength)
+                If i + substringLength < inputString.Length Then
+                    messageText += vbCrLf ' Insert a newline character if there are more characters remaining
+                End If
+            Next
 
-        Dim newMessage As New Tuple(Of Integer, String, String, String)(roomId, user_role, messageText, timeStamp)
-        ' Add the new message to the messages list
-        support_msgs.Add(newMessage)
+            Dim newMessage As New Tuple(Of Integer, String, String, String)(roomId, user_role, messageText, timeStamp)
+            ' Add the new message to the messages list
+            support_msgs.Add(newMessage)
 
-        Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
-        Dim query As String = "
+            Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+            Dim query As String = "
             INSERT INTO support_msgs (support_msgs.support_room_id, sender_type, message_content)
             VALUES (@SupportRoomId, @SenderType, @MessageContent);
             SELECT SCOPE_IDENTITY();
             "
 
-        ' Create a SqlConnection object
-        Using connection As New SqlConnection(connectionString)
-            ' Open the connection
-            connection.Open()
+            ' Create a SqlConnection object
+            Using connection As New SqlConnection(connectionString)
+                ' Open the connection
+                connection.Open()
 
-            ' Create a SqlCommand object
-            Using command As New SqlCommand(query, connection)
-                ' Set the parameters for the new message
-                command.Parameters.AddWithValue("@SupportRoomId", roomId)
-                command.Parameters.AddWithValue("@SenderType", user_role)
-                command.Parameters.AddWithValue("@MessageContent", messageText)
+                ' Create a SqlCommand object
+                Using command As New SqlCommand(query, connection)
+                    ' Set the parameters for the new message
+                    command.Parameters.AddWithValue("@SupportRoomId", roomId)
+                    command.Parameters.AddWithValue("@SenderType", user_role)
+                    command.Parameters.AddWithValue("@MessageContent", messageText)
 
-                ' Execute the INSERT command and retrieve the generated message_id
-                Dim messageId As Integer = Convert.ToInt32(command.ExecuteScalar())
+                    ' Execute the INSERT command and retrieve the generated message_id
+                    Dim messageId As Integer = Convert.ToInt32(command.ExecuteScalar())
 
-                ' Now you can use messageId as needed
-                'Console.WriteLine("Generated Message ID: " & messageId)
+                    ' Now you can use messageId as needed
+                    'Console.WriteLine("Generated Message ID: " & messageId)
+                End Using
             End Using
-        End Using
-        ' Optionally, you can clear the TextBox after sending the message
-        sendTextBox.Text = ""
-        ' Print messages between users
-        PrintMessages(roomId)
+            ' Optionally, you can clear the TextBox after sending the message
+            sendTextBox.Text = ""
+            ' Print messages between users
+            PrintMessages(roomId)
+
+        Else
+            MessageBox.Show("Enter some text")
+
+        End If
     End Sub
 
 

@@ -45,7 +45,7 @@ Public Class Login
                         If reader.Read() Then
                             Module_global.Provider_ID = Convert.ToInt32(reader("Provider_ID"))
                             Module_global.provider_name = reader("providername").ToString()
-                            Module_global.User_Role = "customer"
+                            Module_global.User_Role = "provider"
                             ' Check if the profile_image field is not DBNull
                             If Not reader.IsDBNull(reader.GetOrdinal("profile_image")) Then
                                 Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
@@ -148,8 +148,7 @@ Public Class Login
                     End Using
                     Dim supportquery As String = "
                           DECLARE @SupportRoomId INT;
-
-                          IF NOT EXISTS (SELECT 1 FROM support_room WHERE user_id = @UserId)
+                         IF NOT EXISTS (SELECT 1 FROM support_room WHERE user_id = @UserId and user_type=@UserType)
                           BEGIN
                               INSERT INTO support_room (user_id, username, user_type)
                               VALUES (@UserId, @Username, @UserType);
@@ -157,9 +156,8 @@ Public Class Login
                           END
                           ELSE
                           BEGIN
-                              SELECT @SupportRoomId = support_room_id FROM support_room WHERE user_id = @UserId;
+                              SELECT @SupportRoomId = support_room_id FROM support_room WHERE user_id = @UserId and user_type=@UserType;
                           END
-
                           SELECT @SupportRoomId AS support_room_id;
                           "
                     Using command As New SqlCommand(supportquery, sqlConnection)

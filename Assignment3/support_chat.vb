@@ -178,6 +178,10 @@ Public Class support_chat
         ' Y position for labels
         Dim yPos As Integer = 55
 
+        Dim lastDisplayedDate As Date = DateTime.MinValue
+
+        Dim dateLabelPrinted As Boolean = False
+
         ' Iterate through messages
         For Each msg In sortedMessages
             Dim room As Integer = msg.Item1
@@ -189,6 +193,34 @@ Public Class support_chat
 
             ' Convert the DateTime to the desired string format "hh:mm"
             Dim timeStamp As String = sentTimestampDateTime.ToString("hh:mm")
+            Dim timeStamp1 As Date = DateTime.ParseExact(msg.Item4, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+            Dim messageDate As Date = timeStamp1.Date
+
+            ' Check if the date has changed since the last message
+            If Not dateLabelPrinted OrElse messageDate <> lastDisplayedDate Then
+                ' Create a label for the date
+                Dim dateLabel As New Label()
+                dateLabel.AutoSize = True
+                dateLabel.Text = messageDate.ToString("MMMM dd, yyyy") ' Format the date to display only date without time
+                dateLabel.Font = New Font(dateLabel.Font.FontFamily, 10, FontStyle.Bold)
+                dateLabel.Padding = New Padding(5)
+                dateLabel.BackColor = SystemColors.Control ' Use system color for background
+                dateLabel.TextAlign = ContentAlignment.MiddleCenter ' Center-align the text
+                dateLabel.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right ' Allow resizing with the panel width
+                dateLabel.Top = yPos ' Center the label vertically
+                dateLabel.Left = (Chat.Width - dateLabel.Width) \ 2 ' Center the label horizontally
+
+                ' Add the date label to the chat_list panel
+                Support.Controls.Add(dateLabel)
+
+                dateLabelPrinted = True
+
+                yPos += dateLabel.Height
+
+
+                ' Update the last displayed date
+                lastDisplayedDate = messageDate
+            End If
 
 
             ' Create a label for the message
