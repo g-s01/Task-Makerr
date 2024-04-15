@@ -44,7 +44,7 @@ Partial Class user_profile
         profilepic_pb.Anchor = AnchorStyles.None
         profilepic_pb.BackgroundImage = My.Resources.Resources._default
         profilepic_pb.BackgroundImageLayout = ImageLayout.Stretch
-        profilepic_pb.Location = New Point(572, 118)
+        profilepic_pb.Location = New Point(631, 118)
         profilepic_pb.Name = "profilepic_pb"
         profilepic_pb.Size = New Size(198, 197)
         profilepic_pb.SizeMode = PictureBoxSizeMode.StretchImage
@@ -73,7 +73,7 @@ Partial Class user_profile
         email_tb.Location = New Point(213, 233)
         email_tb.Name = "email_tb"
         email_tb.ReadOnly = True
-        email_tb.Size = New Size(236, 32)
+        email_tb.Size = New Size(236, 27)
         email_tb.TabIndex = 10
         email_tb.Text = "null"
         ' 
@@ -85,7 +85,7 @@ Partial Class user_profile
         name_tb.Location = New Point(213, 197)
         name_tb.Name = "name_tb"
         name_tb.ReadOnly = True
-        name_tb.Size = New Size(236, 32)
+        name_tb.Size = New Size(236, 27)
         name_tb.TabIndex = 9
         name_tb.Text = "null"
         ' 
@@ -111,9 +111,9 @@ Partial Class user_profile
         ' 
         greeting_label.Font = New Font("Arial Rounded MT Bold", 14F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         greeting_label.ForeColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
-        greeting_label.Location = New Point(64, 118)
+        greeting_label.Location = New Point(64, 79)
         greeting_label.Name = "greeting_label"
-        greeting_label.Size = New Size(385, 39)
+        greeting_label.Size = New Size(385, 76)
         greeting_label.TabIndex = 6
         greeting_label.Text = "Hello, "
         greeting_label.TextAlign = ContentAlignment.MiddleLeft
@@ -123,7 +123,7 @@ Partial Class user_profile
         changepic_pb.Anchor = AnchorStyles.None
         changepic_pb.BackgroundImage = My.Resources.Resources.more_horiz
         changepic_pb.BackgroundImageLayout = ImageLayout.Stretch
-        changepic_pb.Location = New Point(737, 122)
+        changepic_pb.Location = New Point(796, 122)
         changepic_pb.Name = "changepic_pb"
         changepic_pb.Size = New Size(30, 30)
         changepic_pb.TabIndex = 5
@@ -146,7 +146,7 @@ Partial Class user_profile
         phone_tb.Location = New Point(213, 269)
         phone_tb.Name = "phone_tb"
         phone_tb.ReadOnly = True
-        phone_tb.Size = New Size(236, 32)
+        phone_tb.Size = New Size(236, 27)
         phone_tb.TabIndex = 12
         phone_tb.Text = "null"
         ' 
@@ -168,14 +168,14 @@ Partial Class user_profile
         Panel1.Dock = DockStyle.Top
         Panel1.Location = New Point(0, 0)
         Panel1.Name = "Panel1"
-        Panel1.Size = New Size(822, 63)
+        Panel1.Size = New Size(940, 63)
         Panel1.TabIndex = 14
         ' 
         ' user_profile
         ' 
         AutoScaleMode = AutoScaleMode.None
-        BackColor = SystemColors.Control
-        ClientSize = New Size(822, 610)
+        BackColor = Color.LavenderBlush
+        ClientSize = New Size(940, 610)
         Controls.Add(Panel1)
         Controls.Add(phone_tb)
         Controls.Add(Edit_btn)
@@ -208,4 +208,5 @@ Partial Class user_profile
     Friend WithEvents phone_tb As TextBox
     Friend WithEvents Label1 As Label
     Friend WithEvents Panel1 As Panel
+    Friend WithEvents Label2 As Label
 End Class
