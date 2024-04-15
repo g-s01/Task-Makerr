@@ -1,4 +1,5 @@
-﻿Imports System.Reflection
+﻿Imports System.Diagnostics.Eventing
+Imports System.IO
 Imports Microsoft.Data.SqlClient
 Imports Microsoft.VisualBasic.ApplicationServices
 
@@ -31,7 +32,7 @@ Public Class Login
             Email = email_tb.Text()
             ' check from database for the email and password
             Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
-            Dim query As String = "SELECT Provider_ID,providername FROM provider WHERE Email COLLATE Latin1_General_CS_AS = @Email AND Password COLLATE Latin1_General_CS_AS = @Password"
+            Dim query As String = "SELECT Provider_ID, providername,profile_image FROM provider WHERE Email COLLATE Latin1_General_CS_AS = @Email AND Password COLLATE Latin1_General_CS_AS = @Password"
 
 
             Try
@@ -42,38 +43,48 @@ Public Class Login
                         sqlCommand.Parameters.AddWithValue("@Password", pass) ' Use the password entered by the user
                         Dim reader As SqlDataReader = sqlCommand.ExecuteReader()
                         If reader.Read() Then
-                            Module_global.Provider_ID = reader.GetInt32(0)
-                            Module_global.User_Name = reader.GetString(1)
-                            Module_global.User_Role = "provider"
+                            Module_global.Provider_ID = Convert.ToInt32(reader("Provider_ID"))
+                            Module_global.provider_name = reader("providername").ToString()
+                            Module_global.User_Role = "customer"
+                            ' Check if the profile_image field is not DBNull
+                            If Not reader.IsDBNull(reader.GetOrdinal("profile_image")) Then
+                                Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
+                                ' Convert byte array to image
+                                Using ms As New MemoryStream(imageData)
+                                    Module_global.provider_profilepic = Image.FromStream(ms)
+                                End Using
+                            Else
+                                Module_global.provider_profilepic = My.Resources.male  ' Or set a default image if needed
+                            End If
+                            'MessageBox.Show($"User ID: {Provider_ID}{Environment.NewLine}Username: {provider_name}", "User Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                            'taskmakerrbtn.BackgroundImage = provider_profilepic
+
                         Else
-                            error_label.Text = "Invalid email or password. No such user account"
+                            error_label.Text = "Invalid email or password. No such provider account"
                             password_tb.Text = ""
                         End If
                         reader.Close()
                     End Using
-
                     Dim supportquery As String = "
-                            DECLARE @SupportRoomId INT;
+                        DECLARE @SupportRoomId INT;
 
-                            IF NOT EXISTS (SELECT 1 FROM support_room WHERE user_id = @UserId)
-                            BEGIN
-                                INSERT INTO support_room (user_id, username, user_type)
-                                VALUES (@UserId, @Username, @UserType);
-                                SET @SupportRoomId = SCOPE_IDENTITY();
-                            END
-                            ELSE
-                            BEGIN
-                                SELECT @SupportRoomId = support_room_id FROM support_room WHERE user_id = @UserId;
-                            END
-
-                            SELECT @SupportRoomId AS support_room_id;
-                            "
+                        IF NOT EXISTS (SELECT 1 FROM support_room WHERE user_id = @UserId AND user_type=@UserType)
+                        BEGIN
+                            INSERT INTO support_room (user_id, username, user_type)
+                            VALUES (@UserId, @Username, @UserType);
+                            SET @SupportRoomId = SCOPE_IDENTITY();
+                        END
+                        ELSE
+                        BEGIN
+                            SELECT @SupportRoomId = support_room_id FROM support_room WHERE user_id = @UserId AND user_type=@UserType;
+                        END
+                        SELECT @SupportRoomId AS support_room_id;
+                        "
                     Using command As New SqlCommand(supportquery, sqlConnection)
                         ' Set parameter values
                         command.Parameters.AddWithValue("@UserId", Module_global.Provider_ID)
-                        command.Parameters.AddWithValue("@Username", Module_global.User_Name)
+                        command.Parameters.AddWithValue("@Username", Module_global.provider_name)
                         command.Parameters.AddWithValue("@UserType", Module_global.User_Role)
-
                         ' Execute the command and retrieve the generated identity value
                         Module_global.Support_room_id = Convert.ToInt32(command.ExecuteScalar())
                         LoadRoomsFromDatabase(Module_global.Provider_ID, Module_global.User_Role)
@@ -85,10 +96,7 @@ Public Class Login
             Catch ex As Exception
                 ' Handle any exceptions that occur during database operations
                 MessageBox.Show("An error occurred: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
             End Try
-
-
         End If
     End Sub
 
@@ -107,7 +115,7 @@ Public Class Login
             Email = email_tb.Text()
             ' check from database for the email and password
             Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
-            Dim query As String = "SELECT User_ID, username FROM customer WHERE Email COLLATE Latin1_General_CS_AS = @Email AND Password COLLATE Latin1_General_CS_AS = @Password"
+            Dim query As String = "SELECT User_ID,username,profile_image FROM customer WHERE Email COLLATE Latin1_General_CS_AS = @Email AND Password COLLATE Latin1_General_CS_AS = @Password"
 
             Try
                 Using sqlConnection As New SqlConnection(connectionString)
@@ -115,12 +123,23 @@ Public Class Login
                     Using sqlCommand As New SqlCommand(query, sqlConnection)
                         sqlCommand.Parameters.AddWithValue("@Email", Email)
                         sqlCommand.Parameters.AddWithValue("@Password", pass) ' Use the password entered by the user
+
                         Dim reader As SqlDataReader = sqlCommand.ExecuteReader()
                         If reader.Read() Then
-                            Module_global.User_ID = reader.GetInt32(0)
-                            Module_global.User_Name = reader.GetString(1)
+                            Module_global.User_ID = Convert.ToInt32(reader("User_ID"))
+                            Module_global.user_name = reader("username").ToString()
                             Module_global.User_Role = "customer"
-
+                            ' Check if the profile_image field is not DBNull
+                            If Not reader.IsDBNull(reader.GetOrdinal("profile_image")) Then
+                                Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
+                                ' Convert byte array to image
+                                Using ms As New MemoryStream(imageData)
+                                    user_profilepic = Image.FromStream(ms)
+                                End Using
+                            Else
+                                ' Set default image using resource
+                                user_profilepic = My.Resources.male ' Replace with your resource name
+                            End If
                         Else
                             error_label.Text = "Invalid email or password. No such user account"
                             password_tb.Text = ""
@@ -128,25 +147,25 @@ Public Class Login
                         reader.Close()
                     End Using
                     Dim supportquery As String = "
-                            DECLARE @SupportRoomId INT;
+                          DECLARE @SupportRoomId INT;
 
-                            IF NOT EXISTS (SELECT 1 FROM support_room WHERE user_id = @UserId)
-                            BEGIN
-                                INSERT INTO support_room (user_id, username, user_type)
-                                VALUES (@UserId, @Username, @UserType);
-                                SET @SupportRoomId = SCOPE_IDENTITY();
-                            END
-                            ELSE
-                            BEGIN
-                                SELECT @SupportRoomId = support_room_id FROM support_room WHERE user_id = @UserId;
-                            END
+                          IF NOT EXISTS (SELECT 1 FROM support_room WHERE user_id = @UserId)
+                          BEGIN
+                              INSERT INTO support_room (user_id, username, user_type)
+                              VALUES (@UserId, @Username, @UserType);
+                              SET @SupportRoomId = SCOPE_IDENTITY();
+                          END
+                          ELSE
+                          BEGIN
+                              SELECT @SupportRoomId = support_room_id FROM support_room WHERE user_id = @UserId;
+                          END
 
-                            SELECT @SupportRoomId AS support_room_id;
-                            "
+                          SELECT @SupportRoomId AS support_room_id;
+                          "
                     Using command As New SqlCommand(supportquery, sqlConnection)
                         ' Set parameter values
                         command.Parameters.AddWithValue("@UserId", Module_global.User_ID)
-                        command.Parameters.AddWithValue("@Username", Module_global.User_Name)
+                        command.Parameters.AddWithValue("@Username", Module_global.user_name)
                         command.Parameters.AddWithValue("@UserType", Module_global.User_Role)
                         ' Execute the command and retrieve the generated identity value
                         Module_global.Support_room_id = Convert.ToInt32(command.ExecuteScalar())
@@ -171,9 +190,6 @@ Public Class Login
         Close()
         Admin_Login.Show()
     End Sub
-
-
-
     Private Sub LoadRoomsFromDatabase(userId As Integer, user_role As String)
         Module_global.roomchat.Clear()
         Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
@@ -243,7 +259,7 @@ Public Class Login
                 End Using
             End Using
         End If
-
     End Sub
+
 
 End Class
