@@ -7,7 +7,6 @@ Imports Microsoft.Data.SqlClient
 
 Public Class user_provider_chats
 
-    Dim roomchat As New List(Of Tuple(Of String, Integer, Integer))() ' providername, chat_room_id, provider_id
     Dim messages As New List(Of Tuple(Of Integer, Integer, String, String, String))()
 
     Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
@@ -27,7 +26,7 @@ Public Class user_provider_chats
     End Function
 
     Private Sub LoadRoomsFromDatabase(userId As Integer, user_role As String)
-        roomchat.Clear()
+        Module_global.roomchat.Clear()
         If user_role = "provider" Then
             Dim query As String = "SELECT chat_room_id, username, provider_id FROM chat_room WHERE provider_id = @UserId"
             Using connection As SqlConnection = GetSqlConnection()
@@ -50,7 +49,7 @@ Public Class user_provider_chats
                                 provider_id = reader.GetInt32(reader.GetOrdinal("provider_id"))
                                 chat_room_id = reader.GetInt32(reader.GetOrdinal("chat_room_id"))
                                 username = reader.GetString(reader.GetOrdinal("username"))
-                                roomchat.Add(New Tuple(Of String, Integer, Integer)(username, chat_room_id, provider_id))
+                                Module_global.roomchat.Add(New Tuple(Of String, Integer, Integer)(username, chat_room_id, provider_id))
                             End While
                         End If
 
@@ -82,7 +81,7 @@ Public Class user_provider_chats
                                 provider_id = reader.GetInt32(reader.GetOrdinal("provider_id"))
                                 chat_room_id = reader.GetInt32(reader.GetOrdinal("chat_room_id"))
                                 providername = reader.GetString(reader.GetOrdinal("providername"))
-                                roomchat.Add(New Tuple(Of String, Integer, Integer)(providername, chat_room_id, provider_id))
+                                Module_global.roomchat.Add(New Tuple(Of String, Integer, Integer)(providername, chat_room_id, provider_id))
                             End While
                         End If
 
@@ -170,7 +169,7 @@ Public Class user_provider_chats
     Private Sub PopulateRooms()
         Dim yPos As Integer = 10 ' Initial y position for buttons
 
-        For Each item As Tuple(Of String, Integer, Integer) In roomchat
+        For Each item As Tuple(Of String, Integer, Integer) In Module_global.roomchat
             Dim newButton As New Button()
             newButton.Name = "btn" & item.Item1 ' Set button name
             newButton.Text = item.Item1 ' Set button text
@@ -215,6 +214,7 @@ Public Class user_provider_chats
         End If
     End Sub
 
+
     Private Sub timer_Tick(sender As Object, e As EventArgs) Handles timer.Tick
         ' Reload rooms and messages every 30 seconds
         LoadRoomsFromDatabase(userId, user_role)
@@ -231,7 +231,7 @@ Public Class user_provider_chats
         chat.Visible = True
 
         Dim clickedButton As Button = CType(sender, Button)
-        Dim labelHeader As Label = CType(chat.Controls("lblHeader"), Label)
+
 
 
 
@@ -319,11 +319,7 @@ Public Class user_provider_chats
         ' Clear existing messages on the chat_list panel
         For i As Integer = chat.Controls.Count - 1 To 0 Step -1
             Dim ctrl As Control = chat.Controls(i)
-            ' Check if the control is not lblHeader
-            If ctrl.Name <> "lblHeader" Then
-                ' Remove the control from the chat_list panel
-                chat.Controls.RemoveAt(i)
-            End If
+            chat.Controls.RemoveAt(i)
         Next
 
         ' Filter messages for the given roomId

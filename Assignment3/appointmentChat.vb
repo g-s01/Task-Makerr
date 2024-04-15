@@ -219,6 +219,11 @@ Public Class appointmentChat
         PrintMessages()
     End Sub
 
+    Private Sub MainForm_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
+        ' Stop the timer when the form is closed
+        messageTimer.Stop()
+    End Sub
+
     Private Sub appointmentChat_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         messageTimer.Interval = 10000
