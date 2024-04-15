@@ -35,6 +35,7 @@ Partial Class provider_template
         Dashboard_Navi_btn = New Button()
         PictureBox2 = New PictureBox()
         PictureBox1 = New PictureBox()
+        history_navi_btn = New Button()
         CType(SplitContainer1, ComponentModel.ISupportInitialize).BeginInit()
         SplitContainer1.Panel1.SuspendLayout()
         SplitContainer1.SuspendLayout()
@@ -50,6 +51,8 @@ Partial Class provider_template
         ' 
         ' SplitContainer1.Panel1
         ' 
+        SplitContainer1.Panel1.Controls.Add(history_navi_btn)
+        SplitContainer1.Panel1.BackColor = Color.White
         SplitContainer1.Panel1.Controls.Add(Chats_Navi_btn)
         SplitContainer1.Panel1.Controls.Add(Label2)
         SplitContainer1.Panel1.Controls.Add(Label1)
@@ -96,7 +99,7 @@ Partial Class provider_template
         Label2.ForeColor = Color.DimGray
         Label2.Location = New Point(22, 470)
         Label2.Name = "Label2"
-        Label2.Size = New Size(106, 31)
+        Label2.Size = New Size(75, 23)
         Label2.TabIndex = 10
         Label2.Text = "Support"
         ' 
@@ -107,7 +110,7 @@ Partial Class provider_template
         Label1.ForeColor = Color.DimGray
         Label1.Location = New Point(22, 100)
         Label1.Name = "Label1"
-        Label1.Size = New Size(81, 31)
+        Label1.Size = New Size(57, 23)
         Label1.TabIndex = 9
         Label1.Text = "Menu"
         ' 
@@ -254,6 +257,24 @@ Partial Class provider_template
         PictureBox1.TabIndex = 0
         PictureBox1.TabStop = False
         ' 
+        ' history_navi_btn
+        ' 
+        history_navi_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        history_navi_btn.BackColor = SystemColors.Control
+        history_navi_btn.FlatAppearance.BorderSize = 0
+        history_navi_btn.FlatStyle = FlatStyle.Flat
+        history_navi_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        history_navi_btn.Image = My.Resources.Resources.chats
+        history_navi_btn.ImageAlign = ContentAlignment.MiddleLeft
+        history_navi_btn.Location = New Point(3, 352)
+        history_navi_btn.Name = "history_navi_btn"
+        history_navi_btn.Padding = New Padding(15, 0, 0, 0)
+        history_navi_btn.Size = New Size(282, 36)
+        history_navi_btn.TabIndex = 12
+        history_navi_btn.Text = "     Past Appointments"
+        history_navi_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        history_navi_btn.UseVisualStyleBackColor = False
+        ' 
         ' provider_template
         ' 
         AutoScaleMode = AutoScaleMode.None
@@ -284,4 +305,5 @@ Partial Class provider_template
     Friend WithEvents Dashboard_Navi_btn As Button
     Friend WithEvents PictureBox2 As PictureBox
     Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents history_navi_btn As Button
 End Class

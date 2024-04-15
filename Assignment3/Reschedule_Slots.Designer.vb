@@ -31,6 +31,7 @@ Partial Class Reschedule_Slots
         Back_Btn = New Button()
         Username = New Label()
         Profile_Pic = New PictureBox()
+        ProgressBar1 = New ProgressBar()
         Panel1.SuspendLayout()
         CType(Profile_Pic, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
@@ -38,7 +39,7 @@ Partial Class Reschedule_Slots
         ' Book_Btn
         ' 
         Book_Btn.BackColor = Color.FromArgb(CByte(245), CByte(140), CByte(215))
-        Book_Btn.Font = New Font("Microsoft YaHei", 12F)
+        Book_Btn.Font = New Font("Microsoft YaHei", 12.0F)
         Book_Btn.ForeColor = Color.Black
         Book_Btn.Location = New Point(571, 594)
         Book_Btn.Name = "Book_Btn"
@@ -59,7 +60,7 @@ Partial Class Reschedule_Slots
         ' Address_Lbl
         ' 
         Address_Lbl.AutoSize = True
-        Address_Lbl.Font = New Font("Microsoft YaHei", 13F)
+        Address_Lbl.Font = New Font("Microsoft YaHei", 13.0F)
         Address_Lbl.Location = New Point(20, 505)
         Address_Lbl.Name = "Address_Lbl"
         Address_Lbl.Size = New Size(96, 30)
@@ -83,36 +84,36 @@ Partial Class Reschedule_Slots
         Schedule_Table.ColumnCount = 14
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 19.6245728F))
         Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 80.37543F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 305F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 22F))
-        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 305.0F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 22.0F))
+        Schedule_Table.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20.0F))
         Schedule_Table.Location = New Point(3, 3)
         Schedule_Table.Name = "Schedule_Table"
         Schedule_Table.RowCount = 8
         Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Percent, 26.1083736F))
         Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Percent, 73.8916245F))
-        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
-        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
-        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
-        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
-        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
-        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
+        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
+        Schedule_Table.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
         Schedule_Table.Size = New Size(801, 293)
         Schedule_Table.TabIndex = 4
         ' 
         ' Provider_Name_Loc_Lbl
         ' 
         Provider_Name_Loc_Lbl.AutoSize = True
-        Provider_Name_Loc_Lbl.Font = New Font("Microsoft Sans Serif", 13F)
+        Provider_Name_Loc_Lbl.Font = New Font("Microsoft Sans Serif", 13.0F)
         Provider_Name_Loc_Lbl.Location = New Point(20, 98)
         Provider_Name_Loc_Lbl.Name = "Provider_Name_Loc_Lbl"
         Provider_Name_Loc_Lbl.Size = New Size(77, 26)
@@ -147,13 +148,21 @@ Partial Class Reschedule_Slots
         Profile_Pic.TabIndex = 9
         Profile_Pic.TabStop = False
         ' 
+        ' ProgressBar1
+        ' 
+        ProgressBar1.Location = New Point(285, 110)
+        ProgressBar1.Name = "ProgressBar1"
+        ProgressBar1.Size = New Size(239, 29)
+        ProgressBar1.TabIndex = 17
+        ' 
         ' Reschedule_Slots
         ' 
-        AutoScaleDimensions = New SizeF(8F, 20F)
+        AutoScaleDimensions = New SizeF(8.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.White
         BackgroundImageLayout = ImageLayout.Stretch
         ClientSize = New Size(844, 666)
+        Controls.Add(ProgressBar1)
         Controls.Add(Book_Btn)
         Controls.Add(Address_TxtBox)
         Controls.Add(Address_Lbl)
@@ -180,4 +189,5 @@ Partial Class Reschedule_Slots
     Friend WithEvents Back_Btn As Button
     Friend WithEvents Username As Label
     Friend WithEvents Profile_Pic As PictureBox
+    Friend WithEvents ProgressBar1 As ProgressBar
 End Class

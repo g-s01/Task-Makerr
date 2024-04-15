@@ -5,31 +5,16 @@ Imports System.Drawing.Drawing2D
 Public Class provider_notifications
 
     Dim providerId As Integer = Module_global.Provider_ID
-    'Dim providerId As Integer = 3'
+    'Dim providerId As Integer = 3
 
     Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
     Private Sub provider_notifications_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'feedbacks
         Button4.BackColor = Color.FromArgb(215, 181, 227)
-        Button2.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
-        Button3.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
-        Button1.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
+        Button2.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Button3.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Button1.BackColor = Color.FromKnownColor(KnownColor.Control)
 
-
-    End Sub
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Button1.BackColor = Color.FromArgb(215, 181, 227)
-        Button2.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
-        Button3.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
-        Button4.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
-
-        ' Query to retrieve user name, slot, and cost per hour for the given provider ID with 50% paid booking
-        Dim query As String = "SELECT c.username as username, d.time as time, p.cost_per_hour,d.location " &
-                              "FROM Deals d " &
-                              "INNER JOIN customer c ON d.user_id = c.user_id " &
-                              "INNER JOIN Provider p ON d.provider_id = p.provider_id " &
-                              "WHERE d.provider_id = @ProviderId AND d.status = 0" ' Assuming 0 represents 50% paid booking status
 
 
         Using connection As New SqlConnection(connectionString)
@@ -52,13 +37,8 @@ Public Class provider_notifications
                 Else
                     While reader.Read()
                         Dim customerName As String = reader("username").ToString()
-                        Dim slots As String = reader("time").ToString()
-                        Dim costPerHour As Integer = Convert.ToInt32(reader("cost_per_hour"))
-                        Dim location As String = reader("location").ToString()
-
-                        ' Calculate the total amount of the deal based on the slot and cost per hour
-                        Dim bookedHours As Integer = slots.Count(Function(c) c = "1")
-                        Dim totalAmount As Integer = bookedHours * costPerHour / 2
+                        Dim review_text As String = reader("review_text").ToString()
+                        Dim rating As Integer = Convert.ToInt32(reader("rating"))
 
                         ' Create a Panel control for each customer
                         Dim panel As New Panel()
@@ -76,22 +56,22 @@ Public Class provider_notifications
                         nameLabel.AutoSize = True
                         nameLabel.Location = New Point(30, 30) ' Set the location of the label within the panel
 
-                        ' Create labels for customer details
-                        Dim amount As New Label()
-                        amount.Text = $"Amount Paid : {totalAmount}"
-                        amount.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
-                        amount.AutoSize = True
-                        amount.Location = New Point(550, 30) ' Set the location of the label within the panel
+                        Dim review As New Label()
+                        review.Text = $"{review_text}"
+                        review.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
+                        review.AutoSize = True
+                        review.Location = New Point(30, 50)
 
-                        Dim loc As New Label()
-                        loc.Text = location
-                        loc.Font = New Font("Microsoft YaHei", 9, FontStyle.Regular)
-                        loc.AutoSize = True
+                        Dim customer_rating As New Label()
+                        customer_rating.Text = $"Rating : {rating}"
+                        customer_rating.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
+                        customer_rating.AutoSize = True
+                        customer_rating.Location = New Point(600, 30)
 
                         ' Add labels to the panel
                         panel.Controls.Add(nameLabel)
-                        panel.Controls.Add(amount)
-
+                        panel.Controls.Add(review)
+                        panel.Controls.Add(customer_rating)
 
                         ' Add the panel to the FlowLayoutPanel
                         FlowLayoutPanel1.Controls.Add(panel)
@@ -103,16 +83,16 @@ Public Class provider_notifications
                 MessageBox.Show("Error: " & ex.Message)
             End Try
         End Using
-
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Button2.BackColor = Color.FromArgb(215, 181, 227)
-        Button1.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
-        Button3.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
-        Button4.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Button1.BackColor = Color.FromArgb(215, 181, 227)
+        Button2.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Button3.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Button4.BackColor = Color.FromKnownColor(KnownColor.Control)
+
         ' Query to retrieve user name, slot, and cost per hour for the given provider ID with 50% paid booking
-        Dim query As String = "SELECT c.username as username, d.time as time, p.cost_per_hour " &
+        Dim query As String = "SELECT c.username as username, d.time as time, d.deal_amount, d.dates,d.location " &
                               "FROM Deals d " &
                               "INNER JOIN customer c ON d.user_id = c.user_id " &
                               "INNER JOIN Provider p ON d.provider_id = p.provider_id " &
@@ -137,23 +117,26 @@ Public Class provider_notifications
                     noEntriesLabel.Location = New Point(100, 10) ' Adjust location as needed
                     FlowLayoutPanel1.Controls.Add(noEntriesLabel)
                 Else
-
-
                     While reader.Read()
                         Dim customerName As String = reader("username").ToString()
                         Dim slots As String = reader("time").ToString()
-                        Dim costPerHour As Integer = Convert.ToInt32(reader("cost_per_hour"))
+                        Dim totalAmount As Integer = Convert.ToInt32(reader("deal_amount")) / 2
+                        Dim location As String = reader("location").ToString()
 
-                        ' Calculate the total amount of the deal based on the slot and cost per hour
-                        Dim bookedHours As Integer = slots.Count(Function(c) c = "1")
-                        Dim totalAmount As Integer = bookedHours * costPerHour
+                        Dim dateStamp As DateTime
+                        If Not IsDBNull(reader("dates")) Then
+                            dateStamp = Convert.ToDateTime(reader("dates"))
+                        Else
+                            ' Handle null value case (optional)
+                            dateStamp = DateTime.MinValue ' Or any default value you prefer
+                        End If
 
                         ' Create a Panel control for each customer
                         Dim panel As New Panel()
                         panel.BorderStyle = BorderStyle.FixedSingle
                         panel.BackColor = Color.FromArgb(255, 220, 189, 232)
                         panel.Location = New Point(40)
-                        panel.Size = New Size(750, 80) ' Set the size of the panel (width: 300, height: 100)
+                        panel.Size = New Size(750, 90) ' Set the size of the panel (width: 300, height: 100)
                         panel.Margin = New Padding(5)
                         panel.AutoScroll = True
 
@@ -162,42 +145,68 @@ Public Class provider_notifications
                         nameLabel.Text = $"{customerName}"
                         nameLabel.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
                         nameLabel.AutoSize = True
-                        nameLabel.Location = New Point(30, 30) ' Set the location of the label within the panel
+                        nameLabel.Location = New Point(30, 10) ' Set the location of the label within the panel
 
                         ' Create labels for customer details
                         Dim amount As New Label()
                         amount.Text = $"Amount Paid : {totalAmount}"
                         amount.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
                         amount.AutoSize = True
-                        amount.Location = New Point(550, 30) ' Set the location of the label within the panel
+                        amount.Location = New Point(550, 10) ' Set the location of the label within the panel
+
+                        ' Create labels for customer location
+                        Dim loc As New Label()
+                        loc.Text = location
+                        loc.Font = New Font("Microsoft YaHei", 10)
+                        loc.AutoSize = True
+                        loc.Location = New Point(30, 40)
+
+                        ' Create label for date stamp
+                        Dim dateLabel As New Label()
+                        dateLabel.Text = $"Date : {dateStamp.ToString("dd-MM-yyyy")}" ' Adjust the format to display date and time
+                        dateLabel.Font = New Font("Microsoft YaHei", 10)
+                        dateLabel.AutoSize = True
+                        dateLabel.Location = New Point(580, 40) ' Set the location of the label within the panel
+
+                        Dim timeLabel As New Label()
+                        timeLabel.Text = $"Time : {dateStamp.ToString("HH : mm")}" ' Adjust the format to display date and time
+                        timeLabel.Font = New Font("Microsoft YaHei", 10)
+                        timeLabel.AutoSize = True
+                        timeLabel.Location = New Point(580, 60) ' Set the location of the label within the panel
 
                         ' Add labels to the panel
                         panel.Controls.Add(nameLabel)
                         panel.Controls.Add(amount)
+                        panel.Controls.Add(loc)
+                        panel.Controls.Add(dateLabel)
+                        panel.Controls.Add(timeLabel)
 
 
                         ' Add the panel to the FlowLayoutPanel
                         FlowLayoutPanel1.Controls.Add(panel)
                     End While
                 End If
+
+
             Catch ex As Exception
                 MessageBox.Show("Error: " & ex.Message)
             End Try
         End Using
+
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Button3.BackColor = Color.FromArgb(215, 181, 227)
-        Button2.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
-        Button1.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
-        Button4.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
-
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Button2.BackColor = Color.FromArgb(215, 181, 227)
+        Button1.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Button3.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Button4.BackColor = Color.FromKnownColor(KnownColor.Control)
         ' Query to retrieve user name, slot, and cost per hour for the given provider ID with 50% paid booking
-        Dim query As String = "SELECT c.username as username, d.time as time, p.cost_per_hour " &
+        Dim query As String = "SELECT c.username as username, d.time as time, d.deal_amount, d.dates,d.location " &
                               "FROM Deals d " &
                               "INNER JOIN customer c ON d.user_id = c.user_id " &
                               "INNER JOIN Provider p ON d.provider_id = p.provider_id " &
-                              "WHERE d.provider_id = @ProviderId AND d.status = 3" ' Assuming 0 represents 50% paid booking status
+                              "WHERE d.provider_id = @ProviderId AND d.status = 2" &
+                              "ORDER BY d.dates DESC" ' Assuming 0 represents 50% paid booking status
 
 
         Using connection As New SqlConnection(connectionString)
@@ -221,13 +230,25 @@ Public Class provider_notifications
 
                     While reader.Read()
                         Dim customerName As String = reader("username").ToString()
+                        Dim slots As String = reader("time").ToString()
+                        Dim totalAmount As Integer = Convert.ToInt32(reader("deal_amount"))
+                        Dim location As String = reader("location").ToString()
+
+
+                        Dim dateStamp As DateTime
+                        If Not IsDBNull(reader("dates")) Then
+                            dateStamp = Convert.ToDateTime(reader("dates"))
+                        Else
+                            ' Handle null value case (optional)
+                            dateStamp = DateTime.MinValue ' Or any default value you prefer
+                        End If
 
                         ' Create a Panel control for each customer
                         Dim panel As New Panel()
                         panel.BorderStyle = BorderStyle.FixedSingle
                         panel.BackColor = Color.FromArgb(255, 220, 189, 232)
                         panel.Location = New Point(40)
-                        panel.Size = New Size(750, 80) ' Set the size of the panel (width: 300, height: 100)
+                        panel.Size = New Size(750, 90) ' Set the size of the panel (width: 300, height: 100)
                         panel.Margin = New Padding(5)
                         panel.AutoScroll = True
 
@@ -236,19 +257,209 @@ Public Class provider_notifications
                         nameLabel.Text = $"{customerName}"
                         nameLabel.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
                         nameLabel.AutoSize = True
-                        nameLabel.Location = New Point(30, 30) ' Set the location of the label within the panel
+                        nameLabel.Location = New Point(30, 10) ' Set the location of the label within the panel
+
+                        ' Create labels for Customer Location
+                        Dim loc As New Label()
+                        loc.Text = location
+                        loc.Font = New Font("Microsoft YaHei", 10)
+                        loc.AutoSize = True
+                        loc.Location = New Point(30, 40)
+
+                        ' Create labels for customer details
+                        Dim amount As New Label()
+                        amount.Text = $"Amount Paid : {totalAmount}"
+                        amount.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
+                        amount.AutoSize = True
+                        amount.Location = New Point(550, 10) ' Set the location of the label within the panel
+
+                        ' Create label for date stamp
+                        Dim dateLabel As New Label()
+                        dateLabel.Text = $"Date : {dateStamp.ToString("dd-MM-yyyy")}" ' Adjust the format to display date and time
+                        dateLabel.Font = New Font("Microsoft YaHei", 10)
+                        dateLabel.AutoSize = True
+                        dateLabel.Location = New Point(580, 40) ' Set the location of the label within the panel
+
+                        Dim timeLabel As New Label()
+                        timeLabel.Text = $"Time : {dateStamp.ToString("HH : mm")}" ' Adjust the format to display date and time
+                        timeLabel.Font = New Font("Microsoft YaHei", 10)
+                        timeLabel.AutoSize = True
+                        timeLabel.Location = New Point(580, 60) ' Set the location of the label within the panel
+
+
+                        ' Add labels to the panel
+                        panel.Controls.Add(nameLabel)
+                        panel.Controls.Add(amount)
+                        panel.Controls.Add(dateLabel)
+                        panel.Controls.Add(timeLabel)
+                        panel.Controls.Add(loc)
+
+                        ' Add the panel to the FlowLayoutPanel
+                        FlowLayoutPanel1.Controls.Add(panel)
+                    End While
+                End If
+            Catch ex As Exception
+                MessageBox.Show("Error: " & ex.Message)
+            End Try
+        End Using
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Button3.BackColor = Color.FromArgb(215, 181, 227)
+        Button2.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Button1.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Button4.BackColor = Color.FromKnownColor(KnownColor.Control)
+
+        ' Query to retrieve user name, slot, and cost per hour for the given provider ID with 50% paid booking
+        Dim query As String = "SELECT c.username as username, d.time as time, d.deal_amount,d.user_id,d.deal_id,d.location " &
+                              "FROM Deals d " &
+                              "INNER JOIN customer c ON d.user_id = c.user_id " &
+                              "WHERE d.provider_id = @ProviderId AND d.status = 4" ' Assuming 0 represents 50% paid booking status
+        ' "INNER JOIN Provider p ON d.provider_id = p.provider_id " &
+
+        Using connection As New SqlConnection(connectionString)
+            Dim command As New SqlCommand(query, connection)
+            command.Parameters.AddWithValue("@ProviderID", providerId)
+
+            Try
+                connection.Open()
+                Dim reader As SqlDataReader = command.ExecuteReader()
+                FlowLayoutPanel1.Controls.Clear()
+                'FlowLayoutPanel1.BackColor = Color.Black'
+
+                If Not reader.HasRows Then
+                    Dim noEntriesLabel As New Label()
+                    noEntriesLabel.Text = "No entries found."
+                    noEntriesLabel.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
+                    noEntriesLabel.AutoSize = True
+                    noEntriesLabel.Location = New Point(100, 10) ' Adjust location as needed
+                    FlowLayoutPanel1.Controls.Add(noEntriesLabel)
+                Else
+
+                    While reader.Read()
+                        Dim customerName As String = reader("username").ToString()
+                        Dim dealamount As Integer = Convert.ToInt32(reader("deal_amount"))
+                        Dim userId As Integer = Convert.ToInt32(reader("user_id"))
+                        Dim dealid As Integer = Convert.ToInt32(reader("deal_id"))
+                        Dim location As String = reader("location").ToString()
+
+                        ' Create a Panel control for each customer
+                        Dim panel As New Panel()
+                        panel.BorderStyle = BorderStyle.FixedSingle
+                        panel.BackColor = Color.FromArgb(255, 220, 189, 232)
+                        panel.Location = New Point(40)
+                        panel.Size = New Size(750, 110) ' Set the size of the panel (width: 300, height: 100)
+                        panel.Margin = New Padding(5)
+                        panel.AutoScroll = True
+
+                        ' Create labels for customer details
+                        Dim nameLabel As New Label()
+                        nameLabel.Text = $"{customerName}"
+                        nameLabel.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
+                        nameLabel.AutoSize = True
+                        nameLabel.Location = New Point(30, 10) ' Set the location of the label within the panel
+
+                        ' Create labels for Customer Location
+                        Dim loc As New Label()
+                        loc.Text = location
+                        loc.Font = New Font("Microsoft YaHei", 10)
+                        loc.AutoSize = True
+                        loc.Location = New Point(30, 40)
 
                         ' Create labels for customer details
                         Dim amount As New Label()
                         amount.Text = $"Cancelled"
                         amount.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
                         amount.AutoSize = True
-                        amount.Location = New Point(570, 30) ' Set the location of the label within the panel
+                        amount.Location = New Point(570, 20) ' Set the location of the label within the panel
+
+                        Dim paid_label As New Label()
+                        paid_label.Text = "Status : Paid"
+                        paid_label.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
+                        paid_label.AutoSize = True
+                        paid_label.Location = New Point(570, 50)
+
+                        ' Create Pay Refund button dynamically
+                        Dim payRefundButton As New Button()
+                        payRefundButton.Text = "Pay Refund"
+                        payRefundButton.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
+                        payRefundButton.Size = New Size(130, 40)
+                        payRefundButton.Location = New Point(570, 50) ' Set the location of the button within the panel
+                        payRefundButton.BackColor = Color.FromArgb(245, 140, 215) ' Set the background color of the button
+                        payRefundButton.FlatStyle = FlatStyle.Flat ' Flat style without a border
+                        AddHandler payRefundButton.Click, Sub(s, ev)
+                                                              ' Handle the Pay Refund button click event here
+                                                              ' You can implement the logic to process the refund
+                                                              ' For example, you can display a message box or call a refund function
+
+                                                              ' Retrieve provider balance
+                                                              Dim providerBalance As Integer = 0
+                                                              'Dim provPassword As String=""
+                                                              Using providerConnection As New SqlConnection(connectionString)
+                                                                  Dim providerCommand As New SqlCommand("SELECT balance FROM Provider WHERE provider_id = @ProviderId", providerConnection)
+                                                                  providerCommand.Parameters.AddWithValue("@ProviderId", providerId)
+                                                                  providerConnection.Open()
+                                                                  providerBalance = Convert.ToInt32(providerCommand.ExecuteScalar())
+                                                              End Using
+
+                                                              ' Check if the provider has sufficient balance
+                                                              If providerBalance >= dealamount Then
+                                                                  ' Update provider balance
+                                                                  Using providerConnection As New SqlConnection(connectionString)
+                                                                      Dim providerCommand As New SqlCommand("UPDATE Provider SET balance = balance - @RefundAmount WHERE provider_id = @ProviderId", providerConnection)
+                                                                      providerCommand.Parameters.AddWithValue("@RefundAmount", dealamount / 2)
+                                                                      providerCommand.Parameters.AddWithValue("@ProviderId", providerId)
+                                                                      providerConnection.Open()
+                                                                      providerCommand.ExecuteNonQuery()
+                                                                  End Using
+
+                                                                  ' Update customer balance
+                                                                  Using customerConnection As New SqlConnection(connectionString)
+                                                                      Dim customerCommand As New SqlCommand("UPDATE customer SET balance = balance + @RefundAmount WHERE user_id = @UserId", customerConnection)
+                                                                      customerCommand.Parameters.AddWithValue("@RefundAmount", dealamount / 2)
+                                                                      customerCommand.Parameters.AddWithValue("@UserId", userId)
+                                                                      customerConnection.Open()
+                                                                      customerCommand.ExecuteNonQuery()
+                                                                  End Using
+
+                                                                  ' Insert deal_id into refunded_deals table
+                                                                  Using refundedDealsConnection As New SqlConnection(connectionString)
+                                                                      Dim insertCommand As New SqlCommand("INSERT INTO refunded_deals (deal_id) VALUES (@DealId)", refundedDealsConnection)
+                                                                      insertCommand.Parameters.AddWithValue("@DealId", dealid)
+                                                                      refundedDealsConnection.Open()
+                                                                      insertCommand.ExecuteNonQuery()
+                                                                  End Using
+
+                                                                  ' Inform user about successful refund
+                                                                  MessageBox.Show("Refund processed for " & customerName & ". Amount: $" & (dealamount / 2).ToString())
+                                                                  panel.Controls.Add(paid_label)
+                                                                  panel.Controls.Remove(payRefundButton)
+                                                              Else
+                                                                  ' Inform user about insufficient balance
+                                                                  MessageBox.Show("Insufficient balance to process refund.")
+                                                              End If
+                                                          End Sub
 
                         ' Add labels to the panel
                         panel.Controls.Add(nameLabel)
                         panel.Controls.Add(amount)
+                        panel.Controls.Add(loc)
 
+                        Dim isRefunded As Boolean = False
+                        Using checkConnection As New SqlConnection(connectionString)
+                            Dim checkCommand As New SqlCommand("SELECT COUNT(*) FROM refunded_deals WHERE deal_id = @DealId", checkConnection)
+                            checkCommand.Parameters.AddWithValue("@DealId", dealid)
+                            checkConnection.Open()
+                            Dim count As Integer = Convert.ToInt32(checkCommand.ExecuteScalar())
+                            isRefunded = (count > 0)
+                        End Using
+
+                        ' If the deal_id is present in the refunded_deals table
+                        If isRefunded Then
+                            panel.Controls.Add(paid_label)
+                        Else
+                            panel.Controls.Add(payRefundButton)
+                        End If
 
                         ' Add the panel to the FlowLayoutPanel
                         FlowLayoutPanel1.Controls.Add(panel)
@@ -263,9 +474,9 @@ Public Class provider_notifications
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Button4.BackColor = Color.FromArgb(215, 181, 227)
-        Button2.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
-        Button3.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
-        Button1.BackColor = Color.FromKnownColor(KnownColor.ActiveBorder)
+        Button2.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Button3.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Button1.BackColor = Color.FromKnownColor(KnownColor.Control)
 
         ' Clear existing controls from FlowLayoutPanel
         If FlowLayoutPanel1.Controls.Count > 0 Then
@@ -439,7 +650,7 @@ Public Class provider_notifications
 
                         Dim review As New Label()
                         review.Text = $"{review_text}"
-                        review.Font = New Font("Microsoft YaHei", 10, FontStyle.Regular)
+                        review.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
                         review.AutoSize = True
                         review.Location = New Point(30, 50)
 

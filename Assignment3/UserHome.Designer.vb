@@ -62,6 +62,7 @@ Partial Class UserHome
         AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
+        BackColor = Color.White
         ClientSize = New Size(932, 920)
         Controls.Add(Username)
         Controls.Add(Profile_Pic)

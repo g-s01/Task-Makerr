@@ -11,7 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="provider_info.Designer.vb" />
+    <Compile Remove="provider_info.vb" />
     <Compile Remove="Prov_tile.Designer.vb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="provider_info.resx" />
   </ItemGroup>
 
   <ItemGroup>

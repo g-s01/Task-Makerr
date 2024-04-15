@@ -440,6 +440,14 @@ Namespace My.Resources
                 Return CType(obj, System.Drawing.Bitmap)
             End Get
         End Property
+
+	Friend ReadOnly Property common_passwords() As String
+            Get
+        	Dim obj As Object = ResourceManager.GetObject("common_passwords", resourceCulture)
+        	Return CType(obj, String)
+    	    End Get
+	End Property
+
     End Module
 
 End Namespace

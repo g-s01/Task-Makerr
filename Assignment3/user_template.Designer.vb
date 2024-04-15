@@ -23,16 +23,16 @@ Partial Class user_template
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         SplitContainer1 = New SplitContainer()
-        Button5 = New Button()
+        chats_btn = New Button()
         Label2 = New Label()
         Label1 = New Label()
         logout_btn = New Button()
-        Button6 = New Button()
-        Button7 = New Button()
-        Button4 = New Button()
-        Button3 = New Button()
-        Button2 = New Button()
-        Button1 = New Button()
+        help_btn = New Button()
+        feedback_btn = New Button()
+        profile_btn = New Button()
+        appointments_btn = New Button()
+        search_btn = New Button()
+        home_btn = New Button()
         PictureBox2 = New PictureBox()
         PictureBox1 = New PictureBox()
         CType(SplitContainer1, ComponentModel.ISupportInitialize).BeginInit()
@@ -50,16 +50,17 @@ Partial Class user_template
         ' 
         ' SplitContainer1.Panel1
         ' 
-        SplitContainer1.Panel1.Controls.Add(Button5)
+        SplitContainer1.Panel1.BackColor = Color.White
+        SplitContainer1.Panel1.Controls.Add(chats_btn)
         SplitContainer1.Panel1.Controls.Add(Label2)
         SplitContainer1.Panel1.Controls.Add(Label1)
         SplitContainer1.Panel1.Controls.Add(logout_btn)
-        SplitContainer1.Panel1.Controls.Add(Button6)
-        SplitContainer1.Panel1.Controls.Add(Button7)
-        SplitContainer1.Panel1.Controls.Add(Button4)
-        SplitContainer1.Panel1.Controls.Add(Button3)
-        SplitContainer1.Panel1.Controls.Add(Button2)
-        SplitContainer1.Panel1.Controls.Add(Button1)
+        SplitContainer1.Panel1.Controls.Add(help_btn)
+        SplitContainer1.Panel1.Controls.Add(feedback_btn)
+        SplitContainer1.Panel1.Controls.Add(profile_btn)
+        SplitContainer1.Panel1.Controls.Add(appointments_btn)
+        SplitContainer1.Panel1.Controls.Add(search_btn)
+        SplitContainer1.Panel1.Controls.Add(home_btn)
         SplitContainer1.Panel1.Controls.Add(PictureBox2)
         SplitContainer1.Panel1.Controls.Add(PictureBox1)
         ' 
@@ -71,23 +72,23 @@ Partial Class user_template
         SplitContainer1.SplitterWidth = 1
         SplitContainer1.TabIndex = 0
         ' 
-        ' Button5
+        ' chats_btn
         ' 
-        Button5.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button5.BackColor = SystemColors.Control
-        Button5.FlatAppearance.BorderSize = 0
-        Button5.FlatStyle = FlatStyle.Flat
-        Button5.Font = New Font("Microsoft YaHei", 10.2F)
-        Button5.Image = My.Resources.Resources.chats
-        Button5.ImageAlign = ContentAlignment.MiddleLeft
-        Button5.Location = New Point(3, 307)
-        Button5.Name = "Button5"
-        Button5.Padding = New Padding(15, 0, 0, 0)
-        Button5.Size = New Size(282, 36)
-        Button5.TabIndex = 11
-        Button5.Text = "     Chats"
-        Button5.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button5.UseVisualStyleBackColor = False
+        chats_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        chats_btn.BackColor = SystemColors.Control
+        chats_btn.FlatAppearance.BorderSize = 0
+        chats_btn.FlatStyle = FlatStyle.Flat
+        chats_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        chats_btn.Image = My.Resources.Resources.chats
+        chats_btn.ImageAlign = ContentAlignment.MiddleLeft
+        chats_btn.Location = New Point(3, 307)
+        chats_btn.Name = "chats_btn"
+        chats_btn.Padding = New Padding(15, 0, 0, 0)
+        chats_btn.Size = New Size(282, 36)
+        chats_btn.TabIndex = 11
+        chats_btn.Text = "     Chats"
+        chats_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        chats_btn.UseVisualStyleBackColor = False
         ' 
         ' Label2
         ' 
@@ -96,7 +97,7 @@ Partial Class user_template
         Label2.ForeColor = Color.DimGray
         Label2.Location = New Point(22, 470)
         Label2.Name = "Label2"
-        Label2.Size = New Size(106, 31)
+        Label2.Size = New Size(63, 20)
         Label2.TabIndex = 10
         Label2.Text = "Support"
         ' 
@@ -107,7 +108,7 @@ Partial Class user_template
         Label1.ForeColor = Color.DimGray
         Label1.Location = New Point(22, 100)
         Label1.Name = "Label1"
-        Label1.Size = New Size(81, 31)
+        Label1.Size = New Size(49, 20)
         Label1.TabIndex = 9
         Label1.Text = "Menu"
         ' 
@@ -130,111 +131,111 @@ Partial Class user_template
         logout_btn.TextImageRelation = TextImageRelation.ImageBeforeText
         logout_btn.UseVisualStyleBackColor = False
         ' 
-        ' Button6
+        ' help_btn
         ' 
-        Button6.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button6.BackColor = SystemColors.Control
-        Button6.FlatAppearance.BorderSize = 0
-        Button6.FlatStyle = FlatStyle.Flat
-        Button6.Font = New Font("Microsoft YaHei", 10.2F)
-        Button6.ImageAlign = ContentAlignment.MiddleLeft
-        Button6.Location = New Point(3, 509)
-        Button6.Name = "Button6"
-        Button6.Padding = New Padding(15, 0, 0, 0)
-        Button6.Size = New Size(282, 36)
-        Button6.TabIndex = 7
-        Button6.Text = "Need Help?"
-        Button6.TextAlign = ContentAlignment.MiddleLeft
-        Button6.UseVisualStyleBackColor = False
+        help_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        help_btn.BackColor = SystemColors.Control
+        help_btn.FlatAppearance.BorderSize = 0
+        help_btn.FlatStyle = FlatStyle.Flat
+        help_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        help_btn.ImageAlign = ContentAlignment.MiddleLeft
+        help_btn.Location = New Point(3, 509)
+        help_btn.Name = "help_btn"
+        help_btn.Padding = New Padding(15, 0, 0, 0)
+        help_btn.Size = New Size(282, 36)
+        help_btn.TabIndex = 7
+        help_btn.Text = "Need Help?"
+        help_btn.TextAlign = ContentAlignment.MiddleLeft
+        help_btn.UseVisualStyleBackColor = False
         ' 
-        ' Button7
+        ' feedback_btn
         ' 
-        Button7.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button7.BackColor = SystemColors.Control
-        Button7.FlatAppearance.BorderSize = 0
-        Button7.FlatStyle = FlatStyle.Flat
-        Button7.Font = New Font("Microsoft YaHei", 10.2F)
-        Button7.ImageAlign = ContentAlignment.MiddleLeft
-        Button7.Location = New Point(3, 551)
-        Button7.Name = "Button7"
-        Button7.Padding = New Padding(15, 0, 0, 0)
-        Button7.Size = New Size(282, 36)
-        Button7.TabIndex = 6
-        Button7.Text = "Give Feedback"
-        Button7.TextAlign = ContentAlignment.MiddleLeft
-        Button7.UseVisualStyleBackColor = False
+        feedback_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        feedback_btn.BackColor = SystemColors.Control
+        feedback_btn.FlatAppearance.BorderSize = 0
+        feedback_btn.FlatStyle = FlatStyle.Flat
+        feedback_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        feedback_btn.ImageAlign = ContentAlignment.MiddleLeft
+        feedback_btn.Location = New Point(3, 551)
+        feedback_btn.Name = "feedback_btn"
+        feedback_btn.Padding = New Padding(15, 0, 0, 0)
+        feedback_btn.Size = New Size(282, 36)
+        feedback_btn.TabIndex = 6
+        feedback_btn.Text = "Give Feedback"
+        feedback_btn.TextAlign = ContentAlignment.MiddleLeft
+        feedback_btn.UseVisualStyleBackColor = False
         ' 
-        ' Button4
+        ' profile_btn
         ' 
-        Button4.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button4.BackColor = SystemColors.Control
-        Button4.FlatAppearance.BorderSize = 0
-        Button4.FlatStyle = FlatStyle.Flat
-        Button4.Font = New Font("Microsoft YaHei", 10.2F)
-        Button4.Image = My.Resources.Resources.settings
-        Button4.ImageAlign = ContentAlignment.MiddleLeft
-        Button4.Location = New Point(3, 265)
-        Button4.Name = "Button4"
-        Button4.Padding = New Padding(15, 0, 0, 0)
-        Button4.Size = New Size(282, 36)
-        Button4.TabIndex = 5
-        Button4.Text = "     Profile"
-        Button4.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button4.UseVisualStyleBackColor = False
+        profile_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        profile_btn.BackColor = SystemColors.Control
+        profile_btn.FlatAppearance.BorderSize = 0
+        profile_btn.FlatStyle = FlatStyle.Flat
+        profile_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        profile_btn.Image = My.Resources.Resources.settings
+        profile_btn.ImageAlign = ContentAlignment.MiddleLeft
+        profile_btn.Location = New Point(3, 265)
+        profile_btn.Name = "profile_btn"
+        profile_btn.Padding = New Padding(15, 0, 0, 0)
+        profile_btn.Size = New Size(282, 36)
+        profile_btn.TabIndex = 5
+        profile_btn.Text = "     Profile"
+        profile_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        profile_btn.UseVisualStyleBackColor = False
         ' 
-        ' Button3
+        ' appointments_btn
         ' 
-        Button3.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button3.BackColor = SystemColors.Control
-        Button3.FlatAppearance.BorderSize = 0
-        Button3.FlatStyle = FlatStyle.Flat
-        Button3.Font = New Font("Microsoft YaHei", 10.2F)
-        Button3.Image = My.Resources.Resources.appointments
-        Button3.ImageAlign = ContentAlignment.MiddleLeft
-        Button3.Location = New Point(3, 223)
-        Button3.Name = "Button3"
-        Button3.Padding = New Padding(15, 0, 0, 0)
-        Button3.Size = New Size(282, 36)
-        Button3.TabIndex = 4
-        Button3.Text = "     My Appointments"
-        Button3.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button3.UseVisualStyleBackColor = False
+        appointments_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        appointments_btn.BackColor = SystemColors.Control
+        appointments_btn.FlatAppearance.BorderSize = 0
+        appointments_btn.FlatStyle = FlatStyle.Flat
+        appointments_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        appointments_btn.Image = My.Resources.Resources.appointments
+        appointments_btn.ImageAlign = ContentAlignment.MiddleLeft
+        appointments_btn.Location = New Point(3, 223)
+        appointments_btn.Name = "appointments_btn"
+        appointments_btn.Padding = New Padding(15, 0, 0, 0)
+        appointments_btn.Size = New Size(282, 36)
+        appointments_btn.TabIndex = 4
+        appointments_btn.Text = "     My Appointments"
+        appointments_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        appointments_btn.UseVisualStyleBackColor = False
         ' 
-        ' Button2
+        ' search_btn
         ' 
-        Button2.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button2.BackColor = SystemColors.Control
-        Button2.FlatAppearance.BorderSize = 0
-        Button2.FlatStyle = FlatStyle.Flat
-        Button2.Font = New Font("Microsoft YaHei", 10.2F)
-        Button2.Image = My.Resources.Resources.search
-        Button2.ImageAlign = ContentAlignment.MiddleLeft
-        Button2.Location = New Point(3, 181)
-        Button2.Name = "Button2"
-        Button2.Padding = New Padding(15, 0, 0, 0)
-        Button2.Size = New Size(282, 36)
-        Button2.TabIndex = 3
-        Button2.Text = "     Search"
-        Button2.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button2.UseVisualStyleBackColor = False
+        search_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        search_btn.BackColor = SystemColors.Control
+        search_btn.FlatAppearance.BorderSize = 0
+        search_btn.FlatStyle = FlatStyle.Flat
+        search_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        search_btn.Image = My.Resources.Resources.search
+        search_btn.ImageAlign = ContentAlignment.MiddleLeft
+        search_btn.Location = New Point(3, 181)
+        search_btn.Name = "search_btn"
+        search_btn.Padding = New Padding(15, 0, 0, 0)
+        search_btn.Size = New Size(282, 36)
+        search_btn.TabIndex = 3
+        search_btn.Text = "     Search"
+        search_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        search_btn.UseVisualStyleBackColor = False
         ' 
-        ' Button1
+        ' home_btn
         ' 
-        Button1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button1.FlatAppearance.BorderSize = 0
-        Button1.FlatStyle = FlatStyle.Flat
-        Button1.Font = New Font("Microsoft YaHei", 10.2F)
-        Button1.Image = My.Resources.Resources.home
-        Button1.ImageAlign = ContentAlignment.MiddleLeft
-        Button1.Location = New Point(3, 139)
-        Button1.Name = "Button1"
-        Button1.Padding = New Padding(15, 0, 0, 0)
-        Button1.Size = New Size(282, 36)
-        Button1.TabIndex = 2
-        Button1.Text = "     Home"
-        Button1.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button1.UseVisualStyleBackColor = False
+        home_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        home_btn.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        home_btn.FlatAppearance.BorderSize = 0
+        home_btn.FlatStyle = FlatStyle.Flat
+        home_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        home_btn.Image = My.Resources.Resources.home
+        home_btn.ImageAlign = ContentAlignment.MiddleLeft
+        home_btn.Location = New Point(3, 139)
+        home_btn.Name = "home_btn"
+        home_btn.Padding = New Padding(15, 0, 0, 0)
+        home_btn.Size = New Size(282, 36)
+        home_btn.TabIndex = 2
+        home_btn.Text = "     Home"
+        home_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        home_btn.UseVisualStyleBackColor = False
         ' 
         ' PictureBox2
         ' 
@@ -275,15 +276,15 @@ Partial Class user_template
     Friend WithEvents SplitContainer1 As SplitContainer
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents PictureBox2 As PictureBox
-    Friend WithEvents Button1 As Button
-    Friend WithEvents Button4 As Button
-    Friend WithEvents Button3 As Button
-    Friend WithEvents Button2 As Button
+    Friend WithEvents home_btn As Button
+    Friend WithEvents profile_btn As Button
+    Friend WithEvents appointments_btn As Button
+    Friend WithEvents search_btn As Button
     Friend WithEvents logout_btn As Button
-    Friend WithEvents Button6 As Button
-    Friend WithEvents Button7 As Button
+    Friend WithEvents help_btn As Button
+    Friend WithEvents feedback_btn As Button
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
-    Friend WithEvents Button5 As Button
+    Friend WithEvents chats_btn As Button
 
 End Class

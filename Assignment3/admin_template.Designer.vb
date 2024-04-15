@@ -25,9 +25,9 @@ Partial Class admin_template
         SplitContainer1 = New SplitContainer()
         Label1 = New Label()
         logout_btn = New Button()
-        Button3 = New Button()
-        Button2 = New Button()
-        Button1 = New Button()
+        feedbacks_btn = New Button()
+        chats_btn = New Button()
+        dashboard_btn = New Button()
         PictureBox2 = New PictureBox()
         PictureBox1 = New PictureBox()
         CType(SplitContainer1, ComponentModel.ISupportInitialize).BeginInit()
@@ -45,11 +45,12 @@ Partial Class admin_template
         ' 
         ' SplitContainer1.Panel1
         ' 
+        SplitContainer1.Panel1.BackColor = Color.White
         SplitContainer1.Panel1.Controls.Add(Label1)
         SplitContainer1.Panel1.Controls.Add(logout_btn)
-        SplitContainer1.Panel1.Controls.Add(Button3)
-        SplitContainer1.Panel1.Controls.Add(Button2)
-        SplitContainer1.Panel1.Controls.Add(Button1)
+        SplitContainer1.Panel1.Controls.Add(feedbacks_btn)
+        SplitContainer1.Panel1.Controls.Add(chats_btn)
+        SplitContainer1.Panel1.Controls.Add(dashboard_btn)
         SplitContainer1.Panel1.Controls.Add(PictureBox2)
         SplitContainer1.Panel1.Controls.Add(PictureBox1)
         ' 
@@ -68,7 +69,7 @@ Partial Class admin_template
         Label1.ForeColor = Color.DimGray
         Label1.Location = New Point(22, 100)
         Label1.Name = "Label1"
-        Label1.Size = New Size(81, 31)
+        Label1.Size = New Size(71, 28)
         Label1.TabIndex = 9
         Label1.Text = "Menu"
         ' 
@@ -91,59 +92,59 @@ Partial Class admin_template
         logout_btn.TextImageRelation = TextImageRelation.ImageBeforeText
         logout_btn.UseVisualStyleBackColor = False
         ' 
-        ' Button3
+        ' feedbacks_btn
         ' 
-        Button3.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button3.BackColor = SystemColors.Control
-        Button3.FlatAppearance.BorderSize = 0
-        Button3.FlatStyle = FlatStyle.Flat
-        Button3.Font = New Font("Microsoft YaHei", 10.2F)
-        Button3.Image = My.Resources.Resources.appointments
-        Button3.ImageAlign = ContentAlignment.MiddleLeft
-        Button3.Location = New Point(3, 223)
-        Button3.Name = "Button3"
-        Button3.Padding = New Padding(15, 0, 0, 0)
-        Button3.Size = New Size(282, 36)
-        Button3.TabIndex = 4
-        Button3.Text = "     Feedbacks"
-        Button3.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button3.UseVisualStyleBackColor = False
+        feedbacks_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        feedbacks_btn.BackColor = SystemColors.Control
+        feedbacks_btn.FlatAppearance.BorderSize = 0
+        feedbacks_btn.FlatStyle = FlatStyle.Flat
+        feedbacks_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        feedbacks_btn.Image = My.Resources.Resources.appointments
+        feedbacks_btn.ImageAlign = ContentAlignment.MiddleLeft
+        feedbacks_btn.Location = New Point(3, 223)
+        feedbacks_btn.Name = "feedbacks_btn"
+        feedbacks_btn.Padding = New Padding(15, 0, 0, 0)
+        feedbacks_btn.Size = New Size(282, 36)
+        feedbacks_btn.TabIndex = 4
+        feedbacks_btn.Text = "     Feedbacks"
+        feedbacks_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        feedbacks_btn.UseVisualStyleBackColor = False
         ' 
-        ' Button2
+        ' chats_btn
         ' 
-        Button2.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button2.BackColor = SystemColors.Control
-        Button2.FlatAppearance.BorderSize = 0
-        Button2.FlatStyle = FlatStyle.Flat
-        Button2.Font = New Font("Microsoft YaHei", 10.2F)
-        Button2.Image = My.Resources.Resources.chats
-        Button2.ImageAlign = ContentAlignment.MiddleLeft
-        Button2.Location = New Point(3, 181)
-        Button2.Name = "Button2"
-        Button2.Padding = New Padding(15, 0, 0, 0)
-        Button2.Size = New Size(282, 36)
-        Button2.TabIndex = 3
-        Button2.Text = "     Chats"
-        Button2.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button2.UseVisualStyleBackColor = False
+        chats_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        chats_btn.BackColor = SystemColors.Control
+        chats_btn.FlatAppearance.BorderSize = 0
+        chats_btn.FlatStyle = FlatStyle.Flat
+        chats_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        chats_btn.Image = My.Resources.Resources.chats
+        chats_btn.ImageAlign = ContentAlignment.MiddleLeft
+        chats_btn.Location = New Point(3, 181)
+        chats_btn.Name = "chats_btn"
+        chats_btn.Padding = New Padding(15, 0, 0, 0)
+        chats_btn.Size = New Size(282, 36)
+        chats_btn.TabIndex = 3
+        chats_btn.Text = "     Chats"
+        chats_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        chats_btn.UseVisualStyleBackColor = False
         ' 
-        ' Button1
+        ' dashboard_btn
         ' 
-        Button1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button1.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
-        Button1.FlatAppearance.BorderSize = 0
-        Button1.FlatStyle = FlatStyle.Flat
-        Button1.Font = New Font("Microsoft YaHei", 10.2F)
-        Button1.Image = My.Resources.Resources.home
-        Button1.ImageAlign = ContentAlignment.MiddleLeft
-        Button1.Location = New Point(3, 139)
-        Button1.Name = "Button1"
-        Button1.Padding = New Padding(15, 0, 0, 0)
-        Button1.Size = New Size(282, 36)
-        Button1.TabIndex = 2
-        Button1.Text = "     Dashboard"
-        Button1.TextImageRelation = TextImageRelation.ImageBeforeText
-        Button1.UseVisualStyleBackColor = False
+        dashboard_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        dashboard_btn.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+        dashboard_btn.FlatAppearance.BorderSize = 0
+        dashboard_btn.FlatStyle = FlatStyle.Flat
+        dashboard_btn.Font = New Font("Microsoft YaHei", 10.2F)
+        dashboard_btn.Image = My.Resources.Resources.home
+        dashboard_btn.ImageAlign = ContentAlignment.MiddleLeft
+        dashboard_btn.Location = New Point(3, 139)
+        dashboard_btn.Name = "dashboard_btn"
+        dashboard_btn.Padding = New Padding(15, 0, 0, 0)
+        dashboard_btn.Size = New Size(282, 36)
+        dashboard_btn.TabIndex = 2
+        dashboard_btn.Text = "     Dashboard"
+        dashboard_btn.TextImageRelation = TextImageRelation.ImageBeforeText
+        dashboard_btn.UseVisualStyleBackColor = False
         ' 
         ' PictureBox2
         ' 
@@ -183,9 +184,9 @@ Partial Class admin_template
     Friend WithEvents SplitContainer1 As SplitContainer
     Friend WithEvents Label1 As Label
     Friend WithEvents logout_btn As Button
-    Friend WithEvents Button3 As Button
-    Friend WithEvents Button2 As Button
-    Friend WithEvents Button1 As Button
+    Friend WithEvents feedbacks_btn As Button
+    Friend WithEvents chats_btn As Button
+    Friend WithEvents dashboard_btn As Button
     Friend WithEvents PictureBox2 As PictureBox
     Friend WithEvents PictureBox1 As PictureBox
 End Class
