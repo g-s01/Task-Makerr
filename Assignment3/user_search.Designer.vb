@@ -26,6 +26,8 @@ Partial Class user_search
         TextBox1 = New TextBox()
         PictureBox1 = New PictureBox()
         TableLayoutPanel1 = New TableLayoutPanel()
+        Panel7 = New Panel()
+        Label7 = New Label()
         Panel2 = New Panel()
         Label2 = New Label()
         Panel3 = New Panel()
@@ -44,18 +46,16 @@ Partial Class user_search
         PictureBox2 = New PictureBox()
         Label1 = New Label()
         Button2 = New Button()
-        Label7 = New Label()
-        Panel7 = New Panel()
         Panel1.SuspendLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         TableLayoutPanel1.SuspendLayout()
+        Panel7.SuspendLayout()
         Panel2.SuspendLayout()
         Panel3.SuspendLayout()
         Panel4.SuspendLayout()
         Panel5.SuspendLayout()
         Panel6.SuspendLayout()
         CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
-        Panel7.SuspendLayout()
         SuspendLayout()
         ' 
         ' Panel1
@@ -112,6 +112,27 @@ Partial Class user_search
         TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
         TableLayoutPanel1.Size = New Size(768, 44)
         TableLayoutPanel1.TabIndex = 1
+        ' 
+        ' Panel7
+        ' 
+        Panel7.Controls.Add(Label7)
+        Panel7.Location = New Point(686, 1)
+        Panel7.Margin = New Padding(0)
+        Panel7.Name = "Panel7"
+        Panel7.Size = New Size(82, 42)
+        Panel7.TabIndex = 10
+        ' 
+        ' Label7
+        ' 
+        Label7.Anchor = AnchorStyles.None
+        Label7.AutoSize = True
+        Label7.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label7.Location = New Point(9, 7)
+        Label7.Margin = New Padding(0)
+        Label7.Name = "Label7"
+        Label7.Size = New Size(64, 28)
+        Label7.TabIndex = 3
+        Label7.Text = "Select"
         ' 
         ' Panel2
         ' 
@@ -283,9 +304,8 @@ Partial Class user_search
         ' 
         ' PictureBox2
         ' 
-        PictureBox2.BackgroundImage = My.Resources.Resources.download
         PictureBox2.BackgroundImageLayout = ImageLayout.Stretch
-        PictureBox2.InitialImage = My.Resources.Resources.download
+        PictureBox2.InitialImage = Nothing
         PictureBox2.Location = New Point(754, 22)
         PictureBox2.Name = "PictureBox2"
         PictureBox2.Size = New Size(50, 50)
@@ -313,27 +333,6 @@ Partial Class user_search
         Button2.Text = "Book a Slot"
         Button2.UseVisualStyleBackColor = False
         ' 
-        ' Label7
-        ' 
-        Label7.Anchor = AnchorStyles.None
-        Label7.AutoSize = True
-        Label7.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label7.Location = New Point(9, 7)
-        Label7.Margin = New Padding(0)
-        Label7.Name = "Label7"
-        Label7.Size = New Size(64, 28)
-        Label7.TabIndex = 3
-        Label7.Text = "Select"
-        ' 
-        ' Panel7
-        ' 
-        Panel7.Controls.Add(Label7)
-        Panel7.Location = New Point(686, 1)
-        Panel7.Margin = New Padding(0)
-        Panel7.Name = "Panel7"
-        Panel7.Size = New Size(82, 42)
-        Panel7.TabIndex = 10
-        ' 
         ' user_search
         ' 
         AutoScaleMode = AutoScaleMode.None
@@ -356,6 +355,8 @@ Partial Class user_search
         Panel1.PerformLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
         TableLayoutPanel1.ResumeLayout(False)
+        Panel7.ResumeLayout(False)
+        Panel7.PerformLayout()
         Panel2.ResumeLayout(False)
         Panel2.PerformLayout()
         Panel3.ResumeLayout(False)
@@ -367,8 +368,6 @@ Partial Class user_search
         Panel6.ResumeLayout(False)
         Panel6.PerformLayout()
         CType(PictureBox2, ComponentModel.ISupportInitialize).EndInit()
-        Panel7.ResumeLayout(False)
-        Panel7.PerformLayout()
         ResumeLayout(False)
         PerformLayout()
     End Sub
