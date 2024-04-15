@@ -32,6 +32,9 @@ Public Class user_search
     End Structure
 
     Private Async Sub user_search_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Label1.Text = user_name
+        PictureBox2.Image = user_profilepic
+
         ComboBox1.Items.Clear()
         ComboBox1.Items.Add("Service")
         For i As Integer = 0 To service_types.Count - 1
@@ -89,30 +92,6 @@ Public Class user_search
                                                        End Sub)
                          Catch ex As Exception
                              MessageBox.Show("Error connecting to database: " & ex.Message)
-                         End Try
-                     End Using
-                 End Function),
-        Task.Run(Async Function()
-                     ' Execute user_query
-                     Using connection As New SqlConnection(connectionString)
-                         Try
-                             Await connection.OpenAsync()
-                             Dim command_rev As New SqlCommand("SELECT username,profile_image FROM customer WHERE user_id = " + User_ID.ToString(), connection)
-                             Using reader As SqlDataReader = command_rev.ExecuteReader()
-                                 While reader.Read()
-                                     ' Retrieve user details
-                                     Label1.Text = reader.GetString("username")
-                                     If Not reader.IsDBNull(reader.GetOrdinal("profile_image")) Then
-                                         Dim imageData As Byte() = DirectCast(reader("profile_image"), Byte())
-                                         binaryImageData = imageData
-                                     Else
-                                         is_null_image = 1
-                                     End If
-                                 End While
-                             End Using
-
-                         Catch ex As Exception
-
                          End Try
                      End Using
                  End Function),
