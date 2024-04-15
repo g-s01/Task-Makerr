@@ -132,6 +132,7 @@ Public Class provider_appointment_details
                     End If
 
                     reader.Close()
+                    MakeChatVisible()
                 Catch ex As Exception
                     Console.WriteLine("Error: " & ex.Message)
                 End Try
@@ -297,6 +298,19 @@ Public Class provider_appointment_details
         Dim diff2 As Integer = CInt((storedDateTime - bookDate).TotalHours)
 
         Dim refundPercentage As Double = 100
+
+        ' Cancellation Policy
+        If diff1 <= diff2 / 24 Then
+            refundPercentage = 100
+        ElseIf diff1 <= diff2 / 6 Then
+            refundPercentage = 105
+        ElseIf diff1 <= diff2 / 3 Then
+            refundPercentage = 110
+        ElseIf diff1 >= 0 Then
+            refundPercentage = 115
+        Else
+            refundPercentage = 125
+        End If
 
         'refundPercentage = 50 ' for debugging
         advance = slots * costPerHour * (advancePercentage / 100)
