@@ -22,14 +22,51 @@ Partial Class appointment_history
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Label1 = New Label()
         Panel1 = New Panel()
         Panel2 = New Panel()
         RichTextBox1 = New RichTextBox()
         PictureBox1 = New PictureBox()
+        Label1 = New Label()
         Panel2.SuspendLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
+        ' 
+        ' Panel1
+        ' 
+        Panel1.AutoScroll = True
+        Panel1.Location = New Point(27, 107)
+        Panel1.Name = "Panel1"
+        Panel1.Size = New Size(925, 720)
+        Panel1.TabIndex = 1
+        ' 
+        ' Panel2
+        ' 
+        Panel2.Controls.Add(RichTextBox1)
+        Panel2.Location = New Point(27, 117)
+        Panel2.Name = "Panel2"
+        Panel2.Size = New Size(942, 655)
+        Panel2.TabIndex = 0
+        ' 
+        ' RichTextBox1
+        ' 
+        RichTextBox1.BackColor = Color.FromArgb(CByte(240), CByte(218), CByte(248))
+        RichTextBox1.Font = New Font("Microsoft YaHei", 10.2F)
+        RichTextBox1.Location = New Point(0, 0)
+        RichTextBox1.Name = "RichTextBox1"
+        RichTextBox1.ReadOnly = True
+        RichTextBox1.Size = New Size(507, 655)
+        RichTextBox1.TabIndex = 0
+        RichTextBox1.Text = ""
+        ' 
+        ' PictureBox1
+        ' 
+        PictureBox1.Image = My.Resources.Resources.backbtn
+        PictureBox1.Location = New Point(855, 779)
+        PictureBox1.Margin = New Padding(3, 4, 3, 4)
+        PictureBox1.Name = "PictureBox1"
+        PictureBox1.Size = New Size(114, 67)
+        PictureBox1.TabIndex = 3
+        PictureBox1.TabStop = False
         ' 
         ' Label1
         ' 
@@ -42,48 +79,11 @@ Partial Class appointment_history
         Label1.TabIndex = 0
         Label1.Text = "Past Appointments"
         ' 
-        ' Panel1
-        ' 
-        Panel1.AutoScroll = True
-        Panel1.Location = New Point(27, 99)
-        Panel1.Name = "Panel1"
-        Panel1.Size = New Size(763, 464)
-        Panel1.TabIndex = 1
-        ' 
-        ' Panel2
-        ' 
-        Panel2.Controls.Add(RichTextBox1)
-        Panel2.Location = New Point(27, 85)
-        Panel2.Name = "Panel2"
-        Panel2.Size = New Size(769, 462)
-        Panel2.TabIndex = 0
-        ' 
-        ' RichTextBox1
-        ' 
-        RichTextBox1.BackColor = Color.FromArgb(CByte(240), CByte(218), CByte(248))
-        RichTextBox1.Font = New Font("Microsoft YaHei", 10.2F)
-        RichTextBox1.Location = New Point(0, 0)
-        RichTextBox1.Name = "RichTextBox1"
-        RichTextBox1.ReadOnly = True
-        RichTextBox1.Size = New Size(404, 489)
-        RichTextBox1.TabIndex = 0
-        RichTextBox1.Text = ""
-        ' 
-        ' PictureBox1
-        ' 
-        PictureBox1.Image = My.Resources.Resources.backbtn
-        PictureBox1.Location = New Point(682, 554)
-        PictureBox1.Margin = New Padding(3, 4, 3, 4)
-        PictureBox1.Name = "PictureBox1"
-        PictureBox1.Size = New Size(114, 67)
-        PictureBox1.TabIndex = 3
-        PictureBox1.TabStop = False
-        ' 
         ' appointment_history
         ' 
         AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(825, 619)
+        ClientSize = New Size(998, 859)
         Controls.Add(PictureBox1)
         Controls.Add(Panel2)
         Controls.Add(Panel1)
@@ -95,10 +95,9 @@ Partial Class appointment_history
         ResumeLayout(False)
         PerformLayout()
     End Sub
-
-    Friend WithEvents Label1 As Label
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Panel2 As Panel
     Friend WithEvents RichTextBox1 As RichTextBox
     Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents Label1 As Label
 End Class
