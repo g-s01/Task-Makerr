@@ -93,26 +93,14 @@ Public Class ViewAllUser
 
         Me.Controls.Add(Profile_Pic)
         Me.Controls.Add(Username)
-        Dim user_name As String
-        user_name = "Vamos"
 
-        'map("electric").Add(newItem)
-        'Dim connectionString1 As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-        'Using connection As New SqlConnection(connectionString1)
-        '    connection.Open()
-        '    Dim command_user As New SqlCommand("SELECT customer.* FROM customer ", connection)
-        '    Using reader As SqlDataReader = command_user.ExecuteReader()
-        '        While reader.Read()
-        '            Dim user As Int32 = reader.GetInt32(reader.GetOrdinal("user_id"))
-        '            Dim username As String = reader.GetString(reader.GetOrdinal("username"))
-        '            If user = Module_global.User_ID Then
-        '                user_name = username
-        '            End If
-        '        End While
-        '    End Using
-        'End Using
 
-        Username.Text = user_name
+
+
+        Username.Text = Module_global.user_name
+        '  If Module_global.user_profilepic IsNot Nothing Then
+        '      Profile_Pic.Image = Module_global.user_profilepic
+        '  End If
 
         ComboBox1.Items.Clear()
         ComboBox1.Items.Add("Sorted by Rating")
