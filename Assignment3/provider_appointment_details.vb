@@ -132,6 +132,7 @@ Public Class provider_appointment_details
                     End If
 
                     reader.Close()
+                    MakeChatVisible()
                 Catch ex As Exception
                     Console.WriteLine("Error: " & ex.Message)
                 End Try
@@ -228,7 +229,6 @@ Public Class provider_appointment_details
         End Using
         ' rtb2.SelectionFont = New Font(rtb2.Font, FontStyle.Bold)
 
-        MakeChatVisible()
     End Sub
 
     Private Sub btn_appointment_completed_Click(sender As Object, e As EventArgs) Handles btn_appointment_completed.Click
