@@ -39,6 +39,8 @@ Public Class provider_appointment_details
         chatForm.providerId = Module_global.Provider_ID
         chatForm.userId = user_id
 
+        MessageBox.Show(user_id
+                        )
         ' Set the form's Dock property to fill the panel
         chatForm.Dock = DockStyle.Fill
 
@@ -131,6 +133,7 @@ Public Class provider_appointment_details
             End Using
         End Using
 
+
         Dim query2 As String = "SELECT cost_per_hour FROM provider WHERE provider_id = @ProviderID"
 
 
@@ -190,7 +193,7 @@ Public Class provider_appointment_details
         Dim query4 As String = "SELECT username FROM customer WHERE user_id = @UserID"
 
         Using connection As New SqlConnection(connectionString)
-            Using command As New SqlCommand(query3, connection)
+            Using command As New SqlCommand(query4, connection)
                 ' Add parameters to the SQL query to prevent SQL injection
                 command.Parameters.AddWithValue("@UserId", user_id)
 
@@ -207,7 +210,7 @@ Public Class provider_appointment_details
         Dim query5 As String = "SELECT providername FROM provider WHERE provider_id = @ProviderID"
 
         Using connection As New SqlConnection(connectionString)
-            Using command As New SqlCommand(query3, connection)
+            Using command As New SqlCommand(query5, connection)
                 ' Add parameters to the SQL query to prevent SQL injection
                 command.Parameters.AddWithValue("@ProviderID", provider_id)
 
@@ -221,7 +224,8 @@ Public Class provider_appointment_details
             End Using
         End Using
         rtb2.SelectionFont = New Font(rtb2.Font, FontStyle.Bold)
-
+        MessageBox.Show(user_id)
+        MessageBox.Show(provider_id)
         MakeChatVisible()
     End Sub
 
