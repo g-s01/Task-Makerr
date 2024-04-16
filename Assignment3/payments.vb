@@ -239,7 +239,7 @@ Public Class payments
         sendEmail(randomNumber, subject, body)
         Dim code As Integer
         If otp_auth.ShowDialog = DialogResult.OK Then
-            If Integer.TryParse(otp_auth.InputValue, code) Then
+            If Integer.TryParse(otp_auth.input, code) Then
                 If code = randomNumber Then
                     'updating the balance of the account
                     Dim sqlQuery As String = "UPDATE customer SET balance = balance + @CashbackAmount WHERE email = @Email;"
