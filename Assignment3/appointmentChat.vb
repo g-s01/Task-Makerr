@@ -149,8 +149,9 @@ Public Class appointmentChat
     End Function
 
 
-    Private Function InsertMessageIntoDatabase(room As Integer, dealId As Integer, user_role As String, messageText As String) As Boolean
-        Dim query As String = "INSERT INTO messages (chat_room_id, deal_id, sender_type, message_content,sent_timestamp) VALUES (@ChatRoomId, @DealId, @SenderType, @MessageContent, @SentTimestamp)"
+    Private Function InsertMessageIntoDatabase(room As Integer, dealId As Integer, user_role As String, messageText As String, timeStamp As String) As Boolean
+
+        Dim query As String = "INSERT INTO messages (chat_room_id, deal_id, sender_type, message_content,sent_timestamp) VALUES (@ChatRoomId, @DealId, @SenderType, @MessageContent,@timeStamp)"
         Using connection As New SqlConnection(connectionString)
             Using command As New SqlCommand(query, connection)
                 ' Add parameters to the SQL query to prevent SQL injection
@@ -158,8 +159,7 @@ Public Class appointmentChat
                 command.Parameters.AddWithValue("@DealId", dealId)
                 command.Parameters.AddWithValue("@SenderType", user_role)
                 command.Parameters.AddWithValue("@MessageContent", messageText)
-                command.Parameters.AddWithValue("@SentTimestamp", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-
+                command.Parameters.AddWithValue("@timeStamp", timeStamp)
                 Try
                     connection.Open()
                     ' Execute the insert query
@@ -258,10 +258,17 @@ Public Class appointmentChat
         ElseIf user_role = "provider" Then
             Label2.Text = customerName
         End If
-        Dim sortedMessages = messages.OrderBy(Function(msg) DateTime.Parse(msg.Item5))
+
+
+
+        Dim sortedMessages = messages.OrderBy(Function(msg) DateTime.ParseExact(msg.Item5, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture))
 
         ' Y position for labels
         Dim yPos As Integer = 55
+
+        Dim lastDisplayedDate As Date = DateTime.MinValue
+
+        Dim dateLabelPrinted As Boolean = False
 
         ' Iterate through messages
         For Each msg In sortedMessages
@@ -270,7 +277,31 @@ Public Class appointmentChat
             Dim senderType As String = msg.Item3
             Dim messageText As String = msg.Item4
             Dim timeStamp As String = DateTime.ParseExact(msg.Item5, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
+            Dim timeStamp1 As Date = DateTime.ParseExact(msg.Item5, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+            Dim messageDate As Date = timeStamp1.Date
 
+            If Not dateLabelPrinted OrElse messageDate <> lastDisplayedDate Then
+                ' Create a label for the date
+                Dim dateLabel As New Label()
+                dateLabel.AutoSize = True
+                dateLabel.Text = messageDate.ToString("MMMM dd, yyyy") ' Format the date to display only date without time
+                dateLabel.Font = New Font(dateLabel.Font.FontFamily, 10, FontStyle.Bold)
+                dateLabel.Padding = New Padding(5)
+                dateLabel.BackColor = SystemColors.Control ' Use system color for background
+                dateLabel.TextAlign = ContentAlignment.MiddleCenter ' Center-align the text
+                dateLabel.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right ' Allow resizing with the panel width
+                dateLabel.Top = yPos ' Center the label vertically
+                dateLabel.Left = (Chat.Width - dateLabel.Width) \ 2 ' Center the label horizontally
+
+                ' Add the date label to the chat_list panel
+                Chat.Controls.Add(dateLabel)
+
+                dateLabelPrinted = True
+
+                ' Update the last displayed date
+                lastDisplayedDate = messageDate
+                yPos += dateLabel.Height
+            End If
 
             ' Create a label for the message
             Dim messageLabel As New Label()
@@ -343,7 +374,7 @@ Public Class appointmentChat
     End Sub
     Private Sub sendButton_Click(sender As Object, e As EventArgs) Handles sendButton.Click
         ' Get the current timestamp
-        Dim timeStamp = Date.Now.ToString("dd-MM-yyyy HH:mm:ss")
+        Dim timeStamp = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
         Dim maxLength = 30 ' Set the maximum length before inserting a newline
         Dim inputString As String = inputTextBox.Text
         Dim messageText = ""
@@ -359,7 +390,7 @@ Public Class appointmentChat
         Dim newMessage As New Tuple(Of Integer, Integer, String, String, String)(roomId, dealId, user_role, messageText, timeStamp)
         ' Add the new message to the messages list
         If (messageText.Length <> 0) Then
-            InsertMessageIntoDatabase(roomId, dealId, user_role, messageText)
+            InsertMessageIntoDatabase(roomId, dealId, user_role, messageText, timeStamp)
             messages.Add(newMessage)
             ' Optionally, you can clear the TextBox after sending the message
             inputTextBox.Text = ""
