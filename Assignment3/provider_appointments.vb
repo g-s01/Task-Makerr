@@ -87,6 +87,7 @@ Public Class provider_appointments
         panelArray(i).Size = New System.Drawing.Size(750, 70)
         panelArray(i).BackColor = System.Drawing.Color.FromArgb(CByte(240), CByte(218), CByte(248))
         panelArray(i).AutoSize = True
+        panelArray(i).Name = DealId.ToString()
 
         AddHandler panelArray(i).Click, AddressOf Panel_Click2
 
