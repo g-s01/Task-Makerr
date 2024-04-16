@@ -28,6 +28,7 @@ Public Class FeedbackForm
             senderId = Module_global.User_ID
         End If
 
+        'query to find the count, to check whether this is new  feedback or not
         Dim query As String = ""
 
         Dim feedback_count As Integer
@@ -41,10 +42,13 @@ Public Class FeedbackForm
             End Using
         End Using
 
+        'if feedback is already given 
         If feedback_count > 0 Then
             Dim query2 As String = ""
             Dim rating As Integer
             Dim feedbackText As String
+
+            'get the recent rating and feedback given
             query2 = "SELECT TOP 1 rating, feedback_text FROM feedback WHERE sender_id = @sender_id ORDER BY feedback_id DESC"
 
             Using connection As New SqlConnection(connectionString)
@@ -61,11 +65,13 @@ Public Class FeedbackForm
                 End Using
             End Using
 
+            'Display the rating as yellow stars
             For i As Integer = 0 To rating - 1
                 stars(i).Image = My.Resources.yellow_star
                 ' Change to your yellow star image
             Next
 
+            'and the thank you note and feedback text previously given is displayed
             lblTitle.Text = "Thank you for your Feedback"
             lblRateUs.Text = "Want to update it?"
             lblTitle.Location = New Point(185, 30)
@@ -116,6 +122,7 @@ Public Class FeedbackForm
             Dim feedbackText As String = txtFeedback.Text.Trim()
             Dim timestamp As DateTime = DateTime.Now
 
+            'Error handling, if nothing is given user is asked to enter rating
             If Rating = 0 Then
                 MessageBox.Show("Kindly give the rating")
                 Return
@@ -124,6 +131,8 @@ Public Class FeedbackForm
                 feedbackText = ""
             End If
 
+
+            'query for the username/providername 
             Dim query As String = ""
 
             If userType = "customer" Then
@@ -140,15 +149,13 @@ Public Class FeedbackForm
                 End Using
             End Using
 
-
+            'Insert into table
 
             InsertFeedback(feedbackId, senderId, sendername, userType, feedbackText, timestamp, Rating)
-            MessageBox.Show("Thank you for your feedback!", "Feedback Submitted", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            'For i As Integer = 0 To stars.Count - 1
-            'stars(i).Image = My.Resources.bg_star ' Change to your grey star image
-            'Next
 
-            'txtFeedback.Text = "write your feedback here..."
+            'after successful insertion show the submitted feedback to user
+            MessageBox.Show("Thank you for your feedback!", "Feedback Submitted", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
             lblTitle.Text = "Thank you for your Feedback"
             lblRateUs.Text = "Want to update it?"
             btnSend.Text = "Update"
@@ -159,6 +166,7 @@ Public Class FeedbackForm
         End If
     End Sub
 
+    'new feedback id is the maximum of current +1 that is the next number to the maximum
     Private Function GetNextFeedbackId() As Integer
         Dim nextId As Integer = -1
 
@@ -173,6 +181,7 @@ Public Class FeedbackForm
         Return nextId
     End Function
 
+    'Inserting new entry into feedback table
     Private Sub InsertFeedback(feedbackId As Integer, senderId As Integer, senderName As String, userType As String, feedbackText As String, sentTimestamp As DateTime, rating As Integer)
         Using connection As New SqlConnection(connectionString)
             Dim query As String = "INSERT INTO feedback (sender_id, sendername, user_type, feedback_text, sent_timestamp, rating) VALUES (@SenderId, @SenderName, @UserType, @FeedbackText, @SentTimestamp, @Rating)"

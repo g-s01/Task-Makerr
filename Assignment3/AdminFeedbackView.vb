@@ -82,19 +82,19 @@ Public Class AdminFeedbackView
                             senderNameLabel.Text = reader("sendername").ToString()
                             senderNameLabel.AutoSize = True
                             senderNameLabel.Location = New Point(10, 10)
-                            senderNameLabel.Font = New Font("Arial", 12, FontStyle.Bold)
+                            senderNameLabel.Font = New Font("Microsoft YaHei", 12, FontStyle.Bold)
 
                             Dim ratingLabel As New Label()
                             ratingLabel.Text = "Rating: " & reader("rating").ToString()
                             ratingLabel.AutoSize = True
                             ratingLabel.Location = New Point(10, 30)
-                            ratingLabel.Font = New Font("Arial", 10, FontStyle.Regular)
+                            ratingLabel.Font = New Font("Microsoft YaHei", 10, FontStyle.Regular)
 
                             Dim feedbackTextLabel As New Label()
                             feedbackTextLabel.Text = reader("feedback_text").ToString()
                             feedbackTextLabel.AutoSize = True
                             feedbackTextLabel.Location = New Point(10, 50)
-                            feedbackTextLabel.Font = New Font("Arial", 10, FontStyle.Regular)
+                            feedbackTextLabel.Font = New Font("Microsoft YaHei", 10, FontStyle.Regular)
 
                             ' Add labels to the feedback panel
                             feedbackPanel.Controls.Add(senderNameLabel)

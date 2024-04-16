@@ -257,7 +257,7 @@ Public Class support_chat
                 messageLabel.Left = 10
                 label2.Left = textSize.Width - 15
             Else
-                messageLabel.Left = Chat.Width - messageLabel.PreferredWidth - 10 - 5
+                messageLabel.Left = Support.Width - messageLabel.PreferredWidth - 25
                 label2.Left = messageLabel.Left + messageLabel.PreferredWidth - 35 + messageLabel.Width - 88
             End If
 
