@@ -78,12 +78,12 @@ Public Class user_search
                                      End If
                                  End While
                              End Using
-                             Parallel.ForEach(reviews, Sub(pair)
-                                                           Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
-                                                           Dim rating As Double
-                                                           rating = Math.Round(currentValue.Item1 / CType(currentValue.Item2, Double), 1)
-                                                           rating_prov.TryAdd(pair.Key, rating)
-                                                       End Sub)
+                             For Each pair As KeyValuePair(Of Int32, Tuple(Of Integer, Integer)) In reviews
+                                 Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
+                                 Dim rating As Double
+                                 rating = Math.Round(currentValue.Item1 / CType(currentValue.Item2, Double), 1)
+                                 rating_prov.Add(pair.Key, rating)
+                             Next
                          Catch ex As Exception
                              MessageBox.Show("Error connecting to database: " & ex.Message)
                          End Try
