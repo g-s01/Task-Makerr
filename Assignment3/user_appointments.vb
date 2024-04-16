@@ -81,6 +81,29 @@ Public Class user_appointments
         'relatedForm.Show()
     End Sub
 
+    Private Sub CompletedPanelClick(sender As Object, e As EventArgs)
+        Dim clickedPanel As Panel = DirectCast(sender, Panel)
+        Dim panelIndex As Integer = Array.IndexOf(panelArray, clickedPanel)
+
+        'MessageBox.Show("Upper Panel Clicked - Index: " & panelIndex.ToString() & clickedPanel.Name)
+
+        Module_global.Appointment_Det_DealId = Integer.Parse(clickedPanel.Name)
+
+        Me.Hide()
+        With user_feedback
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(user_feedback)
+            .BringToFront()
+            .Show()
+        End With
+
+        ' Show related form for upper panel click
+        'Dim relatedForm As New RelatedForm() ' Replace RelatedForm with the actual name of your related form class
+        'relatedForm.Show()
+    End Sub
+
     Private Function spawnDivs(i As Integer, providerName As String, location As String, CostNum As Integer, Schedule As String, y As Integer, DealId As Integer)
 
         ReDim panelArray(i)
@@ -128,6 +151,7 @@ Public Class user_appointments
 
     End Function
 
+
     Private Function spawnDivsFeedback(i As Integer, providerName As String, location As String, CostNum As Integer, Schedule As String, y As Integer, DealId As Integer)
 
         ReDim panelArray(i)
@@ -140,6 +164,7 @@ Public Class user_appointments
         panelArray(i).Size = New System.Drawing.Size(750, 70)
         panelArray(i).BackColor = System.Drawing.Color.FromArgb(CByte(240), CByte(218), CByte(248))
         panelArray(i).AutoSize = True
+
 
         AddHandler panelArray(i).Click, AddressOf Panel_Click1
 
@@ -171,6 +196,7 @@ Public Class user_appointments
         timings.Text = "Appointment schedule :  " + Schedule
         panelArray(i).Controls.Add(timings)
 
+
         Dim feedback As New Button()
         feedback.Text = " Give Feedback "
         feedback.AutoSize = True
@@ -187,7 +213,6 @@ Public Class user_appointments
 
         panelArray(i).Controls.Add(feedback)
 
-        Panel1.Controls.Add(panelArray(i))
 
     End Function
 
@@ -311,22 +336,25 @@ Public Class user_appointments
 
 
                     ' Process time string in parallel
+
+                    dateof = dateof.AddMinutes(-dateof.Minute)
+                    dateof = dateof.AddSeconds(-dateof.Second)
                     Dim datefinal As Date = dateof
                     Dim count As Integer = 0
-
-                    Parallel.ForEach(time, Sub(c)
-                                               If c = "1" Then
-                                                   Dim slotTime = count Mod 12 + 9
-                                                   Dim tempDateof = dateof.AddHours(slotTime - dateof.Hour)
-                                                   If tempDateof.CompareTo(Now) > 0 Then
-                                                       datefinal = tempDateof
-                                                   End If
-                                               End If
-                                               count += 1
-                                               If (count Mod 12 = 0) Then
-                                                   dateof = dateof.AddDays(1)
-                                               End If
-                                           End Sub)
+                    For Each c As Char In time
+                        If c = "1" Then
+                            Dim slotTime = count Mod 12 + 9
+                            dateof = dateof.AddHours(slotTime - dateof.Hour)
+                            If dateof.CompareTo(Now) > 0 Then
+                                datefinal = dateof
+                                Exit For
+                            End If
+                        End If
+                        count += 1
+                        If (count Mod 12 = 0) Then
+                            dateof = dateof.AddDays(1)
+                        End If
+                    Next
 
                     ' Call spawnDivs asynchronously to add controls
                     Dim finalProviderName As String = ProviderName
@@ -336,9 +364,8 @@ Public Class user_appointments
                     Dim finalY As Integer = y
 
                     ' Use Control.Invoke to add controls on the main UI thread
-                    Panel1.Invoke(Sub()
-                                      spawnDivs(i, finalProviderName, finalLocation, finalCost, finalDateFinal, finalY, result.GetInt32(0))
-                                  End Sub)
+
+                    spawnDivs(i, finalProviderName, finalLocation, finalCost, finalDateFinal, finalY, result.GetInt32(0))
 
                     i += 1
                     y += 100
@@ -464,7 +491,9 @@ Public Class user_appointments
                             dateof = dateof.AddDays(1)
                         End If
                     Next
+
                     spawnDivsFeedback(i, ProviderName, Location, Cost, dateof, y, result.GetValue(0))
+
                     i += 1
                     y += 100
                 Loop
