@@ -36,26 +36,29 @@ Partial Class otp_auth
         GroupBox1.BackColor = Color.FromArgb(CByte(255), CByte(192), CByte(255))
         GroupBox1.Controls.Add(TextBox1)
         GroupBox1.Controls.Add(Label2)
-        GroupBox1.Location = New Point(25, 83)
+        GroupBox1.Location = New Point(29, 111)
+        GroupBox1.Margin = New Padding(3, 4, 3, 4)
         GroupBox1.Name = "GroupBox1"
-        GroupBox1.Size = New Size(412, 100)
+        GroupBox1.Padding = New Padding(3, 4, 3, 4)
+        GroupBox1.Size = New Size(471, 133)
         GroupBox1.TabIndex = 0
         GroupBox1.TabStop = False
         ' 
         ' TextBox1
         ' 
-        TextBox1.Location = New Point(144, 57)
+        TextBox1.Location = New Point(165, 76)
+        TextBox1.Margin = New Padding(3, 4, 3, 4)
         TextBox1.Name = "TextBox1"
-        TextBox1.Size = New Size(111, 23)
+        TextBox1.Size = New Size(126, 27)
         TextBox1.TabIndex = 1
         ' 
         ' Label2
         ' 
         Label2.AutoSize = True
         Label2.Font = New Font("Microsoft YaHei", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        Label2.Location = New Point(6, 19)
+        Label2.Location = New Point(7, 25)
         Label2.Name = "Label2"
-        Label2.Size = New Size(402, 22)
+        Label2.Size = New Size(499, 27)
         Label2.TabIndex = 0
         Label2.Text = "Write OTP received on your registered mail here"
         ' 
@@ -63,9 +66,9 @@ Partial Class otp_auth
         ' 
         Label1.AutoSize = True
         Label1.Font = New Font("Microsoft YaHei", 18F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        Label1.Location = New Point(116, 37)
+        Label1.Location = New Point(133, 49)
         Label1.Name = "Label1"
-        Label1.Size = New Size(234, 31)
+        Label1.Size = New Size(289, 40)
         Label1.TabIndex = 1
         Label1.Text = "OTP Confirmation"
         ' 
@@ -74,22 +77,24 @@ Partial Class otp_auth
         Button1.BackColor = Color.Purple
         Button1.Font = New Font("Microsoft YaHei", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Button1.ForeColor = Color.White
-        Button1.Location = New Point(180, 189)
+        Button1.Location = New Point(206, 252)
+        Button1.Margin = New Padding(3, 4, 3, 4)
         Button1.Name = "Button1"
-        Button1.Size = New Size(88, 34)
+        Button1.Size = New Size(101, 45)
         Button1.TabIndex = 2
         Button1.Text = "Check!"
         Button1.UseVisualStyleBackColor = False
         ' 
         ' otp_auth
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = SystemColors.ButtonHighlight
-        ClientSize = New Size(463, 249)
+        ClientSize = New Size(529, 332)
         Controls.Add(Button1)
         Controls.Add(Label1)
         Controls.Add(GroupBox1)
+        Margin = New Padding(3, 4, 3, 4)
         Name = "otp_auth"
         Text = "otp_auth"
         GroupBox1.ResumeLayout(False)
