@@ -180,6 +180,8 @@ Public Class EditProfilePage
                 ' Handle any exceptions that occur during image saving
                 MessageBox.Show("Error saving image: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
+        ElseIf profilepic_pb.Image Is Nothing Then
+            'just Null
         Else
             ' Handle the case where the image is null or in an unsupported format
             MessageBox.Show("Invalid or unsupported image format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
