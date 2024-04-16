@@ -223,8 +223,7 @@ Public Class provider_appointment_details
             End Using
         End Using
         rtb2.SelectionFont = New Font(rtb2.Font, FontStyle.Bold)
-        MessageBox.Show(user_id)
-        MessageBox.Show(provider_id)
+
         MakeChatVisible()
     End Sub
 
@@ -276,7 +275,7 @@ Public Class provider_appointment_details
 
         ' After the wait, you can check if the variable changed or timeout happened
         If promyVariable <> 0 Then
-            MessageBox.Show("aofnoadf")
+
             Console.WriteLine("Payment Successful")
 
         Else
@@ -421,9 +420,9 @@ Public Class provider_appointment_details
                             If reader.HasRows Then
                                 ' Iterate through the rows
                                 While reader.Read()
-                                    ' Access the 'time' column value from the result set
-                                    MessageBox.Show("Hi")
-                                    providerIDCancelled = reader.GetInt32(0)
+                                ' Access the 'time' column value from the result set
+
+                                providerIDCancelled = reader.GetInt32(0)
                                     userIDCancelled = reader.GetInt32(1)
                                     timeCancelled = reader.GetString(2)
                                     dateCancelled = reader.GetDateTime(3)
@@ -453,9 +452,9 @@ Public Class provider_appointment_details
                         Dim deleteQuery = "DELETE FROM schedule WHERE provider_id = @ProviderID AND user_id = @UserID AND time = @datestart AND slots = @Slot"
 
                         MessageBox.Show(datestart)
-                            MessageBox.Show(slot)
+                        MessageBox.Show(slot)
 
-                            Using command As New SqlCommand(deleteQuery, connection)
+                        Using command As New SqlCommand(deleteQuery, connection)
                                 command.Parameters.AddWithValue("@ProviderID", providerIDCancelled)
                                 command.Parameters.AddWithValue("@UserID", userIDCancelled)
                                 command.Parameters.AddWithValue("@datestart", datestart)
