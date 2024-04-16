@@ -91,6 +91,7 @@ Public Class user_search
                  End Function),
         Task.Run(Async Function()
                      providers.Clear()
+                     temp_providers.Clear()
                      Using connection As New SqlConnection(connectionString)
                          Try
                              Await connection.OpenAsync()
@@ -114,6 +115,7 @@ Public Class user_search
                      End Using
                  End Function)
                  )
+        providers.Clear()
         For i As Integer = 0 To temp_providers.Count() - 1
             Dim rating As String
             If reviews.ContainsKey(temp_providers(i).providerID) Then
@@ -134,6 +136,26 @@ Public Class user_search
     Public Async Sub SimulateLoad()
         Label1.Text = user_name
         PictureBox2.Image = user_profilepic
+        ComboBox1.Items.Clear()
+        ComboBox1.Items.Add("Service")
+        For i As Integer = 0 To service_types.Count - 1
+            Dim service As String = service_types(i)
+            ComboBox1.Items.Add(service)
+        Next
+        ComboBox1.Items.Add("Designer")
+        ComboBox2.Items.Clear()
+        ComboBox2.Items.Add("Location")
+        For i As Integer = 0 To provider_locations.Count - 1
+            Dim location As String = provider_locations(i)
+            ComboBox2.Items.Add(location)
+        Next
+        ComboBox2.Items.Add("Tezpur")
+        ComboBox3.Items.Clear()
+        ComboBox3.Items.Add("Sort By")
+        ComboBox3.Items.Add("Name")
+        ComboBox3.Items.Add("Cost (Increasing)")
+        ComboBox3.Items.Add("Cost (Decreasing)")
+        ComboBox3.Items.Add("Rating")
         ComboBox1.SelectedIndex = 0
         ComboBox2.SelectedIndex = 0
         ComboBox3.SelectedIndex = 0
@@ -170,6 +192,7 @@ Public Class user_search
                  End Function),
         Task.Run(Async Function()
                      providers.Clear()
+                     temp_providers.Clear()
                      Using connection As New SqlConnection(connectionString)
                          Try
                              Await connection.OpenAsync()
@@ -193,6 +216,7 @@ Public Class user_search
                      End Using
                  End Function)
                  )
+        providers.Clear()
         For i As Integer = 0 To temp_providers.Count() - 1
             Dim rating As String
             If reviews.ContainsKey(temp_providers(i).providerID) Then
