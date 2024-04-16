@@ -215,10 +215,9 @@ Public Class appointmentChat
         End Using
     End Sub
 
-    Private Sub MessageTimer_Tick(sender As Object, e As EventArgs)
+    Private Sub MessageTimer_Tick(sender As Object, e As EventArgs) Handles messageTimer.Tick
         ' Call the PrintMessages function
         LoadMessagesFromDatabase(userId, user_role, dealId)
-
         PrintMessages()
     End Sub
 
