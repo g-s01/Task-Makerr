@@ -246,7 +246,7 @@ Public Class pending_payment
                         ' Execute the update query
                         command.ExecuteNonQuery()
 
-                        MessageBox.Show("Deal status updated successfully.")
+
                     Catch ex As Exception
                         MessageBox.Show("An error occurred: " & ex.Message)
                     End Try
