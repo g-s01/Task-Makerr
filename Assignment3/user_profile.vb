@@ -182,8 +182,12 @@ Public Class user_profile
                                     MessageBox.Show("Error saving the image: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                                 End Try
                             End Using
+                        ElseIf Module_global.user_profilepic IsNot Nothing Then
+                            Using ms As New MemoryStream()
+                                Module_global.user_profilepic.Save(ms, System.Drawing.Imaging.ImageFormat.Png)
+                                profileImageBytes = ms.ToArray()
+                            End Using
                         End If
-
                         command.Parameters.AddWithValue("@ProfileImage", If(profileImageBytes IsNot Nothing, CType(profileImageBytes, Object), DBNull.Value))
                         command.Parameters.AddWithValue("@UserId", User_ID)
 

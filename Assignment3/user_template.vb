@@ -1,4 +1,5 @@
 ﻿Imports System.Configuration
+Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.Data.SqlClient
 Public Class user_template
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -39,17 +40,39 @@ Public Class user_template
 
 
         SplitContainer1.Panel2.Controls.Clear()
-
-        With panel
-            .TopLevel = False
-            .FormBorderStyle = FormBorderStyle.None
-            .AutoSize = True
-            .Dock = DockStyle.Fill
-            .FormBorderStyle = BorderStyle.None
-            SplitContainer1.Panel2.Controls.Add(panel)
-            .BringToFront()
-            .Show()
-        End With
+        If panel.Name = "UserHome" Then
+            If UserHome IsNot Nothing Then
+                With UserHome
+                    .TopLevel = False
+                    .AutoSize = True
+                    .Dock = DockStyle.Fill
+                    Me.SplitContainer1.Panel2.Controls.Add(UserHome)
+                    .ReloadData()
+                    .BringToFront()
+                    .Show()
+                End With
+            Else
+                With UserHome
+                    .TopLevel = False
+                    .AutoSize = True
+                    .Dock = DockStyle.Fill
+                    Me.SplitContainer1.Panel2.Controls.Add(UserHome)
+                    .BringToFront()
+                    .Show()
+                End With
+            End If
+        Else
+            With panel
+                .TopLevel = False
+                .FormBorderStyle = FormBorderStyle.None
+                .AutoSize = True
+                .Dock = DockStyle.Fill
+                .FormBorderStyle = BorderStyle.None
+                SplitContainer1.Panel2.Controls.Add(panel)
+                .BringToFront()
+                .Show()
+            End With
+        End If
     End Sub
 
     Sub Reset_Buttons()
