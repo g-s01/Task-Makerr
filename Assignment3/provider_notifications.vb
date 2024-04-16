@@ -56,7 +56,8 @@ Public Class provider_notifications
                               "FROM Deals d " &
                               "INNER JOIN customer c ON d.user_id = c.user_id " &
                               "INNER JOIN Provider p ON d.provider_id = p.provider_id " &
-                              "WHERE d.provider_id = @ProviderId AND d.status = 1" ' Assuming 0 represents 50% paid booking status
+                              "WHERE d.provider_id = @ProviderId AND d.status = 1" &
+                              "ORDER BY d.dates DESC" ' Assuming 0 represents 50% paid booking status
 
 
         Using connection As New SqlConnection(connectionString)
@@ -275,7 +276,7 @@ Public Class provider_notifications
                       "FROM Deals d " &
                       "INNER JOIN customer c ON d.user_id = c.user_id " &
                       "INNER JOIN Provider p ON d.provider_id = p.provider_id " &
-                      "WHERE d.provider_id = @ProviderId AND d.status = 4" ' Assuming 0 represents 50% paid booking status
+                      "WHERE d.provider_id = @ProviderId AND d.status = 4" ' Assuming 4 represents cancellation of bookings
         ' "INNER JOIN Provider p ON d.provider_id = p.provider_id " &
 
         Using connection As New SqlConnection(connectionString)
