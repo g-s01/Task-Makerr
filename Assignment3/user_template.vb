@@ -61,6 +61,27 @@ Public Class user_template
                     .Show()
                 End With
             End If
+        ElseIf panel.Name = "user_search" Then
+            If user_search IsNot Nothing Then
+                With user_search
+                    .TopLevel = False
+                    .AutoSize = True
+                    .Dock = DockStyle.Fill
+                    Me.SplitContainer1.Panel2.Controls.Add(user_search)
+                    .SimulateLoad()
+                    .BringToFront()
+                    .Show()
+                End With
+            Else
+                With user_search
+                    .TopLevel = False
+                    .AutoSize = True
+                    .Dock = DockStyle.Fill
+                    Me.SplitContainer1.Panel2.Controls.Add(user_search)
+                    .BringToFront()
+                    .Show()
+                End With
+            End If
         Else
             With panel
                 .TopLevel = False
