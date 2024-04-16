@@ -9,7 +9,14 @@ Public Class user_profile
     Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
     Dim edit_enable As Boolean = False
 
-    Private Sub User_profile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Protected Overrides Sub OnVisibleChanged(e As EventArgs)
+        MyBase.OnVisibleChanged(e)
+        If Me.Visible Then
+            ReloadData()
+        End If
+    End Sub
+
+    Private Sub ReloadData()
         changepic_pb.Visible = False
         name_tb.ReadOnly = True
         email_tb.ReadOnly = True

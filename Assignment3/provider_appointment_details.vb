@@ -39,8 +39,7 @@ Public Class provider_appointment_details
         chatForm.providerId = Module_global.Provider_ID
         chatForm.userId = user_id
 
-        MessageBox.Show(user_id
-                        )
+
         ' Set the form's Dock property to fill the panel
         chatForm.Dock = DockStyle.Fill
 
@@ -258,24 +257,26 @@ Public Class provider_appointment_details
             btn_appointment_completed.Visible = False
             btn_appointment_completed.Enabled = False
 
+
+
         End If
 
 
     End Sub
 
-    Public variableChanged As New ManualResetEvent(False)
+    Public provariableChanged As New ManualResetEvent(False)
 
     ' Variable to monitor for changes
-    Public myVariable As Integer = 0
+    Public promyVariable As Integer = 0
 
 
     Private Async Function WaitForVariableChangeOrTimeoutAsync(timeoutMilliseconds As Integer) As Task
         ' Wait for either the variable to change or the timeout to elapse
-        Await Task.WhenAny(Task.Delay(timeoutMilliseconds), Task.Run(Sub() variableChanged.WaitOne()))
+        Await Task.WhenAny(Task.Delay(timeoutMilliseconds), Task.Run(Sub() provariableChanged.WaitOne()))
 
         ' After the wait, you can check if the variable changed or timeout happened
-        If myVariable <> 0 Then
-            ' The variable changed
+        If promyVariable <> 0 Then
+            MessageBox.Show("aofnoadf")
             Console.WriteLine("Payment Successful")
 
         Else
@@ -318,20 +319,75 @@ Public Class provider_appointment_details
 
         'refundPercentage = 50 ' for debugging
         advance = slots * costPerHour * (advancePercentage / 100)
+        Dim selectQuery = "Select provider_id, user_id, time,dates from deals where deal_id = @DealID"
         Dim refundAmount As Double = advance * (refundPercentage / 100)
+        Dim userIDCancelled = 0
+        Dim providerIDCancelled = 0
+        Dim timeCancelled As String = ""
+        Dim dateCancelled As DateTime
+        Using connection As New SqlConnection(connectionString)
+            Using command As New SqlCommand(selectQuery, connection)
+                command.Parameters.AddWithValue("@DealID", dealID)
+
+                connection.Open()
+                Using reader As SqlDataReader = command.ExecuteReader()
+                    ' Check if there are rows returned
+                    If reader.HasRows Then
+                        ' Iterate through the rows
+                        While reader.Read()
+                            ' Access the 'time' column value from the result set
+                            MessageBox.Show("Hi")
+                            providerIDCancelled = reader.GetInt32(0)
+                            userIDCancelled = reader.GetInt32(1)
+                            timeCancelled = reader.GetString(2)
+                            dateCancelled = reader.GetDateTime(3)
+                            ' Now you can work with the 'time' value
+                            ' Example: Console.WriteLine(time.ToString())
+                        End While
+                    Else
+                        ' No rows returned
+                        Console.WriteLine("No data found for the specified deal_id.")
+                    End If
+                End Using
+                command.ExecuteNonQuery()
+            End Using
+        End Using
+
+        'Dim datestart As String = dateCancelled.ToString("yyyy-MM-dd HH:mm:ss.fff")
+
+
+        Dim results As New List(Of String)()
+
+        For I As Integer = 0 To 83
+            If (timeCancelled(I) = "1"c) Then
+                Dim slot As Integer = I Mod 12
+                Dim day As Integer = I \ 12
+                Dim datee As DateTime = dateCancelled.AddDays(day)
+                Dim datestart As String = datee.ToString("yyyy-MM-dd 00:00:00.000")
+
+                ' Append the datestart value to the results list
+                results.Add(datestart)
+            End If
+        Next
+
+        MessageBox.Show("List of datestart values:" & vbCrLf & String.Join(vbCrLf, results))
+
+
+
         Dim result As DialogResult = MessageBox.Show("Cancellation will result in deduction of " & refundPercentage & "% of the advance payment (" & advancePercentage & "% of the total amount). Refund amount: " & refundAmount & ". Do you want to continue?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
 
         ' Check the user's response
         If result = DialogResult.Yes Then
-            variableChanged.Reset()
-            myVariable = 0
-            payments.Show()
-            Await WaitForVariableChangeOrTimeoutAsync(900000)
-            If (Module_global.payment_successful = 1) Then
+            provariableChanged.Reset()
+            promyVariable = 0
+            'MessageBox.Show("hi")
+            'payments.Show()
+            'Await WaitForVariableChangeOrTimeoutAsync(900000)'
+            'If (Module_global.payment_successful = 1) Then
+            'MessageBox.Show("yayyyy")
 
-
-                Dim query As String = "UPDATE deals SET status = 3 WHERE deal_id = @DealID"
+            Dim query As String = "UPDATE deals SET status = 3 WHERE deal_id = @DealID"
 
                 ' Create connection and command objects
                 Using connection As New SqlConnection(connectionString)
@@ -353,28 +409,66 @@ Public Class provider_appointment_details
                     End Using
                 End Using
 
-                MessageBox.Show("Payment done successfully.")
+            MessageBox.Show("Money Successfully deducted from your balance.")
 
-                'Dim subject As String = "Payment from " + ID
-                'Dim body As String = "You have received an amount of " + payments.CostOfService.ToString + " for your service."
+            Using connection As New SqlConnection(connectionString)
+                    Using command As New SqlCommand(selectQuery, connection)
+                        command.Parameters.AddWithValue("@DealID", dealID)
 
-                'sendEmail(subject, body)
+                        connection.Open()
+                        Using reader As SqlDataReader = command.ExecuteReader()
+                            ' Check if there are rows returned
+                            If reader.HasRows Then
+                                ' Iterate through the rows
+                                While reader.Read()
+                                    ' Access the 'time' column value from the result set
+                                    MessageBox.Show("Hi")
+                                    providerIDCancelled = reader.GetInt32(0)
+                                    userIDCancelled = reader.GetInt32(1)
+                                    timeCancelled = reader.GetString(2)
+                                    dateCancelled = reader.GetDateTime(3)
+                                    ' Now you can work with the 'time' value
+                                    ' Example: Console.WriteLine(time.ToString())
+                                End While
+                            Else
+                                ' No rows returned
+                                Console.WriteLine("No data found for the specified deal_id.")
+                            End If
+                        End Using
+                        command.ExecuteNonQuery()
+                    End Using
+                End Using
 
-                Module_global.payment_successful = 0
-                myVariable = 0
-                variableChanged.Reset()
+                'Dim datestart As String = dateCancelled.ToString("yyyy-MM-dd HH:mm:ss.fff")
 
 
-                Me.Hide()
-                user_appointments.Show()
-            Else
+                Using connection As New SqlConnection(connectionString)
+                    connection.Open()
+                    For I As Integer = 0 To 83
+                        If (timeCancelled(I) = "1"c) Then
+                            Dim slot As Integer = I Mod 12
+                            Dim day As Integer = I \ 12
+                            Dim datee As DateTime = dateCancelled.AddDays(day)
+                        Dim datestart As String = datee.ToString("yyyy-MM-dd 00:00:00.000")
+                        Dim deleteQuery = "DELETE FROM schedule WHERE provider_id = @ProviderID AND user_id = @UserID AND time = @datestart AND slots = @Slot"
 
-                myVariable = 0
-                variableChanged.Reset()
+                        MessageBox.Show(datestart)
+                            MessageBox.Show(slot)
 
-                MessageBox.Show("payment unsuccessful")
+                            Using command As New SqlCommand(deleteQuery, connection)
+                                command.Parameters.AddWithValue("@ProviderID", providerIDCancelled)
+                                command.Parameters.AddWithValue("@UserID", userIDCancelled)
+                                command.Parameters.AddWithValue("@datestart", datestart)
+                                command.Parameters.AddWithValue("@Slot", slot)
+                                command.ExecuteNonQuery()
+                            End Using
+                        End If
+                    Next
+                End Using
+            Me.Close()
 
-            End If
+
+
 
 
         End If
