@@ -27,8 +27,7 @@ Public Class Forgot_password
             'MessageBox.Show(randnum)
             temp = Email.Text
             If SendEmail(Email.Text, randnum) Then
-                Panel4.Visible = False
-                Panel2.Visible = True
+                otp.Focus()
                 MessageBox.Show("OTP sent successfully to your email address.", "OTP Sent", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Else
                 MessageBox.Show("OTP can not be sent.", "Sending Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -45,7 +44,7 @@ Public Class Forgot_password
         ' Validate OTP
         If otp.Text = randnum Then
             Label7.Visible = False
-            Panel2.Visible = False
+            Panel4.Visible = False
             Panel3.Visible = True
         Else
             Label7.Visible = True
@@ -190,6 +189,16 @@ Public Class Forgot_password
             confirm_password.PasswordChar = ""
         Else
             confirm_password.PasswordChar = "*"
+        End If
+    End Sub
+
+    Private Sub back_btn_Click(sender As Object, e As EventArgs) Handles back_btn.Click
+        If Panel4.Visible Then
+            Me.Close()
+            Login.Show()
+        Else
+            Panel3.Visible = False
+            Panel4.Visible = True
         End If
     End Sub
 End Class
