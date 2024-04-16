@@ -3,7 +3,12 @@ Imports Org.BouncyCastle.Crypto.General
 
 Public Class user_appointments
     Dim panelArray(2) As System.Windows.Forms.Panel
-
+    Protected Overrides Sub OnVisibleChanged(e As EventArgs)
+        MyBase.OnVisibleChanged(e)
+        If Me.Visible Then
+            Button1.PerformClick()
+        End If
+    End Sub
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Button2.BackColor = Color.FromArgb(220, 189, 232)
         Button1.BackColor = SystemColors.Control
@@ -81,28 +86,6 @@ Public Class user_appointments
         'relatedForm.Show()
     End Sub
 
-    Private Sub CompletedPanelClick(sender As Object, e As EventArgs)
-        Dim clickedPanel As Panel = DirectCast(sender, Panel)
-        Dim panelIndex As Integer = Array.IndexOf(panelArray, clickedPanel)
-
-        'MessageBox.Show("Upper Panel Clicked - Index: " & panelIndex.ToString() & clickedPanel.Name)
-
-        Module_global.Appointment_Det_DealId = Integer.Parse(clickedPanel.Name)
-
-        Me.Hide()
-        With user_feedback
-            .TopLevel = False
-            .AutoSize = True
-            .Dock = DockStyle.Fill
-            user_template.SplitContainer1.Panel2.Controls.Add(user_feedback)
-            .BringToFront()
-            .Show()
-        End With
-
-        ' Show related form for upper panel click
-        'Dim relatedForm As New RelatedForm() ' Replace RelatedForm with the actual name of your related form class
-        'relatedForm.Show()
-    End Sub
 
     Private Function spawnDivs(i As Integer, providerName As String, location As String, CostNum As Integer, Schedule As String, y As Integer, DealId As Integer)
 
@@ -165,9 +148,6 @@ Public Class user_appointments
         panelArray(i).BackColor = System.Drawing.Color.FromArgb(CByte(240), CByte(218), CByte(248))
         panelArray(i).AutoSize = True
 
-
-        AddHandler panelArray(i).Click, AddressOf Panel_Click1
-
         Dim name As New Label()
         name.AutoSize = True
         name.Location = New System.Drawing.Point(25, 10)
@@ -213,6 +193,7 @@ Public Class user_appointments
 
         panelArray(i).Controls.Add(feedback)
 
+        Panel1.Controls.Add(panelArray(i))
 
     End Function
 
@@ -259,30 +240,23 @@ Public Class user_appointments
         timings.Text = "Appointment schedule :  " + Schedule
         splitContainerArray(i).Panel1.Controls.Add(timings)
 
-        Dim button As New Button()
-        button.Text = "  Proceed to Pay   "
-        button.AutoSize = True
-        button.Location = New System.Drawing.Point(580, 0)
-        button.FlatAppearance.BorderSize = 0
-        button.FlatStyle = FlatStyle.Flat
-        button.Font = New Font("Microsoft YaHei", 10.2F)
-        button.BackColor = System.Drawing.Color.FromArgb(CByte(245), CByte(140), CByte(215))
+        'Dim button As New Button()
+        'button.Text = "  Proceed to Pay   "
+        'button.AutoSize = True
+        'button.Location = New System.Drawing.Point(580, 0)
+        'button.FlatAppearance.BorderSize = 0
+        'button.FlatStyle = FlatStyle.Flat
+        'button.Font = New Font("Microsoft YaHei", 10.2F)
+        'button.BackColor = System.Drawing.Color.FromArgb(CByte(245), CByte(140), CByte(215))
 
-        AddHandler button.Click, AddressOf Button_Click
+        'AddHandler button.Click, AddressOf Button_Click
 
-        splitContainerArray(i).Panel2.Controls.Add(button)
+        'splitContainerArray(i).Panel2.Controls.Add(button)
 
         Panel1.Controls.Add(splitContainerArray(i))
 
     End Function
 
-    Private Sub Button_Click(sender As Object, e As EventArgs)
-        MessageBox.Show("Button Clicked in Lower Panel")
-
-        ' Show related form for button click
-        'Dim relatedForm As New RelatedForm2() ' Replace RelatedForm2 with the actual name of your related form class
-        'relatedForm.Show()
-    End Sub
 
 
     Private Async Function upcoming() As Task

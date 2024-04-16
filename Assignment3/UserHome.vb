@@ -22,22 +22,61 @@ Public Class UserHome
     Dim buttonLoc As Integer
     Dim user_name As String
     Dim rating_prov As New ConcurrentDictionary(Of Int32, Double)()
+    Dim labels As New List(Of Label)()
+    Dim layout_panels As New List(Of FlowLayoutPanel)()
+    Dim buttons As New List(Of Button)()
 
-    Private Async Sub UserHome_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Set the FlowLayoutPanel's properties
+    Private Sub InitializeForm()
+        For Each btn As Button In buttons
+            Me.Controls.Remove(btn)
+        Next
+        For Each label As Label In labels
+            Me.Controls.Remove(label)
+        Next
+        For Each panel As FlowLayoutPanel In layout_panels
+            Me.Controls.Remove(panel)
+        Next
+        provider_locations.Clear()
+        provider_keys.Clear()
+        provider_locations.Clear()
+        provider_service.Clear()
+        rating_prov.Clear()
+        map.Clear()
+        reviews.Clear()
+        buttons.Clear()
+        labels.Clear()
+        layout_panels.Clear()
+
+    End Sub
+
+    ' Function to clear all components inside inner panel
+
+    ' Function to reset integer variables
+    Public Async Sub ReloadData()
+
+        InitializeForm()
+        'load_once = 1
+
+        user_template.SplitContainer1.Panel2.Controls.Clear()
+        With Me
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(Me)
+            .BringToFront()
+            .Show()
+        End With
+        '   MessageBox.Show("inside reload")
+        Await LoadTasks()
+        '  MessageBox.Show("ViewAllUser reloaded!")
+        'load_once = 0
+    End Sub
+    Private Async Function LoadTasks() As Task
         Dim image As Image = My.Resources.Ellipse_6
 
         Profile_Pic.Image = Module_global.user_profilepic
 
         buttonLoc = Me.Width - 140
-        'Dim newItem As New Prov_tile(1, "Item 5", "Description 5", 4.5, image)
-        'map.Add("electric", New List(Of Prov_tile))
-        'map("electric").Add(newItem)
-        'map("electric").Add(newItem)
-        'map("electric").Add(newItem)
-        'map("electric").Add(newItem)
-        'map("electric").Add(newItem)
-        'map("electric").Add(newItem)
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
 
         Await Task.WhenAll(
@@ -148,13 +187,15 @@ Public Class UserHome
         ' Iterate through the dictionary
         For Each pair As KeyValuePair(Of String, List(Of Prov_tile)) In map
             Dim label As New Label()
+            labels.Add(label)
             label.Text = pair.Key
             label.Font = New Font(label.Font.FontFamily, 12)
             label.Location = New Point(10, yPos)
             Me.Controls.Add(label)
             Dim btnViewMore As New Button()
+            buttons.Add(btnViewMore)
             btnViewMore.Text = "View All"
-            btnViewMore.Font = new Font("Microsoft YaHei", 10.2F)
+            btnViewMore.Font = New Font("Microsoft YaHei", 10.2F)
             btnViewMore.Size = New Size(100, 30)
             btnViewMore.Location = New Point(buttonLoc, yPos)
             'btnViewMore.FlatStyle = FlatStyle.Flat
@@ -166,6 +207,7 @@ Public Class UserHome
             yPos += (label.Height + 10)
             ' Create a new FlowLayoutPanel
             Dim flowLayoutPanel As New FlowLayoutPanel()
+            layout_panels.Add(flowLayoutPanel)
             flowLayoutPanel.AutoScroll = True
             flowLayoutPanel.FlowDirection = FlowDirection.LeftToRight
             flowLayoutPanel.WrapContents = False
@@ -187,8 +229,9 @@ Public Class UserHome
             ' Update the vertical position for the next FlowLayoutPanel
             yPos += flowLayoutPanel.Height + 20
         Next
-
-        ' Create tile controls for each item
+    End Function
+    Private Async Sub UserHome_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Await LoadTasks()
     End Sub
 
     Private Sub btnViewMore_Click(sender As Object, e As EventArgs)
@@ -234,6 +277,7 @@ Public Class UserHome
 
                 ' Clear existing controls and show Book_slots
                 user_template.SplitContainer1.Panel2.Controls.Clear()
+
                 slot_back_choice = 1
                 With Book_slots
                     .TopLevel = False

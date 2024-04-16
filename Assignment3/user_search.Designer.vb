@@ -74,7 +74,7 @@ Partial Class user_search
         TextBox1.ForeColor = Color.Gray
         TextBox1.Location = New Point(50, 10)
         TextBox1.Name = "TextBox1"
-        TextBox1.Size = New Size(622, 24)
+        TextBox1.Size = New Size(622, 20)
         TextBox1.TabIndex = 2
         TextBox1.Text = "Search for providers by name"
         ' 
@@ -90,14 +90,15 @@ Partial Class user_search
         ' 
         ' TableLayoutPanel1
         ' 
+        TableLayoutPanel1.AutoScroll = True
         TableLayoutPanel1.BackColor = Color.FromArgb(CByte(240), CByte(218), CByte(248))
         TableLayoutPanel1.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         TableLayoutPanel1.ColumnCount = 6
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 230.0F))
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 150.0F))
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 230F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 150F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle())
         TableLayoutPanel1.Controls.Add(Panel7, 5, 0)
         TableLayoutPanel1.Controls.Add(Panel2, 0, 0)
@@ -109,7 +110,7 @@ Partial Class user_search
         TableLayoutPanel1.Margin = New Padding(0)
         TableLayoutPanel1.Name = "TableLayoutPanel1"
         TableLayoutPanel1.RowCount = 1
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
         TableLayoutPanel1.Size = New Size(768, 44)
         TableLayoutPanel1.TabIndex = 1
         ' 
@@ -126,11 +127,11 @@ Partial Class user_search
         ' 
         Label7.Anchor = AnchorStyles.None
         Label7.AutoSize = True
-        Label7.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label7.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label7.Location = New Point(9, 7)
         Label7.Margin = New Padding(0)
         Label7.Name = "Label7"
-        Label7.Size = New Size(78, 32)
+        Label7.Size = New Size(64, 28)
         Label7.TabIndex = 3
         Label7.Text = "Select"
         ' 
@@ -147,11 +148,11 @@ Partial Class user_search
         ' 
         Label2.Anchor = AnchorStyles.None
         Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label2.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label2.Location = New Point(42, 7)
         Label2.Margin = New Padding(0)
         Label2.Name = "Label2"
-        Label2.Size = New Size(173, 32)
+        Label2.Size = New Size(143, 28)
         Label2.TabIndex = 3
         Label2.Text = "Provider Name"
         ' 
@@ -168,11 +169,11 @@ Partial Class user_search
         ' 
         Label3.Anchor = AnchorStyles.None
         Label3.AutoSize = True
-        Label3.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label3.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label3.Location = New Point(13, 7)
         Label3.Margin = New Padding(0)
         Label3.Name = "Label3"
-        Label3.Size = New Size(90, 32)
+        Label3.Size = New Size(74, 28)
         Label3.TabIndex = 3
         Label3.Text = "Service"
         ' 
@@ -189,11 +190,11 @@ Partial Class user_search
         ' 
         Label4.Anchor = AnchorStyles.None
         Label4.AutoSize = True
-        Label4.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label4.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label4.Location = New Point(7, 7)
         Label4.Margin = New Padding(0)
         Label4.Name = "Label4"
-        Label4.Size = New Size(104, 32)
+        Label4.Size = New Size(87, 28)
         Label4.TabIndex = 3
         Label4.Text = "Location"
         ' 
@@ -210,11 +211,11 @@ Partial Class user_search
         ' 
         Label5.Anchor = AnchorStyles.None
         Label5.AutoSize = True
-        Label5.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label5.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label5.Location = New Point(15, 7)
         Label5.Margin = New Padding(0)
         Label5.Name = "Label5"
-        Label5.Size = New Size(148, 32)
+        Label5.Size = New Size(122, 28)
         Label5.TabIndex = 3
         Label5.Text = "Cost per slot"
         ' 
@@ -231,30 +232,31 @@ Partial Class user_search
         ' 
         Label6.Anchor = AnchorStyles.None
         Label6.AutoSize = True
-        Label6.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label6.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label6.Location = New Point(11, 7)
         Label6.Margin = New Padding(0)
         Label6.Name = "Label6"
-        Label6.Size = New Size(92, 32)
+        Label6.Size = New Size(77, 28)
         Label6.TabIndex = 3
         Label6.Text = "Ratings"
         ' 
         ' providersTablePanel
         ' 
+        providersTablePanel.AutoScroll = True
         providersTablePanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         providersTablePanel.ColumnCount = 6
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 230.0F))
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 150.0F))
-        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100.0F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 230F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 150F))
+        providersTablePanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
         providersTablePanel.ColumnStyles.Add(New ColumnStyle())
         providersTablePanel.Location = New Point(37, 192)
         providersTablePanel.Margin = New Padding(0)
         providersTablePanel.Name = "providersTablePanel"
         providersTablePanel.RowCount = 1
         providersTablePanel.RowStyles.Add(New RowStyle())
-        providersTablePanel.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
+        providersTablePanel.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
         providersTablePanel.Size = New Size(767, 372)
         providersTablePanel.TabIndex = 2
         ' 
@@ -266,7 +268,7 @@ Partial Class user_search
         ComboBox1.FormattingEnabled = True
         ComboBox1.Location = New Point(36, 81)
         ComboBox1.Name = "ComboBox1"
-        ComboBox1.Size = New Size(151, 36)
+        ComboBox1.Size = New Size(151, 31)
         ComboBox1.TabIndex = 3
         ' 
         ' ComboBox2
@@ -276,7 +278,7 @@ Partial Class user_search
         ComboBox2.FormattingEnabled = True
         ComboBox2.Location = New Point(217, 81)
         ComboBox2.Name = "ComboBox2"
-        ComboBox2.Size = New Size(151, 36)
+        ComboBox2.Size = New Size(151, 31)
         ComboBox2.TabIndex = 4
         ' 
         ' ComboBox3
@@ -287,7 +289,7 @@ Partial Class user_search
         ComboBox3.Items.AddRange(New Object() {"Cost (Increasing)", "Cost (Decreasing)", "Ratings"})
         ComboBox3.Location = New Point(397, 81)
         ComboBox3.Name = "ComboBox3"
-        ComboBox3.Size = New Size(151, 36)
+        ComboBox3.Size = New Size(151, 31)
         ComboBox3.TabIndex = 5
         ' 
         ' Button1

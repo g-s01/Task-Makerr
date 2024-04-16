@@ -9,7 +9,14 @@ Public Class user_profile
     Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
     Dim edit_enable As Boolean = False
 
-    Private Sub User_profile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Protected Overrides Sub OnVisibleChanged(e As EventArgs)
+        MyBase.OnVisibleChanged(e)
+        If Me.Visible Then
+            ReloadData()
+        End If
+    End Sub
+
+    Private Sub ReloadData()
         changepic_pb.Visible = False
         name_tb.ReadOnly = True
         email_tb.ReadOnly = True
@@ -180,6 +187,7 @@ Public Class user_profile
 
                                     ' Convert the image to a byte array
                                     profileImageBytes = ms.ToArray()
+
                                 End Using
                             Catch ex As Exception
                                 ' Handle any exceptions that occur during image saving
@@ -191,7 +199,6 @@ Public Class user_profile
                             ' Handle the case where the image is null or in an unsupported format
                             MessageBox.Show("Invalid or unsupported image format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End If
-
                         command.Parameters.AddWithValue("@ProfileImage", If(profileImageBytes IsNot Nothing, CType(profileImageBytes, Object), DBNull.Value))
                         command.Parameters.AddWithValue("@UserId", User_ID)
 

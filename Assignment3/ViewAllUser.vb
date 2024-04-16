@@ -1,5 +1,6 @@
 ﻿Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.Data.SqlClient
+Imports Microsoft.VisualBasic.ApplicationServices
 Imports Org.BouncyCastle.Crypto.Asymmetric.AsymmetricRsaKey
 Imports System.Configuration
 Imports System.Drawing
@@ -60,9 +61,6 @@ Public Class ViewAllUser
         LoadTasks()
         '  MessageBox.Show("ViewAllUser reloaded!")
         load_once = 0
-
-
-
     End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -413,15 +411,26 @@ Public Class ViewAllUser
         ' Navigate to another page here
         Dim clickedButton = CType(sender, Button)
         user_template.SplitContainer1.Panel2.Controls.Clear()
-
-        With UserHome
-            .TopLevel = False
-            .AutoSize = True
-            .Dock = DockStyle.Fill
-            user_template.SplitContainer1.Panel2.Controls.Add(UserHome)
-            .BringToFront()
-            .Show()
-        End With
+        If UserHome IsNot Nothing Then
+            With UserHome
+                .TopLevel = False
+                .AutoSize = True
+                .Dock = DockStyle.Fill
+                user_template.SplitContainer1.Panel2.Controls.Add(UserHome)
+                .ReloadData()
+                .BringToFront()
+                .Show()
+            End With
+        Else
+            With UserHome
+                .TopLevel = False
+                .AutoSize = True
+                .Dock = DockStyle.Fill
+                user_template.SplitContainer1.Panel2.Controls.Add(UserHome)
+                .BringToFront()
+                .Show()
+            End With
+        End If
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click

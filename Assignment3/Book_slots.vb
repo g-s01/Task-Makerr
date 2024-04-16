@@ -569,16 +569,26 @@ Roll_back:
     Private Sub Back_Btn_Click(sender As Object, e As EventArgs) Handles Back_Btn.Click
         user_template.SplitContainer1.Panel2.Controls.Clear()
         If slot_back_choice = 1 Then
-            With UserHome
-                .TopLevel = False
-                .AutoSize = True
-                .Dock = DockStyle.Fill
-                user_template.SplitContainer1.Panel2.Controls.Add(UserHome)
-                Me.Close()
-                .BringToFront()
-                .Show()
-
-            End With
+            If UserHome IsNot Nothing Then
+                With UserHome
+                    .TopLevel = False
+                    .AutoSize = True
+                    .Dock = DockStyle.Fill
+                    user_template.SplitContainer1.Panel2.Controls.Add(UserHome)
+                    .ReloadData()
+                    .BringToFront()
+                    .Show()
+                End With
+            Else
+                With UserHome
+                    .TopLevel = False
+                    .AutoSize = True
+                    .Dock = DockStyle.Fill
+                    user_template.SplitContainer1.Panel2.Controls.Add(UserHome)
+                    .BringToFront()
+                    .Show()
+                End With
+            End If
         ElseIf slot_back_choice = 2 Then
             With user_search
                 .TopLevel = False
