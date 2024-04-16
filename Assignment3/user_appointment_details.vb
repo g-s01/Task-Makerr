@@ -9,6 +9,7 @@ Public Class user_appointment_details
     Public firstDate As DateTime
     Public bookDate As DateTime
     Dim provider As Integer = 0
+    Dim provider_email As String
 
     Protected Overrides Sub OnVisibleChanged(e As EventArgs)
         MyBase.OnVisibleChanged(e)
@@ -216,6 +217,18 @@ Public Class user_appointment_details
                 End Using
             End Using
 
+            Using connection As New SqlConnection(connectionString)
+                query = "Select email from provider where provider_id=@provider"
+                Using command As New SqlCommand(query, connection)
+                    ' Add parameters
+                    command.Parameters.AddWithValue("@provider", provider)
+
+                    connection.Open()
+                    provider_email = (command.ExecuteScalar()).ToString()
+                End Using
+            End Using
+
+            'email sent to customer
             Try
                 Dim mail As New MailMessage
                 Dim smtpserver As New SmtpClient("smtp-mail.outlook.com")
@@ -236,13 +249,14 @@ Public Class user_appointment_details
                 MessageBox.Show("SMTP error: " & ex.Message)
             End Try
 
+            'email sent to respective provider regarding cancellation
             Try
                 Dim mail As New MailMessage
                 Dim smtpserver As New SmtpClient("smtp-mail.outlook.com")
                 smtpserver.Port = 587
 
                 mail.From = New MailAddress("group1b-cs346@outlook.com")
-                mail.To.Add(Email)
+                mail.To.Add(provider_email)
                 mail.Subject = "APPOINTMENT CANCELLED"
                 mail.Body = "Customer " + Module_global.user_name + " has cancelled your appointment booked on " + bookDate.ToString() + " . Please transfer the refund amount to the customer ASAP."
 
