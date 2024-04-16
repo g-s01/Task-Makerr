@@ -209,7 +209,7 @@ Public Class user_appointment_details
                 Using command As New SqlCommand(query, connection)
                     ' Add parameters
                     command.Parameters.AddWithValue("@DealId", dealID)
-                    command.Parameters.AddWithValue("@percent", fee)
+                    command.Parameters.AddWithValue("@percent", 100 - fee)
 
                     connection.Open()
                     command.ExecuteNonQuery()
@@ -224,7 +224,7 @@ Public Class user_appointment_details
                 mail.From = New MailAddress("group1b-cs346@outlook.com")
                 mail.To.Add(Module_global.Email)
                 mail.Subject = "APPOINTMENT SUCCESFULLY CANCELLED"
-                mail.Body = "Appointment succesfully cancelled from provider ID : " + provider.ToString() + " on date " + bookDate.ToString() + " fee " + fee.ToString() + "% of paid amount will be credited shortly to your account by the provider."
+                mail.Body = "Appointment succesfully cancelled from provider ID : " + provider.ToString() + " on date " + bookDate.ToString() + " fee " + (100 - fee).ToString() + "% of paid amount will be credited shortly to your account by the provider."
 
                 smtpserver.Credentials = New System.Net.NetworkCredential("group1b-cs346@outlook.com", "chillSreehari")
                 smtpserver.EnableSsl = True
@@ -244,7 +244,7 @@ Public Class user_appointment_details
                 mail.From = New MailAddress("group1b-cs346@outlook.com")
                 mail.To.Add(Email)
                 mail.Subject = "APPOINTMENT CANCELLED"
-                mail.Body = "Customer " + Module_global.user_name + " has cancelled your appointment on " + bookDate.ToString() + " . Please transfer the refund amount to the customer ASAP."
+                mail.Body = "Customer " + Module_global.user_name + " has cancelled your appointment booked on " + bookDate.ToString() + " . Please transfer the refund amount to the customer ASAP."
 
                 smtpserver.Credentials = New System.Net.NetworkCredential("group1b-cs346@outlook.com", "chillSreehari")
                 smtpserver.EnableSsl = True
