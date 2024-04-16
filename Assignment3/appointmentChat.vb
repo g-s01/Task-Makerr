@@ -179,7 +179,8 @@ Public Class appointmentChat
         End Using
     End Function
 
-    Private Sub LoadMessagesFromDatabase(userId As Integer, user_role As String, dealId As Integer)
+    Private Function LoadMessagesFromDatabase(userId As Integer, user_role As String, dealId As Integer)
+        Dim prevLength As Integer = messages.Count
 
         Dim query As String = "SELECT * FROM messages WHERE chat_room_id = @chatRoomId AND deal_id = @dealId;"
 
@@ -213,12 +214,14 @@ Public Class appointmentChat
                 End Try
             End Using
         End Using
-    End Sub
+        Return (prevLength <> messages.Count)
+    End Function
 
     Private Sub MessageTimer_Tick(sender As Object, e As EventArgs) Handles messageTimer.Tick
         ' Call the PrintMessages function
-        LoadMessagesFromDatabase(userId, user_role, dealId)
-        PrintMessages()
+        If (LoadMessagesFromDatabase(userId, user_role, dealId)) Then
+            PrintMessages()
+        End If
     End Sub
 
     Private Sub MainForm_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
