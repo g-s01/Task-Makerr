@@ -247,22 +247,25 @@ Public Class user_appointments
 
 
                     ' Process time string in parallel
+
+                    dateof = dateof.AddMinutes(-dateof.Minute)
+                    dateof = dateof.AddSeconds(-dateof.Second)
                     Dim datefinal As Date = dateof
                     Dim count As Integer = 0
-
-                    Parallel.ForEach(time, Sub(c)
-                                               If c = "1" Then
-                                                   Dim slotTime = count Mod 12 + 9
-                                                   Dim tempDateof = dateof.AddHours(slotTime - dateof.Hour)
-                                                   If tempDateof.CompareTo(Now) > 0 Then
-                                                       datefinal = tempDateof
-                                                   End If
-                                               End If
-                                               count += 1
-                                               If (count Mod 12 = 0) Then
-                                                   dateof = dateof.AddDays(1)
-                                               End If
-                                           End Sub)
+                    For Each c As Char In time
+                        If c = "1" Then
+                            Dim slotTime = count Mod 12 + 9
+                            dateof = dateof.AddHours(slotTime - dateof.Hour)
+                            If dateof.CompareTo(Now) > 0 Then
+                                datefinal = dateof
+                                Exit For
+                            End If
+                        End If
+                        count += 1
+                        If (count Mod 12 = 0) Then
+                            dateof = dateof.AddDays(1)
+                        End If
+                    Next
 
                     ' Call spawnDivs asynchronously to add controls
                     Dim finalProviderName As String = ProviderName
@@ -272,9 +275,8 @@ Public Class user_appointments
                     Dim finalY As Integer = y
 
                     ' Use Control.Invoke to add controls on the main UI thread
-                    Panel1.Invoke(Sub()
-                                      spawnDivs(i, finalProviderName, finalLocation, finalCost, finalDateFinal, finalY, result.GetInt32(0))
-                                  End Sub)
+
+                    spawnDivs(i, finalProviderName, finalLocation, finalCost, finalDateFinal, finalY, result.GetInt32(0))
 
                     i += 1
                     y += 100
