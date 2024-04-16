@@ -46,21 +46,19 @@ Partial Class provider_appointment_details
         SplitContainer1.Panel1.Controls.Add(rtb2)
         SplitContainer1.Panel1.Controls.Add(btn_appointment_completed)
         SplitContainer1.Panel1.Controls.Add(btn_cancel)
-        ' 
-        ' SplitContainer1.Panel2
-        ' 
         SplitContainer1.Size = New Size(844, 666)
         SplitContainer1.SplitterDistance = 422
         SplitContainer1.SplitterWidth = 1
         SplitContainer1.TabIndex = 0
         ' 
+
         ' Label1
         ' 
         Label1.AutoSize = True
-        Label1.Font = New Font("Segoe UI", 13.0F, FontStyle.Bold)
+        Label1.Font = New Font("Segoe UI", 13F, FontStyle.Bold)
         Label1.Location = New Point(14, 42)
         Label1.Name = "Label1"
-        Label1.Size = New Size(228, 30)
+        Label1.Size = New Size(267, 36)
         Label1.TabIndex = 3
         Label1.Text = "Appointment Details"
         ' 
@@ -122,7 +120,7 @@ Partial Class provider_appointment_details
         BackColor = Color.White
         ClientSize = New Size(844, 666)
         Controls.Add(SplitContainer1)
-        Font = New Font("Microsoft YaHei", 9.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Font = New Font("Microsoft YaHei", 9F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         FormBorderStyle = FormBorderStyle.None
         Name = "provider_appointment_details"
         Text = "Form1"

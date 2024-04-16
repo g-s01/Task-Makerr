@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing.Imaging
 Imports System.IO
+Imports System.Runtime.InteropServices
 Imports Microsoft.Data.SqlClient
 
 Public Class user_profile
@@ -25,7 +26,8 @@ Public Class user_profile
                     command.Parameters.AddWithValue("@UserId", User_ID)
                     Dim reader As SqlDataReader = command.ExecuteReader()
                     If reader.Read() Then
-                        name_tb.Text = reader("username").ToString()
+                        Dim username As String = reader("username").ToString()
+                        name_tb.Text = username
                         email_tb.Text = reader("email").ToString()
                         If reader("phone_number") Is DBNull.Value Then
                             phone_tb.Text = "----------"
@@ -39,6 +41,22 @@ Public Class user_profile
                                 profilepic_pb.Image = Image.FromStream(ms)
                             End Using
                         End If
+                        ' Display greeting with dynamic font size
+                        ' Assuming the greeting_label contains the text "Hello, "
+                        Dim greetingText As String = "Hello, "
+
+                        ' Get the default font size of the label
+                        Dim defaultFontSize As Single = greeting_label.Font.Size
+
+                        ' Modify the font size for the username
+                        Dim usernameFontSize As Single = defaultFontSize * 5 / 3
+
+                        ' Create a font with the modified size
+                        Dim usernameFont As New Font(greeting_label.Font.FontFamily, usernameFontSize)
+
+                        ' Set the label text with modified font size for the username
+                        greeting_label.Text = greetingText & username
+                        greeting_label.Font = usernameFont
                     End If
                 End Using
             End Using
@@ -47,20 +65,78 @@ Public Class user_profile
         End Try
     End Sub
 
-    ' Update the user profile when the "Edit Profile" button is clicked
     Private Sub Changepic_pb_Click(sender As Object, e As EventArgs) Handles changepic_pb.Click
         Dim openFileDialog As New OpenFileDialog()
         openFileDialog.Filter = "Image Files|*.bmp;*.jpg;*.jpeg;*.png;*.gif;*.tif;*.tiff"
 
         If openFileDialog.ShowDialog() = DialogResult.OK Then
             Try
-                ' Set the selected image to the PictureBox
-                profilepic_pb.Image = Image.FromFile(openFileDialog.FileName)
+                ' Load the selected image into a temporary PictureBox for compression
+                Dim tempPictureBox As New PictureBox()
+                tempPictureBox.Image = Image.FromFile(openFileDialog.FileName)
+
+                ' Compress the image
+                Dim compressedImage As Image = CompressImageIfNeeded(tempPictureBox.Image)
+
+                ' Set the compressed image to the main PictureBox
+                profilepic_pb.Image = compressedImage
             Catch ex As Exception
                 MessageBox.Show("An error occurred while loading the image: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         End If
     End Sub
+
+    ' Method to compress an image if its size is greater than 1MB
+    Private Function CompressImageIfNeeded(originalImage As Image) As Image
+        Try
+            ' Check if image size is already less than 1MB
+            Dim imageSize As Long = GetImageSize(originalImage)
+            If imageSize <= 1024 * 1024 Then
+                ' Image size is already less than 1MB, no need to compress
+                Return originalImage
+            End If
+
+            ' Image size is greater than 1MB, compress it
+            Dim quality As Single = 0.1F ' Adjust the quality level as needed (0 to 1)
+
+            Dim encoderParams As New EncoderParameters(1)
+            Dim qualityParam As New EncoderParameter(Imaging.Encoder.Quality, CType(quality * 100, Int32))
+
+            Dim jpgEncoder As ImageCodecInfo = GetEncoderInfo(ImageFormat.Jpeg)
+
+            encoderParams.Param(0) = qualityParam
+
+            Dim memoryStream As New MemoryStream()
+            originalImage.Save(memoryStream, jpgEncoder, encoderParams)
+
+            Return Image.FromStream(memoryStream)
+        Catch ex As Exception
+            MessageBox.Show("An error occurred while compressing the image: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return Nothing
+        End Try
+    End Function
+
+    ' Method to get the size of an image in bytes
+    Private Function GetImageSize(image As Image) As Long
+        Using ms As New MemoryStream()
+            image.Save(ms, ImageFormat.Jpeg)
+            Return ms.Length
+        End Using
+    End Function
+
+    ' Method to get JPEG encoder information
+    Private Function GetEncoderInfo(format As ImageFormat) As ImageCodecInfo
+        Dim codecs As ImageCodecInfo() = ImageCodecInfo.GetImageEncoders()
+        For Each codec As ImageCodecInfo In codecs
+            If codec.FormatID = format.Guid Then
+                Return codec
+            End If
+        Next
+        Return Nothing
+    End Function
+
+
+
 
     ' Save the changes made to the user profile when the "Save Changes" button is clicked
     Private Sub Edit_btn_Click(sender As Object, e As EventArgs) Handles Edit_btn.Click
@@ -131,5 +207,13 @@ Public Class user_profile
 
             edit_enable = False
         End If
+    End Sub
+
+    Private Sub greeting_label_Click(sender As Object, e As EventArgs) Handles greeting_label.Click
+
+    End Sub
+
+    Private Sub Label2_Click(sender As Object, e As EventArgs)
+
     End Sub
 End Class
