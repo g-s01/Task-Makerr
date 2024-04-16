@@ -69,7 +69,7 @@ Partial Class admin_template
         Label1.ForeColor = Color.DimGray
         Label1.Location = New Point(22, 100)
         Label1.Name = "Label1"
-        Label1.Size = New Size(71, 28)
+        Label1.Size = New Size(57, 23)
         Label1.TabIndex = 9
         Label1.Text = "Menu"
         ' 
@@ -169,6 +169,7 @@ Partial Class admin_template
         AutoScaleMode = AutoScaleMode.None
         ClientSize = New Size(1132, 666)
         Controls.Add(SplitContainer1)
+        FormBorderStyle = FormBorderStyle.FixedToolWindow
         Name = "admin_template"
         StartPosition = FormStartPosition.CenterScreen
         Text = "admin_template"

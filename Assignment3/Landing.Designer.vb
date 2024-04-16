@@ -94,7 +94,7 @@ Partial Class Landing
         admin_ll.LinkColor = Color.DimGray
         admin_ll.Location = New Point(58, 370)
         admin_ll.Name = "admin_ll"
-        admin_ll.Size = New Size(102, 19)
+        admin_ll.Size = New Size(126, 23)
         admin_ll.TabIndex = 12
         admin_ll.TabStop = True
         admin_ll.Text = "Login as admin"
@@ -171,6 +171,7 @@ Partial Class Landing
         ClientSize = New Size(1134, 673)
         Controls.Add(Panel2)
         Controls.Add(Panel1)
+        FormBorderStyle = FormBorderStyle.FixedToolWindow
         Margin = New Padding(2)
         Name = "Landing"
         StartPosition = FormStartPosition.CenterScreen

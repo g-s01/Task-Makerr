@@ -2,13 +2,10 @@
 Imports System.Configuration
 Imports Microsoft.Data.SqlClient
 Imports System.Drawing.Drawing2D
-Imports iText.StyledXmlParser.Jsoup.Select.Evaluator
 Imports System.Net.Mail
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Tab
 Public Class provider_notifications
 
     Dim providerId As Integer = Module_global.Provider_ID
-    'Dim providerId As Integer = 3
 
     Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
     Private Sub provider_notifications_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -59,7 +56,8 @@ Public Class provider_notifications
                               "FROM Deals d " &
                               "INNER JOIN customer c ON d.user_id = c.user_id " &
                               "INNER JOIN Provider p ON d.provider_id = p.provider_id " &
-                              "WHERE d.provider_id = @ProviderId AND d.status = 1" ' Assuming 0 represents 50% paid booking status
+                              "WHERE d.provider_id = @ProviderId AND d.status = 1" &
+                              "ORDER BY d.dates DESC" ' Assuming 0 represents 50% paid booking status
 
 
         Using connection As New SqlConnection(connectionString)
@@ -278,7 +276,7 @@ Public Class provider_notifications
                       "FROM Deals d " &
                       "INNER JOIN customer c ON d.user_id = c.user_id " &
                       "INNER JOIN Provider p ON d.provider_id = p.provider_id " &
-                      "WHERE d.provider_id = @ProviderId AND d.status = 4" ' Assuming 0 represents 50% paid booking status
+                      "WHERE d.provider_id = @ProviderId AND d.status = 4" ' Assuming 4 represents cancellation of bookings
         ' "INNER JOIN Provider p ON d.provider_id = p.provider_id " &
 
         Using connection As New SqlConnection(connectionString)
@@ -301,6 +299,8 @@ Public Class provider_notifications
                 Else
 
                     While reader.Read()
+
+
                         Dim customerName As String = reader("username").ToString()
                         Dim dealamount As Integer = Convert.ToInt32(reader("deal_amount"))
                         Dim userId As Integer = Convert.ToInt32(reader("user_id"))
@@ -308,6 +308,21 @@ Public Class provider_notifications
                         Dim location As String = reader("location").ToString()
                         Dim email As String = reader("email").ToString()
                         Dim providername As String = reader("providername").ToString()
+
+                        Dim refundPercentage As Double = 0.0
+
+                        Using refund_connection As New SqlConnection(connectionString)
+                            Dim refund_command As New SqlCommand("SELECT refund_percentage FROM refunded_deals WHERE deal_id = @DealId", refund_connection)
+                            refund_command.Parameters.AddWithValue("@DealId", dealid)
+                            refund_connection.Open()
+                            Dim result As Object = refund_command.ExecuteScalar()
+                            If result IsNot DBNull.Value Then
+                                refundPercentage = Convert.ToDouble(result)
+                            End If
+                        End Using
+
+                        'amount need to be refunded to the customer
+                        Dim refund_amount As Integer = (dealamount / 200) * refundPercentage
 
                         ' Create a Panel control for each customer
                         Dim panel As New Panel()
@@ -334,16 +349,16 @@ Public Class provider_notifications
 
                         ' Create labels for customer details
                         Dim amount As New Label()
-                        amount.Text = $"Cancelled"
+                        amount.Text = $"Refund Amount : ${refund_amount}"
                         amount.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
                         amount.AutoSize = True
-                        amount.Location = New Point(570, 20) ' Set the location of the label within the panel
+                        amount.Location = New Point(550, 20) ' Set the location of the label within the panel
 
                         Dim paid_label As New Label()
-                        paid_label.Text = "Status : Paid"
+                        paid_label.Text = "Status : Refunded"
                         paid_label.Font = New Font("Microsoft YaHei", 10, FontStyle.Bold)
                         paid_label.AutoSize = True
-                        paid_label.Location = New Point(570, 50)
+                        paid_label.Location = New Point(550, 50)
 
                         ' Create Pay Refund button dynamically
                         Dim payRefundButton As New Button()
@@ -369,11 +384,11 @@ Public Class provider_notifications
                                                               End Using
 
                                                               ' Check if the provider has sufficient balance
-                                                              If providerBalance >= dealamount Then
+                                                              If providerBalance >= refund_amount Then
                                                                   ' Update provider balance
                                                                   Using providerConnection As New SqlConnection(connectionString)
                                                                       Dim providerCommand As New SqlCommand("UPDATE Provider SET balance = balance - @RefundAmount WHERE provider_id = @ProviderId", providerConnection)
-                                                                      providerCommand.Parameters.AddWithValue("@RefundAmount", dealamount / 2)
+                                                                      providerCommand.Parameters.AddWithValue("@RefundAmount", refund_amount)
                                                                       providerCommand.Parameters.AddWithValue("@ProviderId", providerId)
                                                                       providerConnection.Open()
                                                                       providerCommand.ExecuteNonQuery()
@@ -382,22 +397,24 @@ Public Class provider_notifications
                                                                   ' Update customer balance
                                                                   Using customerConnection As New SqlConnection(connectionString)
                                                                       Dim customerCommand As New SqlCommand("UPDATE customer SET balance = balance + @RefundAmount WHERE user_id = @UserId", customerConnection)
-                                                                      customerCommand.Parameters.AddWithValue("@RefundAmount", dealamount / 2)
+                                                                      customerCommand.Parameters.AddWithValue("@RefundAmount", refund_amount)
                                                                       customerCommand.Parameters.AddWithValue("@UserId", userId)
                                                                       customerConnection.Open()
                                                                       customerCommand.ExecuteNonQuery()
                                                                   End Using
 
-                                                                  ' Insert deal_id into refunded_deals table
-                                                                  Using refundedDealsConnection As New SqlConnection(connectionString)
-                                                                      Dim insertCommand As New SqlCommand("INSERT INTO refunded_deals (deal_id) VALUES (@DealId)", refundedDealsConnection)
-                                                                      insertCommand.Parameters.AddWithValue("@DealId", dealid)
-                                                                      refundedDealsConnection.Open()
-                                                                      insertCommand.ExecuteNonQuery()
+                                                                  ' Update status of the deal_id entry to 1
+                                                                  Using updateConnection As New SqlConnection(connectionString)
+                                                                      Dim updateCommandText As String = "UPDATE refunded_deals SET status = 1 WHERE deal_id = @DealId"
+                                                                      Using updateCommand As New SqlCommand(updateCommandText, updateConnection)
+                                                                          updateCommand.Parameters.AddWithValue("@DealId", dealid)
+                                                                          updateConnection.Open()
+                                                                          updateCommand.ExecuteNonQuery()
+                                                                      End Using
                                                                   End Using
 
                                                                   ' Inform user about successful refund
-                                                                  MessageBox.Show("Refund processed for " & customerName & ". Amount: $" & (dealamount / 2).ToString())
+                                                                  MessageBox.Show("Refund processed for " & customerName & ". Amount: $" & refund_amount.ToString())
                                                                   panel.Controls.Add(paid_label)
                                                                   panel.Controls.Remove(payRefundButton)
 
@@ -408,9 +425,9 @@ Public Class provider_notifications
                                                                       smtpserver.Port = 587
 
                                                                       mail.From = New MailAddress("group1b-cs346@outlook.com")
-                                                                      mail.To.Add(Email)
+                                                                      mail.To.Add(email)
                                                                       mail.Subject = "CANCELLATION REFUND SUCCESSFUL"
-                                                                      mail.Body = "Refund succcesful for appointment with provider : " + providername + " of  Amount : $" + (dealamount / 2).ToString()
+                                                                      mail.Body = "Refund succcesful for appointment with provider : " + providername + " of  Amount : $" + refund_amount.ToString()
 
                                                                       smtpserver.Credentials = New System.Net.NetworkCredential("group1b-cs346@outlook.com", "chillSreehari")
                                                                       smtpserver.EnableSsl = True
@@ -432,14 +449,16 @@ Public Class provider_notifications
 
                         Dim isRefunded As Boolean = False
                         Using checkConnection As New SqlConnection(connectionString)
-                            Dim checkCommand As New SqlCommand("SELECT COUNT(*) FROM refunded_deals WHERE deal_id = @DealId", checkConnection)
-                            checkCommand.Parameters.AddWithValue("@DealId", dealid)
-                            checkConnection.Open()
-                            Dim count As Integer = Convert.ToInt32(checkCommand.ExecuteScalar())
-                            isRefunded = (count > 0)
+                            Dim checkCommandText As String = "SELECT status FROM refunded_deals WHERE deal_id = @DealId"
+                            Using checkCommand As New SqlCommand(checkCommandText, checkConnection)
+                                checkCommand.Parameters.AddWithValue("@DealId", dealid)
+                                checkConnection.Open()
+                                Dim status As Integer = Convert.ToInt32(checkCommand.ExecuteScalar())
+                                isRefunded = (status = 1)
+                            End Using
                         End Using
 
-                        ' If the deal_id is present in the refunded_deals table
+                        ' If the deal_id is present in the refunded_deals table and the status is 1 (refund paid)
                         If isRefunded Then
                             panel.Controls.Add(paid_label)
                         Else
