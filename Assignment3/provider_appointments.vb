@@ -50,29 +50,6 @@ Public Class provider_appointments
         'relatedForm.Show()
     End Sub
 
-    Private Sub Panel_Click(sender As Object, e As EventArgs)
-        Dim clickedPanel As Panel = DirectCast(sender, Panel)
-        Dim panelIndex As Integer = Array.IndexOf(panelArray, clickedPanel)
-
-        'MessageBox.Show("Upper Panel Clicked - Index: " & panelIndex.ToString() & clickedPanel.Name)
-
-        Module_global.Appointment_Det_DealId = Integer.Parse(clickedPanel.Name)
-
-        Me.Hide()
-
-        With provider_appointment_details
-            .TopLevel = False
-            .AutoSize = True
-            .Dock = DockStyle.Fill
-            user_template.SplitContainer1.Panel2.Controls.Add(provider_appointment_details)
-            .BringToFront()
-            .Show()
-        End With
-
-        ' Show related form for upper panel click
-        'Dim relatedForm As New RelatedForm() ' Replace RelatedForm with the actual name of your related form class
-        'relatedForm.Show()
-    End Sub
 
     Private Sub Panel_Click2(sender As Object, e As EventArgs)
         Dim clickedPanel As Panel = DirectCast(sender, Panel)
@@ -84,14 +61,7 @@ Public Class provider_appointments
 
         Me.Hide()
 
-        With provider_appointment_details
-            .TopLevel = False
-            .AutoSize = True
-            .Dock = DockStyle.Fill
-            user_template.SplitContainer1.Panel2.Controls.Add(provider_appointment_details)
-            .BringToFront()
-            .Show()
-        End With
+        provider_template.ShowForm(New provider_appointment_details())
 
         ' Show related form for upper panel click
         'Dim relatedForm As New RelatedForm() ' Replace RelatedForm with the actual name of your related form class
@@ -110,7 +80,7 @@ Public Class provider_appointments
         panelArray(i).BackColor = System.Drawing.Color.FromArgb(CByte(240), CByte(218), CByte(248))
         panelArray(i).AutoSize = True
 
-        AddHandler panelArray(i).Click, AddressOf Panel_Click
+        AddHandler panelArray(i).Click, AddressOf Panel_Click2
 
         Dim name As New Label()
         name.AutoSize = True
