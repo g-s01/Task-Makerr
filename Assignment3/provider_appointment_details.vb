@@ -410,13 +410,12 @@ Public Class provider_appointment_details
                 End Using
 
             MessageBox.Show("Money Successfully deducted from your balance.")
-            Dim selectQuery = "Select provider_id, user_id, time,dates from deals where deal_id = @DealID"
+            selectQuery = "Select provider_id, user_id, time,dates from deals where deal_id = @DealID"
 
-                Dim userIDCancelled = 0
-                Dim providerIDCancelled = 0
-                Dim timeCancelled As String = ""
-                Dim dateCancelled As DateTime
-                Using connection As New SqlConnection(connectionString)
+            userIDCancelled = 0
+            providerIDCancelled = 0
+
+            Using connection As New SqlConnection(connectionString)
                     Using command As New SqlCommand(selectQuery, connection)
                         command.Parameters.AddWithValue("@DealID", dealID)
 
