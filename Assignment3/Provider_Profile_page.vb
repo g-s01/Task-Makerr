@@ -1,19 +1,18 @@
 ﻿Imports System.Data.SqlClient
 Imports Microsoft.Data.SqlClient
+Imports System.IO
 
 Public Class Provider_Profile_page
-    ' Define an event to be raised when the edit profile button is clicked
-    Public Event EditProfileClicked As EventHandler
 
     ' Handle the click event of the "Edit_profile_btn" button
     Private Sub Edit_profile_btn_Click(sender As Object, e As EventArgs) Handles Edit_profile_btn.Click
         ' Raise the EditProfileClicked event
-        RaiseEvent EditProfileClicked(Me, EventArgs.Empty)
+        provider_template.ShowForm(New EditProfilePage())
+        Me.Close()
     End Sub
 
     Public editprovprof As Boolean = False
     Private Sub Provider_Profile_page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
         ' Add checkboxes to the table
         For row As Integer = 0 To 6
             For col As Integer = 1 To 12
@@ -43,27 +42,73 @@ Public Class Provider_Profile_page
 
                 Using reader As SqlDataReader = command.ExecuteReader()
                     If reader.Read() Then
-                        ' Populate UI controls with fetched data
-                        Name_label.Text = reader("providername").ToString()
-                        email_label.Text = reader("email").ToString()
-                        Service_label.Text = reader("service").ToString()
-                        rate_label.Text = reader("cost_per_hour").ToString()
-                        contact_label.Text = reader("phone_number").ToString()
+                        ' Display provider information with labels
+                        Name_label.Text = "Name: " & reader("providername").ToString()
+                        email_label.Text = "Email: " & reader("email").ToString()
+                        Service_label.Text = "Service: " & reader("service").ToString()
+                        rate_label.Text = "Rate per Hour: " & reader("cost_per_hour").ToString()
+                        contact_label.Text = "Contact Number: " & reader("phone_number").ToString()
 
-                        ' Set star rating (Assuming it's fetched from the database)
-                        ' Dim rating As Double = Convert.ToDouble(reader("rating"))
-                        SetStarRating(3.5)
+                        ' Fetch and display provider image
+                        If Not reader.IsDBNull(reader.GetOrdinal("profile_image")) Then
+                            Dim profileImageBytes As Byte() = DirectCast(reader("profile_image"), Byte())
+                            Using ms As New MemoryStream(profileImageBytes)
+                                profilepic_pb.Image = Image.FromStream(ms)
+                            End Using
+                        End If
+
+                        ' Fetch locations associated with the provider
+                        Dim locationList As New List(Of String)()
 
                         ' Load working hours into the slot_matrix_tablelayout
                         Dim workingHour As String = reader("working_hour").ToString()
+
+                        ' Close the reader before executing another query
+                        reader.Close()
+
+                        ' SQL query to fetch locations
+                        Dim locationQuery As String = "SELECT location FROM location WHERE provider_id = @ProviderID"
+                        Using locationCommand As New SqlCommand(locationQuery, connection)
+                            locationCommand.Parameters.AddWithValue("@ProviderID", providerID)
+                            Using locationReader As SqlDataReader = locationCommand.ExecuteReader()
+                                While locationReader.Read()
+                                    locationList.Add(locationReader("location").ToString())
+                                End While
+                            End Using
+                        End Using
+
+                        ' Close the locationReader after fetching the locations
+                        reader.Close()
+
+                        ' Display locations separated by commas
+                        location_label.Text = "Locations: " & String.Join(", ", locationList)
+
+                        ' Set star rating (Assuming it's fetched from the database)
+                        ' Fetch and display average rating of the provider
+                        Dim ratingQuery As String = "SELECT AVG(rating) AS AvgRating FROM review " &
+                                                    "INNER JOIN deals ON review.deal_id = deals.deal_id " &
+                                                    "WHERE deals.provider_id = @ProviderID"
+
+                        Using ratingCommand As New SqlCommand(ratingQuery, connection)
+                            ratingCommand.Parameters.AddWithValue("@ProviderID", providerID)
+                            Dim averageRating As Object = ratingCommand.ExecuteScalar()
+                            Dim avgRatingValue As Double
+                            If averageRating IsNot DBNull.Value AndAlso Double.TryParse(averageRating.ToString(), avgRatingValue) Then
+                                SetStarRating(avgRatingValue)
+                            Else
+                                SetStarRating(5)
+                            End If
+                        End Using
+
+
                         LoadWorkingHours(workingHour)
                     End If
                 End Using
             End Using
         End Using
-
-
     End Sub
+
+
 
     Private Sub SetStarRating(rating As Double)
         Dim integerPart As Integer = CInt(Math.Truncate(rating))

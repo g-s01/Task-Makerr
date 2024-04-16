@@ -31,6 +31,7 @@ Partial Class Reschedule_Slots
         Back_Btn = New Button()
         Username = New Label()
         Profile_Pic = New PictureBox()
+        ProgressBar1 = New ProgressBar()
         Panel1.SuspendLayout()
         CType(Profile_Pic, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
@@ -147,6 +148,13 @@ Partial Class Reschedule_Slots
         Profile_Pic.TabIndex = 9
         Profile_Pic.TabStop = False
         ' 
+        ' ProgressBar1
+        ' 
+        ProgressBar1.Location = New Point(285, 110)
+        ProgressBar1.Name = "ProgressBar1"
+        ProgressBar1.Size = New Size(239, 29)
+        ProgressBar1.TabIndex = 17
+        ' 
         ' Reschedule_Slots
         ' 
         AutoScaleDimensions = New SizeF(8F, 20F)
@@ -154,6 +162,7 @@ Partial Class Reschedule_Slots
         BackColor = Color.White
         BackgroundImageLayout = ImageLayout.Stretch
         ClientSize = New Size(844, 666)
+        Controls.Add(ProgressBar1)
         Controls.Add(Book_Btn)
         Controls.Add(Address_TxtBox)
         Controls.Add(Address_Lbl)
@@ -180,4 +189,5 @@ Partial Class Reschedule_Slots
     Friend WithEvents Back_Btn As Button
     Friend WithEvents Username As Label
     Friend WithEvents Profile_Pic As PictureBox
+    Friend WithEvents ProgressBar1 As ProgressBar
 End Class

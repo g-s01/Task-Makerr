@@ -7,12 +7,10 @@ Public Class EditProfilePage
 
     Dim code As Integer
     Dim location_array(13) As Boolean
-    Dim locations() As String = {"Guwahati", "Tezpur", "Delhi", "Amritsar", "Banglore"}
     Dim providerID As Integer = Module_global.Provider_ID
 
     Private Sub Provider_Signup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
-        Dim query As String = "SELECT * FROM provider WHERE provider_id = @ProviderID" ' Assuming provider_id is the primary key column in the provider table
 
         ' Set default values for location_array
         For i As Integer = 0 To 12
@@ -20,7 +18,7 @@ Public Class EditProfilePage
         Next
 
         ' Populate location_checklistbox
-        For Each location As String In locations
+        For Each location As String In Module_global.provider_locations
             location_checklistbox.Items.Add(location)
         Next
 
@@ -39,17 +37,22 @@ Public Class EditProfilePage
         Using sqlConnection As New SqlConnection(connectionString)
             sqlConnection.Open()
 
-            ' Create and execute the SQL command to fetch provider information
+            ' Fetch existing provider data
+            Dim query As String = "SELECT * FROM provider WHERE provider_id = @ProviderID"
             Using sqlCommand As New SqlCommand(query, sqlConnection)
-                sqlCommand.Parameters.AddWithValue("@ProviderID", providerID) ' You need to replace providerID with the actual provider ID of the current user
+                sqlCommand.Parameters.AddWithValue("@ProviderID", providerID)
                 Dim reader As SqlDataReader = sqlCommand.ExecuteReader()
 
-                ' Check if any rows were returned
                 If reader.Read() Then
                     ' Populate UI controls with fetched data
                     name_label.Text = reader("providername").ToString()
                     email_label.Text = reader("email").ToString()
                     contactnumber_tb.Text = reader("phone_number").ToString()
+                    Dim service As String = reader("service").ToString()
+                    If Not servicetype_combox.Items.Contains(service) Then
+                        servicetype_combox.Items.Add(service)
+                    End If
+                    servicetype_combox.SelectedItem = service
                     cos_tb.Text = reader("cost_per_hour").ToString()
 
                     ' Load profile image if available
@@ -59,16 +62,6 @@ Public Class EditProfilePage
                             profilepic_pb.Image = Image.FromStream(ms)
                         End Using
                     End If
-
-                    ' Populate service ComboBox and check if the category is already present
-                    Dim category As String = reader("service").ToString()
-                    If Not servicetype_combox.Items.Contains(category) Then
-                        servicetype_combox.Items.Add(category)
-                    End If
-                    servicetype_combox.SelectedItem = category
-
-                    ' Populate other fields
-                    cos_tb.Text = reader("cost_per_hour").ToString()
 
                     ' Fetch the working_hour binary string from the reader
                     Dim workingHour As String = reader("working_hour").ToString()
@@ -91,7 +84,6 @@ Public Class EditProfilePage
                             End If
                         End While
 
-
                         locationReader.Close()
                     End Using
 
@@ -105,7 +97,6 @@ Public Class EditProfilePage
                             End If
                         Next
                     Else
-
                         ' Mark the checkboxes in the slot_matrix_tablelayout based on the working_hour bits
                         Dim bitIndex As Integer = 0
                         For row As Integer = 0 To 6
@@ -127,10 +118,7 @@ Public Class EditProfilePage
                 reader.Close()
             End Using
         End Using
-
-
     End Sub
-
 
     Private Sub Changepic_pb_Click(sender As Object, e As EventArgs) Handles changepic_pb.Click
         Dim openFileDialog As New OpenFileDialog()
@@ -146,13 +134,12 @@ Public Class EditProfilePage
         End If
     End Sub
 
-
     Private Sub Back_btn_Click(sender As Object, e As EventArgs) Handles back_btn.Click
+        provider_template.ShowForm(New Provider_Profile_page())
         Me.Close()
     End Sub
 
     Private Sub Save_btn_Click(sender As Object, e As EventArgs) Handles save_btn.Click
-
         ' Get the values from the UI controls
         Dim providerName As String = name_label.Text
         Dim email As String = email_label.Text
@@ -160,26 +147,43 @@ Public Class EditProfilePage
         Dim service As String = servicetype_combox.SelectedItem.ToString()
         Dim costPerHour As String = cos_tb.Text
 
-        ' Convert the profile image to a byte array
-        Dim profileImageBytes As Byte() = Nothing
-        If profilepic_pb.Image IsNot Nothing Then
-            Using ms As New MemoryStream()
-                ' Set the position of the MemoryStream to the beginning
-                ms.Position = 0
-                profilepic_pb.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png)
-                profileImageBytes = ms.ToArray()
-                Try
-                    ' Save the image
-                    profilepic_pb.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg)
-                    profileImageBytes = ms.ToArray()
-                Catch ex As Exception
-                    ' Handle the exception
-                    MessageBox.Show("Error saving the image: " & ex.Message)
-                End Try
-            End Using
+        ' Validate phone number
+        If phoneNumber.Length <> 10 OrElse Not IsNumeric(phoneNumber) Then
+            MessageBox.Show("Please enter a valid 10-digit phone number.", "Invalid Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
         End If
 
+        ' Validate cost per hour
+        Dim costPerHourDecimal As Decimal
+        If Not Decimal.TryParse(costPerHour, costPerHourDecimal) OrElse costPerHourDecimal < 0 Then
+            MessageBox.Show("Please enter a valid non-negative cost per hour.", "Invalid Cost Per Hour", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
 
+        ' Convert the profile image to a byte array
+        Dim profileImageBytes As Byte() = Nothing
+
+        ' Check if the image is not null and is a valid format
+        If profilepic_pb.Image IsNot Nothing AndAlso
+    (profilepic_pb.Image.RawFormat.Guid = System.Drawing.Imaging.ImageFormat.Jpeg.Guid OrElse
+     profilepic_pb.Image.RawFormat.Guid = System.Drawing.Imaging.ImageFormat.Png.Guid) Then
+
+            Try
+                Using ms As New MemoryStream()
+                    ' Save the image to the memory stream
+                    profilepic_pb.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg)
+
+                    ' Convert the image to a byte array
+                    profileImageBytes = ms.ToArray()
+                End Using
+            Catch ex As Exception
+                ' Handle any exceptions that occur during image saving
+                MessageBox.Show("Error saving image: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        Else
+            ' Handle the case where the image is null or in an unsupported format
+            MessageBox.Show("Invalid or unsupported image format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
 
         ' Construct the binary string for the working hours
         Dim workingHour As New StringBuilder()
@@ -194,7 +198,7 @@ Public Class EditProfilePage
             Next
         Next
 
-        ' Update the provider table
+        ' Update the provider table and location table
         Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
         Dim query As String = "UPDATE provider SET providername = @ProviderName, email = @Email, phone_number = @PhoneNumber, service = @Service, cost_per_hour = @CostPerHour, profile_image = CONVERT(varbinary(max), @ProfileImage), working_hour = @WorkingHour WHERE provider_id = @ProviderID"
 
@@ -212,11 +216,6 @@ Public Class EditProfilePage
                 sqlCommand.Parameters.AddWithValue("@ProviderID", providerID)
 
                 Dim rowsAffected As Integer = sqlCommand.ExecuteNonQuery()
-                If rowsAffected > 0 Then
-                    MessageBox.Show("Provider information updated successfully!")
-                Else
-                    MessageBox.Show("Failed to update provider information.")
-                End If
             End Using
 
             ' Retrieve the list of locations currently stored in the database for the provider
@@ -240,11 +239,6 @@ Public Class EditProfilePage
                         deleteLocationCommand.Parameters.AddWithValue("@ProviderID", providerID)
                         deleteLocationCommand.Parameters.AddWithValue("@LocationName", existingLocation)
                         Dim deletedRows As Integer = deleteLocationCommand.ExecuteNonQuery()
-                        If deletedRows > 0 Then
-                            MessageBox.Show("Location removed successfully: " & existingLocation)
-                        Else
-                            MessageBox.Show("Failed to remove location: " & existingLocation)
-                        End If
                     End Using
                 End If
             Next
@@ -261,14 +255,13 @@ Public Class EditProfilePage
                     locationCommand.Parameters.AddWithValue("@LocationName", item)
 
                     Dim locationRowsAffected As Integer = locationCommand.ExecuteNonQuery()
-                    If locationRowsAffected > 0 Then
-                        MessageBox.Show("Location information updated successfully!")
-                    Else
-                        MessageBox.Show("Failed to update location information.")
-                    End If
                 End Using
             Next
         End Using
+
+        MessageBox.Show("Your information updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        provider_template.ShowForm(New Provider_Profile_page())
+        Me.Close()
     End Sub
 
 

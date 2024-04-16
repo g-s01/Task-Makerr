@@ -1,5 +1,7 @@
 ﻿Imports System.Configuration
+Imports System.Net.Mail
 Imports System.Threading
+Imports iText.StyledXmlParser.Jsoup.Select.Evaluator
 Imports Microsoft.Data.SqlClient
 Imports Microsoft.VisualBasic.ApplicationServices
 
@@ -10,6 +12,7 @@ Public Class pending_payment
     Public slots As Integer
     Public costPerHour As Decimal
     Dim provider As Integer = 0
+    Dim ID As String
     Protected Overrides Sub OnVisibleChanged(e As EventArgs)
         MyBase.OnVisibleChanged(e)
         If Me.Visible Then
@@ -149,7 +152,32 @@ Public Class pending_payment
         End If
     End Function
 
+    Private Sub sendEmail(subject As String, body As String)
+        Dim smtpServer As String = "smtp-mail.outlook.com"
+        Dim port As Integer = 587
+
+        Dim message As New MailMessage("group1b-cs346@outlook.com", ID)
+        message.Subject = subject
+        message.Body = body
+
+        Dim smtpClient As New SmtpClient(smtpServer)
+        smtpClient.Port = port
+        smtpClient.Credentials = New System.Net.NetworkCredential("group1b-cs346@outlook.com", "chillSreehari")
+        smtpClient.EnableSsl = True
+
+        Try
+            smtpClient.Send(message)
+        Catch ex As SmtpException
+            ' Handle specific SMTP exceptions
+            MessageBox.Show("SMTP error: " & ex.Message)
+        Catch ex As Exception
+            ' Handle other exceptions
+            MessageBox.Show("Error sending email: " & ex.Message)
+        End Try
+    End Sub
+
     Private Async Sub btn_pay_Click(sender As Object, e As EventArgs) Handles btn_pay.Click
+        Dim mail As String
         'MessageBox.Show(slots.ToString + " " + costPerHour.ToString)
         payments.CostOfService = (slots * costPerHour) / 2
         Dim query2 As String = "SELECT email FROM provider WHERE provider_id = @ProviderID"
@@ -161,7 +189,8 @@ Public Class pending_payment
 
                 Try
                     connection.Open()
-                    Dim mail As String = Convert.ToString(command.ExecuteScalar())
+                    mail = Convert.ToString(command.ExecuteScalar())
+                    ID = mail
 
                     payments.ProviderEmailID = mail
 
@@ -171,8 +200,10 @@ Public Class pending_payment
             End Using
         End Using
         'MessageBox.Show(payments.CostOfService.ToString + " " + payments.ProviderEmailID.ToString)
+        variableChanged.Reset()
+        myVariable = 0
         payments.Show()
-        Await WaitForVariableChangeOrTimeoutAsync(20000)
+        Await WaitForVariableChangeOrTimeoutAsync(900000)
         If (Module_global.payment_successful = 1) Then
 
 
@@ -200,12 +231,27 @@ Public Class pending_payment
 
             MessageBox.Show("Payment done successfully.")
 
+            Dim subject As String = "Payment from " + ID
+            Dim body As String = "You have received an amount of " + payments.CostOfService.ToString + " for your service."
+
+            sendEmail(subject, body)
+
+            Module_global.payment_successful = 0
+            myVariable = 0
+            variableChanged.Reset()
+
+
             Me.Hide()
             user_appointments.Show()
         Else
-            Me.Hide()
-            user_appointments.Show()
+
+            myVariable = 0
+            variableChanged.Reset()
+
+            MessageBox.Show("payment unsuccessful")
+
         End If
+
     End Sub
     Private Sub btn_upcoming_Click(sender As Object, e As EventArgs) Handles btn_upcoming.Click
         Me.Hide()

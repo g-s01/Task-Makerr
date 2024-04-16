@@ -1,3 +1,7 @@
+
+Imports System.Configuration
+Imports Microsoft.Data.SqlClient
+
 Public Class Prov_tile
     Inherits UserControl
 
@@ -7,6 +11,7 @@ Public Class Prov_tile
     Public Property ItemImage As Image
     Public Property Rating As Double
     Public Property Provider As Int32
+
 
     ' Constructor
     Public Sub New(provider As Int32, providerName As String, loc As String, rating As Double, itemImage As Image)
@@ -75,6 +80,8 @@ Public Class Prov_tile
         ' Change the BackColor of the UserControl back to the default color
         Me.BackColor = Color.White ' Replace 'Color.White' with your default color
     End Sub
+
+    Friend WithEvents Button1 As Button
     Friend WithEvents PictureBox1 As PictureBox
 
     Private Sub InitializeComponent()
@@ -83,6 +90,7 @@ Public Class Prov_tile
         Label2 = New Label()
         Label3 = New Label()
         PictureBox2 = New PictureBox()
+        Button1 = New Button()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
@@ -131,16 +139,29 @@ Public Class Prov_tile
         PictureBox2.TabIndex = 4
         PictureBox2.TabStop = False
         ' 
+        ' Button1
+        ' 
+        Button1.BackColor = SystemColors.HotTrack
+        Button1.FlatStyle = FlatStyle.Flat
+        Button1.ForeColor = Color.White
+        Button1.Location = New Point(-9, 195)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(191, 40)
+        Button1.TabIndex = 5
+        Button1.Text = "Chat"
+        Button1.UseVisualStyleBackColor = False
+        ' 
         ' Prov_tile
         ' 
         BorderStyle = BorderStyle.FixedSingle
+        Controls.Add(Button1)
         Controls.Add(PictureBox2)
         Controls.Add(Label3)
         Controls.Add(Label2)
         Controls.Add(Label1)
         Controls.Add(PictureBox1)
         Name = "Prov_tile"
-        Size = New Size(173, 195)
+        Size = New Size(173, 225)
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
         CType(PictureBox2, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
@@ -151,4 +172,94 @@ Public Class Prov_tile
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
     Friend WithEvents PictureBox2 As PictureBox
+
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        ' Assuming connectionString is defined elsewhere
+        Dim roomId As Integer = -1
+
+        'check whether the rooms are there 
+        For Each item As Tuple(Of String, Integer, Integer) In Module_global.roomchat
+            If item.Item3 = Provider Then
+                ' Return the chat_room_id if the provider_id matches
+                roomId = item.Item2
+            End If
+        Next
+        If roomId <> -1 Then
+            Dim userTemplate As user_template = Application.OpenForms("user_template")
+            If userTemplate IsNot Nothing Then
+                Dim user_provider_chats As New user_provider_chats()
+                user_provider_chats.roomId = roomId
+                userTemplate.switchPanel(user_provider_chats)
+                userTemplate.chats_btn.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+                userTemplate.home_btn.BackColor = SystemColors.Control
+
+            End If
+
+        ElseIf roomId = -1 Then
+            Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+
+            ' Create a SqlConnection object
+            Using connection As New SqlConnection(connectionString)
+                Try
+                    ' Open the connection
+                    connection.Open()
+
+                    ' Create the query to select chat room ID
+                    Dim userId As String = Module_global.User_ID
+                    Dim providerId As String = Provider
+                    Dim query As String = "SELECT chat_room_id FROM dbo.chat_room WHERE user_id=@userId AND provider_id=@providerId;"
+                    ' Create a SqlCommand object with the select query and connection
+                    Using selectCommand As New SqlCommand(query, connection)
+                        ' Add parameters for select command
+                        selectCommand.Parameters.AddWithValue("@userId", Module_global.User_ID)
+                        selectCommand.Parameters.AddWithValue("@providerId", providerId)
+
+                        ' Execute the select command and get the result
+                        roomId = Convert.ToInt32(selectCommand.ExecuteScalar())
+
+                        ' Check if the result is not null
+                        If roomId > 0 Then
+                            MessageBox.Show("Chat room ID: " & roomId.ToString())
+                        Else
+                            ' If no chat room found, create a new one
+                            Dim insertQuery As String = "INSERT INTO dbo.chat_room (user_id, provider_id, username, providername) VALUES (@userId, @providerId, @username, @providername); SELECT SCOPE_IDENTITY();"
+
+                            ' Create a SqlCommand object with the insert query and connection
+                            Using insertCommand As New SqlCommand(insertQuery, connection)
+                                ' Add parameters for insert command
+                                insertCommand.Parameters.AddWithValue("@userId", userId)
+                                insertCommand.Parameters.AddWithValue("@providerId", providerId)
+                                insertCommand.Parameters.AddWithValue("@username", Module_global.user_name)
+                                insertCommand.Parameters.AddWithValue("@providername", ProviderName) ' Assuming "sahil_the_provider" is the provider name
+                                ' Execute the insert command and get the inserted chat room ID
+                                roomId = Convert.ToInt32(insertCommand.ExecuteScalar())
+
+                                ' Display the newly created chat room ID
+                                MessageBox.Show("New Chat room ID: " & roomId.ToString())
+
+                            End Using
+                        End If
+                    End Using
+                    If roomId > 0 Then
+                        Dim userTemplate As user_template = Application.OpenForms("user_template")
+                        If userTemplate IsNot Nothing Then
+                            Dim user_provider_chats As New user_provider_chats()
+                            user_provider_chats.roomId = roomId
+                            userTemplate.switchPanel(user_provider_chats)
+                            userTemplate.chats_btn.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
+                            userTemplate.home_btn.BackColor = SystemColors.Control
+
+                        End If
+                    End If
+                Catch ex As Exception
+                    ' Handle any exceptions
+                    MessageBox.Show("An error occurred: " & ex.Message)
+                End Try
+            End Using
+        End If
+
+    End Sub
+
+
 End Class

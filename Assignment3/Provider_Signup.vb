@@ -3,6 +3,7 @@ Imports System.Configuration
 Imports Microsoft.Data.SqlClient
 Imports System.IO
 Imports System.Drawing
+Imports System.Net
 Public Class Provider_Signup
 
     Dim code As Integer
@@ -89,6 +90,18 @@ Public Class Provider_Signup
         Else
             error_label.Text = ""
 
+            Dim result As String
+            Dim editPassword As Integer
+            ' Validate the password and display the result in a message box
+            result = PasswordStrengthCheck(password_tb.Text)
+            editPassword = MsgBox(result & vbCrLf & "Are you satisfied with your password strength ?", vbYesNo, "Password Strength Checker")
+            ' Check the user's response
+            If editPassword = vbNo Then
+                ' User wants to edit the password, return void.
+                Return
+            End If
+
+
             If String.IsNullOrWhiteSpace(otp_tb.Text) Then
                 otp_tb.Focus()
             ElseIf Not code.ToString = otp_tb.Text.ToString Then
@@ -107,7 +120,7 @@ Public Class Provider_Signup
                         Dim count As Integer = Convert.ToInt32(sqlCommand.ExecuteScalar())
                         If count > 0 Then
                             ' If email already exists, display an error message and exit
-                            error_label.Text = "Email already registered!"
+                            error_label.Text = "Email already registered as Provider!"
                             Return
                         End If
                     End Using

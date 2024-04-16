@@ -137,7 +137,6 @@ Partial Class Admin_Login
         ' 
         ' login_btn
         ' 
-        login_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         login_btn.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
         login_btn.FlatAppearance.BorderSize = 0
         login_btn.FlatStyle = FlatStyle.Flat

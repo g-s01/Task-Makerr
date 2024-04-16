@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Data.SqlClient
+﻿Imports System.Configuration.Provider
+Imports Microsoft.Data.SqlClient
 
 Public Class provider_appointments
     Dim panelArray(2) As System.Windows.Forms.Panel
@@ -17,17 +18,6 @@ Public Class provider_appointments
         Button2.ForeColor = SystemColors.GrayText
         Button1.ForeColor = SystemColors.ControlText
         upcoming()
-    End Sub
-
-    Private Sub Panel_Click(sender As Object, e As EventArgs)
-        Dim clickedPanel As Panel = DirectCast(sender, Panel)
-        Dim panelIndex As Integer = Array.IndexOf(panelArray, clickedPanel)
-
-        MessageBox.Show("Upper Panel Clicked - Index: " & panelIndex.ToString())
-
-        ' Show related form for upper panel click
-        'Dim relatedForm As New RelatedForm() ' Replace RelatedForm with the actual name of your related form class
-        'relatedForm.Show()
     End Sub
 
     Private Sub Button_ClickCompleted(sender As Object, e As EventArgs)
@@ -49,19 +39,67 @@ Public Class provider_appointments
         'relatedForm.Show()
     End Sub
     Private Sub Button_Click(sender As Object, e As EventArgs)
-        MessageBox.Show("Button Clicked in Lower Panel")
-
+        'MessageBox.Show("Button Clicked in Lower Panel")
         ' Show related form for button click
         'Dim relatedForm As New RelatedForm2() ' Replace RelatedForm2 with the actual name of your related form class
         'relatedForm.Show()
     End Sub
 
-    Private Function spawnDivs(i As Integer, providerName As String, location As String, CostNum As Integer, Schedule As String, y As Integer)
+    Private Sub Panel_Click(sender As Object, e As EventArgs)
+        Dim clickedPanel As Panel = DirectCast(sender, Panel)
+        Dim panelIndex As Integer = Array.IndexOf(panelArray, clickedPanel)
+
+        'MessageBox.Show("Upper Panel Clicked - Index: " & panelIndex.ToString() & clickedPanel.Name)
+
+        Module_global.Appointment_Det_DealId = Integer.Parse(clickedPanel.Name)
+
+        Me.Hide()
+
+        With provider_appointment_details
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(provider_appointment_details)
+            .BringToFront()
+            .Show()
+        End With
+
+        ' Show related form for upper panel click
+        'Dim relatedForm As New RelatedForm() ' Replace RelatedForm with the actual name of your related form class
+        'relatedForm.Show()
+    End Sub
+
+    Private Sub Panel_Click2(sender As Object, e As EventArgs)
+        Dim clickedPanel As Panel = DirectCast(sender, Panel)
+        Dim panelIndex As Integer = Array.IndexOf(panelArray, clickedPanel)
+
+        'MessageBox.Show("Upper Panel Clicked - Index: " & panelIndex.ToString() & clickedPanel.Name)
+
+        Module_global.Appointment_Det_DealId = Integer.Parse(clickedPanel.Name)
+
+        Me.Hide()
+
+        With provider_appointment_details
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(provider_appointment_details)
+            .BringToFront()
+            .Show()
+        End With
+
+        ' Show related form for upper panel click
+        'Dim relatedForm As New RelatedForm() ' Replace RelatedForm with the actual name of your related form class
+        'relatedForm.Show()
+    End Sub
+
+    Private Function spawnDivs(i As Integer, providerName As String, location As String, CostNum As Integer, Schedule As String, y As Integer, DealId As Integer)
         ReDim panelArray(i)
 
         Dim x As Integer = 20
 
         panelArray(i) = New System.Windows.Forms.Panel()
+        panelArray(i).Name = DealId.ToString()
         panelArray(i).Location = New System.Drawing.Point(x, y)
         panelArray(i).Size = New System.Drawing.Size(750, 70)
         panelArray(i).BackColor = System.Drawing.Color.FromArgb(CByte(240), CByte(218), CByte(248))
@@ -101,7 +139,7 @@ Public Class provider_appointments
 
     End Function
 
-    Private Function Payment()
+    Private Async Function Payment() As Task
         Dim y As Integer = 50
         Dim i As Integer = 0
         Panel1.Controls.Clear()
@@ -114,8 +152,8 @@ Public Class provider_appointments
             sqlConnection.Open()
             Using sqlCommand As New SqlCommand(query, sqlConnection)
                 sqlCommand.Parameters.AddWithValue("@ProviderId", Provider_ID) ' Use the password entered by the user
-                result = sqlCommand.ExecuteReader()
-                Do While result.Read()
+                result = Await sqlCommand.ExecuteReaderAsync()
+                Do While Await result.ReadAsync()
                     Dim time As String = result.GetString(3)
                     Dim dateof As Date = result.GetValue(5)
                     Dim UserId As Integer = result.GetValue(1)
@@ -123,26 +161,34 @@ Public Class provider_appointments
                     Dim UserName As String = ""
                     Dim Location As String = ""
                     Dim Cost As Integer = 0
-                    Using sqlConnection2 As New SqlConnection(connectionString)
-                        sqlConnection2.Open()
-                        Using sqlCommand2 As New SqlCommand(query2, sqlConnection2)
-                            sqlCommand2.Parameters.AddWithValue("@ProviderID", ProviderId)
-                            Dim providerDb As SqlDataReader = sqlCommand2.ExecuteReader()
-                            Do While providerDb.Read()
-                                Cost = providerDb.GetValue(6)
-                            Loop
-                        End Using
-                    End Using
-                    Using sqlConnection2 As New SqlConnection(connectionString)
-                        sqlConnection2.Open()
-                        Using sqlCommand2 As New SqlCommand(query3, sqlConnection2)
-                            sqlCommand2.Parameters.AddWithValue("@UserId", UserId)
-                            Dim UserDb As SqlDataReader = sqlCommand2.ExecuteReader()
-                            Do While UserDb.Read()
-                                UserName = UserDb.GetValue(1)
-                            Loop
-                        End Using
-                    End Using
+                    Await Task.WhenAll(
+                        Task.Run(Async Function()
+                                     Using sqlConnection2 As New SqlConnection(connectionString)
+                                         sqlConnection2.Open()
+                                         Using sqlCommand2 As New SqlCommand(query2, sqlConnection2)
+                                             sqlCommand2.Parameters.AddWithValue("@ProviderID", ProviderId)
+                                             Dim providerDb As SqlDataReader = Await sqlCommand2.ExecuteReaderAsync()
+                                             Do While Await providerDb.ReadAsync()
+                                                 Cost = providerDb.GetValue(6)
+                                             Loop
+                                         End Using
+                                     End Using
+                                 End Function),
+                        Task.Run(Async Function()
+                                     Using sqlConnection2 As New SqlConnection(connectionString)
+                                         sqlConnection2.Open()
+                                         Using sqlCommand2 As New SqlCommand(query3, sqlConnection2)
+                                             sqlCommand2.Parameters.AddWithValue("@UserId", UserId)
+                                             Dim UserDb As SqlDataReader = Await sqlCommand2.ExecuteReaderAsync()
+                                             Do While Await UserDb.ReadAsync()
+                                                 UserName = UserDb.GetValue(1)
+                                             Loop
+                                         End Using
+                                     End Using
+                                 End Function)
+                    )
+
+
 
                     dateof = dateof.AddMinutes(-dateof.Minute)
                     dateof = dateof.AddSeconds(-dateof.Second)
@@ -159,7 +205,7 @@ Public Class provider_appointments
                             dateof = dateof.AddDays(1)
                         End If
                     Next
-                    spawnDivs(i, UserName, Location, Cost, dateof, y)
+                    spawnDivs(i, UserName, Location, Cost, dateof, y, result.GetValue(0))
                     i += 1
                     y += 100
                 Loop
@@ -177,7 +223,9 @@ Public Class provider_appointments
         splitContainerArray(i).SplitterDistance = 70
         splitContainerArray(i).Panel1.BackColor = System.Drawing.Color.FromArgb(CByte(240), CByte(218), CByte(248))
 
-        AddHandler splitContainerArray(i).Panel1.Click, AddressOf Panel_Click
+        AddHandler splitContainerArray(i).Panel1.Click, AddressOf Panel_Click2
+
+        splitContainerArray(i).Panel1.Name = DealId.ToString()
 
         Dim name As New Label()
         name.AutoSize = True
@@ -230,14 +278,21 @@ Public Class provider_appointments
         button_cancel.Font = New Font("Microsoft YaHei", 10.2F)
         button_cancel.BackColor = System.Drawing.Color.FromArgb(CByte(245), CByte(140), CByte(215))
 
-        AddHandler button_cancel.Click, AddressOf Button_Click
+        'AddHandler button_cancel.Click, AddressOf Button_Click
+
+        AddHandler button_cancel.Click, Sub(sender As Object, e As EventArgs)
+
+                                            Module_global.Appointment_Det_DealId = DealId
+                                            provider_template.ShowForm(New provider_appointment_details())
+                                        End Sub
+
 
         splitContainerArray(i).Panel2.Controls.Add(button_cancel)
 
         Panel1.Controls.Add(splitContainerArray(i))
 
     End Function
-    Private Function upcoming()
+    Private Async Function upcoming() As Task
         Panel1.Controls.Clear()
         Dim splitContainerArray(1) As SplitContainer
         Dim y As Integer = 50
@@ -251,8 +306,8 @@ Public Class provider_appointments
             sqlConnection.Open()
             Using sqlCommand As New SqlCommand(query, sqlConnection)
                 sqlCommand.Parameters.AddWithValue("@ProviderId", Provider_ID) ' Use the password entered by the user
-                result = sqlCommand.ExecuteReader()
-                Do While result.Read()
+                result = Await sqlCommand.ExecuteReaderAsync()
+                Do While Await result.ReadAsync()
                     Dim time As String = result.GetString(3)
                     Dim dateof As Date = result.GetValue(5)
                     Dim UserId As Integer = result.GetValue(1)
@@ -260,26 +315,33 @@ Public Class provider_appointments
                     Dim UserName As String = ""
                     Dim Location As String = ""
                     Dim Cost As Integer = 0
-                    Using sqlConnection2 As New SqlConnection(connectionString)
-                        sqlConnection2.Open()
-                        Using sqlCommand2 As New SqlCommand(query2, sqlConnection2)
-                            sqlCommand2.Parameters.AddWithValue("@ProviderID", ProviderId)
-                            Dim providerDb As SqlDataReader = sqlCommand2.ExecuteReader()
-                            Do While providerDb.Read()
-                                Cost = providerDb.GetValue(6)
-                            Loop
-                        End Using
-                    End Using
-                    Using sqlConnection2 As New SqlConnection(connectionString)
-                        sqlConnection2.Open()
-                        Using sqlCommand2 As New SqlCommand(query3, sqlConnection2)
-                            sqlCommand2.Parameters.AddWithValue("@UserId", UserId)
-                            Dim UserDb As SqlDataReader = sqlCommand2.ExecuteReader()
-                            Do While UserDb.Read()
-                                UserName = UserDb.GetValue(1)
-                            Loop
-                        End Using
-                    End Using
+                    Await Task.WhenAll(
+                    Task.Run(Async Function()
+                                 Using sqlConnection2 As New SqlConnection(connectionString)
+                                     sqlConnection2.Open()
+                                     Using sqlCommand2 As New SqlCommand(query2, sqlConnection2)
+                                         sqlCommand2.Parameters.AddWithValue("@ProviderID", ProviderId)
+                                         Dim providerDb As SqlDataReader = Await sqlCommand2.ExecuteReaderAsync()
+                                         Do While Await providerDb.ReadAsync()
+                                             Cost = providerDb.GetValue(6)
+                                         Loop
+                                     End Using
+                                 End Using
+                             End Function),
+                    Task.Run(Async Function()
+                                 Using sqlConnection2 As New SqlConnection(connectionString)
+                                     sqlConnection2.Open()
+                                     Using sqlCommand2 As New SqlCommand(query3, sqlConnection2)
+                                         sqlCommand2.Parameters.AddWithValue("@UserId", UserId)
+                                         Dim UserDb As SqlDataReader = Await sqlCommand2.ExecuteReaderAsync()
+                                         Do While Await UserDb.ReadAsync()
+                                             UserName = UserDb.GetValue(1)
+                                         Loop
+                                     End Using
+                                 End Using
+                             End Function)
+                    )
+
 
                     dateof = dateof.AddMinutes(-dateof.Minute)
                     dateof = dateof.AddSeconds(-dateof.Second)

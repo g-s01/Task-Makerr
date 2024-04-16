@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class provider_notifications
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,21 +20,21 @@ Partial Class provider_notifications
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Panel1 = New Panel()
+        separatorLine = New Label()
         FlowLayoutPanel1 = New FlowLayoutPanel()
         Button4 = New Button()
         Button3 = New Button()
         Button2 = New Button()
         Button1 = New Button()
-        separatorLine = New Label()
         Panel1.SuspendLayout()
         SuspendLayout()
         ' 
         ' Panel1
         ' 
-        Panel1.BackColor = SystemColors.ActiveBorder
+        Panel1.BackColor = SystemColors.Control
         Panel1.Controls.Add(separatorLine)
         Panel1.Controls.Add(FlowLayoutPanel1)
         Panel1.Controls.Add(Button4)
@@ -47,10 +47,19 @@ Partial Class provider_notifications
         Panel1.Size = New Size(865, 677)
         Panel1.TabIndex = 0
         ' 
+        ' separatorLine
+        ' 
+        separatorLine.BorderStyle = BorderStyle.FixedSingle
+        separatorLine.Location = New Point(100, 104)
+        separatorLine.Margin = New Padding(4, 0, 4, 0)
+        separatorLine.Name = "separatorLine"
+        separatorLine.Size = New Size(680, 2)
+        separatorLine.TabIndex = 4
+        ' 
         ' FlowLayoutPanel1
         ' 
         FlowLayoutPanel1.AutoScroll = True
-        FlowLayoutPanel1.BackColor = SystemColors.ActiveBorder
+        FlowLayoutPanel1.BackColor = SystemColors.Control
         FlowLayoutPanel1.FlowDirection = FlowDirection.TopDown
         FlowLayoutPanel1.Location = New Point(50, 143)
         FlowLayoutPanel1.Name = "FlowLayoutPanel1"
@@ -60,7 +69,7 @@ Partial Class provider_notifications
         ' 
         ' Button4
         ' 
-        Button4.BackColor = SystemColors.ActiveBorder
+        Button4.BackColor = SystemColors.Control
         Button4.FlatAppearance.BorderSize = 0
         Button4.FlatStyle = FlatStyle.Flat
         Button4.Font = New Font("Microsoft YaHei", 10.2F, FontStyle.Bold)
@@ -108,15 +117,6 @@ Partial Class provider_notifications
         Button1.TabIndex = 0
         Button1.Text = "Advance Payment"
         Button1.UseVisualStyleBackColor = False
-        ' 
-        ' separatorLine
-        ' 
-        separatorLine.BorderStyle = BorderStyle.FixedSingle
-        separatorLine.Location = New Point(100, 104)
-        separatorLine.Margin = New Padding(4, 0, 4, 0)
-        separatorLine.Name = "separatorLine"
-        separatorLine.Size = New Size(680, 2)
-        separatorLine.TabIndex = 4
         ' 
         ' provider_notifications
         ' 
