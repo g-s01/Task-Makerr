@@ -54,7 +54,7 @@ Public Class payments
                                 Using reader As SqlDataReader = command.ExecuteReader()
                                     If reader.Read() AndAlso Not reader.IsDBNull(0) Then
                                         bal = Convert.ToDecimal(reader("balance"))
-                                        MessageBox.Show(bal)
+                                        'MessageBox.Show(bal)
                                     Else
                                         MessageBox.Show("User balance not found.")
                                         Return
@@ -72,7 +72,7 @@ Public Class payments
                             pending_payment.variableChanged.Set()
                             provider_appointment_details.PromyVariable = 1
                             provider_appointment_details.ProvariableChanged.Set()
-                            MessageBox.Show(Module_global.payment_successful)
+                            'MessageBox.Show(Module_global.payment_successful)
                             ' updating balance of both the users
                             Dim sqlQuery As String = "UPDATE customer SET balance = CASE WHEN email = @AccountNumber1 THEN balance - @AmountToUpdate WHEN email = @AccountNumber2 THEN balance + @AmountToUpdate END WHERE email IN (@AccountNumber1, @AccountNumber2);"
 
