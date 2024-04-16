@@ -171,7 +171,7 @@ Partial Class user_feedback
         Controls.Add(Label2)
         Controls.Add(Label1)
         Font = New Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        FormBorderStyle = FormBorderStyle.None
+        FormBorderStyle = FormBorderStyle.FixedSingle
         Name = "user_feedback"
         Text = "Form2"
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()

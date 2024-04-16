@@ -225,11 +225,11 @@ Public Class UserHome
 
         If clickedControl IsNot Nothing Then
             ' Find the parent Prov_tile control
-            Dim parentTile As Prov_tile = FindParentProvTile(clickedControl)
 
-            If parentTile IsNot Nothing Then
-                ' Set the Provider_ID to the Provider value of the parent Prov_tile
-                Module_global.Provider_ID = parentTile.Provider
+            If TypeOf clickedControl Is Prov_tile Then
+                Dim parentTile1 As Prov_tile = DirectCast(clickedControl, Prov_tile)
+                ' Now parentTile refers to the clicked Prov_tile
+                Module_global.Provider_ID = parentTile1.Provider
 
 
                 ' Clear existing controls and show Book_slots
@@ -243,6 +243,26 @@ Public Class UserHome
                     .BringToFront()
                     .Show()
                 End With
+            Else
+                Dim parentTile As Prov_tile = FindParentProvTile(clickedControl)
+
+                If parentTile IsNot Nothing Then
+                    ' Set the Provider_ID to the Provider value of the parent Prov_tile
+                    Module_global.Provider_ID = parentTile.Provider
+
+
+                    ' Clear existing controls and show Book_slots
+                    user_template.SplitContainer1.Panel2.Controls.Clear()
+                    slot_back_choice = 1
+                    With Book_slots
+                        .TopLevel = False
+                        .AutoSize = True
+                        .Dock = DockStyle.Fill
+                        user_template.SplitContainer1.Panel2.Controls.Add(Book_slots)
+                        .BringToFront()
+                        .Show()
+                    End With
+                End If
             End If
         End If
     End Sub

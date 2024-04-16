@@ -67,7 +67,7 @@ Public Class appointmentChat
                 Try
                     ' Open the connection
                     connection.Open()
-
+                    MessageBox.Show(userId)
                     ' Create the query
                     Dim query As String = "SELECT username FROM dbo.customer WHERE user_id = @userId;"
 
@@ -227,11 +227,12 @@ Public Class appointmentChat
     Private Sub appointmentChat_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         messageTimer.Interval = 10000
-        If user_role = "customer" Then
-            userId = Module_global.User_ID
-        ElseIf user_role = "provider" Then
-            userId = Module_global.Provider_ID
-        End If
+        MessageBox.Show(user_role)
+        'If user_role = "customer" Then
+        '    userId = Module_global.User_ID
+        'ElseIf user_role = "provider" Then
+        '    providerId = Module_global.Provider_ID
+        ' End If
         GetSenderName()
         GetRoom()
         LoadMessagesFromDatabase(userId, user_role, dealId)

@@ -151,7 +151,8 @@ Public Class user_appointments
 
     End Function
 
-    Private Function spawnDivsForCompleted(i As Integer, providerName As String, location As String, CostNum As Integer, Schedule As String, y As Integer, DealId As Integer)
+
+    Private Function spawnDivsFeedback(i As Integer, providerName As String, location As String, CostNum As Integer, Schedule As String, y As Integer, DealId As Integer)
 
         ReDim panelArray(i)
 
@@ -164,7 +165,8 @@ Public Class user_appointments
         panelArray(i).BackColor = System.Drawing.Color.FromArgb(CByte(240), CByte(218), CByte(248))
         panelArray(i).AutoSize = True
 
-        AddHandler panelArray(i).Click, AddressOf CompletedPanelClick
+
+        AddHandler panelArray(i).Click, AddressOf Panel_Click1
 
         Dim name As New Label()
         name.AutoSize = True
@@ -194,7 +196,23 @@ Public Class user_appointments
         timings.Text = "Appointment schedule :  " + Schedule
         panelArray(i).Controls.Add(timings)
 
-        Panel1.Controls.Add(panelArray(i))
+
+        Dim feedback As New Button()
+        feedback.Text = " Give Feedback "
+        feedback.AutoSize = True
+        feedback.Location = New System.Drawing.Point(25, 35)
+        feedback.FlatAppearance.BorderSize = 0
+        feedback.FlatStyle = FlatStyle.Flat
+        feedback.Font = New Font("Microsoft YaHei", 8.0F)
+        feedback.BackColor = System.Drawing.Color.FromArgb(CByte(245), CByte(140), CByte(215))
+
+        AddHandler feedback.Click, Sub(s, ev)
+                                       Module_global.Appointment_Det_DealId = DealId
+                                       user_feedback.Show()
+                                   End Sub
+
+        panelArray(i).Controls.Add(feedback)
+
 
     End Function
 
@@ -265,6 +283,7 @@ Public Class user_appointments
         'Dim relatedForm As New RelatedForm2() ' Replace RelatedForm2 with the actual name of your related form class
         'relatedForm.Show()
     End Sub
+
 
     Private Async Function upcoming() As Task
         Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
@@ -472,7 +491,9 @@ Public Class user_appointments
                             dateof = dateof.AddDays(1)
                         End If
                     Next
-                    spawnDivsForCompleted(i, ProviderName, Location, Cost, dateof, y, result.GetValue(0))
+
+                    spawnDivsFeedback(i, ProviderName, Location, Cost, dateof, y, result.GetValue(0))
+
                     i += 1
                     y += 100
                 Loop

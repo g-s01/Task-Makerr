@@ -2,6 +2,10 @@
 Imports Microsoft.Data.SqlClient
 Imports System.Configuration
 Public Class user_feedback
+
+    Public dealID As Integer = Module_global.Appointment_Det_DealId
+
+    'Dim dealID As Integer = 1
     Dim currentRating As Double = 0.0
     Dim clickCount1 As Integer = 0
     Dim clickCount2 As Integer = 0
@@ -170,8 +174,8 @@ Public Class user_feedback
 
     Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
         Dim reviewText As String = txtFeedback.Text
-        Dim dealId As Integer = 1 ' Example deal ID, replace with actual deal ID
         Dim rating As Double = currentRating
+
         Dim reviewTime As DateTime = DateTime.Now
 
         If reviewText = initialText Then
@@ -179,26 +183,53 @@ Public Class user_feedback
             Return
         End If
 
+        ' Check if a review already exists for the deal ID
+        Dim queryCheck As String = "SELECT TOP 1 [deal_id] FROM [dbo].[review] WHERE [deal_id] = @dealId"
+        Dim existingDealId As Integer = -1
+        Using connection As New SqlConnection(connectionString)
+            Try
+                connection.Open()
+                Using commandCheck As New SqlCommand(queryCheck, connection)
+                    commandCheck.Parameters.AddWithValue("@dealId", dealID)
+                    Dim existingDealIdObj As Object = commandCheck.ExecuteScalar()
+                    If existingDealIdObj IsNot Nothing AndAlso Not DBNull.Value.Equals(existingDealIdObj) Then
+                        existingDealId = Convert.ToInt32(existingDealIdObj)
+                    End If
+                End Using
+            Catch ex As Exception
+                MessageBox.Show("Error checking for existing review: " & ex.Message)
+                Return
+            End Try
+        End Using
+
         ' Create SQL connection and command objects
         Using connection As New SqlConnection(connectionString)
             Try
                 connection.Open()
 
-                ' SQL query to insert review into the database
-                Dim query As String = "INSERT INTO [dbo].[review] ([deal_id], [review_text], [review_time], [rating]) " &
-                "VALUES (@dealId, @reviewText, @reviewTime, @rating)"
-
-                Using command As New SqlCommand(query, connection)
-                    command.Parameters.AddWithValue("@dealId", dealId)
-                    command.Parameters.AddWithValue("@reviewText", reviewText) ' Use SqlDbType.NVarChar for string
-                    command.Parameters.AddWithValue("@reviewTime", reviewTime) ' Use SqlDbType.DateTime for DateTime
-                    command.Parameters.AddWithValue("@rating", rating) ' Use SqlDbType.Float for double
-
-                    ' Execute the SQL command
-                    command.ExecuteNonQuery()
-
-                    MessageBox.Show("Review submitted successfully.")
-                End Using
+                If existingDealId <> -1 Then
+                    ' Update existing review
+                    Dim queryUpdate As String = "UPDATE [dbo].[review] SET [review_text] = @reviewText, [review_time] = @reviewTime, [rating] = @rating WHERE [deal_id] = @dealId"
+                    Using commandUpdate As New SqlCommand(queryUpdate, connection)
+                        commandUpdate.Parameters.AddWithValue("@dealId", dealID)
+                        commandUpdate.Parameters.AddWithValue("@reviewText", reviewText)
+                        commandUpdate.Parameters.AddWithValue("@reviewTime", reviewTime)
+                        commandUpdate.Parameters.AddWithValue("@rating", rating)
+                        commandUpdate.ExecuteNonQuery()
+                        MessageBox.Show("Review updated successfully.")
+                    End Using
+                Else
+                    ' Insert new review
+                    Dim queryInsert As String = "INSERT INTO [dbo].[review] ([deal_id], [review_text], [review_time], [rating]) VALUES (@dealId, @reviewText, @reviewTime, @rating)"
+                    Using commandInsert As New SqlCommand(queryInsert, connection)
+                        commandInsert.Parameters.AddWithValue("@dealId", dealID)
+                        commandInsert.Parameters.AddWithValue("@reviewText", reviewText)
+                        commandInsert.Parameters.AddWithValue("@reviewTime", reviewTime)
+                        commandInsert.Parameters.AddWithValue("@rating", rating)
+                        commandInsert.ExecuteNonQuery()
+                        MessageBox.Show("Review submitted successfully.")
+                    End Using
+                End If
             Catch ex As Exception
                 MessageBox.Show("Error submitting review: " & ex.Message)
             End Try
@@ -206,7 +237,7 @@ Public Class user_feedback
     End Sub
 
     Private Sub user_feedback_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Label4.Text = Module_global.user_name
         InitializeFeedbackTextBox()
-
     End Sub
 End Class

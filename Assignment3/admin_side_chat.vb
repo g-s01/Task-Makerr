@@ -25,8 +25,8 @@ Public Class admin_side_chat
                 Dim newButton As New Button()
                 newButton.Name = "btn" & item.Item1 ' Set button name
                 newButton.Text = item.Item1 ' Set button text
-                newButton.TextAlign = ContentAlignment.MiddleCenter
-                newButton.Width = room_list.Width
+                newButton.TextAlign = ContentAlignment.MiddleLeft
+                newButton.Width = room_list.Width - 25
                 newButton.Height = 35 ' Set button height
                 newButton.FlatStyle = FlatStyle.Flat ' Use flat style for rounded corners
                 newButton.BackColor = Color.FromArgb(220, 189, 232) ' Set background color to pink
@@ -38,7 +38,7 @@ Public Class admin_side_chat
                 Dim scaledImagenew As Image = New Bitmap(My.Resources.prov, New Size(35, 35))
                 newButton.Image = scaledImagenew
                 newButton.Region = New Drawing.Region(New Drawing.Rectangle(0, 0, newButton.Width, newButton.Height)) ' Make corners rounded
-                newButton.Location = New Point(10, yPos) ' Set button position
+                newButton.Location = New Point(5, yPos) ' Set button position
                 AddHandler newButton.Click, AddressOf Button_Click ' Add click event handler
                 room_list.Controls.Add(newButton) ' Add button to panel
                 yPos += 37 ' Increment y position for next button
@@ -119,6 +119,8 @@ Public Class admin_side_chat
         userButton.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         chat.Visible = False
         Panel2.Visible = False
+        sendBtn.Visible = False
+        sendTextBox.Visible = False
         messageTimer.Start()
     End Sub
 
@@ -135,11 +137,11 @@ Public Class admin_side_chat
                 PopulateRooms()
             End If
             If roomId <> -1 Then
-                    If (LoadMessagesFromDatabase()) Then
-                        PrintMessages(roomId)
-                    End If
+                If (LoadMessagesFromDatabase()) Then
+                    PrintMessages(roomId)
                 End If
             End If
+        End If
     End Sub
 
 
@@ -151,6 +153,8 @@ Public Class admin_side_chat
         PopulateRooms()
         chat.Visible = False
         Panel2.Visible = False
+        sendBtn.Visible = False
+        sendTextBox.Visible = False
     End Sub
 
     Private Sub sendTextBox_KeyDown(sender As Object, e As KeyEventArgs) Handles sendTextBox.KeyDown
@@ -170,12 +174,16 @@ Public Class admin_side_chat
 
         chat.Visible = False
         Panel2.Visible = False
+        sendBtn.Visible = False
+        sendTextBox.Visible = False
     End Sub
 
 
     Private Sub Button_Click(sender As Object, e As EventArgs)
         ' Handle button click event
         chat.Visible = True
+        sendBtn.Visible = True
+        sendTextBox.Visible = True
 
         Dim clickedButton As Button = CType(sender, Button)
         clickedButton.BackColor = Color.FromArgb(190, 159, 192) ' Set background color
@@ -381,5 +389,7 @@ Public Class admin_side_chat
         End If
     End Sub
 
+    Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
 
+    End Sub
 End Class
