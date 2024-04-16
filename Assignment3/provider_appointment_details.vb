@@ -567,8 +567,8 @@ Public Class provider_appointment_details
                         Dim datestart As String = datee.ToString("yyyy-MM-dd 00:00:00.000")
                         Dim deleteQuery = "DELETE FROM schedule WHERE provider_id = @ProviderID AND user_id = @UserID AND time = @datestart AND slots = @Slot"
 
-                        MessageBox.Show(datestart)
-                        MessageBox.Show(slot)
+                        'MessageBox.Show(datestart)
+                        'MessageBox.Show(slot)
 
                         Using command As New SqlCommand(deleteQuery, connection)
                             command.Parameters.AddWithValue("@ProviderID", providerIDCancelled)
