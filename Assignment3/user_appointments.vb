@@ -81,6 +81,29 @@ Public Class user_appointments
         'relatedForm.Show()
     End Sub
 
+    Private Sub CompletedPanelClick(sender As Object, e As EventArgs)
+        Dim clickedPanel As Panel = DirectCast(sender, Panel)
+        Dim panelIndex As Integer = Array.IndexOf(panelArray, clickedPanel)
+
+        'MessageBox.Show("Upper Panel Clicked - Index: " & panelIndex.ToString() & clickedPanel.Name)
+
+        Module_global.Appointment_Det_DealId = Integer.Parse(clickedPanel.Name)
+
+        Me.Hide()
+        With user_feedback
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(user_feedback)
+            .BringToFront()
+            .Show()
+        End With
+
+        ' Show related form for upper panel click
+        'Dim relatedForm As New RelatedForm() ' Replace RelatedForm with the actual name of your related form class
+        'relatedForm.Show()
+    End Sub
+
     Private Function spawnDivs(i As Integer, providerName As String, location As String, CostNum As Integer, Schedule As String, y As Integer, DealId As Integer)
 
         ReDim panelArray(i)
@@ -95,6 +118,53 @@ Public Class user_appointments
         panelArray(i).AutoSize = True
 
         AddHandler panelArray(i).Click, AddressOf Panel_Click1
+
+        Dim name As New Label()
+        name.AutoSize = True
+        name.Location = New System.Drawing.Point(25, 10)
+        name.Name = "name"
+        name.Text = providerName
+        panelArray(i).Controls.Add(name)
+
+        Dim place As New Label()
+        place.AutoSize = True
+        place.Location = New System.Drawing.Point(25, 40)
+        place.Name = "place"
+        place.Text = location
+        panelArray(i).Controls.Add(place)
+
+        Dim cost As New Label()
+        cost.AutoSize = True
+        cost.Location = New System.Drawing.Point(610, 10)
+        cost.Name = "cost"
+        cost.Text = "Cost : " + CostNum.ToString()
+        panelArray(i).Controls.Add(cost)
+
+        Dim timings As New Label()
+        timings.AutoSize = True
+        timings.Location = New System.Drawing.Point(520, 40)
+        timings.Name = "timings"
+        timings.Text = "Appointment schedule :  " + Schedule
+        panelArray(i).Controls.Add(timings)
+
+        Panel1.Controls.Add(panelArray(i))
+
+    End Function
+
+    Private Function spawnDivsForCompleted(i As Integer, providerName As String, location As String, CostNum As Integer, Schedule As String, y As Integer, DealId As Integer)
+
+        ReDim panelArray(i)
+
+        Dim x As Integer = 20
+
+        panelArray(i) = New System.Windows.Forms.Panel()
+        panelArray(i).Name = DealId.ToString()
+        panelArray(i).Location = New System.Drawing.Point(x, y)
+        panelArray(i).Size = New System.Drawing.Size(750, 70)
+        panelArray(i).BackColor = System.Drawing.Color.FromArgb(CByte(240), CByte(218), CByte(248))
+        panelArray(i).AutoSize = True
+
+        AddHandler panelArray(i).Click, AddressOf CompletedPanelClick
 
         Dim name As New Label()
         name.AutoSize = True
@@ -402,7 +472,7 @@ Public Class user_appointments
                             dateof = dateof.AddDays(1)
                         End If
                     Next
-                    spawnDivs(i, ProviderName, Location, Cost, dateof, y, result.GetValue(0))
+                    spawnDivsForCompleted(i, ProviderName, Location, Cost, dateof, y, result.GetValue(0))
                     i += 1
                     y += 100
                 Loop
