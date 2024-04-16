@@ -76,7 +76,7 @@ Partial Class pending_payment
         btn_completed.Name = "btn_completed"
         btn_completed.Size = New Size(178, 45)
         btn_completed.TabIndex = 1
-        btn_completed.Text = "Completed"
+        btn_completed.Text = "Payment Remaining"
         btn_completed.UseVisualStyleBackColor = False
         ' 
         ' rtb1
