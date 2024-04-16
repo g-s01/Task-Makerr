@@ -67,7 +67,7 @@ Public Class appointmentChat
                 Try
                     ' Open the connection
                     connection.Open()
-                    MessageBox.Show(userId)
+                    'MessageBox.Show(userId)
                     ' Create the query
                     Dim query As String = "SELECT username FROM dbo.customer WHERE user_id = @userId;"
 
@@ -119,7 +119,7 @@ Public Class appointmentChat
 
                     ' Check if the result is not null
                     If roomId > 0 Then
-                        MessageBox.Show("Chat room ID: " & roomId.ToString())
+                        'MessageBox.Show("Chat room ID: " & roomId.ToString())
                     Else
                         ' If no chat room found, create a new one
                         Dim insertQuery As String = "INSERT INTO dbo.chat_room (user_id, provider_id, username, providername) VALUES (@userId, @providerId, @username, @providername); SELECT SCOPE_IDENTITY();"
@@ -136,7 +136,7 @@ Public Class appointmentChat
                             roomId = Convert.ToInt32(insertCommand.ExecuteScalar())
 
                             ' Display the newly created chat room ID
-                            MessageBox.Show("New Chat room ID: " & roomId.ToString())
+                            'MessageBox.Show("New Chat room ID: " & roomId.ToString())
 
                         End Using
                     End If
@@ -368,5 +368,6 @@ Public Class appointmentChat
         End If
 
     End Sub
+
 
 End Class
