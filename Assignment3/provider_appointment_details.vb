@@ -237,17 +237,8 @@ Public Class provider_appointment_details
 
         ' Check the user's response
         If result = DialogResult.Yes Then
-            Dim random As New Random()
-            Dim randomNumber As Integer = random.Next(100000, 999999)
-            Dim subject As String = "Canceling Appointment"
-            Dim body As String = "You are going to Cancel Appointment " & vbCrLf & "With : " + user & vbCrLf & "Time : " + time + "Date : " + bookDate & vbCrLf & "Pay Per Hour : " + costPerHour.ToString
-            sendEmail(randomNumber, subject, body)
 
-            Dim code As Integer
-            If otp_auth.ShowDialog = DialogResult.OK Then
-                If Integer.TryParse(otp_auth.InputValue, code) Then
-                    If code = randomNumber Then
-                        Dim provider_exists As Boolean = False
+            Dim provider_exists As Boolean = False
                         Dim user_exists As Boolean = False
                         Dim provider_balance_sufficients As Boolean = False
 
@@ -267,19 +258,7 @@ Public Class provider_appointment_details
                         btn_cancel.Visible = False
                         btn_cancel.Enabled = False
                         btn_appointment_completed.Visible = False
-                        btn_appointment_completed.Enabled = False
-
-                    End If
-
-
-
-                Else
-                    MessageBox.Show("Write correct OTP please.")
-                End If
-            Else
-                MessageBox.Show("The OTP is a 6 digit number, please adhere to the convention.")
-            End If
-        Else
+            btn_appointment_completed.Enabled = False
 
         End If
 
