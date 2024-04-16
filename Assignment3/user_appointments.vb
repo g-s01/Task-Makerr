@@ -213,6 +213,7 @@ Public Class user_appointments
 
         panelArray(i).Controls.Add(feedback)
 
+        Panel1.Controls.Add(panelArray(i))
 
     End Function
 
