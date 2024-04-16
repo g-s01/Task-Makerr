@@ -150,7 +150,7 @@ Public Class appointmentChat
 
 
     Private Function InsertMessageIntoDatabase(room As Integer, dealId As Integer, user_role As String, messageText As String) As Boolean
-        Dim query As String = "INSERT INTO messages (chat_room_id, deal_id, sender_type, message_content) VALUES (@ChatRoomId, @DealId, @SenderType, @MessageContent)"
+        Dim query As String = "INSERT INTO messages (chat_room_id, deal_id, sender_type, message_content,sent_timestamp) VALUES (@ChatRoomId, @DealId, @SenderType, @MessageContent, @SentTimestamp)"
         Using connection As New SqlConnection(connectionString)
             Using command As New SqlCommand(query, connection)
                 ' Add parameters to the SQL query to prevent SQL injection
@@ -158,6 +158,7 @@ Public Class appointmentChat
                 command.Parameters.AddWithValue("@DealId", dealId)
                 command.Parameters.AddWithValue("@SenderType", user_role)
                 command.Parameters.AddWithValue("@MessageContent", messageText)
+                command.Parameters.AddWithValue("@SentTimestamp", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
 
                 Try
                     connection.Open()
@@ -227,7 +228,7 @@ Public Class appointmentChat
     Private Sub appointmentChat_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         messageTimer.Interval = 10000
-        MessageBox.Show(user_role)
+        'MessageBox.Show(user_role)
         'If user_role = "customer" Then
         '    userId = Module_global.User_ID
         'ElseIf user_role = "provider" Then
@@ -357,12 +358,14 @@ Public Class appointmentChat
 
         Dim newMessage As New Tuple(Of Integer, Integer, String, String, String)(roomId, dealId, user_role, messageText, timeStamp)
         ' Add the new message to the messages list
-        InsertMessageIntoDatabase(roomId, dealId, user_role, messageText)
-        messages.Add(newMessage)
-        ' Optionally, you can clear the TextBox after sending the message
-        inputTextBox.Text = ""
-        ' Print messages between users
-        PrintMessages()
+        If (messageText.Length <> 0) Then
+            InsertMessageIntoDatabase(roomId, dealId, user_role, messageText)
+            messages.Add(newMessage)
+            ' Optionally, you can clear the TextBox after sending the message
+            inputTextBox.Text = ""
+            ' Print messages between users
+            PrintMessages()
+        End If
 
     End Sub
 

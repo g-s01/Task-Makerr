@@ -14,14 +14,21 @@ Public Class admin_side_chat
     Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
     Private WithEvents messageTimer As New Timer()
 
-    Private Sub PopulateRooms()
+    Private Sub PopulateRooms(Optional ByVal filterType As String = Nothing)
         ' Clear existing buttons
         room_list.Controls.Clear()
 
         Dim yPos As Integer = 10 ' Initial y position for buttons
 
-        For Each item As Tuple(Of String, String, Integer, Integer) In support_rooms
-            If item.Item2 = rooms_type Then
+        Dim roomsToDisplay As IEnumerable(Of Tuple(Of String, String, Integer, Integer)) = support_rooms
+
+        ' Filter rooms based on filterType parameter if provided
+        If Not String.IsNullOrEmpty(filterType) Then
+            roomsToDisplay = support_rooms.Where(Function(room) room.Item1.ToLower().Contains(filterType.ToLower())).ToList()
+        End If
+
+        For Each item As Tuple(Of String, String, Integer, Integer) In roomsToDisplay
+            If item.Item2 = rooms_type Then ' Check if room type matches the desired type
                 Dim newButton As New Button()
                 newButton.Name = "btn" & item.Item1 ' Set button name
                 newButton.Text = item.Item1 ' Set button text
@@ -35,8 +42,8 @@ Public Class admin_side_chat
                 newButton.ImageAlign = ContentAlignment.MiddleLeft ' Set image alignment
                 newButton.TextImageRelation = TextImageRelation.ImageBeforeText ' Position image before text
                 ' Resize the image to match the button height
-                Dim scaledImagenew As Image = New Bitmap(My.Resources.prov, New Size(35, 35))
-                newButton.Image = scaledImagenew
+                Dim scaledImage As Image = New Bitmap(My.Resources.prov, New Size(35, 35))
+                newButton.Image = scaledImage
                 newButton.Region = New Drawing.Region(New Drawing.Rectangle(0, 0, newButton.Width, newButton.Height)) ' Make corners rounded
                 newButton.Location = New Point(5, yPos) ' Set button position
                 AddHandler newButton.Click, AddressOf Button_Click ' Add click event handler
@@ -45,6 +52,7 @@ Public Class admin_side_chat
             End If
         Next
     End Sub
+
 
 
 
@@ -131,15 +139,31 @@ Public Class admin_side_chat
     ' Event handler for the tick event of the timer
     Private Sub MessageTimer_Tick(sender As Object, e As EventArgs)
         ' Check if the form is visible
+        Dim messages_count_pv As Integer = 0
+        Dim after_fetch As Integer = 0
         If Me.Visible Then
             ' Reload and print messages every 30 seconds
             If (LoadRoomsFromDatabase()) Then
                 PopulateRooms()
             End If
             If roomId <> -1 Then
-                If (LoadMessagesFromDatabase()) Then
-                    PrintMessages(roomId)
-                End If
+                For Each msg As Tuple(Of Integer, String, String, String) In support_msgs
+                    If msg.Item1 = roomId Then
+                        messages_count_pv += 1
+                    End If
+                Next
+            End If
+            LoadMessagesFromDatabase()
+            If roomId <> -1 Then
+                For Each msg As Tuple(Of Integer, String, String, String) In support_msgs
+                    If msg.Item1 = roomId Then
+                        after_fetch += 1
+                    End If
+                Next
+            End If
+
+            If roomId <> -1 AndAlso messages_count_pv <> after_fetch Then
+                PrintMessages(roomId)
             End If
         End If
     End Sub
@@ -354,8 +378,8 @@ Public Class admin_side_chat
 
             Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
             Dim query As String = "
-            INSERT INTO support_msgs (support_msgs.support_room_id, sender_type, message_content)
-            VALUES (@SupportRoomId, @SenderType, @MessageContent);
+            INSERT INTO support_msgs (support_msgs.support_room_id, sender_type, message_content,sent_timestamp)
+            VALUES (@SupportRoomId, @SenderType, @MessageContent,@timeStamp);
             SELECT SCOPE_IDENTITY();
             "
 
@@ -370,6 +394,7 @@ Public Class admin_side_chat
                     command.Parameters.AddWithValue("@SupportRoomId", roomId)
                     command.Parameters.AddWithValue("@SenderType", user_role)
                     command.Parameters.AddWithValue("@MessageContent", messageText)
+                    command.Parameters.AddWithValue("@timeStamp", timeStamp)
 
                     ' Execute the INSERT command and retrieve the generated message_id
                     Dim messageId As Integer = Convert.ToInt32(command.ExecuteScalar())
@@ -389,7 +414,10 @@ Public Class admin_side_chat
         End If
     End Sub
 
-    Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
-
+    Private Sub SearchTextBox_TextChanged(sender As Object, e As EventArgs) Handles SearchTextBox.TextChanged
+        Dim searchText As String = SearchTextBox.Text.ToLower().TrimEnd() ' Convert search text to lower case for case-insensitive comparison and trim trailing spaces
+        'ext is empty, call PopulateRooms without any filter
+        PopulateRooms(searchText)
     End Sub
+
 End Class

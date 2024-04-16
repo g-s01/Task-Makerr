@@ -1,11 +1,15 @@
 ﻿Imports System.Configuration
+Imports System.Configuration.Provider
+Imports System.Net.Mail
 Imports Microsoft.Data.SqlClient
+Imports Microsoft.Identity.Client.NativeInterop
 Public Class user_appointment_details
     Public dealID As Integer = 1
     Public startTime As TimeSpan
     Public firstDate As DateTime
     Public bookDate As DateTime
     Dim provider As Integer = 0
+    Dim provider_email As String
 
     Protected Overrides Sub OnVisibleChanged(e As EventArgs)
         MyBase.OnVisibleChanged(e)
@@ -201,6 +205,69 @@ Public Class user_appointment_details
                 End Using
             End Using
 
+            Using connection As New SqlConnection(connectionString)
+                query = "INSERT INTO refunded_deals (deal_id, refund_percentage, status) VALUES (@DealId, @percent, 0)"
+                Using command As New SqlCommand(query, connection)
+                    ' Add parameters
+                    command.Parameters.AddWithValue("@DealId", dealID)
+                    command.Parameters.AddWithValue("@percent", 100 - fee)
+
+                    connection.Open()
+                    command.ExecuteNonQuery()
+                End Using
+            End Using
+
+            Using connection As New SqlConnection(connectionString)
+                query = "Select email from provider where provider_id=@provider"
+                Using command As New SqlCommand(query, connection)
+                    ' Add parameters
+                    command.Parameters.AddWithValue("@provider", provider)
+
+                    connection.Open()
+                    provider_email = (command.ExecuteScalar()).ToString()
+                End Using
+            End Using
+
+            'email sent to customer
+            Try
+                Dim mail As New MailMessage
+                Dim smtpserver As New SmtpClient("smtp-mail.outlook.com")
+                smtpserver.Port = 587
+
+                mail.From = New MailAddress("group1b-cs346@outlook.com")
+                mail.To.Add(Module_global.Email)
+                mail.Subject = "APPOINTMENT SUCCESFULLY CANCELLED"
+                mail.Body = "Appointment succesfully cancelled from provider ID : " + provider.ToString() + " on date " + bookDate.ToString() + " fee " + (100 - fee).ToString() + "% of paid amount will be credited shortly to your account by the provider."
+
+                smtpserver.Credentials = New System.Net.NetworkCredential("group1b-cs346@outlook.com", "chillSreehari")
+                smtpserver.EnableSsl = True
+                smtpserver.Send(mail)
+
+                MessageBox.Show("Notification sent to customer")
+
+            Catch ex As Exception
+                MessageBox.Show("SMTP error: " & ex.Message)
+            End Try
+
+            'email sent to respective provider regarding cancellation
+            Try
+                Dim mail As New MailMessage
+                Dim smtpserver As New SmtpClient("smtp-mail.outlook.com")
+                smtpserver.Port = 587
+
+                mail.From = New MailAddress("group1b-cs346@outlook.com")
+                mail.To.Add(provider_email)
+                mail.Subject = "APPOINTMENT CANCELLED"
+                mail.Body = "Customer " + Module_global.user_name + " has cancelled your appointment booked on " + bookDate.ToString() + " . Please transfer the refund amount to the customer ASAP."
+
+                smtpserver.Credentials = New System.Net.NetworkCredential("group1b-cs346@outlook.com", "chillSreehari")
+                smtpserver.EnableSsl = True
+                smtpserver.Send(mail)
+                MessageBox.Show("notification sent to provider")
+            Catch ex As Exception
+                MessageBox.Show("SMTP error: " & ex.Message)
+            End Try
+
             Me.Hide()
             user_appointments.Show()
 
@@ -243,5 +310,7 @@ Public Class user_appointment_details
 
     End Sub
 
+    Private Sub SplitContainer1_Panel1_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel1.Paint
 
+    End Sub
 End Class
