@@ -352,7 +352,9 @@ Public Class user_provider_chats
 
         Dim yPos As Integer = 20
 
+        Dim lastDisplayedDate As Date = DateTime.MinValue
 
+        Dim dateLabelPrinted As Boolean = False
 
         ' Iterate through messages
         For Each msg In sortedMessages
@@ -362,7 +364,31 @@ Public Class user_provider_chats
             Dim messageText As String = msg.Item4
 
             Dim timeStamp As String = DateTime.ParseExact(msg.Item5, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).ToString("hh:mm")
+            Dim timeStamp1 As Date = DateTime.ParseExact(msg.Item5, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+            Dim messageDate As Date = timeStamp1.Date
 
+            If Not dateLabelPrinted OrElse messageDate <> lastDisplayedDate Then
+                ' Create a label for the date
+                Dim dateLabel As New Label()
+                dateLabel.AutoSize = True
+                dateLabel.Text = messageDate.ToString("MMMM dd, yyyy") ' Format the date to display only date without time
+                dateLabel.Font = New Font(dateLabel.Font.FontFamily, 10, FontStyle.Bold)
+                dateLabel.Padding = New Padding(5)
+                dateLabel.BackColor = SystemColors.Control ' Use system color for background
+                dateLabel.TextAlign = ContentAlignment.MiddleCenter ' Center-align the text
+                dateLabel.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right ' Allow resizing with the panel width
+                dateLabel.Top = yPos ' Center the label vertically
+                dateLabel.Left = (chat.Width - dateLabel.Width) \ 2 ' Center the label horizontally
+
+                ' Add the date label to the chat_list panel
+                chat.Controls.Add(dateLabel)
+
+                dateLabelPrinted = True
+
+                ' Update the last displayed date
+                lastDisplayedDate = messageDate
+                yPos += dateLabel.Height
+            End If
 
             ' Create a label for the message
             Dim messageLabel As New Label()
