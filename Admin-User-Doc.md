@@ -12,7 +12,7 @@ Any user (customer or provider) can access this page.
 - Click on the Register as Customer button to navigate to the customer signup page.
 - Click on the Register as Provider button to navigate to the provider signup page.
 
-![alt-syntax](/images/Landing page.png)
+![alt-syntax](./images/Landing page.png)
 
 # Admin Login
 
