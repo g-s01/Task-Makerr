@@ -59,7 +59,25 @@ Public Class provider_appointments
         'relatedForm.Show()
     End Sub
 
-    Private Function spawnDivs(i As Integer, providerName As String, location As String, CostNum As Integer, Schedule As String, y As Integer)
+    Private Sub Panel_Click2(sender As Object, e As EventArgs)
+        Dim clickedPanel As Panel = DirectCast(sender, Panel)
+        Dim panelIndex As Integer = Array.IndexOf(panelArray, clickedPanel)
+
+        'MessageBox.Show("Upper Panel Clicked - Index: " & panelIndex.ToString() & clickedPanel.Name)
+
+        Module_global.Appointment_Det_DealId = Integer.Parse(clickedPanel.Name)
+
+        Me.Hide()
+
+        provider_template.ShowForm(New provider_appointment_details())
+
+        ' Show related form for upper panel click
+        'Dim relatedForm As New RelatedForm() ' Replace RelatedForm with the actual name of your related form class
+        'relatedForm.Show()
+    End Sub
+
+    Private Function spawnDivs(i As Integer, providerName As String, location As String, CostNum As Integer, Schedule As String, y As Integer, DealId As Integer)
+
         ReDim panelArray(i)
 
         Dim x As Integer = 20
@@ -70,7 +88,7 @@ Public Class provider_appointments
         panelArray(i).BackColor = System.Drawing.Color.FromArgb(CByte(240), CByte(218), CByte(248))
         panelArray(i).AutoSize = True
 
-        AddHandler panelArray(i).Click, AddressOf Panel_Click
+        AddHandler panelArray(i).Click, AddressOf Panel_Click2
 
         Dim name As New Label()
         name.AutoSize = True
@@ -170,7 +188,7 @@ Public Class provider_appointments
                             dateof = dateof.AddDays(1)
                         End If
                     Next
-                    spawnDivs(i, UserName, Location, Cost, dateof, y)
+                    spawnDivs(i, UserName, Location, Cost, dateof, y, result.GetValue(0))
                     i += 1
                     y += 100
                 Loop
