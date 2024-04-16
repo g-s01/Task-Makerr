@@ -7,6 +7,8 @@ Imports iText.Forms.Xfdf
 Imports iText.IO.Font
 Imports Org.BouncyCastle.Crypto.Internal
 Imports System.Threading
+Imports iText.IO.Font.Otf.Lookuptype8
+Imports Microsoft.CodeAnalysis.Emit
 
 Public Class Reschedule_Slots
     Public user As Integer = Module_global.User_ID
@@ -156,7 +158,7 @@ Public Class Reschedule_Slots
         Dim deleteQuery As String = "DELETE FROM deals WHERE deal_id = @deal_id"
 
         Dim deleteSchedule As String = "DELETE FROM schedule WHERE user_id=@user_id AND provider_id=@provider_id AND time=@time AND slots=@slots AND time=@time"
-
+        Dim f1 As Integer = 0
         ' Create a connection to the database
         Using connection As New SqlConnection(connectionString)
             ' Open the connection
@@ -181,34 +183,65 @@ Public Class Reschedule_Slots
                                 Dim dates As DateTime = reader.GetDateTime(4) ' Assuming dates is a datetime
                                 'Dim location As String = reader.GetString(5) ' Assuming location is a string
                                 ' Find the difference by subtracting one date from the other
-                                Dim differenceInDays As Integer = (DateTime.Today - startDate.Date).Days
-                                For I As Integer = differenceInDays * 12 To slots.Length - 1
+
+                                Dim differenceInDays As Integer = (DateTime.Today - dates.Date).Days
+                                MessageBox.Show(differenceInDays)
+
+                                If (differenceInDays >= 7) Then
+                                    differenceInDays = 7
+                                End If
+
+                                For I As Integer = 0 To (differenceInDays) * 12 - 1
                                     Dim bit As Char = slots(I)
 
                                     ' Check if the bit is '1' (indicating working day)
                                     If bit = "1"c Then
                                         ' Calculate the day index based on the current day index and the index i
-                                        MessageBox.Show(Math.Floor(I / 12))
-                                        Dim dayIndex As Integer = Math.Floor(I / 12) - differenceInDays
-                                        Dim slot As Integer = I Mod 12
+                                        MessageBox.Show("This booking already has started! You can't reschedule it.")
+                                        f1 = 1
 
-                                        availability(dayIndex, slot) = 3
-                                        PreviouslyBookedList.Add({dayIndex, slot})
-                                        BookedList.Add({dayIndex, slot})
 
                                     End If
                                 Next
-                                ' Process the data as needed
 
+                                If f1 = 0 Then
+
+
+                                    For I As Integer = differenceInDays * 12 To slots.Length - 1
+                                        Dim bit As Char = slots(I)
+
+                                        ' Check if the bit is '1' (indicating working day)
+                                        If bit = "1"c Then
+                                            ' Calculate the day index based on the current day index and the index i
+                                            MessageBox.Show(Math.Floor(I / 12))
+                                            Dim dayIndex As Integer = Math.Floor(I / 12) - differenceInDays
+                                            Dim slot As Integer = I Mod 12
+
+                                            availability(dayIndex, slot) = 3
+                                            PreviouslyBookedList.Add({dayIndex, slot})
+                                            BookedList.Add({dayIndex, slot})
+
+                                        End If
+                                    Next
+                                    ' Process the data as needed
+
+
+                                End If
                             End While
-                        Else
-                            Console.WriteLine("No data found for the specified deal ID.")
+
                         End If
+
                         first = 0
+
                     End Using
                 End Using
             End If
         End Using
+
+        If (f1 = 1) Then
+            Me.Close()
+        End If
+
 
 
 

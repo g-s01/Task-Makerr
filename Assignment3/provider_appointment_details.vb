@@ -400,6 +400,51 @@ Public Class provider_appointment_details
                                     command.ExecuteNonQuery()
                                 End Using
                             End Using
+
+                            Dim deleteSchedule1 As String = "DELETE FROM schedule WHERE user_id=@user_id AND provider_id=@provider_id AND time=@time AND slots=@slots AND time=@time"
+                            'Dim selectDeal As String = "Select time from deals where deal_id=@deal_id"
+                            Dim slots As String = ""
+                            Using connection As New SqlConnection(connectionString)
+                                ' Define the SQL query with parameter
+                                Dim selectDeal As String = "SELECT user_id,provider_id,time FROM deals WHERE deal_id = @deal_id"
+
+                                ' Create a command object
+                                Using command As New SqlCommand(selectDeal, connection)
+                                    ' Add parameter to the command
+                                    command.Parameters.AddWithValue("@deal_id", dealID)
+
+                                    ' Open the connection
+                                    connection.Open()
+
+                                    ' Execute the command and obtain a data reader
+                                    Using reader As SqlDataReader = command.ExecuteReader()
+                                        ' Check if there are rows returned
+                                        If reader.HasRows Then
+                                            ' Iterate through the rows
+                                            While reader.Read()
+                                                ' Access the 'time' column value from the result set
+                                                user_id = reader.GetInt32(0)
+                                                provider_id = reader.GetInt32(1)
+                                                slots = reader.GetString(2)
+                                                ' Example: Console.WriteLine(time.ToString())
+                                            End While
+                                        Else
+                                            ' No rows returned
+                                            Console.WriteLine("No data found for the specified deal_id.")
+                                        End If
+                                    End Using ' Close and dispose the data reader
+                                End Using ' Close and dispose the command object
+                            End Using
+
+                            Dim BookedList1 As New List(Of Integer())
+
+                            'For I in range of 
+                            '    If (ch = "1"c) Then
+                            '        B
+                            '    End If
+
+                            'Next
+
                             'receipt generation
                             Dim saveDialog As New SaveFileDialog()
                             saveDialog.Filter = "PDF File (*.pdf)|*.pdf"
