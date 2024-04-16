@@ -137,8 +137,8 @@ Public Class user_provider_chats
 
 
 
-    Private Function InsertMessageIntoDatabase(room As Integer, dealId As Integer, user_role As String, messageText As String) As Boolean
-        Dim query As String = "INSERT INTO messages (chat_room_id, deal_id, sender_type, message_content) VALUES (@ChatRoomId, @DealId, @SenderType, @MessageContent)"
+    Private Function InsertMessageIntoDatabase(room As Integer, dealId As Integer, user_role As String, messageText As String,timeStamp as String) As Boolean
+        Dim query As String = "INSERT INTO messages (chat_room_id, deal_id, sender_type, message_content,sent_timestamp) VALUES (@ChatRoomId, @DealId, @SenderType, @MessageContent,@timeStamp)"
         Using connection As New SqlConnection(connectionString)
             Using command As New SqlCommand(query, connection)
                 ' Add parameters to the SQL query to prevent SQL injection
@@ -146,7 +146,7 @@ Public Class user_provider_chats
                 command.Parameters.AddWithValue("@DealId", dealId)
                 command.Parameters.AddWithValue("@SenderType", user_role)
                 command.Parameters.AddWithValue("@MessageContent", messageText)
-
+                command.Parameters.AddWithValue("@timeStamp", timeStamp)
                 Try
                     connection.Open()
                     ' Execute the insert query
@@ -318,9 +318,9 @@ Public Class user_provider_chats
         ' Optionally, you can clear the TextBox after sending the message
         sendTextBox.Text = ""
 
-        InsertMessageIntoDatabase(roomId, dealId, user_role, messageText)
-        ' Print messages between users
         Dim timeStamp As String = DateTime.Now.ToString("yyy-MM-dd HH:mm:ss")
+        InsertMessageIntoDatabase(roomId, dealId, user_role, messageText,timeStamp)
+        ' Print messages between users
         Dim newMessage As New Tuple(Of Integer, Integer, String, String, String)(roomId, dealId, user_role, messageText, timeStamp)
         messages.Add(newMessage)
         PrintMessagesBetweenUsers(roomId)

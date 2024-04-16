@@ -1,4 +1,4 @@
-﻿Imports System.Configuration
+﻿﻿Imports System.Configuration
 Imports iText.IO.Font.Constants
 Imports iText.Kernel.Font
 Imports iText.Kernel.Pdf
