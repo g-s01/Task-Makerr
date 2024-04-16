@@ -119,55 +119,50 @@ Public Class support_chat
         Dim maxLength As Integer = 70 ' Set the maximum length before inserting a newline
         Dim inputString As String = inputTextBox.Text
         Dim messageText As String = ""
+        If inputString <> "" Then
+            For i As Integer = 0 To inputString.Length - 1 Step maxLength
+                Dim substringLength As Integer = Math.Min(maxLength, inputString.Length - i)
+                messageText += inputString.Substring(i, substringLength)
+                If i + substringLength < inputString.Length Then
+                    messageText += vbCrLf ' Insert a newline character if there are more characters remaining
+                End If
+            Next
 
-        For i As Integer = 0 To inputString.Length - 1 Step maxLength
-            Dim substringLength As Integer = Math.Min(maxLength, inputString.Length - i)
-            messageText += inputString.Substring(i, substringLength)
-            If i + substringLength < inputString.Length Then
-                messageText += vbCrLf ' Insert a newline character if there are more characters remaining
-            End If
-        Next
+            Dim newMessage As New Tuple(Of Integer, String, String, String)(roomId, user_type, messageText, timeStamp)
 
-        If (messageText.Length = 0) Then
-            Return
-        End If
+            Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
 
-        Dim newMessage As New Tuple(Of Integer, String, String, String)(roomId, user_type, messageText, timeStamp)
+            Dim query As String = "
+                INSERT INTO support_msgs (support_room_id, sender_type, message_content,sent_timestamp)
+                VALUES (@SupportRoomId, @SenderType, @MessageContent,@timestamp);
+                SELECT SCOPE_IDENTITY();"
+            Using connection As New SqlConnection(connectionString)
+                ' Open the connection
+                connection.Open()
 
-        Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
+                ' Create a SqlCommand object
+                Using command As New SqlCommand(query, connection)
+                    ' Set the parameters for the new message
+                    command.Parameters.AddWithValue("@SupportRoomId", Support_room_id)
+                    command.Parameters.AddWithValue("@SenderType", user_type)
+                    command.Parameters.AddWithValue("@MessageContent", messageText)
+                    command.Parameters.AddWithValue("@timestamp", timeStamp)
 
-        Dim query As String = "
-            INSERT INTO support_msgs (support_room_id, sender_type, message_content)
-            VALUES (@SupportRoomId, @SenderType, @MessageContent);
-            SELECT SCOPE_IDENTITY();"
-        Using connection As New SqlConnection(connectionString)
-            ' Open the connection
-            connection.Open()
+                    ' Execute the INSERT command and retrieve the generated message_id
+                    Dim messageId As Integer = Convert.ToInt32(command.ExecuteScalar())
 
-            ' Create a SqlCommand object
-            Using command As New SqlCommand(query, connection)
-                ' Set the parameters for the new message
-                command.Parameters.AddWithValue("@SupportRoomId", Support_room_id)
-                command.Parameters.AddWithValue("@SenderType", user_type)
-                command.Parameters.AddWithValue("@MessageContent", messageText)
-
-
-                ' Execute the INSERT command and retrieve the generated message_id
-                Dim messageId As Integer = Convert.ToInt32(command.ExecuteScalar())
-
-                ' Now you can use the messageId as needed
-                'Console.WriteLine("Generated Message ID: " & messageId)
+                    ' Now you can use the messageId as needed
+                    'Console.WriteLine("Generated Message ID: " & messageId)
+                End Using
             End Using
-        End Using
 
-        ' Add the new message to the messages list
-        supportmessages.Add(newMessage)
-
-
-        ' Optionally, you can clear the TextBox after sending the message
-        inputTextBox.Text = ""
-        ' Print messages between users
-        PrintMessages()
+            ' Add the new message to the messages list
+            supportmessages.Add(newMessage)
+            ' Optionally, you can clear the TextBox after sending the message
+            inputTextBox.Text = ""
+            ' Print messages between users
+            PrintMessages()
+        End If
     End Sub
 
     Private Sub PrintMessages()

@@ -354,8 +354,8 @@ Public Class admin_side_chat
 
             Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
             Dim query As String = "
-            INSERT INTO support_msgs (support_msgs.support_room_id, sender_type, message_content)
-            VALUES (@SupportRoomId, @SenderType, @MessageContent);
+            INSERT INTO support_msgs (support_msgs.support_room_id, sender_type, message_content,sent_timestamp)
+            VALUES (@SupportRoomId, @SenderType, @MessageContent,@timeStamp);
             SELECT SCOPE_IDENTITY();
             "
 
@@ -370,6 +370,7 @@ Public Class admin_side_chat
                     command.Parameters.AddWithValue("@SupportRoomId", roomId)
                     command.Parameters.AddWithValue("@SenderType", user_role)
                     command.Parameters.AddWithValue("@MessageContent", messageText)
+                    command.Parameters.AddWithValue("@timeStamp", timeStamp)
 
                     ' Execute the INSERT command and retrieve the generated message_id
                     Dim messageId As Integer = Convert.ToInt32(command.ExecuteScalar())
