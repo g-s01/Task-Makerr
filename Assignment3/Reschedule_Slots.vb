@@ -185,7 +185,7 @@ Public Class Reschedule_Slots
                                 ' Find the difference by subtracting one date from the other
 
                                 Dim differenceInDays As Integer = (DateTime.Today - dates.Date).Days
-                                MessageBox.Show(differenceInDays)
+                                'MessageBox.Show(differenceInDays)
 
                                 If (differenceInDays >= 7) Then
                                     differenceInDays = 7
@@ -213,7 +213,7 @@ Public Class Reschedule_Slots
                                         ' Check if the bit is '1' (indicating working day)
                                         If bit = "1"c Then
                                             ' Calculate the day index based on the current day index and the index i
-                                            MessageBox.Show(Math.Floor(I / 12))
+                                            'MessageBox.Show(Math.Floor(I / 12))
                                             Dim dayIndex As Integer = Math.Floor(I / 12) - differenceInDays
                                             Dim slot As Integer = I Mod 12
 
@@ -617,7 +617,7 @@ Rollback:
 
 
                             '' Now we have stored the previously booked slots in the PreviouslyBookedList
-                            MessageBox.Show("LEN  " + PreviouslyBookedList.Count.ToString())
+                            'MessageBox.Show("LEN  " + PreviouslyBookedList.Count.ToString())
                             For Each pair As Integer() In PreviouslyBookedList
 
                                 Dim found As Integer = -1
@@ -639,8 +639,8 @@ Rollback:
                                 deleteCommand.Parameters.AddWithValue("@time", formattedDate)
                                 deleteCommand.Parameters.AddWithValue("@slots", pair(1))
                                 Dim rowsAffected1 As Integer = deleteCommand.ExecuteNonQuery()
-                                MessageBox.Show(formattedDate)
-                                MessageBox.Show(pair(1))
+                                'MessageBox.Show(formattedDate)
+                                'MessageBox.Show(pair(1))
 
                                 If rowsAffected > 0 Then
                                     Console.WriteLine("Deleted")

@@ -24,7 +24,7 @@ Public Class Book_slots
         'MessageBox.Show(1)
         ProgressBar1.Visible = True
         ProgressBar1.Style = ProgressBarStyle.Marquee
-        MessageBox.Show(Module_global.Provider_ID)
+        'MessageBox.Show(Module_global.Provider_ID)
         Try
             ' Execute the LoadDataAsync method asynchronously
             Await LoadData()
@@ -416,7 +416,7 @@ Public Class Book_slots
                     command_check.Parameters.AddWithValue("@Time", slotDate)
 
                     Dim count As Integer = Convert.ToInt32(command_check.ExecuteScalar())
-                    MessageBox.Show(count)
+                    'MessageBox.Show(count)
                     If count = 0 Then
                         ' Slot does not exist, proceed with INSERT
                         Dim provider_query_insert As String = "INSERT INTO schedule (user_id, provider_id, slots, time) VALUES (@User_ID, @Provider_ID, @Slot, @Time);"
@@ -457,7 +457,7 @@ Public Class Book_slots
                 payments.Show()
                 Await WaitForVariableChangeOrTimeoutAsync(900000000)
                 If (Module_global.payment_successful = 1) Then
-                    MessageBox.Show("ASFN")
+                    ' MessageBox.Show("ASFN")
                     Dim InsertQuery As String = "INSERT INTO deals (deal_id,user_id,provider_id,time,status,dates,location,deal_amount) VALUES ((SELECT ISNULL(MAX(deal_id), 0) + 1 FROM deals),@User_ID,@Provider_ID,@Time,@Status,@Dates,@Location,@TotalCost);"
                     Dim zeros As String = New String("0"c, 84)
                     Dim charArray() As Char = zeros.ToCharArray()
