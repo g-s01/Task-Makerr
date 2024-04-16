@@ -394,41 +394,21 @@ Public Class provider_appointment_details
             'If (Module_global.payment_successful = 1) Then
             'MessageBox.Show("yayyyy")
 
-            Dim query As String = "UPDATE deals SET status = 4 WHERE deal_id = @DealID"
 
-            ' Create connection and command objects
-            Using connection As New SqlConnection(connectionString)
-                Using command As New SqlCommand(query, connection)
-                    ' Add parameters to prevent SQL injection
-                    command.Parameters.AddWithValue("@DealID", dealID)
-
-                    Try
-                        ' Open connection
-                        connection.Open()
-
-                        ' Execute the update query
-                        command.ExecuteNonQuery()
-
-                        MessageBox.Show("Deal status updated successfully.")
-                    Catch ex As Exception
-                        MessageBox.Show("An error occurred: " & ex.Message)
-                    End Try
-                End Using
-            End Using
 
             Using connection As New SqlConnection(connectionString)
                     Using command As New SqlCommand(selectQuery, connection)
                         command.Parameters.AddWithValue("@DealID", dealID)
-
+                    Try
                         connection.Open()
                         Using reader As SqlDataReader = command.ExecuteReader()
                             ' Check if there are rows returned
                             If reader.HasRows Then
                                 ' Iterate through the rows
                                 While reader.Read()
-                                ' Access the 'time' column value from the result set
+                                    ' Access the 'time' column value from the result set
 
-                                providerIDCancelled = reader.GetInt32(0)
+                                    providerIDCancelled = reader.GetInt32(0)
                                     userIDCancelled = reader.GetInt32(1)
                                     timeCancelled = reader.GetString(2)
                                     dateCancelled = reader.GetDateTime(3)
@@ -441,7 +421,10 @@ Public Class provider_appointment_details
                             End If
                         End Using
                         command.ExecuteNonQuery()
-                    End Using
+                    Catch ex As Exception
+                        MessageBox.Show("An error occurred: " & ex.Message)
+                    End Try
+                End Using
                 End Using
 
             'Dim datestart As String = dateCancelled.ToString("yyyy-MM-dd HH:mm:ss.fff")
@@ -453,23 +436,28 @@ Public Class provider_appointment_details
             Using connection As New SqlConnection(connectionString)
                 Using command As New SqlCommand(query5, connection)
                     command.Parameters.AddWithValue("@AccountNumber", provider_id)
+                    Try
+                        ' Open connection
+                        connection.Open()
+                        Dim balance As Object = command.ExecuteScalar()
 
-                    connection.Open()
-                    Dim balance As Object = command.ExecuteScalar()
+                        If balance IsNot Nothing AndAlso Not DBNull.Value.Equals(balance) Then
+                            ' Balance is retrieved successfully
+                            provider_exists = True
+                            If Convert.ToInt32(balance) >= refundAmount Then
+                                provider_balance_sufficients = True
+                            Else
+                                MessageBox.Show("Insufficient balance.")
+                            End If
 
-                    If balance IsNot Nothing AndAlso Not DBNull.Value.Equals(balance) Then
-                        ' Balance is retrieved successfully
-                        provider_exists = True
-                        If Convert.ToInt32(balance) >= refundAmount Then
-                            provider_balance_sufficients = True
                         Else
-                            MessageBox.Show("Insufficient balance.")
+                            ' Account number not found or balance is NULL
+                            MessageBox.Show("Account number of " + provider + " not found or balance is NULL")
                         End If
+                    Catch ex As Exception
+                        MessageBox.Show("An error occurred: " & ex.Message)
+                    End Try
 
-                    Else
-                        ' Account number not found or balance is NULL
-                        MessageBox.Show("Account number of " + provider + " not found or balance is NULL")
-                    End If
                 End Using
             End Using
 
@@ -479,18 +467,25 @@ Public Class provider_appointment_details
                 Using command As New SqlCommand(query6, connection)
                     command.Parameters.AddWithValue("@AccountNumber", user_id)
 
+                    Try
+                        ' Open connection
+                        connection.Open()
 
-                    connection.Open()
-                    Dim balance As Object = command.ExecuteScalar()
+                        Dim balance As Object = command.ExecuteScalar()
 
-                    If balance IsNot Nothing AndAlso Not DBNull.Value.Equals(balance) Then
-                        ' Balance is retrieved successfully
-                        user_exists = True
+                        If balance IsNot Nothing AndAlso Not DBNull.Value.Equals(balance) Then
+                            ' Balance is retrieved successfully
+                            user_exists = True
 
-                    Else
-                        ' Account number not found or balance is NULL
-                        MessageBox.Show("Account number of " + user + " not found or balance is NULL")
-                    End If
+                        Else
+                            ' Account number not found or balance is NULL
+                            MessageBox.Show("Account number of " + user + " not found or balance is NULL")
+                        End If
+
+                    Catch ex As Exception
+                        MessageBox.Show("An error occurred: " & ex.Message)
+                    End Try
+
                 End Using
             End Using
 
@@ -502,8 +497,17 @@ Public Class provider_appointment_details
                     Using command As New SqlCommand(sqlQuery, connection)
                         command.Parameters.AddWithValue("@AccountNumber1", provider_id)
                         command.Parameters.AddWithValue("@AmountToUpdate", refundAmount)
-                        connection.Open()
-                        command.ExecuteNonQuery()
+                        Try
+                            ' Open connection
+                            connection.Open()
+
+                            ' Execute the update query
+                            command.ExecuteNonQuery()
+                            MessageBox.Show("Your Balance updated successfully.")
+
+                        Catch ex As Exception
+                            MessageBox.Show("An error occurred: " & ex.Message)
+                        End Try
                     End Using
                 End Using
                 Dim sqlQuery1 As String = "UPDATE customer SET balance = balance + @AmountToUpdate WHERE user_id = @AccountNumber1;"
@@ -512,8 +516,16 @@ Public Class provider_appointment_details
                     Using command As New SqlCommand(sqlQuery1, connection)
                         command.Parameters.AddWithValue("@AccountNumber1", user_id)
                         command.Parameters.AddWithValue("@AmountToUpdate", refundAmount)
-                        connection.Open()
-                        command.ExecuteNonQuery()
+                        Try
+                            ' Open connection
+                            connection.Open()
+
+                            ' Execute the update query
+                            command.ExecuteNonQuery()
+
+                        Catch ex As Exception
+                            MessageBox.Show("An error occurred: " & ex.Message)
+                        End Try
                     End Using
                 End Using
 
@@ -524,8 +536,17 @@ Public Class provider_appointment_details
                     Using command As New SqlCommand(sqlQuery2, connection)
                         command.Parameters.AddWithValue("@DealID", dealID)
                         command.Parameters.AddWithValue("@cancel_status", CANCELLED)
-                        connection.Open()
-                        command.ExecuteNonQuery()
+                        Try
+                            ' Open connection
+                            connection.Open()
+
+                            ' Execute the update query
+                            command.ExecuteNonQuery()
+
+                            MessageBox.Show("Deal status updated successfully.")
+                        Catch ex As Exception
+                            MessageBox.Show("An error occurred: " & ex.Message)
+                        End Try
                     End Using
                 End Using
                 btn_cancel.Visible = False
@@ -537,12 +558,12 @@ Public Class provider_appointment_details
             End If
 
             Using connection As New SqlConnection(connectionString)
-                    connection.Open()
-                    For I As Integer = 0 To 83
-                        If (timeCancelled(I) = "1"c) Then
-                            Dim slot As Integer = I Mod 12
-                            Dim day As Integer = I \ 12
-                            Dim datee As DateTime = dateCancelled.AddDays(day)
+                connection.Open()
+                For I As Integer = 0 To 83
+                    If (timeCancelled(I) = "1"c) Then
+                        Dim slot As Integer = I Mod 12
+                        Dim day As Integer = I \ 12
+                        Dim datee As DateTime = dateCancelled.AddDays(day)
                         Dim datestart As String = datee.ToString("yyyy-MM-dd 00:00:00.000")
                         Dim deleteQuery = "DELETE FROM schedule WHERE provider_id = @ProviderID AND user_id = @UserID AND time = @datestart AND slots = @Slot"
 
@@ -550,17 +571,15 @@ Public Class provider_appointment_details
                         MessageBox.Show(slot)
 
                         Using command As New SqlCommand(deleteQuery, connection)
-                                command.Parameters.AddWithValue("@ProviderID", providerIDCancelled)
-                                command.Parameters.AddWithValue("@UserID", userIDCancelled)
-                                command.Parameters.AddWithValue("@datestart", datestart)
-                                command.Parameters.AddWithValue("@Slot", slot)
-                                command.ExecuteNonQuery()
-                            End Using
-                        End If
-                    Next
-                End Using
-            Me.Close()
-
+                            command.Parameters.AddWithValue("@ProviderID", providerIDCancelled)
+                            command.Parameters.AddWithValue("@UserID", userIDCancelled)
+                            command.Parameters.AddWithValue("@datestart", datestart)
+                            command.Parameters.AddWithValue("@Slot", slot)
+                            command.ExecuteNonQuery()
+                        End Using
+                    End If
+                Next
+            End Using
 
 
 
