@@ -199,7 +199,7 @@ Public Class pending_payment
                 End Try
             End Using
         End Using
-        MessageBox.Show(payments.CostOfService.ToString + " " + payments.ProviderEmailID.ToString)
+        'MessageBox.Show(payments.CostOfService.ToString + " " + payments.ProviderEmailID.ToString)
         variableChanged.Reset()
         myVariable = 0
         payments.Show()
