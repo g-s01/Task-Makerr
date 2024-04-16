@@ -188,7 +188,7 @@ Public Class provider_appointments
                             dateof = dateof.AddDays(1)
                         End If
                     Next
-                    spawnDivs(i, UserName, Location, Cost, dateof, y)
+                    spawnDivs(i, UserName, Location, Cost, dateof, y, result.GetValue(0))
                     i += 1
                     y += 100
                 Loop
