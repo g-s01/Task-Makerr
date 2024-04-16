@@ -230,19 +230,20 @@ Public Class UserHome
             If parentTile IsNot Nothing Then
                 ' Set the Provider_ID to the Provider value of the parent Prov_tile
                 Module_global.Provider_ID = parentTile.Provider
-            End If
 
-            ' Clear existing controls and show Book_slots
-            user_template.SplitContainer1.Panel2.Controls.Clear()
-            slot_back_choice = 1
-            With Book_slots
-                .TopLevel = False
-                .AutoSize = True
-                .Dock = DockStyle.Fill
-                user_template.SplitContainer1.Panel2.Controls.Add(Book_slots)
-                .BringToFront()
-                .Show()
-            End With
+
+                ' Clear existing controls and show Book_slots
+                user_template.SplitContainer1.Panel2.Controls.Clear()
+                slot_back_choice = 1
+                With Book_slots
+                    .TopLevel = False
+                    .AutoSize = True
+                    .Dock = DockStyle.Fill
+                    user_template.SplitContainer1.Panel2.Controls.Add(Book_slots)
+                    .BringToFront()
+                    .Show()
+                End With
+            End If
         End If
     End Sub
 
