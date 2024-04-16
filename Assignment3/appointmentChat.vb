@@ -201,7 +201,7 @@ Public Class appointmentChat
                             Dim deal_id As Integer = reader.GetInt32(reader.GetOrdinal("deal_id"))
                             Dim message_content As String = reader.GetString(reader.GetOrdinal("message_content"))
                             Dim sender_type As String = reader.GetString(reader.GetOrdinal("sender_type"))
-                            Dim timestamp As String = reader.GetDateTime(reader.GetOrdinal("sent_timestamp")).ToString()
+                            Dim timestamp As String = reader.GetDateTime(reader.GetOrdinal("sent_timestamp")).ToString("yyyy-MM-dd HH:mm:ss")
 
                             ' Add the message to the messages list
                             messages.Add(New Tuple(Of Integer, Integer, String, String, String)(chat_room_id, deal_id, sender_type, message_content, timestamp))
