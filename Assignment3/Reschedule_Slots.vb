@@ -735,4 +735,16 @@ Rollback:
         Return (x(0) + 13 * x(1)).CompareTo(y(0) + 13 * y(1))
     End Function
 
+    Private Sub Back_Btn_Click(sender As Object, e As EventArgs) Handles Back_Btn.Click
+        user_template.SplitContainer1.Panel2.Controls.Clear()
+        With user_appointment_details
+            .TopLevel = False
+            .AutoSize = True
+            .Dock = DockStyle.Fill
+            user_template.SplitContainer1.Panel2.Controls.Add(user_appointment_details)
+            Me.Close()
+            .BringToFront()
+            .Show()
+        End With
+    End Sub
 End Class
