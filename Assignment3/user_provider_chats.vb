@@ -241,34 +241,35 @@ Public Class user_provider_chats
 
     Private Sub timer_Tick(sender As Object, e As EventArgs) Handles timer.Tick
         ' Reload rooms and messages every 30 seconds
-        If (LoadRoomsFromDatabase(userId, user_role)) Then
-            PopulateRooms()
-        End If
+        If Me.Visible Then
+            If (LoadRoomsFromDatabase(userId, user_role)) Then
+                PopulateRooms()
+            End If
+            Dim messages_count_pv As Integer = 0
+            Dim after_fetch As Integer = 0
 
-        Dim messages_count_pv As Integer = 0
-        Dim after_fetch As Integer = 0
+            If roomId <> -1 Then
+                For Each msg As Tuple(Of Integer, Integer, String, String, String) In messages
+                    If msg.Item1 = roomId Then
+                        messages_count_pv += 1
+                    End If
+                Next
+            End If
 
-        If roomId <> -1 Then
-            For Each msg As Tuple(Of Integer, Integer, String, String, String) In messages
-                If msg.Item1 = roomId Then
-                    messages_count_pv += 1
-                End If
-            Next
-        End If
+            ' Reload messages from the database
+            LoadMessagesFromDatabase(userId, user_role)
+            If roomId <> -1 Then
+                For Each msg As Tuple(Of Integer, Integer, String, String, String) In messages
+                    If msg.Item1 = roomId Then
+                        after_fetch += 1
+                    End If
+                Next
+            End If
 
-        ' Reload messages from the database
-        LoadMessagesFromDatabase(userId, user_role)
-        If roomId <> -1 Then
-            For Each msg As Tuple(Of Integer, Integer, String, String, String) In messages
-                If msg.Item1 = roomId Then
-                    after_fetch += 1
-                End If
-            Next
-        End If
-
-        ' Check if the number of messages for the current room has changed
-        If roomId <> -1 AndAlso messages_count_pv <> after_fetch Then
-            PrintMessagesBetweenUsers(roomId)
+            ' Check if the number of messages for the current room has changed
+            If roomId <> -1 AndAlso messages_count_pv <> after_fetch Then
+                PrintMessagesBetweenUsers(roomId)
+            End If
         End If
     End Sub
 
@@ -342,7 +343,7 @@ Public Class user_provider_chats
         If (messageText.Length = 0) Then
             Return
         End If
-        InsertMessageIntoDatabase(roomId, dealId, user_role, messageText,timeStamp)
+        InsertMessageIntoDatabase(roomId, dealId, user_role, messageText, timeStamp)
         ' Print messages between users
         Dim newMessage As New Tuple(Of Integer, Integer, String, String, String)(roomId, dealId, user_role, messageText, timeStamp)
         messages.Add(newMessage)

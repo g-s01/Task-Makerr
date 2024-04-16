@@ -131,15 +131,31 @@ Public Class admin_side_chat
     ' Event handler for the tick event of the timer
     Private Sub MessageTimer_Tick(sender As Object, e As EventArgs)
         ' Check if the form is visible
+        Dim messages_count_pv As Integer = 0
+        Dim after_fetch As Integer = 0
         If Me.Visible Then
             ' Reload and print messages every 30 seconds
             If (LoadRoomsFromDatabase()) Then
                 PopulateRooms()
             End If
             If roomId <> -1 Then
-                If (LoadMessagesFromDatabase()) Then
-                    PrintMessages(roomId)
-                End If
+                For Each msg As Tuple(Of Integer, String, String, String) In support_msgs
+                    If msg.Item1 = roomId Then
+                        messages_count_pv += 1
+                    End If
+                Next
+            End If
+            LoadMessagesFromDatabase()
+            If roomId <> -1 Then
+                For Each msg As Tuple(Of Integer, String, String, String) In support_msgs
+                    If msg.Item1 = roomId Then
+                        after_fetch += 1
+                    End If
+                Next
+            End If
+
+            If roomId <> -1 AndAlso messages_count_pv <> after_fetch Then
+                PrintMessages(roomId)
             End If
         End If
     End Sub
