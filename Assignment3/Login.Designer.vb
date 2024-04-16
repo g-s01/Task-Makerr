@@ -235,6 +235,7 @@ Partial Class Login
         ClientSize = New Size(1134, 673)
         Controls.Add(Panel2)
         Controls.Add(Panel1)
+        FormBorderStyle = FormBorderStyle.FixedToolWindow
         Name = "Login"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Login"
