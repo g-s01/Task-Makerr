@@ -26,7 +26,8 @@ Public Class user_provider_chats
         Return New SqlConnection(connectionString)
     End Function
 
-    Private Sub LoadRoomsFromDatabase(userId As Integer, user_role As String)
+    Private Function LoadRoomsFromDatabase(userId As Integer, user_role As String)
+        Dim prevLength As Integer = Module_global.roomchat.Count
         Module_global.roomchat.Clear()
         If user_role = "provider" Then
             Dim query As String = "SELECT chat_room_id, username, provider_id FROM chat_room WHERE provider_id = @UserId"
@@ -93,10 +94,11 @@ Public Class user_provider_chats
                 End Using
             End Using
         End If
+        Return (prevLength <> Module_global.roomchat.Count)
+    End Function
 
-    End Sub
-
-    Private Sub LoadMessagesFromDatabase(userId As Integer, user_role As String)
+    Private Function LoadMessagesFromDatabase(userId As Integer, user_role As String)
+        Dim prevLength As Integer = messages.Count
 
         Dim query As String = "SELECT m.* FROM chat_room cr JOIN messages m ON cr.chat_room_id = m.chat_room_id WHERE cr.provider_id = @UserId;"
 
@@ -133,11 +135,12 @@ Public Class user_provider_chats
                 End Try
             End Using
         End Using
-    End Sub
+        Return (prevLength <> messages.Count)
+    End Function
 
 
 
-    Private Function InsertMessageIntoDatabase(room As Integer, dealId As Integer, user_role As String, messageText As String,timeStamp as String) As Boolean
+    Private Function InsertMessageIntoDatabase(room As Integer, dealId As Integer, user_role As String, messageText As String, timeStamp As String) As Boolean
         Dim query As String = "INSERT INTO messages (chat_room_id, deal_id, sender_type, message_content,sent_timestamp) VALUES (@ChatRoomId, @DealId, @SenderType, @MessageContent,@timeStamp)"
         Using connection As New SqlConnection(connectionString)
             Using command As New SqlCommand(query, connection)
@@ -211,31 +214,64 @@ Public Class user_provider_chats
         If roomId <> 0 Or roomId <> -1 Then
             ' Call the function to print messages between users
             For Each pair As Tuple(Of String, Integer, Integer) In Module_global.roomchat
-                ' Check if the receiver matches the first item in the tuple
                 If pair.Item2 = roomId Then
-                    ' Fetch the second item (number) in the tuple
                     header = pair.Item1
-                    ' Do something with the number...
                     Exit For ' Exit loop if the match is found
+                End If
+            Next
+            For Each ctrl As Control In chat_list.Controls
+                If TypeOf ctrl Is Button Then
+                    Dim otherButton As Button = CType(ctrl, Button)
+                    If otherButton.Text = header Then
+                        otherButton.BackColor = Color.FromArgb(190, 159, 192) ' Set background color
+                    Else
+                        otherButton.BackColor = Color.FromArgb(220, 189, 232) ' Original color
+                    End If
                 End If
             Next
             senderName.Text = header
             PrintMessagesBetweenUsers(roomId)
+            sendBtn.Visible = True
+            sendTextBox.Visible = True
+        Else
             sendBtn.Visible = False
             sendTextBox.Visible = False
         End If
     End Sub
 
-
     Private Sub timer_Tick(sender As Object, e As EventArgs) Handles timer.Tick
         ' Reload rooms and messages every 30 seconds
-        LoadRoomsFromDatabase(userId, user_role)
-        LoadMessagesFromDatabase(userId, user_role)
-        PopulateRooms()
+        If (LoadRoomsFromDatabase(userId, user_role)) Then
+            PopulateRooms()
+        End If
+
+        Dim messages_count_pv As Integer = 0
+        Dim after_fetch As Integer = 0
+
         If roomId <> -1 Then
+            For Each msg As Tuple(Of Integer, Integer, String, String, String) In messages
+                If msg.Item1 = roomId Then
+                    messages_count_pv += 1
+                End If
+            Next
+        End If
+
+        ' Reload messages from the database
+        LoadMessagesFromDatabase(userId, user_role)
+        If roomId <> -1 Then
+            For Each msg As Tuple(Of Integer, Integer, String, String, String) In messages
+                If msg.Item1 = roomId Then
+                    after_fetch += 1
+                End If
+            Next
+        End If
+
+        ' Check if the number of messages for the current room has changed
+        If roomId <> -1 AndAlso messages_count_pv <> after_fetch Then
             PrintMessagesBetweenUsers(roomId)
         End If
     End Sub
+
 
 
 
@@ -283,22 +319,6 @@ Public Class user_provider_chats
     End Sub
 
     Private Sub sendButton_Click(sender As Object, e As EventArgs) Handles sendBtn.Click
-        'Dim messageText As String = chat_list.Controls("textBox1").Text ' Assuming TextBox1 is the name of the TextBox
-
-        ' Get the receiver name from the label text within the chat_list panel
-        'Dim receiverName As String = senderName.Text ' Assuming Label1 contains the receiver name
-
-        'Dim room As Integer
-
-        'For Each pair As Tuple(Of String, Integer, Integer) In roomchat
-        '    ' Check if the receiver matches the first item in the tuple
-        '    If pair.Item1 = receiverName Then
-        '        ' Fetch the second item (number) in the tuple
-        '        room = pair.Item2
-        '        ' Do something with the number...
-        '        Exit For ' Exit loop if the match is found
-        '    End If
-        'Next
 
         Dim maxLength As Integer = 50 ' Set the maximum length before inserting a newline
         Dim inputString As String = sendTextBox.Text
@@ -319,7 +339,7 @@ Public Class user_provider_chats
         sendTextBox.Text = ""
 
         Dim timeStamp As String = DateTime.Now.ToString("yyy-MM-dd HH:mm:ss")
-        InsertMessageIntoDatabase(roomId, dealId, user_role, messageText,timeStamp)
+        InsertMessageIntoDatabase(roomId, dealId, user_role, messageText, timeStamp)
         ' Print messages between users
         Dim newMessage As New Tuple(Of Integer, Integer, String, String, String)(roomId, dealId, user_role, messageText, timeStamp)
         messages.Add(newMessage)
@@ -462,15 +482,4 @@ Public Class user_provider_chats
         chat.AutoScrollPosition = New Point(0, chat.AutoScrollPosition.Y + yPos)
     End Sub
 
-    Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
-
-    End Sub
-
-    Private Sub chat_list_Paint(sender As Object, e As PaintEventArgs) Handles chat_list.Paint
-
-    End Sub
-
-    Private Sub senderName_Click(sender As Object, e As EventArgs) Handles senderName.Click
-
-    End Sub
 End Class
