@@ -32,29 +32,25 @@ Partial Class Forgot_password
         password = New TextBox()
         Label6 = New Label()
         Label1 = New Label()
-        Panel2 = New Panel()
-        Label11 = New Label()
-        Label10 = New Label()
         Label7 = New Label()
         proceed = New Button()
         otp = New TextBox()
         Label2 = New Label()
         Panel4 = New Panel()
+        provider = New RadioButton()
+        customer = New RadioButton()
         Label14 = New Label()
         Label13 = New Label()
-        provider = New CheckBox()
-        customer = New CheckBox()
         incorrect = New Label()
         send = New Button()
         Email = New TextBox()
-        Label3 = New Label()
         Label4 = New Label()
         Label5 = New Label()
         Panel1 = New Panel()
         designlabel1 = New Label()
         taskmakerrbtn = New Button()
+        back_btn = New Button()
         Panel3.SuspendLayout()
-        Panel2.SuspendLayout()
         Panel4.SuspendLayout()
         Panel1.SuspendLayout()
         SuspendLayout()
@@ -70,9 +66,9 @@ Partial Class Forgot_password
         Panel3.Controls.Add(password)
         Panel3.Controls.Add(Label6)
         Panel3.Controls.Add(Label1)
-        Panel3.Location = New Point(589, 167)
+        Panel3.Location = New Point(545, 128)
         Panel3.Name = "Panel3"
-        Panel3.Size = New Size(488, 305)
+        Panel3.Size = New Size(488, 416)
         Panel3.TabIndex = 10
         Panel3.Visible = False
         ' 
@@ -155,7 +151,7 @@ Partial Class Forgot_password
         Label6.Name = "Label6"
         Label6.Size = New Size(146, 23)
         Label6.TabIndex = 1
-        Label6.Text = "Confrim Password"
+        Label6.Text = "Confirm Password"
         ' 
         ' Label1
         ' 
@@ -167,45 +163,13 @@ Partial Class Forgot_password
         Label1.TabIndex = 0
         Label1.Text = "New Password"
         ' 
-        ' Panel2
-        ' 
-        Panel2.Controls.Add(Label11)
-        Panel2.Controls.Add(Label10)
-        Panel2.Controls.Add(Label7)
-        Panel2.Controls.Add(proceed)
-        Panel2.Controls.Add(otp)
-        Panel2.Location = New Point(582, 170)
-        Panel2.Name = "Panel2"
-        Panel2.Size = New Size(359, 305)
-        Panel2.TabIndex = 9
-        Panel2.Visible = False
-        ' 
-        ' Label11
-        ' 
-        Label11.AutoSize = True
-        Label11.Location = New Point(8, 84)
-        Label11.Name = "Label11"
-        Label11.Size = New Size(106, 20)
-        Label11.TabIndex = 13
-        Label11.Text = "Enter your OTP"
-        ' 
-        ' Label10
-        ' 
-        Label10.AutoSize = True
-        Label10.Font = New Font("Segoe UI", 15.0F)
-        Label10.Location = New Point(5, 3)
-        Label10.Name = "Label10"
-        Label10.Size = New Size(186, 35)
-        Label10.TabIndex = 12
-        Label10.Text = "Password Reset"
-        ' 
         ' Label7
         ' 
         Label7.AutoSize = True
         Label7.BackColor = SystemColors.Control
         Label7.Font = New Font("Segoe UI", 8.0F)
         Label7.ForeColor = Color.Red
-        Label7.Location = New Point(37, 132)
+        Label7.Location = New Point(17, 324)
         Label7.Name = "Label7"
         Label7.Size = New Size(96, 19)
         Label7.TabIndex = 11
@@ -218,18 +182,19 @@ Partial Class Forgot_password
         proceed.FlatStyle = FlatStyle.Flat
         proceed.Font = New Font("Segoe UI", 12.0F)
         proceed.ForeColor = Color.White
-        proceed.Location = New Point(86, 169)
+        proceed.Location = New Point(79, 360)
         proceed.Name = "proceed"
-        proceed.Size = New Size(117, 38)
+        proceed.Size = New Size(175, 38)
         proceed.TabIndex = 2
         proceed.Text = "Proceed"
         proceed.UseVisualStyleBackColor = False
         ' 
         ' otp
         ' 
-        otp.Location = New Point(37, 107)
+        otp.Location = New Point(17, 299)
         otp.Name = "otp"
-        otp.Size = New Size(166, 27)
+        otp.PlaceholderText = "OTP"
+        otp.Size = New Size(292, 27)
         otp.TabIndex = 1
         ' 
         ' Label2
@@ -241,27 +206,51 @@ Partial Class Forgot_password
         ' 
         ' Panel4
         ' 
-        Panel4.Controls.Add(Label14)
-        Panel4.Controls.Add(Label13)
         Panel4.Controls.Add(provider)
         Panel4.Controls.Add(customer)
+        Panel4.Controls.Add(Label14)
+        Panel4.Controls.Add(Label13)
+        Panel4.Controls.Add(Label7)
+        Panel4.Controls.Add(proceed)
+        Panel4.Controls.Add(otp)
         Panel4.Controls.Add(incorrect)
         Panel4.Controls.Add(send)
         Panel4.Controls.Add(Email)
-        Panel4.Controls.Add(Label3)
         Panel4.Controls.Add(Label4)
         Panel4.Controls.Add(Label5)
-        Panel4.Location = New Point(579, 167)
+        Panel4.Location = New Point(545, 128)
         Panel4.Name = "Panel4"
-        Panel4.Size = New Size(359, 328)
+        Panel4.Size = New Size(431, 416)
         Panel4.TabIndex = 8
+        ' 
+        ' provider
+        ' 
+        provider.AutoSize = True
+        provider.Location = New Point(188, 178)
+        provider.Name = "provider"
+        provider.Size = New Size(85, 24)
+        provider.TabIndex = 16
+        provider.TabStop = True
+        provider.Text = "Provider"
+        provider.UseVisualStyleBackColor = True
+        ' 
+        ' customer
+        ' 
+        customer.AutoSize = True
+        customer.Location = New Point(21, 178)
+        customer.Name = "customer"
+        customer.Size = New Size(93, 24)
+        customer.TabIndex = 18
+        customer.TabStop = True
+        customer.Text = "Customer"
+        customer.UseVisualStyleBackColor = True
         ' 
         ' Label14
         ' 
         Label14.AutoSize = True
-        Label14.Font = New Font("Segoe UI", 8.0F)
+        Label14.Font = New Font("Segoe UI", 8F)
         Label14.ForeColor = Color.Red
-        Label14.Location = New Point(17, 231)
+        Label14.Location = New Point(17, 205)
         Label14.Name = "Label14"
         Label14.Size = New Size(57, 19)
         Label14.TabIndex = 17
@@ -272,38 +261,18 @@ Partial Class Forgot_password
         ' 
         Label13.AutoSize = True
         Label13.Font = New Font("Segoe UI", 7.8F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label13.Location = New Point(17, 184)
+        Label13.Location = New Point(17, 158)
         Label13.Name = "Label13"
         Label13.Size = New Size(269, 17)
         Label13.TabIndex = 16
         Label13.Text = "Select whether you are customer or provider"
         ' 
-        ' provider
-        ' 
-        provider.AutoSize = True
-        provider.Location = New Point(193, 204)
-        provider.Name = "provider"
-        provider.Size = New Size(86, 24)
-        provider.TabIndex = 15
-        provider.Text = "Provider"
-        provider.UseVisualStyleBackColor = True
-        ' 
-        ' customer
-        ' 
-        customer.AutoSize = True
-        customer.Location = New Point(17, 204)
-        customer.Name = "customer"
-        customer.Size = New Size(94, 24)
-        customer.TabIndex = 14
-        customer.Text = "Customer"
-        customer.UseVisualStyleBackColor = True
-        ' 
         ' incorrect
         ' 
         incorrect.AutoSize = True
-        incorrect.Font = New Font("Segoe UI", 8.0F)
+        incorrect.Font = New Font("Segoe UI", 8F)
         incorrect.ForeColor = Color.Red
-        incorrect.Location = New Point(17, 158)
+        incorrect.Location = New Point(17, 132)
         incorrect.Name = "incorrect"
         incorrect.Size = New Size(151, 19)
         incorrect.TabIndex = 4
@@ -314,9 +283,9 @@ Partial Class Forgot_password
         ' 
         send.BackColor = Color.FromArgb(CByte(173), CByte(103), CByte(200))
         send.FlatStyle = FlatStyle.Flat
-        send.Font = New Font("Segoe UI", 12.0F)
+        send.Font = New Font("Segoe UI", 12F)
         send.ForeColor = Color.White
-        send.Location = New Point(67, 287)
+        send.Location = New Point(79, 231)
         send.Name = "send"
         send.Size = New Size(175, 38)
         send.TabIndex = 1
@@ -325,19 +294,11 @@ Partial Class Forgot_password
         ' 
         ' Email
         ' 
-        Email.Location = New Point(17, 133)
+        Email.Location = New Point(17, 107)
         Email.Name = "Email"
+        Email.PlaceholderText = "Email"
         Email.Size = New Size(292, 27)
         Email.TabIndex = 3
-        ' 
-        ' Label3
-        ' 
-        Label3.AutoSize = True
-        Label3.Location = New Point(17, 110)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(46, 20)
-        Label3.TabIndex = 2
-        Label3.Text = "Email"
         ' 
         ' Label4
         ' 
@@ -351,7 +312,7 @@ Partial Class Forgot_password
         ' Label5
         ' 
         Label5.AutoSize = True
-        Label5.Font = New Font("Segoe UI", 15.0F)
+        Label5.Font = New Font("Segoe UI", 15F)
         Label5.Location = New Point(5, 3)
         Label5.Name = "Label5"
         Label5.Size = New Size(186, 35)
@@ -395,21 +356,31 @@ Partial Class Forgot_password
         taskmakerrbtn.TabIndex = 0
         taskmakerrbtn.UseVisualStyleBackColor = False
         ' 
+        ' back_btn
+        ' 
+        back_btn.BackgroundImage = My.Resources.Resources.backbtn
+        back_btn.BackgroundImageLayout = ImageLayout.Stretch
+        back_btn.FlatAppearance.BorderSize = 0
+        back_btn.FlatStyle = FlatStyle.Flat
+        back_btn.Location = New Point(429, 3)
+        back_btn.Name = "back_btn"
+        back_btn.Size = New Size(84, 35)
+        back_btn.TabIndex = 9
+        back_btn.UseVisualStyleBackColor = True
+        ' 
         ' Forgot_password
         ' 
         AutoScaleMode = AutoScaleMode.None
         ClientSize = New Size(1134, 673)
+        Controls.Add(back_btn)
         Controls.Add(Panel1)
         Controls.Add(Panel4)
-        Controls.Add(Panel2)
         Controls.Add(Panel3)
         Name = "Forgot_password"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Forgot_password"
         Panel3.ResumeLayout(False)
         Panel3.PerformLayout()
-        Panel2.ResumeLayout(False)
-        Panel2.PerformLayout()
         Panel4.ResumeLayout(False)
         Panel4.PerformLayout()
         Panel1.ResumeLayout(False)
@@ -422,14 +393,12 @@ Partial Class Forgot_password
     Friend WithEvents password As TextBox
     Friend WithEvents Label6 As Label
     Friend WithEvents Label1 As Label
-    Friend WithEvents Panel2 As Panel
     Friend WithEvents proceed As Button
     Friend WithEvents otp As TextBox
     Friend WithEvents Label2 As Label
     Friend WithEvents Panel4 As Panel
     Friend WithEvents send As Button
     Friend WithEvents Email As TextBox
-    Friend WithEvents Label3 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents Label5 As Label
     Friend WithEvents Panel1 As Panel
@@ -439,12 +408,11 @@ Partial Class Forgot_password
     Friend WithEvents Label8 As Label
     Friend WithEvents Label7 As Label
     Friend WithEvents Label9 As Label
-    Friend WithEvents Label10 As Label
-    Friend WithEvents Label11 As Label
-    Friend WithEvents customer As CheckBox
-    Friend WithEvents provider As CheckBox
     Friend WithEvents Label14 As Label
     Friend WithEvents Label13 As Label
     Friend WithEvents CheckBox2 As CheckBox
     Friend WithEvents CheckBox1 As CheckBox
+    Friend WithEvents back_btn As Button
+    Friend WithEvents provider As RadioButton
+    Friend WithEvents customer As RadioButton
 End Class
