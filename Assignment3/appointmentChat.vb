@@ -228,7 +228,7 @@ Public Class appointmentChat
     Private Sub appointmentChat_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         messageTimer.Interval = 10000
-        MessageBox.Show(user_role)
+        'MessageBox.Show(user_role)
         'If user_role = "customer" Then
         '    userId = Module_global.User_ID
         'ElseIf user_role = "provider" Then

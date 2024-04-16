@@ -220,7 +220,7 @@ Public Class Prov_tile
 
                         ' Check if the result is not null
                         If roomId > 0 Then
-                            MessageBox.Show("Chat room ID: " & roomId.ToString())
+                            'MessageBox.Show("Chat room ID: " & roomId.ToString())
                         Else
                             ' If no chat room found, create a new one
                             Dim insertQuery As String = "INSERT INTO dbo.chat_room (user_id, provider_id, username, providername) VALUES (@userId, @providerId, @username, @providername); SELECT SCOPE_IDENTITY();"
@@ -236,7 +236,7 @@ Public Class Prov_tile
                                 roomId = Convert.ToInt32(insertCommand.ExecuteScalar())
 
                                 ' Display the newly created chat room ID
-                                MessageBox.Show("New Chat room ID: " & roomId.ToString())
+                                ' MessageBox.Show("New Chat room ID: " & roomId.ToString())
 
                             End Using
                         End If
@@ -254,7 +254,7 @@ Public Class Prov_tile
                     End If
                 Catch ex As Exception
                     ' Handle any exceptions
-                    MessageBox.Show("An error occurred: " & ex.Message)
+                    'MessageBox.Show("An error occurred: " & ex.Message)
                 End Try
             End Using
         End If
