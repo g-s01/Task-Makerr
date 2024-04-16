@@ -1,19 +1,6 @@
-﻿﻿Imports System.Configuration
-Imports iText.IO.Font.Constants
-Imports iText.Kernel.Font
-Imports iText.Kernel.Pdf
-Imports iText.Layout.Element
-Imports iText.Layout.Properties
-Imports iText.StyledXmlParser.Jsoup.Select.Evaluator
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement
-Imports Microsoft.Data.SqlClient
-Imports System.Net.Mail
-Imports System.Data.SqlClient
-Imports System.IO
-Imports iText.Layout
-Imports Microsoft.Identity.Client.NativeInterop
-Imports System.Diagnostics.Eventing
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Tab
+﻿Imports Microsoft.Data.SqlClient
+Imports System.Threading
+Imports System.Configuration
 
 Public Class provider_appointment_details
     Public dealID As Integer = Module_global.Appointment_Det_DealId
@@ -34,8 +21,13 @@ Public Class provider_appointment_details
     Dim connectionString As String
     Dim provider As String
     Dim time As String = ""
-    Dim ID As String = "task-makerr-cs346@outlook.in" ' For debugging
 
+    Protected Overrides Sub OnVisibleChanged(e As EventArgs)
+        MyBase.OnVisibleChanged(e)
+        If Me.Visible Then
+            loadData()
+        End If
+    End Sub
 
     Private Sub MakeChatVisible()
         SplitContainer1.Panel2.Controls.Clear()
@@ -45,8 +37,10 @@ Public Class provider_appointment_details
         chatForm.TopLevel = False
         chatForm.dealId = dealID
         chatForm.providerId = Module_global.Provider_ID
-        chatForm.userId = user
+        chatForm.userId = user_id
 
+        MessageBox.Show(user_id
+                        )
         ' Set the form's Dock property to fill the panel
         chatForm.Dock = DockStyle.Fill
 
@@ -60,7 +54,7 @@ Public Class provider_appointment_details
         chatForm.Show()
     End Sub
 
-    Private Sub provider_appointment_details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub loadData()
         'connectionString = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
         connectionString = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
         Dim query As String = "SELECT * FROM deals WHERE deal_id = @DealID"
@@ -132,12 +126,13 @@ Public Class provider_appointment_details
                     End If
 
                     reader.Close()
-                    MakeChatVisible()
+                    'MakeChatVisible()
                 Catch ex As Exception
                     Console.WriteLine("Error: " & ex.Message)
                 End Try
             End Using
         End Using
+
 
         Dim query2 As String = "SELECT cost_per_hour FROM provider WHERE provider_id = @ProviderID"
 
@@ -175,6 +170,7 @@ Public Class provider_appointment_details
         startIndex = rtb2.Text.IndexOf(" Charges for the Appointment")
         length = " Charges for the Appointment".Length
         rtb2.Select(startIndex, length)
+        rtb2.SelectionFont = New Font(rtb2.Font, FontStyle.Bold)
 
         Dim query3 As String = "SELECT email FROM provider WHERE provider_id = @ProviderID"
 
@@ -197,7 +193,7 @@ Public Class provider_appointment_details
         Dim query4 As String = "SELECT username FROM customer WHERE user_id = @UserID"
 
         Using connection As New SqlConnection(connectionString)
-            Using command As New SqlCommand(query3, connection)
+            Using command As New SqlCommand(query4, connection)
                 ' Add parameters to the SQL query to prevent SQL injection
                 command.Parameters.AddWithValue("@UserId", user_id)
 
@@ -214,7 +210,7 @@ Public Class provider_appointment_details
         Dim query5 As String = "SELECT providername FROM provider WHERE provider_id = @ProviderID"
 
         Using connection As New SqlConnection(connectionString)
-            Using command As New SqlCommand(query3, connection)
+            Using command As New SqlCommand(query5, connection)
                 ' Add parameters to the SQL query to prevent SQL injection
                 command.Parameters.AddWithValue("@ProviderID", provider_id)
 
@@ -227,8 +223,10 @@ Public Class provider_appointment_details
                 End Try
             End Using
         End Using
-        ' rtb2.SelectionFont = New Font(rtb2.Font, FontStyle.Bold)
-
+        rtb2.SelectionFont = New Font(rtb2.Font, FontStyle.Bold)
+        MessageBox.Show(user_id)
+        MessageBox.Show(provider_id)
+        MakeChatVisible()
     End Sub
 
     Private Sub btn_appointment_completed_Click(sender As Object, e As EventArgs) Handles btn_appointment_completed.Click
@@ -239,32 +237,60 @@ Public Class provider_appointment_details
         If result = DialogResult.Yes Then
 
             Dim provider_exists As Boolean = False
-                        Dim user_exists As Boolean = False
-                        Dim provider_balance_sufficients As Boolean = False
+            Dim user_exists As Boolean = False
+            Dim provider_balance_sufficients As Boolean = False
 
 
 
-                        Dim sqlQuery = "UPDATE deals SET status = @completed_status WHERE deal_id = @DealID;"
+            Dim sqlQuery = "UPDATE deals SET status = @completed_status WHERE deal_id = @DealID;"
 
-                        ' Add parameters to the SQL query to prevent SQL injection
-                        Using connection As New SqlConnection(connectionString)
-                            Using command As New SqlCommand(sqlQuery, connection)
-                                command.Parameters.AddWithValue("@DealID", dealID)
-                                command.Parameters.AddWithValue("@completed_status", COMPLETED)
-                                connection.Open()
-                                command.ExecuteNonQuery()
-                            End Using
-                        End Using
-                        btn_cancel.Visible = False
-                        btn_cancel.Enabled = False
-                        btn_appointment_completed.Visible = False
+            ' Add parameters to the SQL query to prevent SQL injection
+            Using connection As New SqlConnection(connectionString)
+                Using command As New SqlCommand(sqlQuery, connection)
+                    command.Parameters.AddWithValue("@DealID", dealID)
+                    command.Parameters.AddWithValue("@completed_status", COMPLETED)
+                    connection.Open()
+                    command.ExecuteNonQuery()
+                End Using
+            End Using
+            btn_cancel.Visible = False
+            btn_cancel.Enabled = False
+            btn_appointment_completed.Visible = False
             btn_appointment_completed.Enabled = False
 
         End If
 
 
     End Sub
-    Private Sub btn_cancel_Click(sender As Object, e As EventArgs) Handles btn_cancel.Click
+
+    Public variableChanged As New ManualResetEvent(False)
+
+    ' Variable to monitor for changes
+    Public myVariable As Integer = 0
+
+
+    Private Async Function WaitForVariableChangeOrTimeoutAsync(timeoutMilliseconds As Integer) As Task
+        ' Wait for either the variable to change or the timeout to elapse
+        Await Task.WhenAny(Task.Delay(timeoutMilliseconds), Task.Run(Sub() variableChanged.WaitOne()))
+
+        ' After the wait, you can check if the variable changed or timeout happened
+        If myVariable <> 0 Then
+            ' The variable changed
+            Console.WriteLine("Payment Successful")
+
+        Else
+            ' Timeout occurred
+            MessageBox.Show("Timeout occurred.")
+            If payments IsNot Nothing AndAlso Not payments.IsDisposed Then
+                payments.Close()
+            End If
+            If otp_auth IsNot Nothing AndAlso Not otp_auth.IsDisposed Then
+                otp_auth.Close()
+            End If
+
+        End If
+    End Function
+    Private Async Sub btn_cancel_Click(sender As Object, e As EventArgs) Handles btn_cancel.Click
         Dim currentDate As DateTime = DateTime.Now
 
         ' Combine stored date and time
@@ -298,181 +324,61 @@ Public Class provider_appointment_details
 
         ' Check the user's response
         If result = DialogResult.Yes Then
-            Dim random As New Random()
-            Dim randomNumber As Integer = random.Next(100000, 999999)
-            Dim subject As String = "Payment to " + user
-            Dim body As String = "You are going to pay User " + user + " an amount of " + refundAmount.ToString
-            ' sending otp on mail
-            sendEmail(randomNumber, subject, body)
-            Dim code As Integer
-            If otp_auth.ShowDialog = DialogResult.OK Then
-                If Integer.TryParse(otp_auth.InputValue, code) Then
-                    If code = randomNumber Then
-                        Dim provider_exists As Boolean = False
-                        Dim user_exists As Boolean = False
-                        Dim provider_balance_sufficients As Boolean = False
-
-                        Dim query As String = "SELECT balance FROM provider WHERE provider_id = @AccountNumber;"
-                        Using connection As New SqlConnection(connectionString)
-                            Using command As New SqlCommand(query, connection)
-                                command.Parameters.AddWithValue("@AccountNumber", provider_id)
-
-                                connection.Open()
-                                Dim balance As Object = command.ExecuteScalar()
-
-                                If balance IsNot Nothing AndAlso Not DBNull.Value.Equals(balance) Then
-                                    ' Balance is retrieved successfully
-                                    provider_exists = True
-                                    If Convert.ToInt32(balance) >= refundAmount Then
-                                        provider_balance_sufficients = True
-                                    Else
-                                        MessageBox.Show("Insufficient balance.")
-                                    End If
-
-                                Else
-                                    ' Account number not found or balance is NULL
-                                    MessageBox.Show("Account number " + provider + " not found or balance is NULL")
-                                End If
-                            End Using
-                        End Using
-
-                        query = "SELECT balance FROM customer WHERE user_id = @AccountNumber;"
-
-                        Using connection As New SqlConnection(connectionString)
-                            Using command As New SqlCommand(query, connection)
-                                command.Parameters.AddWithValue("@AccountNumber", user_id)
+            variableChanged.Reset()
+            myVariable = 0
+            payments.Show()
+            Await WaitForVariableChangeOrTimeoutAsync(900000)
+            If (Module_global.payment_successful = 1) Then
 
 
-                                connection.Open()
-                                Dim balance As Object = command.ExecuteScalar()
+                Dim query As String = "UPDATE deals SET status = 3 WHERE deal_id = @DealID"
 
-                                If balance IsNot Nothing AndAlso Not DBNull.Value.Equals(balance) Then
-                                    ' Balance is retrieved successfully
-                                    user_exists = True
+                ' Create connection and command objects
+                Using connection As New SqlConnection(connectionString)
+                    Using command As New SqlCommand(query, connection)
+                        ' Add parameters to prevent SQL injection
+                        command.Parameters.AddWithValue("@DealID", dealID)
 
-                                Else
-                                    ' Account number not found or balance is NULL
-                                    MessageBox.Show("Account number " + user + " not found or balance is NULL")
-                                End If
-                            End Using
-                        End Using
-                        If user_exists And provider_exists And provider_balance_sufficients Then
-                            ' updating balance of both the users
-                            Dim sqlQuery As String = "UPDATE provider SET balance = balance - @AmountToUpdate WHERE provider_id = @AccountNumber1;"
+                        Try
+                            ' Open connection
+                            connection.Open()
 
-                            Using connection As New SqlConnection(connectionString)
-                                Using command As New SqlCommand(sqlQuery, connection)
-                                    command.Parameters.AddWithValue("@AccountNumber1", provider_id)
-                                    command.Parameters.AddWithValue("@AmountToUpdate", refundAmount)
-                                    connection.Open()
-                                    command.ExecuteNonQuery()
-                                End Using
-                            End Using
-                            sqlQuery = "UPDATE customer SET balance = balance + @AmountToUpdate WHERE user_id = @AccountNumber1;"
+                            ' Execute the update query
+                            command.ExecuteNonQuery()
 
-                            Using connection As New SqlConnection(connectionString)
-                                Using command As New SqlCommand(sqlQuery, connection)
-                                    command.Parameters.AddWithValue("@AccountNumber1", user_id)
-                                    command.Parameters.AddWithValue("@AmountToUpdate", refundAmount)
-                                    connection.Open()
-                                    command.ExecuteNonQuery()
-                                End Using
-                            End Using
-                            'receipt generation
-                            Dim saveDialog As New SaveFileDialog()
-                            saveDialog.Filter = "PDF File (*.pdf)|*.pdf"
-                            saveDialog.FileName = "Cancellation.pdf"
-                            If saveDialog.ShowDialog() = DialogResult.OK Then
-                                Try
-                                    Using pdfWriter As New PdfWriter(saveDialog.FileName)
-                                        Using pdfDocument As New PdfDocument(pdfWriter)
-                                            Dim document As New Document(pdfDocument)
-                                            Dim boldFont As PdfFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD)
-                                            ' Add content to the PDF
-                                            document.Add(New Paragraph("Receipt").SetTextAlignment(TextAlignment.CENTER).SetFont(boldFont))
-                                            document.Add(New Paragraph("------------------------------------------------------------------------------------------------------------------"))
-                                            document.Add(New Paragraph("Date: " & DateTime.Now.ToString()))
-                                            document.Add(New Paragraph("Amount: " + refundAmount.ToString))
-                                            document.Add(New Paragraph("Description: Provider " + provider + " payed User " + user + ": " + refundAmount.ToString))
+                            MessageBox.Show("Deal status updated successfully.")
+                        Catch ex As Exception
+                            MessageBox.Show("An error occurred: " & ex.Message)
+                        End Try
+                    End Using
+                End Using
 
-                                            document.Close()
+                MessageBox.Show("Payment done successfully.")
 
-                                            MessageBox.Show("Cancellation Receipt generated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End Using
-                                    End Using
-                                Catch ex As Exception
-                                    MessageBox.Show($"Error generating PDF: {ex.ToString()}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                                End Try
-                            End If
+                'Dim subject As String = "Payment from " + ID
+                'Dim body As String = "You have received an amount of " + payments.CostOfService.ToString + " for your service."
 
-                            sqlQuery = "UPDATE deals SET status = @cancel_status WHERE deal_id = @DealID;"
+                'sendEmail(subject, body)
 
-                            ' Add parameters to the SQL query to prevent SQL injection
-                            Using connection As New SqlConnection(connectionString)
-                                Using command As New SqlCommand(sqlQuery, connection)
-                                    command.Parameters.AddWithValue("@DealID", dealID)
-                                    command.Parameters.AddWithValue("@cancel_status", CANCELLED)
-                                    connection.Open()
-                                    command.ExecuteNonQuery()
-                                End Using
-                            End Using
-                            btn_cancel.Visible = False
-                            btn_cancel.Enabled = False
-                            btn_appointment_completed.Visible = False
-                            btn_appointment_completed.Enabled = False
-
-                        End If
+                Module_global.payment_successful = 0
+                myVariable = 0
+                variableChanged.Reset()
 
 
+                Me.Hide()
+                user_appointments.Show()
+            Else
 
-                    Else
-                        MessageBox.Show("Write correct OTP please.")
-                    End If
-                Else
-                    MessageBox.Show("The OTP is a 6 digit number, please adhere to the convention.")
-                End If
+                myVariable = 0
+                variableChanged.Reset()
+
+                MessageBox.Show("payment unsuccessful")
+
             End If
-        Else
+
 
         End If
 
 
     End Sub
-
-    Private Sub sendEmail(randomNumber As Integer, subject As String, body As String)
-        Dim smtpServer As String = "smtp-mail.outlook.com"
-        Dim port As Integer = 587
-
-        Dim message As New MailMessage("group1b-cs346@outlook.com", email) With {
-        .Subject = subject,
-            .Body = body & vbCrLf & "Your OTP is " + randomNumber.ToString
-        }
-
-        Dim smtpClient As New SmtpClient(smtpServer) With {
-            .Port = port,
-            .Credentials = New System.Net.NetworkCredential("group1b-cs346@outlook.com", "chillSreehari"),
-            .EnableSsl = True
-        }
-
-        Try
-            smtpClient.Send(message)
-            MessageBox.Show("OTP sent successfully to your email.")
-        Catch ex As SmtpException
-            ' Handle specific SMTP exceptions
-            MessageBox.Show("SMTP error: " & ex.Message)
-        Catch ex As Exception
-            ' Handle other exceptions
-            MessageBox.Show("Error sending email: " & ex.Message)
-        End Try
-    End Sub
-
-
-    Private Sub SplitContainer1_SplitterMoved(sender As Object, e As SplitterEventArgs) Handles SplitContainer1.SplitterMoved
-
-    End Sub
-
-    Private Sub SplitContainer1_Panel2_Paint(sender As Object, e As PaintEventArgs) Handles SplitContainer1.Panel2.Paint
-
-    End Sub
-
 End Class
