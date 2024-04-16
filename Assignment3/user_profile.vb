@@ -167,21 +167,29 @@ Public Class user_profile
 
                         ' Convert the profile image to a byte array
                         Dim profileImageBytes As Byte() = Nothing
-                        If profilepic_pb.Image IsNot Nothing Then
-                            Using ms As New MemoryStream()
-                                ' Set the position of the MemoryStream to the beginning
-                                ms.Position = 0
-                                profilepic_pb.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png)
-                                profileImageBytes = ms.ToArray()
-                                Try
-                                    ' Save the image
+
+                        ' Check if the image is not null and is a valid format
+                        If profilepic_pb.Image IsNot Nothing AndAlso
+                        (profilepic_pb.Image.RawFormat.Guid = System.Drawing.Imaging.ImageFormat.Jpeg.Guid OrElse
+                        profilepic_pb.Image.RawFormat.Guid = System.Drawing.Imaging.ImageFormat.Png.Guid) Then
+
+                            Try
+                                Using ms As New MemoryStream()
+                                    ' Save the image to the memory stream
                                     profilepic_pb.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg)
+
+                                    ' Convert the image to a byte array
                                     profileImageBytes = ms.ToArray()
-                                Catch ex As Exception
-                                    ' Handle the exception
-                                    MessageBox.Show("Error saving the image: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                                End Try
-                            End Using
+                                End Using
+                            Catch ex As Exception
+                                ' Handle any exceptions that occur during image saving
+                                MessageBox.Show("Error saving image: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            End Try
+                        ElseIf profilepic_pb.Image Is Nothing Then
+                            'just Null
+                        Else
+                            ' Handle the case where the image is null or in an unsupported format
+                            MessageBox.Show("Invalid or unsupported image format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End If
 
                         command.Parameters.AddWithValue("@ProfileImage", If(profileImageBytes IsNot Nothing, CType(profileImageBytes, Object), DBNull.Value))
