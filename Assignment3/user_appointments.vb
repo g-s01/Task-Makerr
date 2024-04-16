@@ -128,6 +128,69 @@ Public Class user_appointments
 
     End Function
 
+    Private Function spawnDivsFeedback(i As Integer, providerName As String, location As String, CostNum As Integer, Schedule As String, y As Integer, DealId As Integer)
+
+        ReDim panelArray(i)
+
+        Dim x As Integer = 20
+
+        panelArray(i) = New System.Windows.Forms.Panel()
+        panelArray(i).Name = DealId.ToString()
+        panelArray(i).Location = New System.Drawing.Point(x, y)
+        panelArray(i).Size = New System.Drawing.Size(750, 70)
+        panelArray(i).BackColor = System.Drawing.Color.FromArgb(CByte(240), CByte(218), CByte(248))
+        panelArray(i).AutoSize = True
+
+        AddHandler panelArray(i).Click, AddressOf Panel_Click1
+
+        Dim name As New Label()
+        name.AutoSize = True
+        name.Location = New System.Drawing.Point(25, 10)
+        name.Name = "name"
+        name.Text = providerName
+        panelArray(i).Controls.Add(name)
+
+        Dim place As New Label()
+        place.AutoSize = True
+        place.Location = New System.Drawing.Point(25, 40)
+        place.Name = "place"
+        place.Text = location
+        panelArray(i).Controls.Add(place)
+
+        Dim cost As New Label()
+        cost.AutoSize = True
+        cost.Location = New System.Drawing.Point(610, 10)
+        cost.Name = "cost"
+        cost.Text = "Cost : " + CostNum.ToString()
+        panelArray(i).Controls.Add(cost)
+
+        Dim timings As New Label()
+        timings.AutoSize = True
+        timings.Location = New System.Drawing.Point(520, 40)
+        timings.Name = "timings"
+        timings.Text = "Appointment schedule :  " + Schedule
+        panelArray(i).Controls.Add(timings)
+
+        Dim feedback As New Button()
+        feedback.Text = " Give Feedback "
+        feedback.AutoSize = True
+        feedback.Location = New System.Drawing.Point(25, 35)
+        feedback.FlatAppearance.BorderSize = 0
+        feedback.FlatStyle = FlatStyle.Flat
+        feedback.Font = New Font("Microsoft YaHei", 8.0F)
+        feedback.BackColor = System.Drawing.Color.FromArgb(CByte(245), CByte(140), CByte(215))
+
+        AddHandler feedback.Click, Sub(s, ev)
+                                       Module_global.Appointment_Det_DealId = DealId
+                                       user_feedback.Show()
+                                   End Sub
+
+        panelArray(i).Controls.Add(feedback)
+
+        Panel1.Controls.Add(panelArray(i))
+
+    End Function
+
     Private Function spawnDivsWithButton(splitContainerArray As SplitContainer(), i As Integer, providerName As String, location As String, CostNum As Integer, Schedule As String, y As Integer, DealId As Integer)
         Dim x As Integer = 20
 
@@ -195,6 +258,7 @@ Public Class user_appointments
         'Dim relatedForm As New RelatedForm2() ' Replace RelatedForm2 with the actual name of your related form class
         'relatedForm.Show()
     End Sub
+
 
     Private Async Function upcoming() As Task
         Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"
@@ -400,7 +464,7 @@ Public Class user_appointments
                             dateof = dateof.AddDays(1)
                         End If
                     Next
-                    spawnDivs(i, ProviderName, Location, Cost, dateof, y, result.GetValue(0))
+                    spawnDivsFeedback(i, ProviderName, Location, Cost, dateof, y, result.GetValue(0))
                     i += 1
                     y += 100
                 Loop

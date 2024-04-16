@@ -4,6 +4,7 @@ Imports System.Configuration
 Public Class user_feedback
 
     Public dealID As Integer = Module_global.Appointment_Det_DealId
+
     'Dim dealID As Integer = 1
     Dim currentRating As Double = 0.0
     Dim clickCount1 As Integer = 0
@@ -236,7 +237,7 @@ Public Class user_feedback
     End Sub
 
     Private Sub user_feedback_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Label4.Text = Module_global.user_name
         InitializeFeedbackTextBox()
-
     End Sub
 End Class
