@@ -169,10 +169,19 @@ Public Class user_provider_chats
         End Using
     End Function
 
-    Private Sub PopulateRooms()
+    Private Sub PopulateRooms(Optional ByVal rooms As List(Of Tuple(Of String, Integer, Integer)) = Nothing)
         Dim yPos As Integer = 10 ' Initial y position for buttons
 
-        For Each item As Tuple(Of String, Integer, Integer) In Module_global.roomchat
+        ' Clear previously populated rooms
+        chat_list.Controls.Clear()
+
+        ' Check if rooms parameter is provided
+        If rooms Is Nothing Then
+            ' Use default Module_global.roomchat if no parameter is provided
+            rooms = Module_global.roomchat
+        End If
+
+        For Each item As Tuple(Of String, Integer, Integer) In rooms
             Dim newButton As New Button()
             newButton.Name = "btn" & item.Item1 ' Set button name
             newButton.Text = item.Item1 ' Set button text
@@ -184,10 +193,10 @@ Public Class user_provider_chats
             newButton.FlatAppearance.BorderSize = 0 ' Remove border
             newButton.Font = New Font(newButton.Font.FontFamily, 12)
             newButton.ImageAlign = ContentAlignment.MiddleLeft ' Set image alignment
-            newButton.TextImageRelation = TextImageRelation.ImageBeforeText ' Position image before tex
+            newButton.TextImageRelation = TextImageRelation.ImageBeforeText ' Position image before text
             ' Resize the image to match the button height
-            Dim scaledImagenew As Image = New Bitmap(My.Resources.prov, New Size(35, 35))
-            newButton.Image = scaledImagenew
+            Dim scaledImage As Image = New Bitmap(My.Resources.prov, New Size(35, 35))
+            newButton.Image = scaledImage
             newButton.Region = New Drawing.Region(New Drawing.Rectangle(0, 0, newButton.Width, newButton.Height)) ' Make corners rounded
             newButton.Location = New Point(5, yPos) ' Set button position
             AddHandler newButton.Click, AddressOf Button_Click ' Add click event handler
@@ -195,6 +204,8 @@ Public Class user_provider_chats
             yPos += 37 ' Increment y position for next button
         Next
     End Sub
+
+
 
 
 
@@ -485,5 +496,24 @@ Public Class user_provider_chats
         ' Ensure the panel scrolls to the bottom to show the latest message
         chat.AutoScrollPosition = New Point(0, chat.AutoScrollPosition.Y + yPos)
     End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+
+    End Sub
+
+    Private Sub SearchTextBox_TextChanged(sender As Object, e As EventArgs) Handles SearchTextBox.TextChanged
+        Dim searchText As String = SearchTextBox.Text.TrimEnd().ToLower() ' Convert search text to lower case for case-insensitive comparison and trim trailing spaces
+        ' Filter rooms list based on search text
+        Dim filteredRooms As List(Of Tuple(Of String, Integer, Integer)) = Module_global.roomchat.Where(Function(room) room.Item1.ToLower().Contains(searchText)).ToList()
+
+        ' If search text is empty, show all rooms
+        If String.IsNullOrEmpty(searchText) Then
+            filteredRooms = Module_global.roomchat
+        End If
+
+        ' Populate rooms list with filtered rooms
+        PopulateRooms(filteredRooms)
+    End Sub
+
 
 End Class

@@ -27,6 +27,8 @@ Partial Class user_provider_chats
         sendBtn = New Button()
         sendTextBox = New TextBox()
         Panel1 = New Panel()
+        Button1 = New Button()
+        SearchTextBox = New TextBox()
         Panel2 = New Panel()
         senderName = New Label()
         Label1 = New Label()
@@ -50,9 +52,9 @@ Partial Class user_provider_chats
         chat_list.AutoScroll = True
         chat_list.AutoSizeMode = AutoSizeMode.GrowAndShrink
         chat_list.BackColor = Color.FromArgb(CByte(242), CByte(209), CByte(245))
-        chat_list.Location = New Point(603, 102)
+        chat_list.Location = New Point(603, 136)
         chat_list.Name = "chat_list"
-        chat_list.Size = New Size(207, 453)
+        chat_list.Size = New Size(207, 419)
         chat_list.TabIndex = 1
         ' 
         ' sendBtn
@@ -81,6 +83,8 @@ Partial Class user_provider_chats
         ' 
         ' Panel1
         ' 
+        Panel1.Controls.Add(Button1)
+        Panel1.Controls.Add(SearchTextBox)
         Panel1.Controls.Add(Panel2)
         Panel1.Controls.Add(Label1)
         Panel1.Controls.Add(separatorLine)
@@ -93,6 +97,28 @@ Partial Class user_provider_chats
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(822, 610)
         Panel1.TabIndex = 5
+        ' 
+        ' Button1
+        ' 
+        Button1.BackColor = Color.FromArgb(CByte(231), CByte(188), CByte(219))
+        Button1.Enabled = False
+        Button1.FlatAppearance.BorderSize = 0
+        Button1.FlatStyle = FlatStyle.Flat
+        Button1.Image = My.Resources.Resources.search
+        Button1.Location = New Point(767, 99)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(43, 31)
+        Button1.TabIndex = 16
+        Button1.UseVisualStyleBackColor = False
+        ' 
+        ' SearchTextBox
+        ' 
+        SearchTextBox.BorderStyle = BorderStyle.FixedSingle
+        SearchTextBox.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        SearchTextBox.Location = New Point(603, 99)
+        SearchTextBox.Name = "SearchTextBox"
+        SearchTextBox.Size = New Size(166, 39)
+        SearchTextBox.TabIndex = 0
         ' 
         ' Panel2
         ' 
@@ -157,4 +183,6 @@ Partial Class user_provider_chats
     Friend WithEvents separatorLine As Label
     Friend WithEvents Panel2 As Panel
     Friend WithEvents senderName As Label
+    Friend WithEvents SearchTextBox As TextBox
+    Friend WithEvents Button1 As Button
 End Class

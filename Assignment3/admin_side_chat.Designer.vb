@@ -23,6 +23,8 @@ Partial Class admin_side_chat
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Panel1 = New Panel()
+        Button1 = New Button()
+        SearchTextBox = New TextBox()
         Panel2 = New Panel()
         senderName = New Label()
         providerButton = New Button()
@@ -38,6 +40,8 @@ Partial Class admin_side_chat
         ' 
         ' Panel1
         ' 
+        Panel1.Controls.Add(Button1)
+        Panel1.Controls.Add(SearchTextBox)
         Panel1.Controls.Add(Panel2)
         Panel1.Controls.Add(providerButton)
         Panel1.Controls.Add(userButton)
@@ -51,6 +55,28 @@ Partial Class admin_side_chat
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(822, 610)
         Panel1.TabIndex = 0
+        ' 
+        ' Button1
+        ' 
+        Button1.BackColor = Color.FromArgb(CByte(231), CByte(188), CByte(219))
+        Button1.Enabled = False
+        Button1.FlatAppearance.BorderSize = 0
+        Button1.FlatStyle = FlatStyle.Flat
+        Button1.Image = My.Resources.Resources.search
+        Button1.Location = New Point(767, 110)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(43, 31)
+        Button1.TabIndex = 18
+        Button1.UseVisualStyleBackColor = False
+        ' 
+        ' SearchTextBox
+        ' 
+        SearchTextBox.BorderStyle = BorderStyle.FixedSingle
+        SearchTextBox.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        SearchTextBox.Location = New Point(595, 105)
+        SearchTextBox.Name = "SearchTextBox"
+        SearchTextBox.Size = New Size(166, 39)
+        SearchTextBox.TabIndex = 17
         ' 
         ' Panel2
         ' 
@@ -150,9 +176,9 @@ Partial Class admin_side_chat
         room_list.AutoScroll = True
         room_list.AutoSizeMode = AutoSizeMode.GrowAndShrink
         room_list.BackColor = Color.FromArgb(CByte(242), CByte(209), CByte(245))
-        room_list.Location = New Point(595, 100)
+        room_list.Location = New Point(595, 155)
         room_list.Name = "room_list"
-        room_list.Size = New Size(200, 460)
+        room_list.Size = New Size(200, 405)
         room_list.TabIndex = 8
         ' 
         ' admin_side_chat
@@ -178,4 +204,6 @@ Partial Class admin_side_chat
     Friend WithEvents providerButton As Button
     Friend WithEvents Panel2 As Panel
     Friend WithEvents senderName As Label
+    Friend WithEvents Button1 As Button
+    Friend WithEvents SearchTextBox As TextBox
 End Class
