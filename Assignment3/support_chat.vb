@@ -128,6 +128,10 @@ Public Class support_chat
             End If
         Next
 
+        If (messageText.Length = 0) Then
+            Return
+        End If
+
         Dim newMessage As New Tuple(Of Integer, String, String, String)(roomId, user_type, messageText, timeStamp)
 
         Dim connectionString As String = "Server=sql5111.site4now.net;Database=db_aa6f6a_cs346assign3;User Id=db_aa6f6a_cs346assign3_admin;Password=swelab@123;"

@@ -17,8 +17,32 @@ Public Class pending_payment
         MyBase.OnVisibleChanged(e)
         If Me.Visible Then
             ReloadData()
+            MakeChatVisible()
         End If
     End Sub
+
+    Private Sub MakeChatVisible()
+        SplitContainer1.Panel2.Controls.Clear()
+        Dim chatForm As New appointmentChat()
+
+        ' Set TopLevel property to False to allow embedding in another container
+        chatForm.TopLevel = False
+        chatForm.dealId = dealID
+        chatForm.providerId = provider
+        chatForm.userId = Module_global.User_ID
+        ' Set the form's Dock property to fill the panel
+        chatForm.Dock = DockStyle.Fill
+
+        ' Set the form's border style to None
+        chatForm.FormBorderStyle = FormBorderStyle.None
+
+        ' Add the form to the SplitContainer.Panel2
+        SplitContainer1.Panel2.Controls.Add(chatForm)
+
+        ' Show the form
+        chatForm.Show()
+    End Sub
+
     Private Sub ReloadData()
 
         dealID = Module_global.Appointment_Det_DealId

@@ -319,6 +319,9 @@ Public Class user_provider_chats
         sendTextBox.Text = ""
 
         Dim timeStamp As String = DateTime.Now.ToString("yyy-MM-dd HH:mm:ss")
+        If (messageText.Length = 0) Then
+            Return
+        End If
         InsertMessageIntoDatabase(roomId, dealId, user_role, messageText,timeStamp)
         ' Print messages between users
         Dim newMessage As New Tuple(Of Integer, Integer, String, String, String)(roomId, dealId, user_role, messageText, timeStamp)
