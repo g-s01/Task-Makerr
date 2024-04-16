@@ -3,7 +3,12 @@ Imports Microsoft.Data.SqlClient
 
 Public Class provider_appointments
     Dim panelArray(2) As System.Windows.Forms.Panel
-
+    Protected Overrides Sub OnVisibleChanged(e As EventArgs)
+        MyBase.OnVisibleChanged(e)
+        If Me.Visible Then
+            Button1.PerformClick()
+        End If
+    End Sub
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Button2.BackColor = Color.FromArgb(CByte(220), CByte(189), CByte(232))
         Button1.BackColor = SystemColors.Control
