@@ -78,113 +78,12 @@ Public Class user_search
                                      End If
                                  End While
                              End Using
-                             Parallel.ForEach(reviews, Sub(pair)
-                                                           Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
-                                                           Dim rating As Double
-                                                           rating = Math.Round(currentValue.Item1 / CType(currentValue.Item2, Double), 1)
-                                                           rating_prov.TryAdd(pair.Key, rating)
-                                                       End Sub)
-                         Catch ex As Exception
-                             MessageBox.Show("Error connecting to database: " & ex.Message)
-                         End Try
-                     End Using
-                 End Function),
-        Task.Run(Async Function()
-                     providers.Clear()
-                     temp_providers.Clear()
-                     Using connection As New SqlConnection(connectionString)
-                         Try
-                             Await connection.OpenAsync()
-                             Dim command As New SqlCommand("SELECT provider.*, location.* FROM provider INNER JOIN location ON provider.provider_id = location.provider_id", connection)
-                             Using reader As SqlDataReader = command.ExecuteReader()
-                                 ' Loop through the SqlDataReader
-                                 While reader.Read()
-                                     ' Get the values of the current row
-                                     Dim service As String = reader.GetString(reader.GetOrdinal("service"))
-                                     Dim loc As String = reader.GetString(reader.GetOrdinal("location"))
-                                     Dim name As String = reader.GetString(reader.GetOrdinal("providername"))
-                                     Dim provider As Int32 = reader.GetInt32(reader.GetOrdinal("provider_id"))
-                                     Dim cost As Double = reader.GetInt32(reader.GetOrdinal("cost_per_hour"))
-                                     temp_providers.Add(New Entry With {.providerID = provider, .providerName = name, .service = service, .location = loc, .cost = cost})
-                                 End While
-                             End Using
-
-                         Catch ex As Exception
-                             MessageBox.Show("Error connecting to database: " & ex.Message)
-                         End Try
-                     End Using
-                 End Function)
-                 )
-        providers.Clear()
-        For i As Integer = 0 To temp_providers.Count() - 1
-            Dim rating As String
-            If reviews.ContainsKey(temp_providers(i).providerID) Then
-                Dim currentValue As Tuple(Of Integer, Integer) = reviews(temp_providers(i).providerID)
-                rating = rating_prov(temp_providers(i).providerID).ToString()
-            Else
-                rating = "N/A"
-            End If
-            'providers(i).rating = rating
-            providers.Add(New Entry With {.providerID = temp_providers(i).providerID, .providerName = temp_providers(i).providerName, .service = temp_providers(i).service, .location = temp_providers(i).location, .cost = temp_providers(i).cost, .rating = rating, .RadioButton = New RadioButton()})
-        Next
-        temp_providers.Clear()
-        MakePictureBoxRound(PictureBox2)
-        'LoadProviders()
-        PopulateTable()
-    End Sub
-
-    Public Async Sub SimulateLoad()
-        Label1.Text = user_name
-        PictureBox2.Image = user_profilepic
-        ComboBox1.Items.Clear()
-        ComboBox1.Items.Add("Service")
-        For i As Integer = 0 To service_types.Count - 1
-            Dim service As String = service_types(i)
-            ComboBox1.Items.Add(service)
-        Next
-        ComboBox1.Items.Add("Designer")
-        ComboBox2.Items.Clear()
-        ComboBox2.Items.Add("Location")
-        For i As Integer = 0 To provider_locations.Count - 1
-            Dim location As String = provider_locations(i)
-            ComboBox2.Items.Add(location)
-        Next
-        ComboBox2.Items.Add("Tezpur")
-        ComboBox3.Items.Clear()
-        ComboBox3.Items.Add("Sort By")
-        ComboBox3.Items.Add("Name")
-        ComboBox3.Items.Add("Cost (Increasing)")
-        ComboBox3.Items.Add("Cost (Decreasing)")
-        ComboBox3.Items.Add("Rating")
-        ComboBox1.SelectedIndex = 0
-        ComboBox2.SelectedIndex = 0
-        ComboBox3.SelectedIndex = 0
-        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
-        Await Task.WhenAll(
-        Task.Run(Async Function()
-                     Using connection As New SqlConnection(connectionString)
-                         Try
-                             Await connection.OpenAsync()
-                             Dim command_rev As New SqlCommand("SELECT review.*, deals.* FROM review INNER JOIN deals ON review.deal_id = deals.deal_id", connection)
-                             Using reader As SqlDataReader = command_rev.ExecuteReader()
-                                 While reader.Read()
-                                     Dim provider As Int32 = reader.GetInt32(reader.GetOrdinal("provider_id"))
-                                     Dim rate As String = reader.GetInt32(reader.GetOrdinal("rating"))
-                                     If reviews.ContainsKey(provider) Then
-                                         Dim currentValue As Tuple(Of Integer, Integer) = reviews(provider)
-                                         Dim newValue As New Tuple(Of Integer, Integer)(currentValue.Item1 + rate, currentValue.Item2 + 1)
-                                         reviews(provider) = newValue
-                                     Else
-                                         reviews.Add(provider, New Tuple(Of Integer, Integer)(rate, 1))
-                                     End If
-                                 End While
-                             End Using
-                             Parallel.ForEach(reviews, Sub(pair)
-                                                           Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
-                                                           Dim rating As Double
-                                                           rating = Math.Round(currentValue.Item1 / CType(currentValue.Item2, Double), 1)
-                                                           rating_prov.TryAdd(pair.Key, rating)
-                                                       End Sub)
+                             For Each pair As KeyValuePair(Of Int32, Tuple(Of Integer, Integer)) In reviews
+                                 Dim currentValue As Tuple(Of Integer, Integer) = pair.Value
+                                 Dim rating As Double
+                                 rating = Math.Round(currentValue.Item1 / CType(currentValue.Item2, Double), 1)
+                                 rating_prov.Add(pair.Key, rating)
+                             Next
                          Catch ex As Exception
                              MessageBox.Show("Error connecting to database: " & ex.Message)
                          End Try
@@ -372,10 +271,6 @@ Public Class user_search
     ' author: sarg19
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         LoadProviders()
-        If (TextBox1.Text = "" Or TextBox1.Text = "Search for providers by name") And selected_service = "Service" And selected_location = "Location" Then
-            MessageBox.Show("Enter a text or select a service/location to search")
-            Return
-        End If
         If TextBox1.Text <> "" And TextBox1.Text <> "Search for providers by name" Then
             providers = providers.Where(Function(entry) entry.providerName.IndexOf(TextBox1.Text, StringComparison.OrdinalIgnoreCase) >= 0).ToList()
         End If
