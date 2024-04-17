@@ -38,7 +38,7 @@ This project could have been possible without the invaluable contribution from m
 - [Mithilesh Gupta](https://github.com/Mithilesh8984)
 - [Parth Kasture](https://github.com/parthkasture)
 - [Posa Mokshith](https://github.com/Raghuveer22)
-- [Pratham](https://github.com/Pratham1103)
+- [Pratham](https://github.com/regnarlothbrok)
 - [Pratham Goyal](https://github.com/pratham1504)
 - [Pratyush R](https://github.com/p8324r)
 - [Priyanshu Raj](https://github.com/priyanshuraj30)
